@@ -21,11 +21,16 @@
 		033E75FF146E65EC008896D5 /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = 033E75FE146E65EC008896D5 /* second.png */; };
 		033E7601146E65EC008896D5 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033E7600146E65EC008896D5 /* second@2x.png */; };
 		033E7625146E66F7008896D5 /* GLKSceneController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 033E7624146E66F7008896D5 /* GLKSceneController.mm */; };
-		033E7629146E6742008896D5 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E7627146E6742008896D5 /* GLKit.framework */; };
 		033E762A146E6742008896D5 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E7628146E6742008896D5 /* OpenGLES.framework */; };
 		033E762E146E77B5008896D5 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033E762D146E77B5008896D5 /* Scene.cpp */; };
 		033E7631146E77EB008896D5 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033E7630146E77EB008896D5 /* Node.cpp */; };
 		033E7634146E7816008896D5 /* Geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033E7633146E7816008896D5 /* Geometry.cpp */; };
+		0343BF8914A6854400C6ED4F /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF8814A6854400C6ED4F /* Renderer.mm */; };
+		0343BF9414A6A75500C6ED4F /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9314A6A75500C6ED4F /* EAGLView.mm */; };
+		0343BF9914A793ED00C6ED4F /* Fence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9814A793ED00C6ED4F /* Fence.cpp */; };
+		0343BF9A14A793ED00C6ED4F /* Fence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9814A793ED00C6ED4F /* Fence.cpp */; };
+		0343BF9D14A7AF2400C6ED4F /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9C14A7AF2400C6ED4F /* Event.cpp */; };
+		0343BF9E14A7AF2400C6ED4F /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9C14A7AF2400C6ED4F /* Event.cpp */; };
 		039192A814A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
 		039192A914A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
 		03DC93BC149E9F4E00F2A602 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E75DF146E65EC008896D5 /* UIKit.framework */; };
@@ -38,7 +43,6 @@
 		03DC93D0149E9F4F00F2A602 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03DC93CF149E9F4F00F2A602 /* ViewController.mm */; };
 		03FFFF3714A1E1CF0012FB3F /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03FFFF3414A1E1CF0012FB3F /* gtest-all.cc */; };
 		03FFFF3814A1E1CF0012FB3F /* LoopTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03FFFF3514A1E1CF0012FB3F /* LoopTest.cpp */; };
-		03FFFF3914A1E1CF0012FB3F /* TestTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03FFFF3614A1E1CF0012FB3F /* TestTest.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,13 +68,21 @@
 		033E7608146E65ED008896D5 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		033E7623146E66F7008896D5 /* GLKSceneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKSceneController.h; sourceTree = "<group>"; };
 		033E7624146E66F7008896D5 /* GLKSceneController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLKSceneController.mm; sourceTree = "<group>"; };
-		033E7627146E6742008896D5 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		033E7628146E6742008896D5 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		033E762D146E77B5008896D5 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
 		033E762F146E77CB008896D5 /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
 		033E7630146E77EB008896D5 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
 		033E7632146E77FC008896D5 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
 		033E7633146E7816008896D5 /* Geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Geometry.cpp; sourceTree = "<group>"; };
+		0343BF8614A6849400C6ED4F /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
+		0343BF8814A6854400C6ED4F /* Renderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer.mm; sourceTree = "<group>"; };
+		0343BF9214A6A75500C6ED4F /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
+		0343BF9314A6A75500C6ED4F /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
+		0343BF9714A793AD00C6ED4F /* Fence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Fence.h; path = events/Fence.h; sourceTree = "<group>"; };
+		0343BF9814A793ED00C6ED4F /* Fence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Fence.cpp; path = events/Fence.cpp; sourceTree = "<group>"; };
+		0343BF9B14A7AF0500C6ED4F /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = events/Event.h; sourceTree = "<group>"; };
+		0343BF9C14A7AF2400C6ED4F /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Event.cpp; path = events/Event.cpp; sourceTree = "<group>"; };
+		0343BF9F14A80C6200C6ED4F /* Sleep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sleep.h; path = events/Sleep.h; sourceTree = "<group>"; };
 		039192A614A1CB2700F1D4C7 /* ThreadOwner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadOwner.h; sourceTree = "<group>"; };
 		039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadOwner.cpp; sourceTree = "<group>"; };
 		03DC93BA149E9F4E00F2A602 /* SketchyUnitTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SketchyUnitTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,7 +98,6 @@
 		03FFFF3314A1E1570012FB3F /* Loop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Loop.h; sourceTree = "<group>"; };
 		03FFFF3414A1E1CF0012FB3F /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gtest-all.cc"; sourceTree = "<group>"; };
 		03FFFF3514A1E1CF0012FB3F /* LoopTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoopTest.cpp; sourceTree = "<group>"; };
-		03FFFF3614A1E1CF0012FB3F /* TestTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestTest.cpp; sourceTree = "<group>"; };
 		03FFFF3C14A1E1EC0012FB3F /* gtest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gtest.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,7 +106,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				033E7629146E6742008896D5 /* GLKit.framework in Frameworks */,
 				033E762A146E6742008896D5 /* OpenGLES.framework in Frameworks */,
 				033E75E0146E65EC008896D5 /* UIKit.framework in Frameworks */,
 				033E75E2146E65EC008896D5 /* Foundation.framework in Frameworks */,
@@ -140,7 +150,6 @@
 		033E75DE146E65EC008896D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				033E7627146E6742008896D5 /* GLKit.framework */,
 				033E7628146E6742008896D5 /* OpenGLES.framework */,
 				033E75DF146E65EC008896D5 /* UIKit.framework */,
 				033E75E1146E65EC008896D5 /* Foundation.framework */,
@@ -167,6 +176,8 @@
 				033E75E6146E65EC008896D5 /* Supporting Files */,
 				033E7623146E66F7008896D5 /* GLKSceneController.h */,
 				033E7624146E66F7008896D5 /* GLKSceneController.mm */,
+				0343BF9214A6A75500C6ED4F /* EAGLView.h */,
+				0343BF9314A6A75500C6ED4F /* EAGLView.mm */,
 			);
 			path = Sketchy;
 			sourceTree = "<group>";
@@ -185,6 +196,7 @@
 		033E762B146E76E8008896D5 /* cross */ = {
 			isa = PBXGroup;
 			children = (
+				0343BF9514A7932D00C6ED4F /* events */,
 				03FFFF3314A1E1570012FB3F /* Loop.h */,
 				033E762D146E77B5008896D5 /* Scene.cpp */,
 				033E7630146E77EB008896D5 /* Node.cpp */,
@@ -193,9 +205,23 @@
 				033E7633146E7816008896D5 /* Geometry.cpp */,
 				039192A614A1CB2700F1D4C7 /* ThreadOwner.h */,
 				039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */,
+				0343BF8614A6849400C6ED4F /* Renderer.h */,
+				0343BF8814A6854400C6ED4F /* Renderer.mm */,
 			);
 			name = cross;
 			path = ../cross;
+			sourceTree = "<group>";
+		};
+		0343BF9514A7932D00C6ED4F /* events */ = {
+			isa = PBXGroup;
+			children = (
+				0343BF9714A793AD00C6ED4F /* Fence.h */,
+				0343BF9814A793ED00C6ED4F /* Fence.cpp */,
+				0343BF9B14A7AF0500C6ED4F /* Event.h */,
+				0343BF9C14A7AF2400C6ED4F /* Event.cpp */,
+				0343BF9F14A80C6200C6ED4F /* Sleep.h */,
+			);
+			name = events;
 			sourceTree = "<group>";
 		};
 		03DC93BF149E9F4E00F2A602 /* SketchyUnitTests */ = {
@@ -228,7 +254,6 @@
 				03FFFF3A14A1E1EC0012FB3F /* include */,
 				03FFFF3414A1E1CF0012FB3F /* gtest-all.cc */,
 				03FFFF3514A1E1CF0012FB3F /* LoopTest.cpp */,
-				03FFFF3614A1E1CF0012FB3F /* TestTest.cpp */,
 			);
 			name = tests;
 			path = ../tests;
@@ -352,6 +377,10 @@
 				033E7631146E77EB008896D5 /* Node.cpp in Sources */,
 				033E7634146E7816008896D5 /* Geometry.cpp in Sources */,
 				039192A814A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */,
+				0343BF8914A6854400C6ED4F /* Renderer.mm in Sources */,
+				0343BF9414A6A75500C6ED4F /* EAGLView.mm in Sources */,
+				0343BF9914A793ED00C6ED4F /* Fence.cpp in Sources */,
+				0343BF9D14A7AF2400C6ED4F /* Event.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,7 +394,8 @@
 				039192A914A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */,
 				03FFFF3714A1E1CF0012FB3F /* gtest-all.cc in Sources */,
 				03FFFF3814A1E1CF0012FB3F /* LoopTest.cpp in Sources */,
-				03FFFF3914A1E1CF0012FB3F /* TestTest.cpp in Sources */,
+				0343BF9A14A793ED00C6ED4F /* Fence.cpp in Sources */,
+				0343BF9E14A7AF2400C6ED4F /* Event.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

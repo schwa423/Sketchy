@@ -17,7 +17,7 @@
 
 #include "ThreadOwner.h"
 
-template <class Task>
+template <typename TaskPtr>
 class Loop : public ThreadOwner {
 public:
 	Loop() : m_stopped(false) {
@@ -32,7 +32,7 @@ public:
 		if (!isCurrent()) { m_thread.join(); }
 	};
 	
-	void addTask(Task* task) { 
+	void addTask(TaskPtr task) { 
 		std::lock_guard<std::mutex> lock(m_mutex);
 		m_queue.push_back(task);
 		m_condition.notify_one();
@@ -50,8 +50,8 @@ private:
 				std::for_each(m_queue.begin(), m_queue.end(), abortTask);
 				return;
 			}
-			Task* tsk = m_queue.front();
-			if (tsk) {
+			if (!m_queue.empty()) {
+				TaskPtr tsk = m_queue.front();
 				m_queue.pop_front();
 				lk.unlock();
 				tsk->run();
@@ -62,10 +62,10 @@ private:
 
 	// Used above in runLoop()... wish I was smart enough to use
 	// a lambda, or bind the member function, or something.
-	static void abortTask(Task* task) { task->abort(); }
+	static void abortTask(TaskPtr task) { task->abort(); }
 	
 	bool m_stopped;
-	std::deque<Task*> m_queue;
+	std::deque<TaskPtr> m_queue;
 	std::condition_variable m_condition;
 	std::mutex m_mutex;
 	std::thread m_thread;	
