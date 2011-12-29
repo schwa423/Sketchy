@@ -20,7 +20,6 @@
 		033E75FD146E65EC008896D5 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 033E75FC146E65EC008896D5 /* SecondViewController.m */; };
 		033E75FF146E65EC008896D5 /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = 033E75FE146E65EC008896D5 /* second.png */; };
 		033E7601146E65EC008896D5 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033E7600146E65EC008896D5 /* second@2x.png */; };
-		033E7625146E66F7008896D5 /* GLKSceneController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 033E7624146E66F7008896D5 /* GLKSceneController.mm */; };
 		033E762A146E6742008896D5 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E7628146E6742008896D5 /* OpenGLES.framework */; };
 		033E762E146E77B5008896D5 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033E762D146E77B5008896D5 /* Scene.cpp */; };
 		033E7631146E77EB008896D5 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033E7630146E77EB008896D5 /* Node.cpp */; };
@@ -66,8 +65,6 @@
 		033E75FE146E65EC008896D5 /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
 		033E7600146E65EC008896D5 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
 		033E7608146E65ED008896D5 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		033E7623146E66F7008896D5 /* GLKSceneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLKSceneController.h; sourceTree = "<group>"; };
-		033E7624146E66F7008896D5 /* GLKSceneController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GLKSceneController.mm; sourceTree = "<group>"; };
 		033E7628146E6742008896D5 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		033E762D146E77B5008896D5 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
 		033E762F146E77CB008896D5 /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
@@ -174,8 +171,6 @@
 				033E75FE146E65EC008896D5 /* second.png */,
 				033E7600146E65EC008896D5 /* second@2x.png */,
 				033E75E6146E65EC008896D5 /* Supporting Files */,
-				033E7623146E66F7008896D5 /* GLKSceneController.h */,
-				033E7624146E66F7008896D5 /* GLKSceneController.mm */,
 				0343BF9214A6A75500C6ED4F /* EAGLView.h */,
 				0343BF9314A6A75500C6ED4F /* EAGLView.mm */,
 			);
@@ -372,7 +367,6 @@
 				033E75F0146E65EC008896D5 /* AppDelegate.m in Sources */,
 				033E75F6146E65EC008896D5 /* FirstViewController.m in Sources */,
 				033E75FD146E65EC008896D5 /* SecondViewController.m in Sources */,
-				033E7625146E66F7008896D5 /* GLKSceneController.mm in Sources */,
 				033E762E146E77B5008896D5 /* Scene.cpp in Sources */,
 				033E7631146E77EB008896D5 /* Node.cpp in Sources */,
 				033E7634146E7816008896D5 /* Geometry.cpp in Sources */,
