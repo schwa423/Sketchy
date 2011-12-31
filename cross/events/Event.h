@@ -11,16 +11,15 @@
 
 #include <chrono>
 using std::chrono::steady_clock;
-using std::chrono::time_point;
+typedef steady_clock::time_point time_point;
 
-#include <future>
-using std::promise;
-using std::future;
+#include <memory>
 
 class Event
 {
 public:
 	enum state { NEW=0, RUNNING, FINISHED, ABORTED };
+	typedef std::shared_ptr<Event> ptr;
 	
 	Event() {
 		m_creation = s_clock.now();
@@ -46,9 +45,9 @@ protected:
 	state m_state;
 	
 	static steady_clock s_clock;
-	steady_clock::time_point m_creation;	// time that Event is instantiated
-	steady_clock::time_point m_start;		// time that Event starts running
-	steady_clock::time_point m_finish;	// time that Event finishes
+	time_point m_creation;	// time that Event is instantiated
+	time_point m_start;		// time that Event starts running
+	time_point m_finish;    // time that Event finishes
 };
 
 #endif

@@ -40,6 +40,9 @@
 		03DC93CA149E9F4E00F2A602 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DC93C9149E9F4E00F2A602 /* AppDelegate.m */; };
 		03DC93CD149E9F4F00F2A602 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03DC93CB149E9F4E00F2A602 /* MainStoryboard.storyboard */; };
 		03DC93D0149E9F4F00F2A602 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03DC93CF149E9F4F00F2A602 /* ViewController.mm */; };
+		03E2E7AD14ADBEA10019D869 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */; };
+		03E2E7B314AEC6B10019D869 /* EAGLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 03E2E7B114AEC6B10019D869 /* EAGLViewController.m */; };
+		03E2E7B414AEC6B10019D869 /* EAGLViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E2E7B214AEC6B10019D869 /* EAGLViewController.xib */; };
 		03FFFF3714A1E1CF0012FB3F /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03FFFF3414A1E1CF0012FB3F /* gtest-all.cc */; };
 		03FFFF3814A1E1CF0012FB3F /* LoopTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03FFFF3514A1E1CF0012FB3F /* LoopTest.cpp */; };
 /* End PBXBuildFile section */
@@ -92,6 +95,10 @@
 		03DC93CC149E9F4E00F2A602 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		03DC93CE149E9F4F00F2A602 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		03DC93CF149E9F4F00F2A602 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		03E2E7B014AEC6B10019D869 /* EAGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLViewController.h; sourceTree = "<group>"; };
+		03E2E7B114AEC6B10019D869 /* EAGLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EAGLViewController.m; sourceTree = "<group>"; };
+		03E2E7B214AEC6B10019D869 /* EAGLViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EAGLViewController.xib; sourceTree = "<group>"; };
 		03FFFF3314A1E1570012FB3F /* Loop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Loop.h; sourceTree = "<group>"; };
 		03FFFF3414A1E1CF0012FB3F /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gtest-all.cc"; sourceTree = "<group>"; };
 		03FFFF3514A1E1CF0012FB3F /* LoopTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoopTest.cpp; sourceTree = "<group>"; };
@@ -103,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03E2E7AD14ADBEA10019D869 /* QuartzCore.framework in Frameworks */,
 				033E762A146E6742008896D5 /* OpenGLES.framework in Frameworks */,
 				033E75E0146E65EC008896D5 /* UIKit.framework in Frameworks */,
 				033E75E2146E65EC008896D5 /* Foundation.framework in Frameworks */,
@@ -126,6 +134,7 @@
 		033E75D0146E65EC008896D5 = {
 			isa = PBXGroup;
 			children = (
+				03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */,
 				03FFFF3214A1E10C0012FB3F /* tests */,
 				033E762B146E76E8008896D5 /* cross */,
 				033E75E5146E65EC008896D5 /* Sketchy */,
@@ -173,6 +182,9 @@
 				033E75E6146E65EC008896D5 /* Supporting Files */,
 				0343BF9214A6A75500C6ED4F /* EAGLView.h */,
 				0343BF9314A6A75500C6ED4F /* EAGLView.mm */,
+				03E2E7B014AEC6B10019D869 /* EAGLViewController.h */,
+				03E2E7B114AEC6B10019D869 /* EAGLViewController.m */,
+				03E2E7B214AEC6B10019D869 /* EAGLViewController.xib */,
 			);
 			path = Sketchy;
 			sourceTree = "<group>";
@@ -344,6 +356,7 @@
 				033E75FA146E65EC008896D5 /* first@2x.png in Resources */,
 				033E75FF146E65EC008896D5 /* second.png in Resources */,
 				033E7601146E65EC008896D5 /* second@2x.png in Resources */,
+				03E2E7B414AEC6B10019D869 /* EAGLViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,6 +388,7 @@
 				0343BF9414A6A75500C6ED4F /* EAGLView.mm in Sources */,
 				0343BF9914A793ED00C6ED4F /* Fence.cpp in Sources */,
 				0343BF9D14A7AF2400C6ED4F /* Event.cpp in Sources */,
+				03E2E7B314AEC6B10019D869 /* EAGLViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,30 +11,30 @@
 
 #include "Event.h"
 #include <thread>
+#include <future>
 using std::promise;
 using std::shared_future;
 
 class Fence : public Event
 {
 public:
-	Fence() {
-	
-	}
-	
+	typedef std::shared_ptr<Fence> ptr;
+
+	Fence() { }
+
 	// This is not synchronized, so call it to obtain the
 	// future before scheduling this fence on an event-loop.
 	std::shared_future<bool> get_future() {
 		return m_promise.get_future().share(); 
 	}
-	
+
 protected:
 	// Subclasses should override to do something useful.
 	virtual void reallyRun () {
 		m_promise.set_value(true);
 	}
-	
+
 	promise<bool> m_promise;
-	
 };
 
 #endif

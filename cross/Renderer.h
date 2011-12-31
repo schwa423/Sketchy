@@ -9,16 +9,69 @@
 #ifndef Sketchy_Renderer_h
 #define Sketchy_Renderer_h
 
-@class RenderTarget;
+#include "Event.h"
+#include "Loop.h"
+
+#import <OpenGLES/ES2/gl.h>
+
+@class CADisplayLinkListener;
 @class CAEAGLLayer;
 
-class Renderer {
+class Renderer : public Loop<Event::ptr> {
 public:
-	Renderer();
+	Renderer(CAEAGLLayer *layer);
+	~Renderer();
+
+	void render(void) {
+		Event::ptr render(new Render(this));
+		addTask(render);
+	}
 	
 private:
-	EAGLContext *m_context;
-	CADisplayLink *m_displayLink;
+	__strong EAGLContext *m_context;
+	__strong CADisplayLinkListener *m_displayLinkListener;
+
+	// TODO make a framebuffer class that encapsulates this state?
+	GLuint m_framebuffer, m_renderbuffer;
+	GLint m_framebufferWidth, m_framebufferHeight;
+
+	void handleInit(void);
+	void handleCreateFramebuffer(CAEAGLLayer *layer);
+	void handleRender(void);
+
+	void deleteFramebuffer(void);
+
+	// Many events processed by the renderer
+	// will need a reference to the renderer.
+	class RendererEvent : public Event {
+	public:
+		RendererEvent(Renderer *r) : m_renderer(r) { }
+	protected:
+		Renderer* m_renderer;
+	};
+
+	class Init : public RendererEvent {
+	public:
+		Init(Renderer *r) : RendererEvent(r) { };
+		virtual void reallyRun() { m_renderer->handleInit(); }
+	};
+
+	class CreateFramebuffer : public RendererEvent {
+	public:
+		CreateFramebuffer(Renderer *r, CAEAGLLayer *lay) :
+			RendererEvent(r),
+			m_layer(lay)
+			{ };
+		virtual void reallyRun() { m_renderer->handleCreateFramebuffer(m_layer); }
+	private:
+		CAEAGLLayer *m_layer;
+	};
+
+	class Render : public RendererEvent {
+	public:
+		Render(Renderer *r) : RendererEvent(r) { };
+		virtual void reallyRun() { m_renderer->handleRender(); }
+	};
 };
 
 #endif
