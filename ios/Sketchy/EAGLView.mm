@@ -14,8 +14,8 @@
 using std::cerr;
 using std::endl;
 
-// TODO pause rendering when view is not visible, and 
-// resume once it is visible again.
+// TODO: pause rendering when view is not visible,
+//       and resume once it is visible again.
 
 // A class extension to declare private methods
 //@interface EAGLView (private)
@@ -51,14 +51,14 @@ using std::endl;
 
 	m_renderer.reset(new Renderer(glayer));
 	if (!m_renderer) return nil;
-	// TODO what if renderer can't be instantiated?
+	// TODO: what if renderer can't be instantiated?
 
     return self;
 }
 
 - (void)dealloc
 {
-	// TODO need to tear down renderer here?  Probably.
+	// TODO: need to tear down renderer here?  Probably.
 	cerr << "dealloc in EAGLView" << endl;
 }
 

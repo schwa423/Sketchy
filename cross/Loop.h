@@ -5,8 +5,8 @@
 //  Created by Joshua Gargus on 11/28/11.
 //  Copyright (c) 2011 Schwaftwarez. All rights reserved.
 //
-//  TODO:
-//  - Who destroys Task?  Is Task* appropriate to put in queue?
+
+//  TODO: who destroys Task?  Is Task* appropriate to put in queue?
 
 #ifndef Sketchy_Loop_h
 #define Sketchy_Loop_h

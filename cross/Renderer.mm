@@ -6,6 +6,10 @@
 //  Copyright (c) 2011 Schwaftwarez. All rights reserved.
 //
 
+// TODO: add mechanism for making Render events "high-priority", so that they
+//       are processed ASAP instead waiting in the same queue as other events.
+
+
 #import "Renderer.h"
 #import "Fence.h"
 
@@ -61,8 +65,8 @@ using std::endl;
 
 		CFRunLoopRun();
 
-		// TODO what kind of cleanup do we need to do here?
-		// I think this should be sufficient.
+		// TODO: what kind of cleanup do we need to do here?
+		//       I think this should be sufficient.
 		cerr << "stopping display-link loop" << endl;
 		[link invalidate];
 	}
@@ -104,7 +108,7 @@ using std::endl;
 }
 @end
 
-// TODO pause/unpause that plumb down to pause/unpause display-link
+// TODO: pause/unpause that plumb down to pause/unpause display-link
 Renderer::Renderer(CAEAGLLayer *layer) :
 	Loop(),
 	m_framebuffer(0),
@@ -129,7 +133,7 @@ Renderer::Renderer(CAEAGLLayer *layer) :
 	cerr << "finished renderer initialization" << endl;
 
 	m_displayLinkListener = [[CADisplayLinkListener alloc] initWithRenderer:this];
-	// TODO what if result was nil?
+	// TODO: what if result was nil?
 }
 
 Renderer::~Renderer()
@@ -160,7 +164,7 @@ Renderer::handleInit()
 
 	m_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 
-	// TODO what if we couldn't create the context?
+	// TODO: what if we couldn't create the context?
 	[EAGLContext setCurrentContext: m_context];
 }
 
@@ -192,13 +196,13 @@ Renderer::handleCreateFramebuffer(CAEAGLLayer *layer)
 	// Check that everything is OK
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (status != GL_FRAMEBUFFER_COMPLETE) {
-		// TODO need logging library
+		// TODO: need logging library
 		cerr << "Failed to make complete framebuffer object: " << status << endl;
 		deleteFramebuffer();
 	}
 }
 
-// TODO change this from a placeholder to a more general scene-graph renderer.
+// TODO: change this from a placeholder to a more general scene-graph renderer.
 void
 Renderer::handleRender()
 {

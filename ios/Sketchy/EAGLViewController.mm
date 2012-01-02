@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Schwaftwarez. All rights reserved.
 //
 
-// TODO build framework to test view loading/unloading...
+// TODO: build framework to test view loading/unloading...
 // verify that we're not leaking memory all the way down through
 // the EAGLView's Renderer, etc.
 
@@ -20,7 +20,7 @@ using std::endl;
 
 @implementation EAGLViewController
 
-// TODO this isn't called... which init method is being called?
+// TODO: this isn't called... which init method is being called?
 // And what do we need to do there?  I guess the "page model" will
 // live in the controller...
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
