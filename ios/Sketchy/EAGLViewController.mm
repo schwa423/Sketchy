@@ -1,5 +1,5 @@
 //
-//  EAGLViewController.m
+//  EAGLViewController.mm
 //  Sketchy
 //
 //  Created by Joshua Gargus on 12/30/11.
@@ -11,6 +11,12 @@
 // the EAGLView's Renderer, etc.
 
 #import "EAGLViewController.h"
+
+#include <iostream>
+using std::cerr;
+using std::endl;
+
+#import "EAGLView.h"
 
 @implementation EAGLViewController
 
@@ -56,5 +62,20 @@
     // Return YES for supported orientations
 	return YES;
 }
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	cerr << "view did disappear" << endl;
+	[(EAGLView*)self.view pauseRendering];
+	[super viewDidDisappear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	cerr << "view did appear" << endl;
+	[(EAGLView*)self.view unpauseRendering];
+	[super viewDidAppear:animated];
+}
+
 
 @end

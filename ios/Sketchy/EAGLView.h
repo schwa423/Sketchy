@@ -20,4 +20,6 @@
 	std::shared_ptr<Renderer> m_renderer;
 }
 
+- (void)pauseRendering;
+- (void)unpauseRendering;
 @end

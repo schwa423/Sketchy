@@ -29,6 +29,9 @@ public:
 		addTask(render);
 	}
 	
+	void pauseRendering(void);
+	void unpauseRendering(void);
+	
 private:
 	__strong EAGLContext *m_context;
 	__strong CADisplayLinkListener *m_displayLinkListener;

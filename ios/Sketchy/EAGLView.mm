@@ -56,11 +56,23 @@ using std::endl;
     return self;
 }
 
-- (void) dealloc
+- (void)dealloc
 {
 	// TODO need to tear down renderer here?  Probably.
 	cerr << "dealloc in EAGLView" << endl;
 }
+
+- (void)pauseRendering
+{
+	m_renderer->pauseRendering();
+}
+
+- (void)unpauseRendering
+{
+	m_renderer->unpauseRendering();
+}
+
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

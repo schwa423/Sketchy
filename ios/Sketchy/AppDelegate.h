@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, GLKViewControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
 	
 }
