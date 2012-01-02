@@ -6,6 +6,8 @@
 //  Copyright (c) 2011 Schwaftwarez. All rights reserved.
 //
 
+// TODO abstract out iOS-specific code
+
 #ifndef Sketchy_Renderer_h
 #define Sketchy_Renderer_h
 

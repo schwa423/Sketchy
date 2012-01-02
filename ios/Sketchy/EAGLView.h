@@ -11,12 +11,13 @@
 #import <OpenGLES/ES2/glext.h>
 
 #include "Renderer.h"
+#include <memory>
 
 @class EAGLContext;
 
 @interface EAGLView : UIView {
 @private
-	Renderer *m_renderer;
+	std::shared_ptr<Renderer> m_renderer;
 }
 
 @end

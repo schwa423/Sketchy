@@ -3,7 +3,7 @@
 //  Sketchy
 //
 //  Created by Joshua Gargus on 11/12/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2011 Schwaftwarez. All rights reserved.
 //
 
 #import "AppDelegate.h"
@@ -12,23 +12,6 @@
 
 @synthesize window = _window;
 
-- (id) init
-{
-    if (self = [super init]) {
-		renderedFrames = 0;
-    }
-    return self;
-}
-
-- (void)glkViewControllerUpdate:(GLKViewController *)controller 
-{
-	NSLog(@"RENDERED SCENE %d!", renderedFrames);
-}
-
-- (void)glkViewController:(GLKViewController *)controller willPause:(BOOL)pause
-{
-	NSLog(@"CONTROLLER PAUSE/UNPAUSE %d", pause);
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {

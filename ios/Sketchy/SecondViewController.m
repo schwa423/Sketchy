@@ -3,10 +3,11 @@
 //  Sketchy
 //
 //  Created by Joshua Gargus on 11/12/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2011 Schwaftwarez. All rights reserved.
 //
 
 #import "SecondViewController.h"
+#import "EAGLViewController.h"
 
 @implementation SecondViewController
 
@@ -57,4 +58,10 @@
 	return YES;
 }
 
+- (IBAction)destroyRenderView:(id)sender {
+	fprintf(stderr, "destroyRenderView: button was clicked\n");
+	UITabBarController *parent = (UITabBarController*)self.parentViewController;
+	EAGLViewController *renderer = parent.viewControllers.lastObject;
+	renderer.view = nil;
+}
 @end

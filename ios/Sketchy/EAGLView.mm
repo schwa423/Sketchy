@@ -14,6 +14,8 @@
 using std::cerr;
 using std::endl;
 
+// TODO pause rendering when view is not visible, and 
+// resume once it is visible again.
 
 // A class extension to declare private methods
 //@interface EAGLView (private)
@@ -47,7 +49,7 @@ using std::endl;
 		 nil];
 	self.contentScaleFactor = [[UIScreen mainScreen] scale];
 
-	m_renderer = new Renderer(glayer);
+	m_renderer.reset(new Renderer(glayer));
 	if (!m_renderer) return nil;
 	// TODO what if renderer can't be instantiated?
 

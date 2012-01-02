@@ -14,8 +14,13 @@
 
 @implementation EAGLViewController
 
+// TODO this isn't called... which init method is being called?
+// And what do we need to do there?  I guess the "page model" will
+// live in the controller...
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
+	fprintf(stderr, "initializing view-controller\n");
+
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization

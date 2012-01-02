@@ -15,6 +15,9 @@
 using std::cerr;
 using std::endl;
 
+// This is a helper class that only exists to act as
+// a callback target for a CADisplayLink.  It is wholly
+// owned by a Renderer instance, and never exposed.
 @interface CADisplayLinkListener : NSObject {
 @private
 	Renderer *m_renderer;
@@ -69,27 +72,31 @@ using std::endl;
 		CFRunLoopRun();
 
 		// TODO what kind of cleanup do we need to do here?
+		// I think this should be sufficient.
 		cerr << "stopping display-link loop" << endl;
 		[m_displayLink invalidate];
 		m_displayLink = nil;
 	}
 }
 - (void) stop {
-	// If thread has already been stopped, there is nothing to do.
-	if (!m_thread) return;
+	@synchronized(self) {
+		// If thread has already been stopped, there is nothing to do.
+		if (!m_thread) return;
 
-	// Notify the run-loop to stop, and...
-	CFRunLoopStop([m_loop getCFRunLoop]);
+		// Notify the run-loop to stop, and...
+		CFRunLoopStop([m_loop getCFRunLoop]);
 
-	// ... wait for thread to finish.
-	@synchronized(m_thread) {
-		m_thread = nil;
-		m_loop = nil;
+		// ... wait for thread to finish.
+		@synchronized(m_thread) {
+			m_thread = nil;
+			m_loop = nil;
+		}
 	}
 }
 - (void) dealloc {
-	// Just for debugging, to ensure that we are tearing stuff down properly.
-	cerr << "dealloc called in CADisplayLingListener" << endl;
+	// Ensure that we've stopped our worker-thread.
+	[self stop];
+	cerr << "dealloc called in CADisplayLinkListener" << endl;
 }
 @end
 
@@ -124,6 +131,10 @@ Renderer::Renderer(CAEAGLLayer *layer) :
 Renderer::~Renderer()
 {
 	cerr << "destroying renderer" << endl;
+	// Need to stop it first, otherwise it won't
+	// be released because the display-link still
+	// retains a reference to it.
+	[m_displayLinkListener stop];
 }
 
 
@@ -188,7 +199,9 @@ Renderer::handleRender()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glBindRenderbuffer(GL_RENDERBUFFER, m_renderbuffer);
-	BOOL success = [m_context presentRenderbuffer:GL_RENDERBUFFER];
+	if (YES != [m_context presentRenderbuffer:GL_RENDERBUFFER]) {
+		cerr << "failed to present renderbuffer" << endl;
+	}
 
 	glFlush();
 
