@@ -21,7 +21,7 @@ template <typename TaskPtr>
 class Loop : public ThreadOwner {
 public:
 	Loop() : m_stopped(false) {
-		m_thread = std::thread(&Loop::runLoop, this);
+		m_thread = std::thread(&Loop::runLoop, this);		
 	}
 	~Loop() { 
 		{

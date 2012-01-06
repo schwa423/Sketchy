@@ -30,6 +30,7 @@
 		0343BF9A14A793ED00C6ED4F /* Fence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9814A793ED00C6ED4F /* Fence.cpp */; };
 		0343BF9D14A7AF2400C6ED4F /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9C14A7AF2400C6ED4F /* Event.cpp */; };
 		0343BF9E14A7AF2400C6ED4F /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9C14A7AF2400C6ED4F /* Event.cpp */; };
+		0369557E14B57674001F42F4 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0369557D14B57674001F42F4 /* Shader.cpp */; };
 		037C553714B14A1F00355B6D /* EAGLViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 037C553614B14A1F00355B6D /* EAGLViewController.mm */; };
 		039192A814A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
 		039192A914A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
@@ -83,6 +84,9 @@
 		0343BF9B14A7AF0500C6ED4F /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Event.h; path = events/Event.h; sourceTree = "<group>"; };
 		0343BF9C14A7AF2400C6ED4F /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Event.cpp; path = events/Event.cpp; sourceTree = "<group>"; };
 		0343BF9F14A80C6200C6ED4F /* Sleep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sleep.h; path = events/Sleep.h; sourceTree = "<group>"; };
+		0363BF5E14B27B3600759A40 /* Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
+		0369557B14B57662001F42F4 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
+		0369557D14B57674001F42F4 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
 		037C553614B14A1F00355B6D /* EAGLViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLViewController.mm; sourceTree = "<group>"; };
 		039192A614A1CB2700F1D4C7 /* ThreadOwner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadOwner.h; sourceTree = "<group>"; };
 		039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadOwner.cpp; sourceTree = "<group>"; };
@@ -210,10 +214,13 @@
 				033E762F146E77CB008896D5 /* Scene.h */,
 				033E7632146E77FC008896D5 /* Node.h */,
 				033E7633146E7816008896D5 /* Geometry.cpp */,
+				0363BF5E14B27B3600759A40 /* Geometry.h */,
 				039192A614A1CB2700F1D4C7 /* ThreadOwner.h */,
 				039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */,
 				0343BF8614A6849400C6ED4F /* Renderer.h */,
 				0343BF8814A6854400C6ED4F /* Renderer.mm */,
+				0369557B14B57662001F42F4 /* Shader.h */,
+				0369557D14B57674001F42F4 /* Shader.cpp */,
 			);
 			name = cross;
 			path = ../cross;
@@ -389,6 +396,7 @@
 				0343BF9914A793ED00C6ED4F /* Fence.cpp in Sources */,
 				0343BF9D14A7AF2400C6ED4F /* Event.cpp in Sources */,
 				037C553714B14A1F00355B6D /* EAGLViewController.mm in Sources */,
+				0369557E14B57674001F42F4 /* Shader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

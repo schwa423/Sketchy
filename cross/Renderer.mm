@@ -111,6 +111,8 @@ using std::endl;
 // TODO: pause/unpause that plumb down to pause/unpause display-link
 Renderer::Renderer(CAEAGLLayer *layer) :
 	Loop(),
+	m_hackGeometry(NULL),
+	m_hackShader(NULL),
 	m_framebuffer(0),
 	m_renderbuffer(0),
 	m_framebufferHeight(0),
@@ -121,12 +123,12 @@ Renderer::Renderer(CAEAGLLayer *layer) :
 
 	Event::ptr init(new Init(this));
 	Event::ptr framebuf(new CreateFramebuffer(this, layer));
-	Fence::ptr fence(new Fence());
-
+	Fence::ptr fence(new Fence());	
+	
 	addTask(init);
 	addTask(framebuf);
 	addTask(fence);
-
+	
 	// Wait until initialization completes.
 	fence->get_future().wait();
 
@@ -143,6 +145,13 @@ Renderer::~Renderer()
 	// be released because the display-link still
 	// retains a reference to it.
 	[m_displayLinkListener stop];
+	
+	if (m_hackGeometry) {
+		delete m_hackGeometry;
+	}
+	if (m_hackShader) {
+		delete m_hackShader;
+	}
 }
 
 void
@@ -166,6 +175,9 @@ Renderer::handleInit()
 
 	// TODO: what if we couldn't create the context?
 	[EAGLContext setCurrentContext: m_context];
+	
+	m_hackGeometry = new Geometry();
+	m_hackShader = new Shader();
 }
 
 
@@ -213,10 +225,19 @@ Renderer::handleRender()
 		return;
 	}
 
+	// TODO: set viewport in some principled way
+	glViewport(0, 0, 600, 600);
+	
 	GLfloat grey = renderCount / 255.0f;
 	glClearColor(grey, grey, grey, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-
+	
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+	if (glGetError() != GL_NO_ERROR) cerr << "error before drawing" << endl;
+	m_hackGeometry->draw();
+	if (glGetError() != GL_NO_ERROR) cerr << "error after drawing" << endl;
+	
 	glBindRenderbuffer(GL_RENDERBUFFER, m_renderbuffer);
 	if (YES != [m_context presentRenderbuffer:GL_RENDERBUFFER]) {
 		cerr << "failed to present renderbuffer" << endl;

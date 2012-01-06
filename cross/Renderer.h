@@ -14,7 +14,11 @@
 #include "Event.h"
 #include "Loop.h"
 
-#import <OpenGLES/ES2/gl.h>
+// TODO: remove these if unnecessary once we stop hacking around
+#include "Geometry.h"
+#include "Shader.h"
+
+#include <OpenGLES/ES2/gl.h>
 
 @class CADisplayLinkListener;
 @class CAEAGLLayer;
@@ -40,6 +44,9 @@ private:
 	GLuint m_framebuffer, m_renderbuffer;
 	GLint m_framebufferWidth, m_framebufferHeight;
 
+	Geometry *m_hackGeometry;
+	Shader *m_hackShader;
+	
 	void handleInit(void);
 	void handleCreateFramebuffer(CAEAGLLayer *layer);
 	void handleRender(void);
@@ -77,6 +84,8 @@ private:
 		Render(Renderer *r) : RendererEvent(r) { };
 		virtual void reallyRun() { m_renderer->handleRender(); }
 	};
+	
+	
 };
 
 #endif
