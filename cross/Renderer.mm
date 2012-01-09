@@ -11,6 +11,7 @@
 
 
 #import "Renderer.h"
+#import "Framebuffer.h"
 #import "Fence.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -24,7 +25,7 @@ using std::endl;
 // owned by a Renderer instance, and never exposed.
 @interface CADisplayLinkListener : NSObject {
 @private
-	Renderer *m_renderer;
+	Sketchy::Renderer *m_renderer;
 	NSThread *m_thread;
 	NSRunLoop *m_loop;
 }
@@ -34,7 +35,7 @@ using std::endl;
 - (void) dealloc;
 @end
 @implementation CADisplayLinkListener
-- (id)initWithRenderer:(Renderer*)renderer
+- (id)initWithRenderer:(Sketchy::Renderer*)renderer
 {
 	self = [super init];
 	if (!self) return nil;
@@ -108,6 +109,11 @@ using std::endl;
 }
 @end
 
+
+// Can't enclose the above, because Objective-C declarations
+// must appear in the global scope.
+namespace Sketchy {
+	
 // TODO: pause/unpause that plumb down to pause/unpause display-link
 Renderer::Renderer(CAEAGLLayer *layer) :
 	Loop(),
@@ -122,11 +128,15 @@ Renderer::Renderer(CAEAGLLayer *layer) :
 	cerr << "creating renderer" << endl;
 
 	Event::ptr init(new Init(this));
-	Event::ptr framebuf(new CreateFramebuffer(this, layer));
 	Fence::ptr fence(new Fence());	
 	
 	addTask(init);
-	addTask(framebuf);
+	
+	// TODO: remove this hack, which ensures that default framebuffer 
+	// is created before we fire up the display-link
+	std::shared_ptr<Renderer> thisPtr(this);
+	m_hackFramebuffer.reset(new Framebuffer(thisPtr, layer, false));
+	
 	addTask(fence);
 	
 	// Wait until initialization completes.
@@ -180,47 +190,13 @@ Renderer::handleInit()
 	m_hackShader = new Shader();
 }
 
-
-void
-Renderer::handleCreateFramebuffer(CAEAGLLayer *layer)
-{
-	deleteFramebuffer();
-
-	GLenum err;
-	err = glGetError();
-	if (err != GL_NO_ERROR) { cerr << "Error before creating framebuffer: " << err << endl; }
-
-	glGenFramebuffers(1, &m_framebuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, m_framebuffer);
-	glGenRenderbuffers(1, &m_renderbuffer);
-	glBindRenderbuffer(GL_RENDERBUFFER, m_renderbuffer);
-
-	err = glGetError();
-	if (err != GL_NO_ERROR) { cerr << "Error after creating framebuffer: " << err << endl; }
-
-	[m_context renderbufferStorage:GL_RENDERBUFFER fromDrawable:layer];
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, m_renderbuffer);
-
-	// Read back width and height of renderbuffer.
-	glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &m_framebufferWidth);
-	glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &m_framebufferHeight);
-
-	// Check that everything is OK
-	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-	if (status != GL_FRAMEBUFFER_COMPLETE) {
-		// TODO: need logging library
-		cerr << "Failed to make complete framebuffer object: " << status << endl;
-		deleteFramebuffer();
-	}
-}
-
 // TODO: change this from a placeholder to a more general scene-graph renderer.
 void
 Renderer::handleRender()
 {
 	static int renderCount = 0;
 
-	if (!m_framebuffer) {
+	if (!m_hackFramebuffer) {
 		cerr << "No default framebuffer" << endl;
 		return;
 	}
@@ -235,13 +211,12 @@ Renderer::handleRender()
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	if (glGetError() != GL_NO_ERROR) cerr << "error before drawing" << endl;
-	m_hackGeometry->draw();
-	if (glGetError() != GL_NO_ERROR) cerr << "error after drawing" << endl;
 	
-	glBindRenderbuffer(GL_RENDERBUFFER, m_renderbuffer);
-	if (YES != [m_context presentRenderbuffer:GL_RENDERBUFFER]) {
-		cerr << "failed to present renderbuffer" << endl;
-	}
+	m_hackFramebuffer->m_shadow->bind();
+	m_hackGeometry->draw();
+	m_hackFramebuffer->m_shadow->present();
+	
+	if (glGetError() != GL_NO_ERROR) cerr << "error after drawing" << endl;
 
 	glFlush();
 
@@ -259,3 +234,5 @@ Renderer::deleteFramebuffer()
 	}
 	m_framebuffer = m_renderbuffer = 0;
 }
+	
+} // namespace Sketchy

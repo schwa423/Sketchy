@@ -10,6 +10,11 @@
 #import <OpenGLES/EAGLDrawable.h>
 #import "EAGLView.h"
 
+#include "Renderer.h"
+#include "Framebuffer.h"
+using Sketchy::Renderer;
+using Sketchy::Framebuffer;
+
 #import <iostream>
 using std::cerr;
 using std::endl;
@@ -50,8 +55,11 @@ using std::endl;
 	self.contentScaleFactor = [[UIScreen mainScreen] scale];
 
 	m_renderer.reset(new Renderer(glayer));
-	if (!m_renderer) return nil;
-	// TODO: what if renderer can't be instantiated?
+	if (!m_renderer) {
+		// TODO: what if renderer can't be instantiated?
+		cerr << "could not instantiate renderer in EAGLView" << endl;
+		return nil;
+	}
 
     return self;
 }

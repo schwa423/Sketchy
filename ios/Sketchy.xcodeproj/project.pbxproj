@@ -44,6 +44,10 @@
 		03DC93D0149E9F4F00F2A602 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03DC93CF149E9F4F00F2A602 /* ViewController.mm */; };
 		03E2E7AD14ADBEA10019D869 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */; };
 		03E2E7B414AEC6B10019D869 /* EAGLViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E2E7B214AEC6B10019D869 /* EAGLViewController.xib */; };
+		03F1482914B6F2900036EF9B /* Framebuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F1482814B6F2900036EF9B /* Framebuffer.mm */; };
+		03F1482C14B6F3310036EF9B /* MultisampleFramebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1482B14B6F3310036EF9B /* MultisampleFramebuffer.cpp */; };
+		03F1482F14BA278C0036EF9B /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1482E14BA278C0036EF9B /* Camera.cpp */; };
+		03F1483314BA2D250036EF9B /* Framebuffer_shadow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F1483214BA2D250036EF9B /* Framebuffer_shadow.mm */; };
 		03FFFF3714A1E1CF0012FB3F /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03FFFF3414A1E1CF0012FB3F /* gtest-all.cc */; };
 		03FFFF3814A1E1CF0012FB3F /* LoopTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03FFFF3514A1E1CF0012FB3F /* LoopTest.cpp */; };
 /* End PBXBuildFile section */
@@ -103,6 +107,14 @@
 		03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		03E2E7B014AEC6B10019D869 /* EAGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLViewController.h; sourceTree = "<group>"; };
 		03E2E7B214AEC6B10019D869 /* EAGLViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EAGLViewController.xib; sourceTree = "<group>"; };
+		03F1482614B6F2780036EF9B /* Framebuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Framebuffer.h; sourceTree = "<group>"; };
+		03F1482814B6F2900036EF9B /* Framebuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Framebuffer.mm; sourceTree = "<group>"; };
+		03F1482A14B6F3260036EF9B /* MultisampleFramebuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultisampleFramebuffer.h; sourceTree = "<group>"; };
+		03F1482B14B6F3310036EF9B /* MultisampleFramebuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultisampleFramebuffer.cpp; sourceTree = "<group>"; };
+		03F1482D14BA275C0036EF9B /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		03F1482E14BA278C0036EF9B /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		03F1483014BA2CE70036EF9B /* Framebuffer_shadow.h */ = {isa = PBXFileReference; fileEncoding = 4; name = Framebuffer_shadow.h; path = shadow/Framebuffer_shadow.h; sourceTree = "<group>"; };
+		03F1483214BA2D250036EF9B /* Framebuffer_shadow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Framebuffer_shadow.mm; path = shadow/Framebuffer_shadow.mm; sourceTree = "<group>"; };
 		03FFFF3314A1E1570012FB3F /* Loop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Loop.h; sourceTree = "<group>"; };
 		03FFFF3414A1E1CF0012FB3F /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gtest-all.cc"; sourceTree = "<group>"; };
 		03FFFF3514A1E1CF0012FB3F /* LoopTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoopTest.cpp; sourceTree = "<group>"; };
@@ -207,6 +219,7 @@
 		033E762B146E76E8008896D5 /* cross */ = {
 			isa = PBXGroup;
 			children = (
+				03F1483114BA2CFB0036EF9B /* shadow */,
 				0343BF9514A7932D00C6ED4F /* events */,
 				03FFFF3314A1E1570012FB3F /* Loop.h */,
 				033E762D146E77B5008896D5 /* Scene.cpp */,
@@ -221,6 +234,12 @@
 				0343BF8814A6854400C6ED4F /* Renderer.mm */,
 				0369557B14B57662001F42F4 /* Shader.h */,
 				0369557D14B57674001F42F4 /* Shader.cpp */,
+				03F1482614B6F2780036EF9B /* Framebuffer.h */,
+				03F1482814B6F2900036EF9B /* Framebuffer.mm */,
+				03F1482A14B6F3260036EF9B /* MultisampleFramebuffer.h */,
+				03F1482B14B6F3310036EF9B /* MultisampleFramebuffer.cpp */,
+				03F1482D14BA275C0036EF9B /* Camera.h */,
+				03F1482E14BA278C0036EF9B /* Camera.cpp */,
 			);
 			name = cross;
 			path = ../cross;
@@ -260,6 +279,15 @@
 				03DC93C7149E9F4E00F2A602 /* SketchyUnitTests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		03F1483114BA2CFB0036EF9B /* shadow */ = {
+			isa = PBXGroup;
+			children = (
+				03F1483014BA2CE70036EF9B /* Framebuffer_shadow.h */,
+				03F1483214BA2D250036EF9B /* Framebuffer_shadow.mm */,
+			);
+			name = shadow;
 			sourceTree = "<group>";
 		};
 		03FFFF3214A1E10C0012FB3F /* tests */ = {
@@ -397,6 +425,10 @@
 				0343BF9D14A7AF2400C6ED4F /* Event.cpp in Sources */,
 				037C553714B14A1F00355B6D /* EAGLViewController.mm in Sources */,
 				0369557E14B57674001F42F4 /* Shader.cpp in Sources */,
+				03F1482914B6F2900036EF9B /* Framebuffer.mm in Sources */,
+				03F1482C14B6F3310036EF9B /* MultisampleFramebuffer.cpp in Sources */,
+				03F1482F14BA278C0036EF9B /* Camera.cpp in Sources */,
+				03F1483314BA2D250036EF9B /* Framebuffer_shadow.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

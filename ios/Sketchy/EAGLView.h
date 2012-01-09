@@ -10,14 +10,17 @@
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 
-#include "Renderer.h"
 #include <memory>
+
+namespace Sketchy {
+	class Renderer;
+}
 
 @class EAGLContext;
 
 @interface EAGLView : UIView {
 @private
-	std::shared_ptr<Renderer> m_renderer;
+	std::shared_ptr<Sketchy::Renderer> m_renderer;
 }
 
 - (void)pauseRendering;
