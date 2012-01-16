@@ -39,17 +39,17 @@
 #include <OpenGLES/ES2/gl.h>
 #include <memory>
 
+namespace Sketchy { namespace Shadow {
 
-namespace Sketchy { 
-	class Renderer;
+class Renderer;
 
-namespace Shadow {
-
-class Framebuffer {
+class Framebuffer : public std::enable_shared_from_this<Framebuffer>
+{
 public:
-	Framebuffer(std::shared_ptr<Renderer>);
+	Framebuffer(std::weak_ptr<Renderer> renderer, EAGLContext *context, CAEAGLLayer *layer, bool useDepth);
+	~Framebuffer();
 	
-	virtual void createOnscreen(CAEAGLLayer *layer, bool useDepth);
+	void createOnscreen(EAGLContext *context, CAEAGLLayer *layer, bool useDepth);
 	// TODO:		virtual void createOffscreen();	
 	
 	void bind();
@@ -58,19 +58,18 @@ public:
 protected:
 	// TODO: virtual void destroy();
 	virtual void deleteBuffers();
-	
+
 	std::weak_ptr<Renderer> m_renderer;
-	
+
 	GLuint m_framebuffer, m_color, m_depth;
 	GLint m_width, m_height;
 	EAGLContext *m_context;
-	
-}; // class Framebuffer
 
+}; // class Framebuffer
 
 // TODO:
 // class MultisampleFramebuffer {};
-	
+
 }} // namespace Sketchy::Shadow
 
 #endif

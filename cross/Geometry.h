@@ -16,6 +16,8 @@
 using std::cerr;
 using std::endl;
 
+namespace Sketchy {
+
 class Geometry
 {
 public:
@@ -165,6 +167,8 @@ private:
 			ptr1->length = ptr2->length = i*diff * M_2_PI;
 		}		
 	}
-};
+}; // class Geometry
+
+} // namespace Sketchy
 
 #endif

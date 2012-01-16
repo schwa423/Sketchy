@@ -15,38 +15,28 @@
 
 namespace Sketchy {
 							 
-Framebuffer::Framebuffer(RendererPtr renderer, CAEAGLLayer *layer, bool useDepth) :
+Framebuffer::Framebuffer(shared_ptr<Renderer> renderer, EAGLContext *context, CAEAGLLayer *layer, bool useDepth) :
 	m_renderer(renderer),
-	m_shadow(new Shadow::Framebuffer(renderer)),
+	m_shadow(new Shadow::Framebuffer(renderer->shadow(), context, layer, useDepth)),
 	m_useDepth(useDepth)
 {
 	CGRect rect = [layer bounds];
 	m_width = (int)rect.size.width;
 	m_height = (int)rect.size.height;
-	
-	Event::ptr task(new CreateOnscreen(renderer, m_shadow, layer, useDepth));
-	renderer->addTask(task);
+
 }
 	
 Framebuffer::~Framebuffer()
 {
+	cerr << "destroying Framebuffer by enqueuing task on Renderer" << endl;
+
+	auto renderer = m_renderer.lock();
+	if (!renderer) {
+		cerr << "~Sketchy::Framebuffer() cannot obtain strong ref to Renderer" << endl;
+		return;
+	}
 	Event::ptr task(new Destroy(m_shadow));
-	m_renderer->addTask(task);
+	renderer->addTask(task);
 }
 	
-Framebuffer::CreateOnscreen::CreateOnscreen
-(RendererPtr renderer, ShadowPtr shadow, CAEAGLLayer* layer, bool useDepth) :
-	Renderer::RendererEvent(renderer.get()),
-	m_shadow(shadow),
-	m_layer(layer),
-	m_useDepth(useDepth)
-{ 
-	m_shadow = shadow;
-}
-
-void
-Framebuffer::CreateOnscreen::reallyRun() {
-	m_shadow->createOnscreen(m_layer, m_useDepth);
-}
-
 } // namespace Sketchy

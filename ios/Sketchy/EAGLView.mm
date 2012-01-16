@@ -1,4 +1,4 @@
-//
+	//
 //  EAGLView.mm
 //  Sketchy
 //
@@ -12,8 +12,10 @@
 
 #include "Renderer.h"
 #include "Framebuffer.h"
+#include "Page.h"
 using Sketchy::Renderer;
 using Sketchy::Framebuffer;
+using Sketchy::Page;
 
 #import <iostream>
 using std::cerr;
@@ -54,19 +56,29 @@ using std::endl;
 		 nil];
 	self.contentScaleFactor = [[UIScreen mainScreen] scale];
 
-	m_renderer.reset(new Renderer(glayer));
-	if (!m_renderer) {
-		// TODO: what if renderer can't be instantiated?
-		cerr << "could not instantiate renderer in EAGLView" << endl;
+	m_renderer = Renderer::New(glayer);
+	m_page = Page::New(m_renderer, m_renderer->defaultFramebuffer());
+
+	// Error detection and reporting.
+	if (!m_renderer || !m_page) {
+		if (!m_renderer) { cerr << "could not instantiate renderer in EAGLView" << endl; }
+		if (!m_page) { cerr << "could not instantiate page in EAGLView" << endl; }
+		m_page.reset();
+		m_renderer.reset();
 		return nil;
 	}
+
+	// Hack something in for the renderer to draw.
+	m_renderer->addPage(m_page);
 
     return self;
 }
 
 - (void)dealloc
 {
-	// TODO: need to tear down renderer here?  Probably.
+	// No need to tear down renderer here... Objective-C++ is 
+	// smart enough to automatically destroy the shared_ptr to
+	// the renderer.
 	cerr << "dealloc in EAGLView" << endl;
 }
 
@@ -79,7 +91,6 @@ using std::endl;
 {
 	m_renderer->unpauseRendering();
 }
-
 
 
 /*

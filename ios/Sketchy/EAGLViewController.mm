@@ -46,12 +46,14 @@ using std::endl;
 
 - (void)viewDidLoad
 {
+	cerr << "view did load" << endl;
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }
 
 - (void)viewDidUnload
 {
+	cerr << "view did unload" << endl;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

@@ -30,36 +30,32 @@
 namespace Sketchy {
 	
 class Renderer;
-typedef std::shared_ptr<Renderer> RendererPtr;
 
-class Framebuffer
+class Framebuffer : public std::enable_shared_from_this<Framebuffer>
 {
 public:
-	friend class Renderer; // hack to grab m_shadow in Renderer::handleRender()
+	// TODO: try to make this unnecessary
+	friend class Renderer;
 	
-	Framebuffer(RendererPtr renderer, CAEAGLLayer *layer, bool useDepth);
+	Framebuffer(shared_ptr<Renderer> renderer, EAGLContext *context, CAEAGLLayer *layer, bool useDepth);
 	// TODO: offscreen framebuffer
-	// Framebuffer(RendererPtr renderer, int width, int height, bool useDepth);
+	// Framebuffer(shared_ptr<Renderer> renderer, int width, int height, bool useDepth);
 	~Framebuffer();
 
+	// TODO: shorter type name? typedef?
+	// TODO: I don't like the idea of the shadow pointer being
+	//       accessible via a public API.  What to do?  Perhaps
+	//       an implicit coercsion from a non-shadow to its shadow
+	//       counterpart where appropriate?
+	shared_ptr<Shadow::Framebuffer> shadow() { return m_shadow; }
+
 private:
-	typedef std::shared_ptr<Shadow::Framebuffer> ShadowPtr;
+
+	weak_ptr<Renderer> m_renderer;
+	shared_ptr<Shadow::Framebuffer> m_shadow;
 	
-	RendererPtr m_renderer;
-	ShadowPtr m_shadow;
 	int m_width, m_height;
 	bool m_useDepth;
-	
-	// Task used to schedule framebuffer initialization within Renderer loop.
-	class CreateOnscreen : public Renderer::RendererEvent {
-	public:
-		CreateOnscreen(RendererPtr renderer, ShadowPtr shadow, CAEAGLLayer* layer, bool useDepth);
-		virtual void reallyRun();
-	protected:
-		ShadowPtr m_shadow;
-		CAEAGLLayer *m_layer;
-		bool m_useDepth;
-	}; // class Framebuffer::CreateOnscreen
 	
 	// Task used to schedule framebuffer destruction within Renderer loop.
 	// Doesn't need to do anything other than hold onto the reference to 
@@ -68,12 +64,15 @@ private:
 	// TODO: unit test this!
 	class Destroy : public Event {
 	public:
-		Destroy(ShadowPtr shadow) : m_shadow(shadow) { };
+		Destroy(shared_ptr<Shadow::Framebuffer> shadow) : m_shadow(shadow) { };
 		virtual void reallyRun() { };
-	protected:
-		ShadowPtr m_shadow;
+	private:
+		shared_ptr<Shadow::Framebuffer> m_shadow;
 	}; // class Framebuffer::Destroy
 	
+	// TODO: no friendz pleeze
+	friend Renderer;
+
 }; // class Framebuffer
 
 

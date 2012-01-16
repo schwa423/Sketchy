@@ -11,16 +11,19 @@
 #import <OpenGLES/ES2/glext.h>
 
 #include <memory>
+using std::shared_ptr;
 
 namespace Sketchy {
 	class Renderer;
+	class Page;
 }
 
 @class EAGLContext;
 
 @interface EAGLView : UIView {
 @private
-	std::shared_ptr<Sketchy::Renderer> m_renderer;
+	shared_ptr<Sketchy::Renderer> m_renderer;
+	shared_ptr<Sketchy::Page> m_page;
 }
 
 - (void)pauseRendering;

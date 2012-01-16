@@ -60,6 +60,8 @@ std::string getErrorLog(GLuint obj, glGetObjiv getLength, glGetObjInfoLog getLog
 	}
 }
 
+namespace Sketchy {
+
 GLuint 
 Shader::createShader(GLenum shaderType, const char *src) {
 	GLuint shader;
@@ -126,3 +128,10 @@ Shader::~Shader() {
 	if (m_fragment) glDeleteShader(m_fragment);
 	m_program = m_vertex = m_fragment = 0;
 }
+
+void
+Shader::bind() {
+	glUseProgram(m_program);
+}
+
+} // namespace Sketchy

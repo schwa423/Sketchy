@@ -6,9 +6,6 @@
 //  Copyright (c) 2011 Schwaftwarez. All rights reserved.
 //
 
-// TODO: Renderer doesn't currently follow the "shadow" architecture, and I haven't
-// yet decided whether to split it into a shadow and a non-shadow component.
-
 // TODO: abstract out iOS-specific code
 
 // TODO: verify that I didn't regress in terms of proper teardown in the commit
@@ -24,82 +21,75 @@
 #include "Geometry.h"
 #include "Shader.h"
 
+#import "shadow/Renderer_shadow.h"
+
 #include <OpenGLES/ES2/gl.h>
 
 #include <memory>
+using std::shared_ptr;
+using std::weak_ptr;
+
+#include <vector>
+using std::vector;
 
 @class CADisplayLinkListener;
 @class CAEAGLLayer;
 
 namespace Sketchy {
-	
-	// TODO: remove these if unnecessary once we stop hacking around
 	class Framebuffer;
+	class Page;
 	
-	class Renderer : public Loop<Event::ptr> {
+	class Renderer : public std::enable_shared_from_this<Renderer> {
 	public:
-		typedef std::shared_ptr<Renderer> RendererPtr;
-		
-		Renderer(CAEAGLLayer *layer);
+		static shared_ptr<Renderer> New(CAEAGLLayer *layer);
 		~Renderer();
 
-		void render(void) {
-			Event::ptr render(new Render(this));
-			addTask(render);
-		}
-		
+		// Schedule one render-cycle.
+		void render(void) { m_shadow->render(); }
+
+		// Schedule the task on the shadow's event-loop.
+		void addTask(Event::ptr event) { m_shadow->addTask(event); }
+
 		void pauseRendering(void);
 		void unpauseRendering(void);
-		
-		// TODO: can we limit access to this a bit more?
-		EAGLContext *getContext() { return m_context; }
-		
-		// Many events processed by the renderer will need a reference it.
-		class RendererEvent : public Event {
-		public:
-			RendererEvent(Renderer *r) : m_renderer(r) { }
-		protected:
-			// TODO: early on, I tried to make this a shared_ptr, and I
-			// don't remember what went wrong (it was either a deadlock
-			// or a memory leak).  However, it seems like I should be able
-			// to make it work, and thereby avoid the:
-			// - unsafety of assuming that the renderer is non-null, and/or
-			// - the hassle of using weak_ptr, and always testing if we can
-			//   obtain a shared_ptr
-			Renderer* m_renderer;
-		};
-		
+
+		// TODO: shorter type name? typedef?
+		// TODO: I don't like the idea of the shadow pointer being
+		//       accessible via a public API.  What to do?  Perhaps
+		//       an implicit coercsion from a non-shadow to its shadow
+		//       counterpart where appropriate?
+		shared_ptr<Shadow::Renderer> shadow() { return m_shadow; }
+
+		shared_ptr<Framebuffer> defaultFramebuffer() { return m_defaultFramebuffer; }
+
+		void addPage(shared_ptr<Page> page);
+
 	private:
 		__strong EAGLContext *m_context;
 		__strong CADisplayLinkListener *m_displayLinkListener;
 
-		// TODO make a framebuffer class that encapsulates this state?
-		GLuint m_framebuffer, m_renderbuffer;
-		GLint m_framebufferWidth, m_framebufferHeight;
+		// Create via "Renderer::New()" instead of "new Renderer()" in order
+		// to avoid the this-isn't-valid-in-constructor problem.
+		Renderer();
 
-		Geometry *m_hackGeometry;
-		Shader *m_hackShader;
-		std::shared_ptr<Framebuffer> m_hackFramebuffer;
-		
-		void handleInit(void);		
-		void handleRender(void);
+		shared_ptr<Shadow::Renderer> m_shadow;
+		shared_ptr<Framebuffer> m_defaultFramebuffer;
 
-		void deleteFramebuffer(void);
-
-		class Init : public RendererEvent {
+		// Manage a list of pages to render.
+		// TODO: renderer shouldn't directly be rendering pages,
+		//       Instead, cameras.
+		vector<weak_ptr<Page> > m_pages;
+		class AddPage : public Event {
 		public:
-			Init(Renderer *r) : RendererEvent(r) { };
-			virtual void reallyRun() { m_renderer->handleInit(); }
-		};
+			AddPage(shared_ptr<Shadow::Renderer> shadow, shared_ptr<Shadow::Page> page);
+			virtual void reallyRun();
+		private:
+			shared_ptr<Shadow::Renderer> m_shadow;
+			shared_ptr<Shadow::Page> m_page;
+		}; // class AddPage
 
-		class Render : public RendererEvent {
-		public:
-			Render(Renderer *r) : RendererEvent(r) { };
-			virtual void reallyRun() { m_renderer->handleRender(); }
-		};
-		
-		
-	};
+	}; // class Renderer
+
 } // namespace Sketchy
 
 #endif
