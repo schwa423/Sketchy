@@ -18,27 +18,26 @@ namespace Sketchy {
 	shared_ptr<Page>
 	Page::New(shared_ptr<Renderer> renderer, shared_ptr<Framebuffer> framebuffer)
 	{
-		// Instantiate page and shadow, and connect them.
-		shared_ptr<Page> page(new Page(renderer));
-		shared_ptr<Shadow::Page> shadow(new Shadow::Page(renderer->shadow()));
-		page->m_shadow = shadow;
-
-		// Initialize the page with the hacked-in geometry and shader.
-		shared_ptr<Event> init(new Shadow::Page::HackInit(shadow, framebuffer->shadow()));
-		renderer->addTask(init);
-
+		auto page = PageParent::New(renderer);
+		page->setFramebuffer(framebuffer);
 		return page;
 	}
 
-	Page::~Page()
+	void
+	Page::setFramebuffer(shared_ptr<Framebuffer> fb)
 	{
-		auto renderer = m_renderer.lock();
-		if (!renderer) {
-			cerr << "~Sketchy::Page() cannot obtain strong ref to Renderer" << endl;
-			return;
-		}
-		shared_ptr<Event> destroy(new Shadow::Page::Destroy(m_shadow));
-		renderer->addTask(destroy);
+		if (m_framebuffer == fb) return; // no change
+		m_framebuffer = fb;
+
+		// TODO: better way than public accessor to obtain framebuffer's shadow?
+		shared_ptr<Event> evt(new SetFramebuffer(m_shadow, fb->shadow()));
+		m_loop->addTask(evt);
+	}
+
+	void
+	Page::SetFramebuffer::reallyRun()
+	{
+		m_shadow->setFramebuffer(m_framebuffer);
 	}
 
 } // namespace Sketchy

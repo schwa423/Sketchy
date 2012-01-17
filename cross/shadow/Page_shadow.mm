@@ -18,12 +18,11 @@
 namespace Sketchy {
 namespace Shadow {
 
-	Page::Page(shared_ptr<Renderer> r) : m_renderer(r), m_geometry(NULL), m_shader(NULL)
+	Page::Page() : m_geometry(NULL), m_shader(NULL)
 	{
 
 	}
 
-	// TODO: assert that this destructor always happens in the Renderer loop.
 	Page::~Page() 
 	{
 		if (m_geometry) {
@@ -38,11 +37,16 @@ namespace Shadow {
 	}
 
 	void
-	Page::handleHackInit(shared_ptr<Framebuffer> framebuffer)
+	Page::handleInit()
 	{
-		m_framebuffer = framebuffer;
 		m_geometry = new Geometry();
 		m_shader = new Shader();
+	}
+
+	void
+	Page::setFramebuffer(shared_ptr<Framebuffer> framebuffer)
+	{
+		m_framebuffer = framebuffer;
 	}
 
 	void
@@ -71,31 +75,6 @@ namespace Shadow {
 
 		glFlush();
 		m_framebuffer->present();
-	}
-
-	Page::HackInit::HackInit(shared_ptr<Page> p, shared_ptr<Framebuffer> fb) :
-		m_page(p), m_framebuffer(fb)
-	{
-
-	}
-
-	void
-	Page::HackInit::reallyRun() {
-		m_page->handleHackInit(m_framebuffer);
-	}
-
-	Page::Destroy::Destroy(shared_ptr<Page> p) : m_page(p)
-	{
-
-	}
-
-	void
-	Page::Destroy::reallyRun()
-	{
-		// Sanity check.
-		if (m_page.use_count() != 1) {
-			cerr << "WTF... Shadow::Page.use_count() != 1" << endl;
-		}
 	}
 
 } // namespace Shadow

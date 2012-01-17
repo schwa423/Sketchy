@@ -32,7 +32,10 @@ class TestShadow;
 using namespace Sketchy;
 using namespace Sketchy::Shadow;
 
+// Localized verbosity.
 typedef Object<TestObject, TestShadow, EventLoop> TestObjectParent;
+typedef ShadowObject<TestObject, TestShadow, EventLoop> TestShadowParent;
+
 class TestObject : public TestObjectParent
 {
 public:
@@ -43,18 +46,17 @@ protected:
 	TestObject(shared_ptr<EventLoop> l, shared_ptr<TestShadow> s) : TestObjectParent(l,s) { }
 };
 
-typedef ShadowObject<TestObject, TestShadow, EventLoop> TestShadowParent;
 class TestShadow : public TestShadowParent, public std::enable_shared_from_this<TestShadow>
 {
 public:
 	const char* className() { return "TestShadow"; }
 	bool wasInitialized() { return m_wasInitialized; }
 protected:
+	TestShadow() { };
 	class InitEvent : public Event {
 	public:
 		InitEvent(shared_ptr<TestShadow> shadow) : m_shadow(shadow) { };
-		virtual ~InitEvent() { cerr << "TestShadow::InitEvent was destroyed" << endl; }
-		virtual void reallyRun() { cerr << "TestShadow::InitEvent::reallyRun()" << endl; m_shadow->handleInit(); }
+		virtual void reallyRun() { m_shadow->handleInit(); }
 	protected:
 		shared_ptr<TestShadow> m_shadow;
 	};
