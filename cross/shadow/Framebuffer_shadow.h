@@ -61,7 +61,7 @@ protected:
 
 	std::weak_ptr<Renderer> m_renderer;
 
-	GLuint m_framebuffer, m_color, m_depth;
+	GLuint m_resolve, m_resolveColor, m_multi, m_multiColor, m_depth;
 	GLint m_width, m_height;
 	EAGLContext *m_context;
 

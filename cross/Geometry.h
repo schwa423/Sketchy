@@ -40,9 +40,9 @@ public:
 
 private:
 	void generateStroke() {
-		float startRadians = 2 * M_PI / 3;
+		float startRadians = 4 * M_PI / 3;
 		float endRadians = M_PI / 3;
-		float radius = 100.0;
+		float radius = 150;
 		
 		GLsizei vertexCount = vertexCountForArc(radius, startRadians-endRadians);
 		m_count = (vertexCount-2) / 2 * 3;
