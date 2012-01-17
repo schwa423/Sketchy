@@ -38,7 +38,7 @@ namespace Sketchy {
 		weak_ptr<Renderer> m_renderer;
 
 		// TODO: no friendz pleeze
-		friend Renderer;
+		friend class Renderer;
 
 	}; // class Page
 

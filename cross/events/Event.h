@@ -25,6 +25,7 @@ public:
 		m_creation = s_clock.now();
 		m_state = NEW;
 	}
+	virtual ~Event() {}
 	
 	void run() {
 		m_start = s_clock.now();

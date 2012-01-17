@@ -36,7 +36,7 @@ class Framebuffer : public std::enable_shared_from_this<Framebuffer>
 public:
 	// TODO: try to make this unnecessary
 	friend class Renderer;
-	
+
 	Framebuffer(shared_ptr<Renderer> renderer, EAGLContext *context, CAEAGLLayer *layer, bool useDepth);
 	// TODO: offscreen framebuffer
 	// Framebuffer(shared_ptr<Renderer> renderer, int width, int height, bool useDepth);
@@ -70,9 +70,6 @@ private:
 		shared_ptr<Shadow::Framebuffer> m_shadow;
 	}; // class Framebuffer::Destroy
 	
-	// TODO: no friendz pleeze
-	friend Renderer;
-
 }; // class Framebuffer
 
 
