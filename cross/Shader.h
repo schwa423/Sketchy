@@ -1,3 +1,4 @@
+
 //
 //  Shader.h
 //  Sketchy
@@ -25,6 +26,10 @@ private:
 	GLuint m_vertex;
 	GLuint m_fragment;
 	GLuint m_program;
+
+	// hack
+	GLfloat m_colorVal[4];
+	GLuint m_color;
 
 }; // class Shader
 

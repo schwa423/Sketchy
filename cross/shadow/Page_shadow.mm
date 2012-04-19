@@ -41,6 +41,8 @@ namespace Shadow {
 	{
 		m_geometry = new Geometry();
 		m_shader = new Shader();
+		
+		m_shader->bind();
 	}
 
 	void
@@ -59,7 +61,7 @@ namespace Shadow {
 
 		m_framebuffer->bind();
 
-		glViewport(0, 0, 768, 768);
+		glViewport(50, 50, 256, 256);
 
 		GLfloat grey = renderCount / 255.0f;
 		glClearColor(grey, grey, grey, 1.0f);

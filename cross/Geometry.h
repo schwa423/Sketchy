@@ -21,7 +21,7 @@ namespace Sketchy {
 class Geometry
 {
 public:
-	enum StrokeProps { POS_AND_NORM = 0, LEN_AND_TIME };
+	enum StrokeProps { POS_AND_NORM = 0, LEN_AND_TIME, COLOR };
 	Geometry() :
 		m_vao(0),
 		m_vboGeom(0),
@@ -40,7 +40,7 @@ public:
 
 private:
 	void generateStroke() {
-		float startRadians = 4 * M_PI / 3;
+		float startRadians = 13 * M_PI / 6;
 		float endRadians = M_PI / 3;
 		float radius = 150;
 		

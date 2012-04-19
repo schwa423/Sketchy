@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0337E37014C0168200D6339A /* Renderer_shadow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0337E36F14C0168200D6339A /* Renderer_shadow.mm */; };
+		033B3258153FE94A00AEFF6A /* PropertyTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033B3257153FE94A00AEFF6A /* PropertyTest.cpp */; };
 		033E75E0146E65EC008896D5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E75DF146E65EC008896D5 /* UIKit.framework */; };
 		033E75E2146E65EC008896D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E75E1146E65EC008896D5 /* Foundation.framework */; };
 		033E75E4146E65EC008896D5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E75E3146E65EC008896D5 /* CoreGraphics.framework */; };
@@ -37,6 +38,7 @@
 		037C553714B14A1F00355B6D /* EAGLViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 037C553614B14A1F00355B6D /* EAGLViewController.mm */; };
 		039192A814A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
 		039192A914A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
+		039AA5DE14E878F800C5390A /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039AA5DD14E878F800C5390A /* Material.cpp */; };
 		03DC93BC149E9F4E00F2A602 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E75DF146E65EC008896D5 /* UIKit.framework */; };
 		03DC93BD149E9F4E00F2A602 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E75E1146E65EC008896D5 /* Foundation.framework */; };
 		03DC93BE149E9F4E00F2A602 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E75E3146E65EC008896D5 /* CoreGraphics.framework */; };
@@ -61,6 +63,8 @@
 /* Begin PBXFileReference section */
 		0337E36D14C0166600D6339A /* Renderer_shadow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Renderer_shadow.h; path = shadow/Renderer_shadow.h; sourceTree = "<group>"; };
 		0337E36F14C0168200D6339A /* Renderer_shadow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer_shadow.mm; sourceTree = "<group>"; };
+		033B32561537FB6A00AEFF6A /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = props/Node.h; sourceTree = "<group>"; };
+		033B3257153FE94A00AEFF6A /* PropertyTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PropertyTest.cpp; sourceTree = "<group>"; };
 		033E75DB146E65EC008896D5 /* Sketchy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sketchy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		033E75DF146E65EC008896D5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		033E75E1146E65EC008896D5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -106,6 +110,8 @@
 		037C553614B14A1F00355B6D /* EAGLViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLViewController.mm; sourceTree = "<group>"; };
 		039192A614A1CB2700F1D4C7 /* ThreadOwner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadOwner.h; sourceTree = "<group>"; };
 		039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadOwner.cpp; sourceTree = "<group>"; };
+		039AA5DB14E878D400C5390A /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
+		039AA5DD14E878F800C5390A /* Material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
 		03DC93BA149E9F4E00F2A602 /* SketchyUnitTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SketchyUnitTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03DC93C1149E9F4E00F2A602 /* SketchyUnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SketchyUnitTests-Info.plist"; sourceTree = "<group>"; };
 		03DC93C3149E9F4E00F2A602 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -167,6 +173,22 @@
 			children = (
 			);
 			name = core;
+			sourceTree = "<group>";
+		};
+		033B32541537F9FC00AEFF6A /* props */ = {
+			isa = PBXGroup;
+			children = (
+				033B32561537FB6A00AEFF6A /* Node.h */,
+			);
+			name = props;
+			sourceTree = "<group>";
+		};
+		033B325A153FEF6000AEFF6A /* include */ = {
+			isa = PBXGroup;
+			children = (
+				033B32541537F9FC00AEFF6A /* props */,
+			);
+			name = include;
 			sourceTree = "<group>";
 		};
 		033E75D0146E65EC008896D5 = {
@@ -241,6 +263,7 @@
 		033E762B146E76E8008896D5 /* cross */ = {
 			isa = PBXGroup;
 			children = (
+				033B325A153FEF6000AEFF6A /* include */,
 				0337E37814C234DB00D6339A /* core */,
 				03F1483114BA2CFB0036EF9B /* shadow */,
 				0343BF9514A7932D00C6ED4F /* events */,
@@ -265,6 +288,8 @@
 				03F1482E14BA278C0036EF9B /* Camera.cpp */,
 				0372821614C2C65800819593 /* Page.h */,
 				0372821814C2C66A00819593 /* Page.mm */,
+				039AA5DB14E878D400C5390A /* Material.h */,
+				039AA5DD14E878F800C5390A /* Material.cpp */,
 			);
 			name = cross;
 			path = ../cross;
@@ -328,6 +353,7 @@
 				03FFFF3414A1E1CF0012FB3F /* gtest-all.cc */,
 				03FFFF3514A1E1CF0012FB3F /* LoopTest.cpp */,
 				03F4878914C4ECCB0065D187 /* ShadowTest.cpp */,
+				033B3257153FE94A00AEFF6A /* PropertyTest.cpp */,
 			);
 			name = tests;
 			path = ../tests;
@@ -465,6 +491,7 @@
 				0372821914C2C66A00819593 /* Page.mm in Sources */,
 				0372821C14C2CB6800819593 /* Page_shadow.mm in Sources */,
 				03F4878814C4DEE90065D187 /* Shadow_impl.h in Sources */,
+				039AA5DE14E878F800C5390A /* Material.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +509,7 @@
 				03FFFF3814A1E1CF0012FB3F /* LoopTest.cpp in Sources */,
 				0343BF9A14A793ED00C6ED4F /* Fence.cpp in Sources */,
 				0343BF9E14A7AF2400C6ED4F /* Event.cpp in Sources */,
+				033B3258153FE94A00AEFF6A /* PropertyTest.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

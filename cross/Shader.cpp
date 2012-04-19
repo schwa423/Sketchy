@@ -18,6 +18,8 @@ using std::endl;
 static const char *s_vertex_stroke = 
 	"attribute vec4 posAndNorm;						\n"
 	"attribute vec4 lengthEtc;						\n"
+	"uniform vec4 colorIn;							\n"
+	"varying vec4 color;							\n"
 	"void main()									\n"
 	"{												\n"
 	"	vec2 pos = posAndNorm.xy;					\n"
@@ -25,19 +27,23 @@ static const char *s_vertex_stroke =
 	"	gl_Position.xy = (pos + 10.0*norm) / 150.0;	\n"
 	"   gl_Position.z = 0.0;						\n"
 	"	gl_Position.w = 1.0;						\n"
+	"	color = colorIn;							\n"
 	"}												\n";
 
 static const char *s_vertex_tri = 
 	"attribute vec4 pos;							\n"
+	"varying vec4 color;							\n"
 	"void main()									\n"
 	"{												\n"
 	"   gl_Position = pos;							\n"
+	"	color = vec4(1.0, 0.0, 0.0, 1.0);			\n"
 	"}												\n";
 
 static const char *s_fragment =
+	"varying lowp vec4 color;						\n"
 	"void main()									\n"
 	"{												\n"
-	"	gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);	\n"
+	"	gl_FragColor = color;						\n"
 	"}												\n";
 
 
@@ -99,6 +105,7 @@ Shader::Shader() {
 	glAttachShader(m_program, m_vertex);
 	glAttachShader(m_program, m_fragment);
 	
+	// TODO: these are stroke-related, not generally applicable to all Shaders.
 //	glBindAttribLocation(m_program, 0, "pos");
 	glBindAttribLocation(m_program, Geometry::POS_AND_NORM, "posAndNorm");
 	glBindAttribLocation(m_program, Geometry::LEN_AND_TIME, "lengthEtc");
@@ -120,6 +127,14 @@ Shader::Shader() {
 	}
 	
 	glUseProgram(m_program);
+
+	// TODO: would be nice if there was something like glBindAttribLocation() for
+	// uniforms.  AFAIK, there's no choice but to read it back from the program.
+	m_color = glGetUniformLocation(m_program, "colorIn");
+	m_colorVal[0] = 0.0;
+	m_colorVal[1] = 1.0;
+	m_colorVal[2] = 0.0;
+	m_colorVal[3] = 1.0;
 }
 
 Shader::~Shader() {
@@ -132,6 +147,9 @@ Shader::~Shader() {
 void
 Shader::bind() {
 	glUseProgram(m_program);
+
+	// TODO: remove this stroke-specific hack
+	glUniform4fv(m_color, 1, m_colorVal);
 }
 
 } // namespace Sketchy
