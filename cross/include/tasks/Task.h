@@ -28,7 +28,7 @@ public:
 };
 
 
-class Queue2;
+class Queue;
 
 class Task : public TaskObserver, public std::enable_shared_from_this<Task> {
 public:		
@@ -81,7 +81,7 @@ private:
     enum State { Wait, Ready, Run, Done, Cancel, Error };
 
 	friend class Worker;
-    friend class Queue2;
+    friend class Queue;
 
 	// Called by Worker to do some work.
 	void work();
@@ -97,7 +97,7 @@ private:
     // Used to enforce that Task.run() calls precisely one of done(), yield(), or error().
     bool m_endRun;
 
-    Queue2* m_queue;
+    Queue* m_queue;
     
 }; // class Task
 

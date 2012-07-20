@@ -19,11 +19,11 @@
 //   - new RoundRobinQueue({ queue1, queue2, queue3 });
 //     - should call && ... actually probably won't work
 //       - maybe
-//   - new RoundRobinQueue(std::vector<GeneratorPtr>{ q1, q2, q3})
+//   - new RoundRobinQueue(std::vector<QueueOutPtr>{ q1, q2, q3})
 //     - should call &&
-//   - std::vector<GeneratorPtr> vec{ q1, q2, q3 }; new RoundRobinQueue(vec);
+//   - std::vector<QueueOutPtr> vec{ q1, q2, q3 }; new RoundRobinQueue(vec);
 //     - should call &
-//   - new RoundRobinQueue([]{ return std::vector<GeneratorPtr>{ q1, q2, q3} });
+//   - new RoundRobinQueue([]{ return std::vector<QueueOutPtr>{ q1, q2, q3} });
 //     - should call &&
 // - implement and test Task::yield()
 // - implement at test Task dependencies.
@@ -39,18 +39,19 @@ typedef std::unique_lock<std::mutex> unique_lock;
 namespace Sketchy {
 namespace Task {
     
-    void QueueOwner::own(GeneratorPtr& gen) {
-        _owned.insert(gen);
+    void QueueOwner::own(QueueOutPtr& gen) {
+        _queues.push_back(gen);
     }
 
 
-    void QueueOwner::disown(GeneratorPtr& gen) {
-        int erased = _owned.erase(gen);
-        if (!erased) throw std::logic_error("cannot disown generator we don't already own");
+    void QueueOwner::disown(QueueOutPtr& q) {
+        iterator it = find(_queues.begin(), _queues.end(), q);
+        if (it != _queues.end()) _queues.erase(it);
+        else throw std::logic_error("cannot disown queue we don't already own");
     }
 
 
-    void Generator::setOwner(QueueOwner* owner) {
+    void QueueOut::setOwner(QueueOwner* owner) {
         lock_guard lock(_mutex);
         if (_owner == owner) return;
         auto thisptr = shared_from_this();
@@ -60,7 +61,7 @@ namespace Task {
     }
 
 
-    TaskPtr Generator::next() {
+    TaskPtr QueueOut::next() {
         unique_lock lock(_mutex);
 
         // TODO:
@@ -84,13 +85,13 @@ namespace Task {
     }
 
 
-    uint32_t Generator::count() {
+    uint32_t QueueOut::count() {
         unique_lock lock(_mutex);
         return _count;
     }
 
 
-    void Queue2::add(TaskPtr&& item) {
+    void Queue::add(TaskPtr&& item) {
         lock_guard lock(_mutex);
         _q.push_back(item);
         _count = _q.size();
@@ -99,7 +100,7 @@ namespace Task {
     }
 
 
-    void Queue2::add(TaskPtr& item) {
+    void Queue::add(TaskPtr& item) {
         lock_guard lock(_mutex);
         _q.push_back(item);
         _count = _q.size();
@@ -108,7 +109,7 @@ namespace Task {
     }
 
 
-    TaskPtr Queue2::_next() {
+    TaskPtr Queue::_next() {
         auto result = _q.front();
         _q.pop_front();
         _count = _q.size();
@@ -116,54 +117,71 @@ namespace Task {
     }
 
 
-    void Queue2::taskYielded(TaskPtr& task) {
+    void Queue::taskYielded(TaskPtr& task) {
         lock_guard lock(_mutex);
         _q.push_front(task);
     }
 
 
-    void Queue2::taskYielded(TaskPtr&& task) {
+    void Queue::taskYielded(TaskPtr&& task) {
         lock_guard lock(_mutex);
         _q.push_front(std::move(task));
     }
 
 
-    RoundRobinQueue::RoundRobinQueue(std::vector<GeneratorPtr>& queues, QueueOwner* owner) :
-        CompoundQueue(owner), _index(0), _queues(queues) 
-    {  
+    CompoundQueue::CompoundQueue(const std::vector<QueueOutPtr>& queues, QueueOwner* owner)
+    : QueueOut(owner), _subqueues(*this)
+    {
         accumulateCounts();
-        for (auto q : _queues) { q->setOwner(this); }
+        for (auto q : queues) { q->setOwner(&_subqueues); }
+    }
+
+    
+    void CompoundQueue::accumulateCounts() {
+        lock_guard lock(_mutex);
+        _count = 0;
+        for (QueueOutPtr& q : queues()) {
+            _count += q->count();
+        }
     }
 
 
-    RoundRobinQueue::RoundRobinQueue(std::vector<GeneratorPtr>&& queues, QueueOwner* owner) :
-        CompoundQueue(owner), _index(0), _queues(queues)
+    RoundRobinQueue::RoundRobinQueue(const std::vector<QueueOutPtr>& queues, QueueOwner* owner)
+    : CompoundQueue(queues, owner), _index(0)
     {
-        accumulateCounts();
+
     }
 
 
     TaskPtr RoundRobinQueue::_next() {
-        int queues = _queues.size();
-        int start = _index <= queues ? _index : 0;
+        int sz = queues().size();
+        int start = _index <= sz ? _index : 0;
 
         // Find a non-empty queue, and pop from it.
         do {
-            GeneratorPtr& q = _queues[_index];
-            _index = (_index + 1) % queues;
+            QueueOutPtr& q = queues()[_index];
+            _index = (_index + 1) % sz;
             if (q->count() > 0) return q->next();
         } while(_index != start);
-        
         // Oops.  Debuggin' time...
         throw std::logic_error("supposed to be guaranteed to find a task");
     }
 
-    void RoundRobinQueue::accumulateCounts() {
+
+    PriorityQueue::PriorityQueue(const std::vector<QueueOutPtr>& queues, QueueOwner* owner)
+    : CompoundQueue(queues, owner)
+    {
+
+    }
+
+
+    TaskPtr PriorityQueue::_next() {
         lock_guard lock(_mutex);
-        _count = 0;
-        for (GeneratorPtr& q : _queues) {
-            _count += q->count();
+        for (QueueOutPtr& q : queues()) {
+            if (q->count() > 0) return q->next();
         }
+        // Oops.  Debuggin' time...
+        throw std::logic_error("supposed to be guaranteed to find a task");
     }
 
 

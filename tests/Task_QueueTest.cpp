@@ -41,14 +41,14 @@ class ValueTask : public Task {
 TEST(Task_QueueTest, SimpleRoundRobin) {
     Worker w(0);
 
-    auto q1 = std::make_shared<Queue2>();
-    auto q2 = std::make_shared<Queue2>();
-    auto q3 = std::make_shared<Queue2>();
+    auto q1 = std::make_shared<Queue>();
+    auto q2 = std::make_shared<Queue>();
+    auto q3 = std::make_shared<Queue>();
 
     // TODO: revisit when Apple's Clang supports initializer lists.
     // std::vector<GeneratorPtr> queues = {q1, q2, q3};
     // ... or maybe even pass initializer list to RoundRobinQueue constructor
-    std::vector<GeneratorPtr> queues;
+    std::vector<QueueOutPtr> queues;
     queues.push_back(q1);
     queues.push_back(q2);
     queues.push_back(q3);

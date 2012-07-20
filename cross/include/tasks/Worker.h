@@ -38,7 +38,7 @@ class Worker {
     std::condition_variable _cond;
     std::vector<std::thread*> _threads;
 
-    Queue2 _q;
+    Queue _q;
 };
 
 
