@@ -32,7 +32,7 @@ class Queue;
 
 class Task : public TaskObserver, public std::enable_shared_from_this<Task> {
 public:		
-    Task() : m_state(Ready), m_queue(nullptr) { }
+    Task() : _state(Ready), _queue(nullptr) { }
     Task(std::vector<TaskPtr>& prereqs);
     Task(std::vector<TaskPtr>&& prereqs);  // TODO: necessary? actually, the lvalue version is
                                            // probably the superfluous one.
@@ -86,18 +86,18 @@ private:
 	// Called by Worker to do some work.
 	void work();
 
-    std::vector<TaskPtr> m_prereqs;    
+    std::vector<TaskPtr> _prereqs;
 
     void addObserver(std::shared_ptr<TaskObserver>&& observer);
-    std::vector<std::weak_ptr<TaskObserver>> m_observers;
+    std::vector<std::weak_ptr<TaskObserver>> _observers;
 
-    std::mutex m_mutex;
-    State m_state;
+    std::mutex _mutex;
+    State _state;
 
     // Used to enforce that Task.run() calls precisely one of done(), yield(), or error().
-    bool m_endRun;
+    bool _endRun;
 
-    Queue* m_queue;
+    Queue* _queue;
     
 }; // class Task
 

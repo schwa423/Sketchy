@@ -22,21 +22,21 @@ namespace Task {
 
     typedef std::lock_guard<std::mutex> lock_guard;
 
-    Task::Task(std::vector<TaskPtr>& prereqs) : m_state(Wait), m_prereqs(prereqs) {
-        for (auto pre: m_prereqs) pre->addObserver(shared_from_this());
+    Task::Task(std::vector<TaskPtr>& prereqs) : _state(Wait), _prereqs(prereqs) {
+        for (auto pre: _prereqs) pre->addObserver(shared_from_this());
     }
     
 
     Task::Task(std::vector<TaskPtr>&& prereqs) 
-        : m_state(Wait), m_prereqs(std::forward<std::vector<TaskPtr>>(prereqs)) {
-        for (auto pre: m_prereqs) pre->addObserver(shared_from_this());
+        : _state(Wait), _prereqs(std::forward<std::vector<TaskPtr>>(prereqs)) {
+        for (auto pre: _prereqs) pre->addObserver(shared_from_this());
     }
 
 
     void Task::addObserver(std::shared_ptr<TaskObserver>&& observer) {
         {
-            lock_guard lock(m_mutex);
-            switch(m_state) {
+            lock_guard lock(_mutex);
+            switch(_state) {
                 case Done:
                 case Cancel:
                 case Error:
@@ -44,7 +44,7 @@ namespace Task {
                     // (but outside of the critical section)
                     break;
                 default:
-                    m_observers.push_back(observer);
+                    _observers.push_back(observer);
                     return;
             }
         }
@@ -52,7 +52,7 @@ namespace Task {
         // Immediately notify the observer that the task
         // is in a terminal state (similar to if the observer
         // had been registered before entering the state).
-        switch(m_state) {
+        switch(_state) {
             case Done:
                 observer->taskDone(shared_from_this());
                 break;
@@ -72,16 +72,16 @@ namespace Task {
     void Task::work() {
         // The subclass must set this to true by calling
         // done(), yield(), or error().
-        m_endRun = false;
+        _endRun = false;
 
         // Critical section for state-transition.
         {
-            lock_guard lock(m_mutex);
+            lock_guard lock(_mutex);
 
-            switch(m_state) {
+            switch(_state) {
                 case Ready:
                     // Do the actual work outside of the critical section.
-                    m_state = Run;
+                    _state = Run;
                     break;
                 case Cancel:
                     // This task was cancelled while in the queue; we didn't bother removing it,
@@ -108,45 +108,45 @@ namespace Task {
         }
 
         // Ensure that one of done(), yield(), or error() was called.
-        if (!m_endRun) throw std::logic_error("Task.run() must call done(), yield(), or error()");
+        if (!_endRun) throw std::logic_error("Task.run() must call done(), yield(), or error()");
     }
 
 
     void Task::yield() {
-        if (m_endRun) throw std::logic_error("yield(): m_endRun was already set");
-        m_endRun = true;
+        if (_endRun) throw std::logic_error("yield(): _endRun was already set");
+        _endRun = true;
 
         // Change state, unless already cancelled.
         {
-            lock_guard lock(m_mutex);
-            if (m_state == Cancel) return;
-            else m_state = Ready;
+            lock_guard lock(_mutex);
+            if (_state == Cancel) return;
+            else _state = Ready;
         }
 
         // Push task back onto queue.
-        m_queue->taskYielded(shared_from_this());
+        _queue->taskYielded(shared_from_this());
     }
 
     // Macro to reduce boilerplate in the methods below.
 #define NOTIFY_OBSERVERS(METHOD_NAME)             \
-    if (!m_observers.empty()) {                   \
+    if (!_observers.empty()) {                   \
         auto me = shared_from_this();             \
-        for (auto weak: m_observers) {            \
+        for (auto weak: _observers) {            \
             auto strong = weak.lock();            \
             if (strong) strong->METHOD_NAME(me);  \
         }                                         \
-        m_observers.clear();                      \
+        _observers.clear();                      \
     }                                             
 
     void Task::done() {
-        if (m_endRun) throw std::logic_error("done(): m_endRun was already set");
-        m_endRun = true;
+        if (_endRun) throw std::logic_error("done(): _endRun was already set");
+        _endRun = true;
 
         // Change state, unless already cancelled.
         {
-            lock_guard lock(m_mutex);
-            if (m_state == Cancel) return;
-            else m_state = Done;
+            lock_guard lock(_mutex);
+            if (_state == Cancel) return;
+            else _state = Done;
         }
 
         NOTIFY_OBSERVERS(taskDone);
@@ -154,14 +154,14 @@ namespace Task {
 
 
     void Task::error() {
-        if (m_endRun) std::logic_error("error(): m_endRun was already set");
-        m_endRun = true;
+        if (_endRun) std::logic_error("error(): _endRun was already set");
+        _endRun = true;
 
         // Change state, unless already cancelled.
         {
-            lock_guard lock(m_mutex);
-            if (m_state == Cancel) return;
-            else m_state = Error;
+            lock_guard lock(_mutex);
+            if (_state == Cancel) return;
+            else _state = Error;
         }
 
         NOTIFY_OBSERVERS(taskError);
@@ -169,9 +169,9 @@ namespace Task {
 
 
     void Task::cancel() {
-        lock_guard lock(m_mutex);
+        lock_guard lock(_mutex);
 
-        switch(m_state) {
+        switch(_state) {
             case Done:
             case Cancel:
             case Error:
@@ -180,7 +180,7 @@ namespace Task {
             case Wait:
             case Ready:
             case Run:
-                m_state = Cancel;
+                _state = Cancel;
                 break;
         }
 
