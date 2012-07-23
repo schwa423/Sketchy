@@ -13,6 +13,8 @@
 #include <mutex>
 #include <vector>
 
+#include <iostream>
+
 namespace Sketchy {
 namespace Task {
 
@@ -31,12 +33,7 @@ public:
 class Queue;
 
 class Task : public TaskObserver, public std::enable_shared_from_this<Task> {
-public:		
-    Task() : _state(Ready), _queue(nullptr) { }
-    Task(std::vector<TaskPtr>& prereqs);
-    Task(std::vector<TaskPtr>&& prereqs);  // TODO: necessary? actually, the lvalue version is
-                                           // probably the superfluous one.
-
+public:
 	// Called by user code when the task is no longer necessary.
     // Doesn't interrupt the task immediately if it is currently
     // running; instead waits for it to finish or yield.  Has no
@@ -47,6 +44,12 @@ public:
     // Subclasses override this to do a specific type of work.
     virtual void run() = 0;
 
+    bool isDone()      { return _state == Done; }
+    bool isCancelled() { return _state == Cancel; }
+    bool isError()     { return _state == Error; }
+    // Is the task in a terminal state (Done, Cancel, or Error)?
+    bool isSettled()   { return _state >= Done; }
+
     // "Inherited" from TaskObserver; subclasses must implement.
     // Called when changes occur in prerequisites.
   	virtual void taskDone(const TaskPtr& task) = 0;
@@ -54,6 +57,11 @@ public:
     virtual void taskError(const TaskPtr& task) = 0;
 
 protected:
+    Task() : _state(Ready), _queue(nullptr) { }
+    // Called by static New() function of subclasses.
+    void Init(std::vector<TaskPtr>& prereqs);
+    void Init(std::vector<TaskPtr>&& prereqs);
+
     // Subclasses must call precisely one of these during each invocation of Task.run()
     void done();
     void yield();

@@ -61,6 +61,7 @@ class QueueOut : public std::enable_shared_from_this<QueueOut> {
     void setOwner(QueueOwner* owner);
 
     TaskPtr next();
+    TaskPtr next(int timeoutMsecs);
     uint32_t count();
 
  protected:

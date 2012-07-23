@@ -39,7 +39,7 @@ class ValueTask : public Task {
 
 
 TEST(Task_QueueTest, SimpleRoundRobin) {
-    Worker w(0);
+    Worker w(nullptr, 5);
 
     auto q1 = std::make_shared<Queue>();
     auto q2 = std::make_shared<Queue>();

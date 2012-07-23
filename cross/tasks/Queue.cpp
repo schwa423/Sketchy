@@ -68,20 +68,40 @@ namespace Task {
         // Would rather use a lambda than this bullshit,
         // but Clang crashes when trying to compile it.
         //_cond.wait(lock, [](){ return _count > 0; });
-        class NotEmptyPred {
-        public:
+        struct NotEmptyPred {
             NotEmptyPred(uint32_t& count) : _val(count) { }
             bool operator()() const { return _val > 0; }
-
-        private:
-            QueueOwner *_owner;
             uint32_t& _val;
         };
         NotEmptyPred pred(_count);
         _cond.wait(lock, pred);
-        
+
         _count--;
         return _next();
+    }
+
+
+    TaskPtr QueueOut::next(int timeoutMsecs) {
+        unique_lock lock(_mutex);
+
+        // TODO:
+        // Would rather use a lambda than this bullshit,
+        // but Clang crashes when trying to compile it.
+        //_cond.wait(lock, [](){ return _count > 0; });
+        struct NotEmptyPred {
+            NotEmptyPred(uint32_t& count) : _val(count) { }
+            bool operator()() const { return _val > 0; }
+            uint32_t& _val;
+        };
+        NotEmptyPred pred(_count);
+        std::chrono::milliseconds duration(timeoutMsecs);
+        _cond.wait_for(lock, duration, pred);
+
+        if (!_count) return TaskPtr();
+        else {
+            _count--;
+            return _next();
+        }
     }
 
 
@@ -90,10 +110,25 @@ namespace Task {
         return _count;
     }
 
+    // TODO: use macro to make add() more concise.
+    // Macro to reduce boilerplate in the methods below.
+#define ADD_TASK(TASK)                              \
+        lock_guard lock(_mutex);                    \
+        _q.push_back(TASK);  \
+        _count = _q.size();                         \
+        if (_owner) _owner->available(*this);       \
+            _cond.notify_one();
+//    void Queue::add(TaskPtr&& item) {
+//        ADD_TASK(std::forward<TaskPtr>(item));
+//    }
+//    void Queue::add(TaskPtr& item) {
+//        ADD_TASK(item);
+//    }
+#undef ADD_TASK
 
     void Queue::add(TaskPtr&& item) {
         lock_guard lock(_mutex);
-        _q.push_back(item);
+        _q.push_back(std::forward<TaskPtr>(item));
         _count = _q.size();
         if (_owner) _owner->available(*this);
         _cond.notify_one();

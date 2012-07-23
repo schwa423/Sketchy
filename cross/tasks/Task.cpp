@@ -7,10 +7,12 @@
 //
 
 #include <stdexcept>
+#include <iostream>
 
 #include "Task.h"
 #include "Queue.h"
 
+typedef std::lock_guard<std::mutex> lock_guard;
 
 // TODO: things to test:
 //  - error if run doesn't call done(), yield(), or error()
@@ -20,16 +22,20 @@
 namespace Sketchy {
 namespace Task {
 
-    typedef std::lock_guard<std::mutex> lock_guard;
-
-    Task::Task(std::vector<TaskPtr>& prereqs) : _state(Wait), _prereqs(prereqs) {
-        for (auto pre: _prereqs) pre->addObserver(shared_from_this());
+    void Task::Init(std::vector<TaskPtr>& prereqs) {
+        _state = Wait;
+        _prereqs = prereqs;
+        TaskPtr me = shared_from_this();
+        for (auto pre: _prereqs) pre->addObserver(me);
     }
-    
 
-    Task::Task(std::vector<TaskPtr>&& prereqs) 
-        : _state(Wait), _prereqs(std::forward<std::vector<TaskPtr>>(prereqs)) {
-        for (auto pre: _prereqs) pre->addObserver(shared_from_this());
+
+    void Task::Init(std::vector<TaskPtr>&& prereqs) {
+        _state = Wait;
+        // TODO: good god this is ugly
+        _prereqs = std::forward<std::vector<TaskPtr>>(prereqs);
+        TaskPtr me = shared_from_this();
+        for (auto pre: _prereqs) pre->addObserver(me);
     }
 
 

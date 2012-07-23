@@ -23,22 +23,48 @@ namespace Task {
 class Worker {
 
  public:
-    Worker(int num_threads);
+    Worker(std::shared_ptr<QueueOut> queue, int num_threads);
     ~Worker();
 
+    // Start the worker.  Does nothing if already started.
+    // Does not start if there is no queue.
+    void start();
+
+    // Stop the worker.  Does nothing if already stopped.
+    void stop();
+
+    // Stop the worker, set its queue to the new one,
+    // and if it was previously running, restart it.
+    // TODO: if you call start() when a worker has no
+    //       queue, then set a queue, it won't be running
+    //       since start() only starts the worker if there
+    //       is a queue.  Better to manage thread lifetime
+    //       independently of _running.  Eg: if there is no
+    //       queue, start() sets _running to true but does
+    //       not start threads.  If queue is later set, we
+    //       notice that we need to start the threads (since
+    //       queue != NULL and _running == _true).
+    void setQueue(std::shared_ptr<QueueOut> queue);
+
+    // TODO: these are for testing... can we do without?
+    //       Maybe make the test class a friend, too.
     void runTask(TaskPtr& task) { task->work(); }
     void runTask(TaskPtr&& task) { task->work(); }
 
  private:
+    // Mutex lock must be held while these are called.
+    void lockedStart();
+    void lockedStop();
 
     // Method run in a worker thread.
-    void run();
+    void threadRun();
 
     std::mutex _mutex;
     std::condition_variable _cond;
     std::vector<std::thread*> _threads;
-
-    Queue _q;
+    int _count;
+    bool _running;
+    std::shared_ptr<QueueOut> _q;
 };
 
 
