@@ -32,6 +32,7 @@
 
 #include <numeric>
 #include <utility>
+#include <cassert>
 
 typedef std::lock_guard<std::mutex> lock_guard;
 typedef std::unique_lock<std::mutex> unique_lock;
@@ -64,38 +65,21 @@ namespace Task {
     TaskPtr QueueOut::next() {
         unique_lock lock(_mutex);
 
-        // TODO:
-        // Would rather use a lambda than this bullshit,
-        // but Clang crashes when trying to compile it.
-        //_cond.wait(lock, [](){ return _count > 0; });
-        struct NotEmptyPred {
-            NotEmptyPred(uint32_t& count) : _val(count) { }
-            bool operator()() const { return _val > 0; }
-            uint32_t& _val;
-        };
-        NotEmptyPred pred(_count);
-        _cond.wait(lock, pred);
+        _cond.wait(lock, [&](){ return _count > 0; });
 
-        _count--;
-        return _next();
+        if (!_count) return TaskPtr();
+        else {
+            _count--;
+            return _next();
+        }
     }
 
 
     TaskPtr QueueOut::next(int timeoutMsecs) {
         unique_lock lock(_mutex);
 
-        // TODO:
-        // Would rather use a lambda than this bullshit,
-        // but Clang crashes when trying to compile it.
-        //_cond.wait(lock, [](){ return _count > 0; });
-        struct NotEmptyPred {
-            NotEmptyPred(uint32_t& count) : _val(count) { }
-            bool operator()() const { return _val > 0; }
-            uint32_t& _val;
-        };
-        NotEmptyPred pred(_count);
         std::chrono::milliseconds duration(timeoutMsecs);
-        _cond.wait_for(lock, duration, pred);
+        _cond.wait_for(lock, duration, [&](){ return _count > 0; });
 
         if (!_count) return TaskPtr();
         else {
@@ -106,38 +90,34 @@ namespace Task {
 
 
     uint32_t QueueOut::count() {
+        // TODO: is this necessary/sufficient?
         unique_lock lock(_mutex);
         return _count;
     }
 
-    // TODO: use macro to make add() more concise.
-    // Macro to reduce boilerplate in the methods below.
-#define ADD_TASK(TASK)                              \
-        lock_guard lock(_mutex);                    \
-        _q.push_back(TASK);  \
-        _count = _q.size();                         \
-        if (_owner) _owner->available(*this);       \
-            _cond.notify_one();
-//    void Queue::add(TaskPtr&& item) {
-//        ADD_TASK(std::forward<TaskPtr>(item));
-//    }
-//    void Queue::add(TaskPtr& item) {
-//        ADD_TASK(item);
-//    }
-#undef ADD_TASK
 
-    void Queue::add(TaskPtr&& item) {
+    void Queue::add(TaskPtr& task) {
+        lock_guard taskLock(task->_mutex);
+
+        // Tasks can't change queues.
+        assert(task->_queue == nullptr || task->_queue == this);
+        task->_queue = this;
+        if (task->_state == Task::Wait) return;
+
         lock_guard lock(_mutex);
-        _q.push_back(std::forward<TaskPtr>(item));
+        _q.push_back(task);
         _count = _q.size();
         if (_owner) _owner->available(*this);
         _cond.notify_one();
     }
 
 
-    void Queue::add(TaskPtr& item) {
+    void Queue::add(TaskPtr&& task) {
+        lock_guard taskLock(task->_mutex);
+        if (task->_state != Task::Ready) return;
+
         lock_guard lock(_mutex);
-        _q.push_back(item);
+        _q.push_back(std::move(task));
         _count = _q.size();
         if (_owner) _owner->available(*this);
         _cond.notify_one();
@@ -152,15 +132,15 @@ namespace Task {
     }
 
 
-    void Queue::taskYielded(TaskPtr& task) {
-        lock_guard lock(_mutex);
-        _q.push_front(task);
-    }
-
-
     void Queue::taskYielded(TaskPtr&& task) {
+        lock_guard taskLock(task->_mutex);
+        if (task->_state != Task::Ready) return;
+
         lock_guard lock(_mutex);
         _q.push_front(std::move(task));
+        _count = _q.size();
+        if (_owner) _owner->available(*this);
+        _cond.notify_one();
     }
 
 
@@ -211,7 +191,6 @@ namespace Task {
 
 
     TaskPtr PriorityQueue::_next() {
-        lock_guard lock(_mutex);
         for (QueueOutPtr& q : queues()) {
             if (q->count() > 0) return q->next();
         }

@@ -99,7 +99,6 @@ class Queue : public QueueOut {
     std::deque<TaskPtr> _q;
 
     friend class Task;
-    void taskYielded(TaskPtr& task);
     void taskYielded(TaskPtr&& task);
 };
     
@@ -114,7 +113,6 @@ class CompoundQueue : public QueueOut {
 
     // TODO: Later, provide ability to add/remove queues.
     //       Be sure to update _count appropriately!
-    void addQueue(QueueOutPtr& queue) { throw std::runtime_error("unimplemented"); }
     void addQueue(QueueOutPtr&& queue) { throw std::runtime_error("unimplemented"); }
     void removeQueue(QueueOutPtr& queue) { throw std::runtime_error("unimplemented"); }
 

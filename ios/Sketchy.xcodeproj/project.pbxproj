@@ -69,6 +69,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0305265015BD2A800043238C /* Watcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Watcher.h; path = include/base/Watcher.h; sourceTree = "<group>"; };
 		0306579315B54DF300C9D5AC /* Task_WorkerTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Task_WorkerTest.cpp; sourceTree = "<group>"; };
 		03324AF215B23A1400D062EE /* Task_QueueTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Task_QueueTest.cpp; sourceTree = "<group>"; };
 		0337E36F14C0168200D6339A /* Renderer_shadow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer_shadow.mm; sourceTree = "<group>"; };
@@ -190,6 +191,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0305264E15BD2A280043238C /* base */ = {
+			isa = PBXGroup;
+			children = (
+				0305265015BD2A800043238C /* Watcher.h */,
+			);
+			name = base;
+			sourceTree = "<group>";
+		};
 		0337E37814C234DB00D6339A /* core */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +237,7 @@
 		033B325A153FEF6000AEFF6A /* include */ = {
 			isa = PBXGroup;
 			children = (
+				0305264E15BD2A280043238C /* base */,
 				03386F801597AAFB0077986E /* tasks */,
 				038DC2081542A0EC000EBD8D /* Loop.h */,
 				038DC2091542A0EC000EBD8D /* ThreadOwner.h */,

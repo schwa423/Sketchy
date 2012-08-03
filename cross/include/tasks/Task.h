@@ -15,6 +15,8 @@
 
 #include <iostream>
 
+#include "base/Watcher.h"
+
 namespace Sketchy {
 namespace Task {
 
@@ -30,9 +32,10 @@ public:
 };
 
 
+
 class Queue;
 
-class Task : public TaskObserver, public std::enable_shared_from_this<Task> {
+class Task : public std::enable_shared_from_this<Task> {
 public:
 	// Called by user code when the task is no longer necessary.
     // Doesn't interrupt the task immediately if it is currently
@@ -50,17 +53,15 @@ public:
     // Is the task in a terminal state (Done, Cancel, or Error)?
     bool isSettled()   { return _state >= Done; }
 
-    // "Inherited" from TaskObserver; subclasses must implement.
-    // Called when changes occur in prerequisites.
-  	virtual void taskDone(const TaskPtr& task) = 0;
-    virtual void taskCancel(const TaskPtr& task) = 0;
-    virtual void taskError(const TaskPtr& task) = 0;
-
 protected:
-    Task() : _state(Ready), _queue(nullptr) { }
+    Task() : _state(Ready), _queue(nullptr), _prereqs(*this), _prereqs_remaining(0) { }
+    virtual ~Task() {
+        // TODO: mutex lock
+        _prereqs.stopWatching();
+    }
+
     // Called by static New() function of subclasses.
     void Init(std::vector<TaskPtr>& prereqs);
-    void Init(std::vector<TaskPtr>&& prereqs);
 
     // Subclasses must call precisely one of these during each invocation of Task.run()
     void done();
@@ -94,10 +95,10 @@ private:
 	// Called by Worker to do some work.
 	void work();
 
-    std::vector<TaskPtr> _prereqs;
+    void addWatcher(TaskObserver* watcher);
+    void removeWatcher(TaskObserver* watcher);
 
-    void addObserver(std::shared_ptr<TaskObserver>&& observer);
-    std::vector<std::weak_ptr<TaskObserver>> _observers;
+    std::set<TaskObserver*> _watchers;
 
     std::mutex _mutex;
     State _state;
@@ -106,6 +107,24 @@ private:
     bool _endRun;
 
     Queue* _queue;
+
+    class Prereqs : public Watcher<Task, Task, TaskObserver> {
+     public:
+        Prereqs(Task& owner) : Watcher<Task, Task, TaskObserver>(owner) { }
+        virtual ~Prereqs();
+
+        virtual void taskDone(const TaskPtr& task)   { ignore(task); _owner->prereqDone(task);   }
+        virtual void taskCancel(const TaskPtr& task) { ignore(task); _owner->prereqCancel(task); }
+        virtual void taskError(const TaskPtr& task)  { ignore(task); _owner->prereqError(task);  }
+    };
+    friend class Watcher<Task,Task, TaskObserver>;
+    friend class Prereqs;
+    Prereqs _prereqs;
+    int _prereqs_remaining;
+
+    void prereqDone(const TaskPtr& task);
+    void prereqCancel(const TaskPtr& task);
+    void prereqError(const TaskPtr& task);
     
 }; // class Task
 

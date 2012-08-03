@@ -19,10 +19,11 @@ using namespace Sketchy::Task;
 
 class TestTask : public Task {
  public:
-    static TaskPtr New(std::vector<TaskPtr>&& prereqs) {
+    TestTask() : Task(), shouldYield(false) { }
+
+    static TaskPtr New(std::vector<TaskPtr>& prereqs) {
         TaskPtr ptr = std::make_shared<TestTask>();
-        // TODO:  aaaaargh!  It hurts my eyes!
-        std::dynamic_pointer_cast<TestTask>(ptr)->Init(std::forward<std::vector<TaskPtr>>(prereqs));
+        dynamic_cast<TestTask*>(ptr.get())->Init(prereqs);
         return ptr;
     }
 
@@ -32,48 +33,51 @@ class TestTask : public Task {
         return ptr;
     }
 
+    virtual ~TestTask() { }
 
     virtual void run() {
-        done();
+        if (shouldYield) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            shouldYield = false;
+            yield();
+        } else {
+            done();
+        }
     }
-
-    // TODO: these should have defaults implemented in Task, dealing with prereq
-    // fulfillment and so-forth.
-    virtual void taskDone(const TaskPtr& task) { }
-    virtual void taskCancel(const TaskPtr& task) {  }
-    virtual void taskError(const TaskPtr& task) { }
 
     int index;
 
  protected:
-    void Init(std::vector<TaskPtr>&& prereqs) {
-        Task::Init(std::forward<std::vector<TaskPtr>>(std::forward<std::vector<TaskPtr>>(prereqs)));
+    void Init(std::vector<TaskPtr>& prereqs) {
         index = -1;
+        int count = prereqs.size();
+        Task::Init(prereqs);
     }
     void Init(int i) {
         index = i;
     }
+
+    bool shouldYield;
 };
 
 TEST(WorkerTest, SimpleCreation) {
     std::shared_ptr<Queue> queue(new Queue());
-    Worker w(queue, 3);
+
+    Worker w(queue, 1);
 
     std::vector<TaskPtr> prereqs;
-    for (int i = 0; i < 1000; i++) {
-        prereqs.push_back(TaskPtr(TestTask::New(i)));
+    for (int i = 0; i < 10000; i++) {
+        prereqs.push_back(TestTask::New(i));
         queue->add(prereqs[i]);
     }
-    cerr << "FINISHED ENQUEUING PREREQ TASKS" << endl;
-    TaskPtr final = TestTask::New(std::move(prereqs));
-    cerr << "CREATED FINAL TASK" << endl;
+
+    TaskPtr final = TestTask::New(prereqs);
+
     queue->add(final);
-    cerr << "FINISHED ENQUEUING FINAL TASK" << endl;
 
     while(!final->isSettled()) {
-
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
-    cerr << "DONE" << endl;
 }
 
 

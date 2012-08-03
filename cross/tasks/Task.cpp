@@ -8,6 +8,8 @@
 
 #include <stdexcept>
 #include <iostream>
+using std::cerr;
+using std::endl;
 
 #include "Task.h"
 #include "Queue.h"
@@ -22,24 +24,25 @@ typedef std::lock_guard<std::mutex> lock_guard;
 namespace Sketchy {
 namespace Task {
 
+    // Task::Prereqs /////////////////////////////////////////////////////
+
+    Task::Prereqs::~Prereqs() {
+        stopWatching();
+    };
+
+    // Task //////////////////////////////////////////////////////////////
+
     void Task::Init(std::vector<TaskPtr>& prereqs) {
+        lock_guard lock(_mutex);
         _state = Wait;
-        _prereqs = prereqs;
-        TaskPtr me = shared_from_this();
-        for (auto pre: _prereqs) pre->addObserver(me);
+        _prereqs_remaining = prereqs.size();
+        for (TaskPtr& pre: prereqs) {
+            _prereqs.watch(pre);
+        }
     }
 
 
-    void Task::Init(std::vector<TaskPtr>&& prereqs) {
-        _state = Wait;
-        // TODO: good god this is ugly
-        _prereqs = std::forward<std::vector<TaskPtr>>(prereqs);
-        TaskPtr me = shared_from_this();
-        for (auto pre: _prereqs) pre->addObserver(me);
-    }
-
-
-    void Task::addObserver(std::shared_ptr<TaskObserver>&& observer) {
+    void Task::addWatcher(TaskObserver* watcher) {
         {
             lock_guard lock(_mutex);
             switch(_state) {
@@ -50,7 +53,7 @@ namespace Task {
                     // (but outside of the critical section)
                     break;
                 default:
-                    _observers.push_back(observer);
+                    _watchers.insert(watcher);
                     return;
             }
         }
@@ -60,18 +63,23 @@ namespace Task {
         // had been registered before entering the state).
         switch(_state) {
             case Done:
-                observer->taskDone(shared_from_this());
+                watcher->taskDone(shared_from_this());
                 break;
             case Cancel:
-                observer->taskCancel(shared_from_this());
+                watcher->taskCancel(shared_from_this());
                 break;
             case Error:
-                observer->taskError(shared_from_this());
+                watcher->taskError(shared_from_this());
                 break;
             default:
                 // Other cases were handled within critical section.
                 break;
         }
+    }
+
+
+    void Task::removeWatcher(TaskObserver* watcher) {
+        _watchers.erase(watcher);
     }
 
 
@@ -133,16 +141,18 @@ namespace Task {
         _queue->taskYielded(shared_from_this());
     }
 
+
     // Macro to reduce boilerplate in the methods below.
-#define NOTIFY_OBSERVERS(METHOD_NAME)             \
-    if (!_observers.empty()) {                   \
-        auto me = shared_from_this();             \
-        for (auto weak: _observers) {            \
-            auto strong = weak.lock();            \
-            if (strong) strong->METHOD_NAME(me);  \
-        }                                         \
-        _observers.clear();                      \
-    }                                             
+#define NOTIFY_WATCHERS(METHOD_NAME)             \
+    cerr << "notifying " << _watchers.size() << " WATCHERS" << endl; \
+    if (_watchers.empty()) return;               \
+    std::set<TaskObserver*> watchers(_watchers); \
+    _watchers.clear();                           \
+    auto me = shared_from_this();                \
+    for (auto watcher: watchers) {               \
+        watcher->METHOD_NAME(me);                \
+    }
+
 
     void Task::done() {
         if (_endRun) throw std::logic_error("done(): _endRun was already set");
@@ -155,7 +165,7 @@ namespace Task {
             else _state = Done;
         }
 
-        NOTIFY_OBSERVERS(taskDone);
+        NOTIFY_WATCHERS(taskDone);
     }
 
 
@@ -170,7 +180,7 @@ namespace Task {
             else _state = Error;
         }
 
-        NOTIFY_OBSERVERS(taskError);
+        NOTIFY_WATCHERS(taskError);
     }
 
 
@@ -190,7 +200,46 @@ namespace Task {
                 break;
         }
 
-        NOTIFY_OBSERVERS(taskCancel);        
+        NOTIFY_WATCHERS(taskCancel);
+    }
+
+
+    void Task::prereqDone(const TaskPtr& task) {
+        {
+            lock_guard lock(_mutex);
+            cerr << "PREREQS REMAINING: " << _prereqs_remaining << endl;
+            if (--_prereqs_remaining > 0) return;
+
+            // No more prereqs left... perhaps it's time
+            // to switch from Wait to Ready?
+            switch(_state) {
+                case Done:
+                case Cancel:
+                case Error:
+                    // Already in a terminal state
+                    return;
+                case Wait:
+                    _state = Ready;
+                    if (_queue == nullptr) return;
+                    break;
+                default:
+                    throw std::logic_error("prereqDone(): should be in Wait state");
+                    return;
+            }
+        }
+        // If we made it this far, we are now Ready and should enqueue ourself.
+        _queue->add(shared_from_this());
+    }
+
+
+    void Task::prereqCancel(const TaskPtr& task) {
+        cancel();
+    }
+
+
+    void Task::prereqError(const TaskPtr& task) {
+        // TODO: maybe error?
+        cancel();
     }
 
 #undef NOTIFY_OBSERVERS
