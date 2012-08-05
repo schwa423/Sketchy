@@ -119,6 +119,7 @@
 		0369557D14B57674001F42F4 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
 		0372821814C2C66A00819593 /* Page.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Page.mm; sourceTree = "<group>"; };
 		0372821B14C2CB6700819593 /* Page_shadow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Page_shadow.mm; path = shadow/Page_shadow.mm; sourceTree = "<group>"; };
+		0378F60515CBD9DD0083C230 /* Gists_SharedPointersWithClassHierarchy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Gists_SharedPointersWithClassHierarchy.h; path = include/gists/Gists_SharedPointersWithClassHierarchy.h; sourceTree = "<group>"; };
 		037C553614B14A1F00355B6D /* EAGLViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLViewController.mm; sourceTree = "<group>"; };
 		038DC1F41542A05A000EBD8D /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		038DC1F51542A05A000EBD8D /* Fence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fence.h; sourceTree = "<group>"; };
@@ -237,6 +238,7 @@
 		033B325A153FEF6000AEFF6A /* include */ = {
 			isa = PBXGroup;
 			children = (
+				0378F60415CBD9610083C230 /* gists */,
 				0305264E15BD2A280043238C /* base */,
 				03386F801597AAFB0077986E /* tasks */,
 				038DC2081542A0EC000EBD8D /* Loop.h */,
@@ -367,6 +369,14 @@
 				03594B721544383A00C090AD /* Flow.cpp */,
 			);
 			name = flow;
+			sourceTree = "<group>";
+		};
+		0378F60415CBD9610083C230 /* gists */ = {
+			isa = PBXGroup;
+			children = (
+				0378F60515CBD9DD0083C230 /* Gists_SharedPointersWithClassHierarchy.h */,
+			);
+			name = gists;
 			sourceTree = "<group>";
 		};
 		038DC1F31542A05A000EBD8D /* events */ = {
