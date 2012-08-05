@@ -15,6 +15,7 @@ using std::endl;
 #include "Queue.h"
 
 typedef std::lock_guard<std::mutex> lock_guard;
+typedef std::unique_lock<std::mutex> unique_lock;
 
 // TODO: things to test:
 //  - error if run doesn't call done(), yield(), or error()
@@ -24,25 +25,53 @@ typedef std::lock_guard<std::mutex> lock_guard;
 namespace Sketchy {
 namespace Task {
 
-    // Task::Prereqs /////////////////////////////////////////////////////
-
-    Task::Prereqs::~Prereqs() {
-        stopWatching();
-    };
-
-    // Task //////////////////////////////////////////////////////////////
-
     void Task::Init(std::vector<TaskPtr>& prereqs) {
+        _state = Ready;
+        if (prereqs.empty()) return;
+
+        // Lock ourself in case any prereqs that we register
+        // with below terminate before we're done initializing.
         lock_guard lock(_mutex);
-        _state = Wait;
-        _prereqs_remaining = prereqs.size();
+
+        // One weak_ptr to pass to all prereqs; it will be copied
+        // into their observer list anyway.
+        TaskObserver::weak_ptr me = std::dynamic_pointer_cast<TaskObserver>(shared_from_this());
+
+        // Iterate through the list of (potential) prereqs;
+        // update appropriately based on the state of each prereq.
         for (TaskPtr& pre: prereqs) {
-            _prereqs.watch(pre);
+            lock_guard lock_prereq(pre->_mutex);
+            switch(pre->_state) {
+                case Done:
+                    // Don't need to wait for the prereq to finish,
+                    // because it is already done.
+                    break;
+                case Cancel:
+                    // If any prereqs are cancelled or erroneous,
+                    // then so are we.  Don't bother adding any
+                    // additional prereqs.
+                    _state = Cancel;
+                    return;
+                case Error:
+                    // See comment for "Cancel", above.
+                    _state = Error;
+                    return;
+                default:
+                    // Prereq is not in a terminal state, so add it to the list
+                    // of prereqs to wait for (and us to its list of observers).
+                    _state = Wait;
+                    _prereqs.insert(pre);
+                    // We don't call addObserver() here, because it's cleaner
+                    // to handle ourself any prereqs that are already in a
+                    // terminal state (see the cases above).
+                    pre->_observers.push_back(me);
+            }
         }
+        _prereqs_remaining = _prereqs.size();
     }
 
 
-    void Task::addWatcher(TaskObserver* watcher) {
+    void Task::addObserver(const TaskObserver::weak_ptr& observer) {
         {
             lock_guard lock(_mutex);
             switch(_state) {
@@ -53,7 +82,7 @@ namespace Task {
                     // (but outside of the critical section)
                     break;
                 default:
-                    _watchers.insert(watcher);
+                    _observers.push_back(observer);
                     return;
             }
         }
@@ -61,25 +90,22 @@ namespace Task {
         // Immediately notify the observer that the task
         // is in a terminal state (similar to if the observer
         // had been registered before entering the state).
+        auto strong = observer.lock();
+        if (!strong) return;
         switch(_state) {
             case Done:
-                watcher->taskDone(shared_from_this());
+                strong->taskDone(shared_from_this());
                 break;
             case Cancel:
-                watcher->taskCancel(shared_from_this());
+                strong->taskCancel(shared_from_this());
                 break;
             case Error:
-                watcher->taskError(shared_from_this());
+                strong->taskError(shared_from_this());
                 break;
             default:
                 // Other cases were handled within critical section.
                 break;
         }
-    }
-
-
-    void Task::removeWatcher(TaskObserver* watcher) {
-        _watchers.erase(watcher);
     }
 
 
@@ -113,7 +139,8 @@ namespace Task {
         try {
             run();
         } catch (std::logic_error e) {
-            // Error in our code... propagate up for someone else to handle (probably log/barf).
+            // Error in our code... propagate up for someone else to handle.
+            // TODO: should probably log here, though
             throw e;
         } catch(...) {
             // TODO: add descriptive argument
@@ -126,6 +153,8 @@ namespace Task {
     }
 
 
+    // Subclasses must call precisely one of done(), yield(), or error()
+    // during each invocation of run().
     void Task::yield() {
         if (_endRun) throw std::logic_error("yield(): _endRun was already set");
         _endRun = true;
@@ -143,49 +172,49 @@ namespace Task {
 
 
     // Macro to reduce boilerplate in the methods below.
-#define NOTIFY_WATCHERS(METHOD_NAME)             \
-    cerr << "notifying " << _watchers.size() << " WATCHERS" << endl; \
-    if (_watchers.empty()) return;               \
-    std::set<TaskObserver*> watchers(_watchers); \
-    _watchers.clear();                           \
-    auto me = shared_from_this();                \
-    for (auto watcher: watchers) {               \
-        watcher->METHOD_NAME(me);                \
+#define NOTIFY_OBSERVERS(METHOD_NAME)                                       \
+    if (_observers.empty()) return;                                        \
+    std::vector<TaskObserver::weak_ptr> observers(std::move(_observers));  \
+    _observers.clear();                                                    \
+    lock.unlock();                                                         \
+    auto me = shared_from_this();                                          \
+    for (auto weak: observers) {                                           \
+        auto o = weak.lock();                                              \
+        if (o.get()) o->METHOD_NAME(me);                                   \
     }
 
-
+    // Subclasses must call precisely one of done(), yield(), or error()
+    // during each invocation of run().
     void Task::done() {
         if (_endRun) throw std::logic_error("done(): _endRun was already set");
         _endRun = true;
 
         // Change state, unless already cancelled.
-        {
-            lock_guard lock(_mutex);
-            if (_state == Cancel) return;
-            else _state = Done;
-        }
+        unique_lock lock(_mutex);
+        if (_state == Cancel) return;
+        else _state = Done;
 
-        NOTIFY_WATCHERS(taskDone);
+        NOTIFY_OBSERVERS(taskDone);
     }
 
 
+    // Subclasses must call precisely one of done(), yield(), or error()
+    // during each invocation of run().
     void Task::error() {
         if (_endRun) std::logic_error("error(): _endRun was already set");
         _endRun = true;
 
         // Change state, unless already cancelled.
-        {
-            lock_guard lock(_mutex);
-            if (_state == Cancel) return;
-            else _state = Error;
-        }
+        unique_lock lock(_mutex);
+        if (_state == Cancel) return;
+        else _state = Error;
 
-        NOTIFY_WATCHERS(taskError);
+        NOTIFY_OBSERVERS(taskError);
     }
 
 
     void Task::cancel() {
-        lock_guard lock(_mutex);
+        unique_lock lock(_mutex);
 
         switch(_state) {
             case Done:
@@ -200,14 +229,15 @@ namespace Task {
                 break;
         }
 
-        NOTIFY_WATCHERS(taskCancel);
+        NOTIFY_OBSERVERS(taskCancel);
     }
 
+#undef NOTIFY_OBSERVERS
 
-    void Task::prereqDone(const TaskPtr& task) {
+
+    void Task::taskDone(const TaskPtr& task) {
         {
             lock_guard lock(_mutex);
-            cerr << "PREREQS REMAINING: " << _prereqs_remaining << endl;
             if (--_prereqs_remaining > 0) return;
 
             // No more prereqs left... perhaps it's time
@@ -232,17 +262,16 @@ namespace Task {
     }
 
 
-    void Task::prereqCancel(const TaskPtr& task) {
+    void Task::taskCancel(const TaskPtr& task) {
         cancel();
     }
 
 
-    void Task::prereqError(const TaskPtr& task) {
-        // TODO: maybe error?
+    void Task::taskError(const TaskPtr& task) {
+        // TODO: or perhaps error()?
         cancel();
     }
 
-#undef NOTIFY_OBSERVERS
 
 } // namespace Task {
 } // namespace Sketchy {

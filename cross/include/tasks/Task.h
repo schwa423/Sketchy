@@ -15,8 +15,6 @@
 
 #include <iostream>
 
-#include "base/Watcher.h"
-
 namespace Sketchy {
 namespace Task {
 
@@ -26,17 +24,29 @@ typedef std::shared_ptr<Task> TaskPtr;
 // Interface used to observe changes in a task's state.
 class TaskObserver {
 public:
+    typedef std::shared_ptr<TaskObserver> ptr;
+    typedef std::weak_ptr<TaskObserver> weak_ptr;
+
     virtual void taskDone(const TaskPtr& task) = 0;
     virtual void taskCancel(const TaskPtr& task) = 0;
     virtual void taskError(const TaskPtr& task) = 0;
 };
 
 
-
 class Queue;
 
-class Task : public std::enable_shared_from_this<Task> {
+// Note: I would rather make TaskObserver a protected base class,
+//       and to cast shared_from_this() to shared_ptr<TaskObserver>.
+//       The goal is POLA... I don't want just anyone with a ref to
+//       a Task to call these TaskObserver methods on it.  However,
+//       C++ disallows this... why?  Probably for some "good" reason,
+//       but yet again it gets in the way of a perfectly reasonable
+//       use-case.
+class Task : public TaskObserver, public std::enable_shared_from_this<Task> {
 public:
+    typedef std::shared_ptr<Task> ptr;
+    typedef std::weak_ptr<Task> weak_ptr;
+
 	// Called by user code when the task is no longer necessary.
     // Doesn't interrupt the task immediately if it is currently
     // running; instead waits for it to finish or yield.  Has no
@@ -53,17 +63,26 @@ public:
     // Is the task in a terminal state (Done, Cancel, or Error)?
     bool isSettled()   { return _state >= Done; }
 
+    void addObserver(const TaskObserver::weak_ptr& observer);
+
+    // A prereq was finished, cancelled, or encountered an error.
+    // NOTE: should only be called by a task that we have registered
+    // ourself with as a TaskObserver, but I couldn't figure out how
+    // to enforce this with the C++ type system (ideally, I would
+    // make TaskObserver a protected base class, but then I can't
+    // upcast myself to TaskObserver... grrr).
+    virtual void taskDone(const TaskPtr& task);
+    virtual void taskCancel(const TaskPtr& task);
+    virtual void taskError(const TaskPtr& task);
+
 protected:
-    Task() : _state(Ready), _queue(nullptr), _prereqs(*this), _prereqs_remaining(0) { }
-    virtual ~Task() {
-        // TODO: mutex lock
-        _prereqs.stopWatching();
-    }
+    Task() : _state(Ready), _queue(nullptr), _prereqs_remaining(0) { }
+    virtual ~Task() { }
 
     // Called by static New() function of subclasses.
     void Init(std::vector<TaskPtr>& prereqs);
 
-    // Subclasses must call precisely one of these during each invocation of Task.run()
+    // Subclasses must call precisely one of these during each invocation of run().
     void done();
     void yield();
     void error();
@@ -95,11 +114,6 @@ private:
 	// Called by Worker to do some work.
 	void work();
 
-    void addWatcher(TaskObserver* watcher);
-    void removeWatcher(TaskObserver* watcher);
-
-    std::set<TaskObserver*> _watchers;
-
     std::mutex _mutex;
     State _state;
 
@@ -108,24 +122,10 @@ private:
 
     Queue* _queue;
 
-    class Prereqs : public Watcher<Task, Task, TaskObserver> {
-     public:
-        Prereqs(Task& owner) : Watcher<Task, Task, TaskObserver>(owner) { }
-        virtual ~Prereqs();
-
-        virtual void taskDone(const TaskPtr& task)   { ignore(task); _owner->prereqDone(task);   }
-        virtual void taskCancel(const TaskPtr& task) { ignore(task); _owner->prereqCancel(task); }
-        virtual void taskError(const TaskPtr& task)  { ignore(task); _owner->prereqError(task);  }
-    };
-    friend class Watcher<Task,Task, TaskObserver>;
-    friend class Prereqs;
-    Prereqs _prereqs;
     int _prereqs_remaining;
+    std::set<TaskPtr> _prereqs;
+    std::vector<TaskObserver::weak_ptr> _observers;
 
-    void prereqDone(const TaskPtr& task);
-    void prereqCancel(const TaskPtr& task);
-    void prereqError(const TaskPtr& task);
-    
 }; // class Task
 
 

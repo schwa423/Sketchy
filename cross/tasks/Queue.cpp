@@ -97,7 +97,7 @@ namespace Task {
 
 
     void Queue::add(TaskPtr& task) {
-        lock_guard taskLock(task->_mutex);
+        lock_guard t(task->_mutex);
 
         // Tasks can't change queues.
         assert(task->_queue == nullptr || task->_queue == this);
@@ -113,7 +113,7 @@ namespace Task {
 
 
     void Queue::add(TaskPtr&& task) {
-        lock_guard taskLock(task->_mutex);
+        lock_guard t(task->_mutex);
         if (task->_state != Task::Ready) return;
 
         lock_guard lock(_mutex);
@@ -133,7 +133,7 @@ namespace Task {
 
 
     void Queue::taskYielded(TaskPtr&& task) {
-        lock_guard taskLock(task->_mutex);
+        lock_guard t(task->_mutex);
         if (task->_state != Task::Ready) return;
 
         lock_guard lock(_mutex);
