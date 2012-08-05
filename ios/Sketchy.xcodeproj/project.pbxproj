@@ -73,11 +73,6 @@
 		0306579315B54DF300C9D5AC /* Task_WorkerTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Task_WorkerTest.cpp; sourceTree = "<group>"; };
 		03324AF215B23A1400D062EE /* Task_QueueTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Task_QueueTest.cpp; sourceTree = "<group>"; };
 		0337E36F14C0168200D6339A /* Renderer_shadow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer_shadow.mm; sourceTree = "<group>"; };
-		03386F7A1597A9CA0077986E /* Framebuffer_shadow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Framebuffer_shadow.h; path = include/shadow/Framebuffer_shadow.h; sourceTree = "<group>"; };
-		03386F7B1597A9CA0077986E /* Page_shadow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Page_shadow.h; path = include/shadow/Page_shadow.h; sourceTree = "<group>"; };
-		03386F7C1597A9CA0077986E /* Renderer_shadow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Renderer_shadow.h; path = include/shadow/Renderer_shadow.h; sourceTree = "<group>"; };
-		03386F7D1597A9CA0077986E /* Shadow_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Shadow_impl.h; path = include/shadow/Shadow_impl.h; sourceTree = "<group>"; };
-		03386F7E1597A9CA0077986E /* Shadow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Shadow.h; path = include/shadow/Shadow.h; sourceTree = "<group>"; };
 		03386F811597AB3B0077986E /* Task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Task.h; path = include/tasks/Task.h; sourceTree = "<group>"; };
 		03386F821597AB610077986E /* Queue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = include/tasks/Queue.h; sourceTree = "<group>"; };
 		03386F831597AB8C0077986E /* Worker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Worker.h; path = include/tasks/Worker.h; sourceTree = "<group>"; };
@@ -430,11 +425,6 @@
 		03F1483114BA2CFB0036EF9B /* shadow */ = {
 			isa = PBXGroup;
 			children = (
-				03386F7A1597A9CA0077986E /* Framebuffer_shadow.h */,
-				03386F7B1597A9CA0077986E /* Page_shadow.h */,
-				03386F7C1597A9CA0077986E /* Renderer_shadow.h */,
-				03386F7D1597A9CA0077986E /* Shadow_impl.h */,
-				03386F7E1597A9CA0077986E /* Shadow.h */,
 				03F1483214BA2D250036EF9B /* Framebuffer_shadow.mm */,
 				0337E36F14C0168200D6339A /* Renderer_shadow.mm */,
 				0372821B14C2CB6700819593 /* Page_shadow.mm */,
