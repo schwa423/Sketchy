@@ -54,8 +54,11 @@ namespace Shadow {
 	void
 	Page::draw()
 	{
-		static int renderCount = 0;
-		if (++renderCount % 256 == 0) { renderCount = 0; }
+		static int renderCount = 1;
+		static int direction = -1;
+
+        renderCount += direction;
+        if (renderCount == 0 || renderCount == 255) direction *= -1;
 
 		if (!m_framebuffer || !m_geometry || !m_shader) return;
 

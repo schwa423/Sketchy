@@ -30,6 +30,8 @@ private:
 	// hack
 	GLfloat m_colorVal[4];
 	GLuint m_color;
+	GLfloat m_timeEtcVal[4];
+	GLuint m_timeEtc;
 
 }; // class Shader
 

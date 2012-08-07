@@ -42,7 +42,7 @@ public:
 
 private:
     void generateStroke() {
-        int vertex_count = 250;
+        int vertex_count = 1250;
         m_count = (vertex_count-2) * 3;
 
         float start_angle = M_PI*7/6;

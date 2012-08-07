@@ -69,7 +69,7 @@ class Arc {
 
     // Total length of arc.
     float length() const {
-        return M_PI * 2 * fabs(end_radians - start_radians);
+        return M_PI * 2 * fabs(end_radians - start_radians) * radius;
     }
 
     // 2d cartesian position of start of arc.

@@ -16,34 +16,36 @@ using std::endl;
 #include "Geometry.h"
 
 static const char *s_vertex_stroke = 
-	"attribute vec4 posAndNorm;						\n"
-	"attribute vec4 lengthEtc;						\n"
-	"uniform vec4 colorIn;							\n"
-	"varying vec4 color;							\n"
-	"void main()									\n"
-	"{												\n"
-	"	vec2 pos = posAndNorm.xy;					\n"
-	"	vec2 norm = posAndNorm.zw;					\n"
-	"	gl_Position.xy = (pos + 10.0*norm) / 150.0;	\n"
-	"   gl_Position.z = 0.0;						\n"
-	"	gl_Position.w = 1.0;						\n"
-	"	color = colorIn;							\n"
-	"}												\n";
+	"attribute vec4 posAndNorm;                                \n"
+	"attribute vec4 lengthEtc;                                 \n"
+	"uniform vec4 colorIn;                                     \n"
+	"varying vec4 color;                                       \n"
+	"uniform vec4 timeEtc;                                     \n"
+	"void main()                                               \n"
+	"{                                                         \n"
+	"	float width = (cos(timeEtc.x*12.0 + lengthEtc.x*2.0) + 3.0) * 3.0; \n"
+	"	vec2 pos = posAndNorm.xy;                              \n"
+	"	vec2 norm = posAndNorm.zw * vec2(width);               \n"
+	"	gl_Position.xy = (pos + norm) / 150.0;	                 \n"
+	"	gl_Position.z = 0.0;                                   \n"
+	"	gl_Position.w = 1.0;                                   \n"
+	"	color = colorIn;                                       \n"
+	"}                                                         \n";
 
 static const char *s_vertex_tri = 
-	"attribute vec4 pos;							\n"
-	"varying vec4 color;							\n"
-	"void main()									\n"
+	"attribute vec4 pos;								\n"
+	"varying vec4 color;								\n"
+	"void main()										\n"
 	"{												\n"
 	"   gl_Position = pos;							\n"
-	"	color = vec4(1.0, 0.0, 0.0, 1.0);			\n"
+	"	color = vec4(1.0, 0.0, 0.0, 1.0);				\n"
 	"}												\n";
 
 static const char *s_fragment =
-	"varying lowp vec4 color;						\n"
-	"void main()									\n"
+	"varying lowp vec4 color;							\n"
+	"void main()										\n"
 	"{												\n"
-	"	gl_FragColor = color;						\n"
+	"	gl_FragColor = color;							\n"
 	"}												\n";
 
 
@@ -135,6 +137,12 @@ Shader::Shader() {
 	m_colorVal[1] = 1.0;
 	m_colorVal[2] = 0.0;
 	m_colorVal[3] = 1.0;
+
+	m_timeEtc = glGetUniformLocation(m_program, "timeEtc");
+	m_timeEtcVal[0] = 0.0;
+	m_timeEtcVal[1] = 0.0;
+	m_timeEtcVal[2] = 0.0;
+	m_timeEtcVal[3] = 0.0;
 }
 
 Shader::~Shader() {
@@ -150,6 +158,8 @@ Shader::bind() {
 
 	// TODO: remove this stroke-specific hack
 	glUniform4fv(m_color, 1, m_colorVal);
+    m_timeEtcVal[0] += 1.0/60.0;
+    glUniform4fv(m_timeEtc, 1, m_timeEtcVal);
 }
 
 } // namespace Sketchy
