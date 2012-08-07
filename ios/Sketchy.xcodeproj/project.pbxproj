@@ -63,6 +63,8 @@
 		03F1482C14B6F3310036EF9B /* MultisampleFramebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1482B14B6F3310036EF9B /* MultisampleFramebuffer.cpp */; };
 		03F1482F14BA278C0036EF9B /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1482E14BA278C0036EF9B /* Camera.cpp */; };
 		03F1483314BA2D250036EF9B /* Framebuffer_shadow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F1483214BA2D250036EF9B /* Framebuffer_shadow.mm */; };
+		03F1E97015CF413700E6E1DA /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1E96E15CF413700E6E1DA /* Arc.cpp */; };
+		03F1E97115CF413700E6E1DA /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1E96E15CF413700E6E1DA /* Arc.cpp */; };
 		03F4878B14C4EE8A0065D187 /* ShadowTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F4878914C4ECCB0065D187 /* ShadowTest.cpp */; };
 		03FFFF3714A1E1CF0012FB3F /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03FFFF3414A1E1CF0012FB3F /* gtest-all.cc */; };
 		03FFFF3814A1E1CF0012FB3F /* LoopTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03FFFF3514A1E1CF0012FB3F /* LoopTest.cpp */; };
@@ -155,6 +157,8 @@
 		03F1482B14B6F3310036EF9B /* MultisampleFramebuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultisampleFramebuffer.cpp; sourceTree = "<group>"; };
 		03F1482E14BA278C0036EF9B /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		03F1483214BA2D250036EF9B /* Framebuffer_shadow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Framebuffer_shadow.mm; path = shadow/Framebuffer_shadow.mm; sourceTree = "<group>"; };
+		03F1E96C15CEE5FC00E6E1DA /* Arc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Arc.h; path = include/geom/Arc.h; sourceTree = "<group>"; };
+		03F1E96E15CF413700E6E1DA /* Arc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Arc.cpp; path = geom/Arc.cpp; sourceTree = "<group>"; };
 		03F4878914C4ECCB0065D187 /* ShadowTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShadowTest.cpp; sourceTree = "<group>"; };
 		03FFFF3414A1E1CF0012FB3F /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gtest-all.cc"; sourceTree = "<group>"; };
 		03FFFF3514A1E1CF0012FB3F /* LoopTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoopTest.cpp; sourceTree = "<group>"; };
@@ -233,6 +237,7 @@
 		033B325A153FEF6000AEFF6A /* include */ = {
 			isa = PBXGroup;
 			children = (
+				03F1E96A15CEE59900E6E1DA /* geom */,
 				0378F60415CBD9610083C230 /* gists */,
 				0305264E15BD2A280043238C /* base */,
 				03386F801597AAFB0077986E /* tasks */,
@@ -327,6 +332,7 @@
 		033E762B146E76E8008896D5 /* cross */ = {
 			isa = PBXGroup;
 			children = (
+				03F1E96D15CF410B00E6E1DA /* geom */,
 				03386F841597ABCE0077986E /* tasks */,
 				03594B6E1544377200C090AD /* flow */,
 				033B325A153FEF6000AEFF6A /* include */,
@@ -430,6 +436,22 @@
 				0372821B14C2CB6700819593 /* Page_shadow.mm */,
 			);
 			name = shadow;
+			sourceTree = "<group>";
+		};
+		03F1E96A15CEE59900E6E1DA /* geom */ = {
+			isa = PBXGroup;
+			children = (
+				03F1E96C15CEE5FC00E6E1DA /* Arc.h */,
+			);
+			name = geom;
+			sourceTree = "<group>";
+		};
+		03F1E96D15CF410B00E6E1DA /* geom */ = {
+			isa = PBXGroup;
+			children = (
+				03F1E96E15CF413700E6E1DA /* Arc.cpp */,
+			);
+			name = geom;
 			sourceTree = "<group>";
 		};
 		03FFFF3214A1E10C0012FB3F /* tests */ = {
@@ -583,6 +605,7 @@
 				03386F861597ABF80077986E /* Task.cpp in Sources */,
 				03386F891597AC080077986E /* Queue.cpp in Sources */,
 				03386F8C1597AC2F0077986E /* Worker.cpp in Sources */,
+				03F1E97015CF413700E6E1DA /* Arc.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,6 +629,7 @@
 				03386F8D1597AC2F0077986E /* Worker.cpp in Sources */,
 				03324AF315B23A1400D062EE /* Task_QueueTest.cpp in Sources */,
 				0306579415B54DF300C9D5AC /* Task_WorkerTest.cpp in Sources */,
+				03F1E97115CF413700E6E1DA /* Arc.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

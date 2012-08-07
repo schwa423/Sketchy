@@ -61,7 +61,7 @@ namespace Shadow {
 
 		m_framebuffer->bind();
 
-		glViewport(50, 50, 256, 256);
+		glViewport(50, 50, 512, 512);
 
 		GLfloat grey = renderCount / 255.0f;
 		glClearColor(grey, grey, grey, 1.0f);
