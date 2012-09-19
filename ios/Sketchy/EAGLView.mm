@@ -1,4 +1,4 @@
-	//
+//
 //  EAGLView.mm
 //  Sketchy
 //
@@ -10,12 +10,22 @@
 #import <OpenGLES/EAGLDrawable.h>
 #import "EAGLView.h"
 
+#include "renderer_ios.h"
+#include "view.h"
+
+
+// TODO: Un-hardwire this
+#include "pageview.h"
+using namespace schwa::app;
+
+// Old shit. =================
 #include "Renderer.h"
 #include "Framebuffer.h"
 #include "Page.h"
 using Sketchy::Renderer;
 using Sketchy::Framebuffer;
 using Sketchy::Page;
+// End old shit. =============
 
 #import <iostream>
 using std::cerr;
@@ -42,6 +52,38 @@ using std::endl;
 	return [CAEAGLLayer class];
 }
 
+- (BOOL)initOldRenderer:(CAEAGLLayer *)glayer
+{
+    _renderer2 = Renderer::New(glayer);
+    _page2 = Page::New(_renderer2, _renderer2->defaultFramebuffer());
+
+    // Error detection and reporting.
+	if (!_renderer2 || !_page2) {
+		if (!_renderer2) { cerr << "could not instantiate renderer in EAGLView" << endl; }
+		if (!_page2) { cerr << "could not instantiate page in EAGLView" << endl; }
+		_page2.reset();
+		_renderer2.reset();
+		return FALSE;
+	}
+
+	// Hack something in for the renderer to draw.
+	_renderer2->addPage(_page2);
+    return TRUE;
+}
+
+- (BOOL)initRenderer:(CAEAGLLayer *)glayer
+{
+    _renderer = schwa::grfx::Renderer_iOS::New(glayer);
+    if (!_renderer) return FALSE;
+
+    _view = grfx::View::New<sketchy::PageView>(_renderer);
+    if (!_view) return FALSE;
+    _view->setFramebuffer(_renderer->framebuffer());
+//    _renderer->setView(_view);
+
+    return TRUE;
+}
+
 - (id)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
@@ -56,21 +98,12 @@ using std::endl;
 		 nil];
 	self.contentScaleFactor = [[UIScreen mainScreen] scale];
 
-	m_renderer = Renderer::New(glayer);
-	m_page = Page::New(m_renderer, m_renderer->defaultFramebuffer());
-
-	// Error detection and reporting.
-	if (!m_renderer || !m_page) {
-		if (!m_renderer) { cerr << "could not instantiate renderer in EAGLView" << endl; }
-		if (!m_page) { cerr << "could not instantiate page in EAGLView" << endl; }
-		m_page.reset();
-		m_renderer.reset();
-		return nil;
-	}
-
-	// Hack something in for the renderer to draw.
-	m_renderer->addPage(m_page);
-
+   if (![self initOldRenderer:glayer]) {
+//    if (![self initRenderer:glayer]) {
+        cerr << "Failed to initialize renderer" << endl;
+        return nil;
+    }
+    cerr << "Successfully initialized renderer" << endl;
     return self;
 }
 
@@ -84,12 +117,24 @@ using std::endl;
 
 - (void)pauseRendering
 {
-	m_renderer->pauseRendering();
+    if (_renderer.get()) _renderer->pauseRendering();
+    if (_renderer2.get()) _renderer2->pauseRendering();
 }
 
 - (void)unpauseRendering
 {
-	m_renderer->unpauseRendering();
+	if (_renderer.get()) _renderer->unpauseRendering();
+    if (_renderer2.get()) _renderer2->unpauseRendering();
+}
+
+- (shared_ptr<Sketchy::Page>)page2
+{
+    return _page2;
+}
+
+- (shared_ptr<Sketchy::Page>)page
+{
+    return _page2;
 }
 
 

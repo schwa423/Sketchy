@@ -12,9 +12,14 @@
 
 #import "EAGLViewController.h"
 
+#import "TouchHandler.h"
+using Sketchy::Input::Touch;
+
 #include <iostream>
 using std::cerr;
 using std::endl;
+
+#include <vector>
 
 #import "EAGLView.h"
 
@@ -25,7 +30,7 @@ using std::endl;
 // live in the controller...
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    fprintf(stderr, "initializing view-controller\n");
+    cerr << "initializing view-controller" << endl;
 
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -88,32 +93,66 @@ using std::endl;
     }
 }
 
+- (std::vector<Touch>) createTouches:(NSSet*)touches
+{
+    std::vector<Touch> vect;
+    for (UITouch* touch in touches) {
+        CGPoint pt = [touch locationInView: self.view];
+        vect.push_back(Touch(reinterpret_cast<uint64_t>(touch),
+                             pt.x, pt.y,
+                             static_cast<Touch::Phase>(touch.phase - UITouchPhaseBegan),
+                             touch.timestamp, touch.tapCount));
+    }
+    return vect;
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    static long BEGAN = 0;
-    cerr << "TOUCHES BEGAN " << BEGAN++ << endl;
-    [self printTouchInfo: touches];
+    if (_touchHandler.get()) {
+        _touchHandler->touchesBegan([self createTouches: touches]);
+    } else {
+        static long BEGAN = 0;
+        cerr << "TOUCHES BEGAN " << BEGAN++ << "     COUNT: " << [[event allTouches] count] << endl;
+        [self printTouchInfo: touches];
+    }
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    static long MOVED = 0;
-    cerr << "TOUCHES MOVED " << MOVED++ << endl;
-    [self printTouchInfo: touches];
+    if (_touchHandler.get()) {
+        _touchHandler->touchesMoved([self createTouches: touches]);
+    } else {
+        static long MOVED = 0;
+        cerr << "TOUCHES MOVED " << MOVED++ << "     COUNT: " << [[event allTouches] count] << endl;
+        [self printTouchInfo: touches];
+    }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    static long ENDED = 0;
-    cerr << "TOUCHES ENDED " << ENDED++ << endl;
-    [self printTouchInfo: touches];
+    if (_touchHandler.get()) {
+        _touchHandler->touchesEnded([self createTouches: touches]);
+    } else {
+        static long ENDED = 0;
+        cerr << "TOUCHES ENDED " << ENDED++ << "     COUNT: " << [[event allTouches] count] << endl;
+        [self printTouchInfo: touches];
+    }
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    static long CANCELLED = 0;
-    cerr << "TOUCHES CANCELLED " << CANCELLED++ << endl;
-    [self printTouchInfo: touches];
+    if (_touchHandler.get()) {
+        _touchHandler->touchesCancelled([self createTouches: touches]);
+    } else {
+        static long CANCELLED = 0;
+        cerr << "TOUCHES CANCELLED " << CANCELLED++ << endl;
+        [self printTouchInfo: touches];
+    }
+}
+
+- (void)setTouchHandler:(shared_ptr<Sketchy::Input::TouchHandler>)handler
+{
+    _touchHandler = handler;
 }
 
 /*

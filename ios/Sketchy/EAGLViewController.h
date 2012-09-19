@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EAGLViewController : UIViewController
+#import "TouchHandler.h"
 
+#include <memory>
+using std::shared_ptr;
+
+@interface EAGLViewController : UIViewController {
+
+@private
+	shared_ptr<Sketchy::Input::TouchHandler> _touchHandler;
+}
+
+- (void)setTouchHandler:(shared_ptr<Sketchy::Input::TouchHandler>)handler;
 @end

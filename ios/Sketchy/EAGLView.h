@@ -18,14 +18,32 @@ namespace Sketchy {
 	class Page;
 }
 
+// namespace schwa::grfx
+namespace schwa { namespace grfx {
+    class Renderer;
+    class View;
+}}  // namespace schwa::grfx
+using namespace schwa;
+
 @class EAGLContext;
 
 @interface EAGLView : UIView {
 @private
-	shared_ptr<Sketchy::Renderer> m_renderer;
-	shared_ptr<Sketchy::Page> m_page;
+
+    // New shit.  Yeah!
+    shared_ptr<grfx::Renderer> _renderer;
+    shared_ptr<grfx::View> _view;
+
+    // Old shit.  Booo.
+	shared_ptr<Sketchy::Renderer> _renderer2;
+	shared_ptr<Sketchy::Page> _page2;
 }
 
 - (void)pauseRendering;
 - (void)unpauseRendering;
+
+// Hacky way to get at the page from the controller.
+- (shared_ptr<Sketchy::Page>)page2;
+- (shared_ptr<Sketchy::Page>)page;
+
 @end
