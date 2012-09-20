@@ -148,9 +148,7 @@ void Renderer_iOS::initialize(CAEAGLLayer* glayer) {
     // create framebuffers/renderbuffers, etc.
     [EAGLContext setCurrentContext: _renderContext];
 
-
-    initializeFramebuffer(glayer);
-
+    initializeMultisampleFramebuffer(glayer);
 
     // We're finished initializing OpenGL resources, so flush and
     // unset the current context... from now on, the _renderContext
@@ -167,8 +165,37 @@ void Renderer_iOS::initializeFramebuffer(CAEAGLLayer* glayer) {
 
     cerr << "Renderer_iOS initializing framebuffer with width/height: " << w << "/" << h << endl;
 
+    GLuint color_renderbuffer, depth_renderbuffer;
+
+    glGenRenderbuffers(1, &color_renderbuffer);
+    glGenRenderbuffers(1, &depth_renderbuffer);
+
+    glBindRenderbuffer(GL_RENDERBUFFER, color_renderbuffer);
+    BOOL result = [_renderContext renderbufferStorage:GL_RENDERBUFFER fromDrawable:glayer];
+    if (result != YES) {
+        cerr << "failed to create color_renderbuffer from drawable layer" << endl;
+    }
+
+    glBindRenderbuffer(GL_RENDERBUFFER, depth_renderbuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, w, h);
+    CHECK_GL("failed to create depth_renderbuffer");
+
+    _framebuffer.reset(new Framebuffer(shared_from_this(),
+                                       w, h,
+                                       color_renderbuffer,
+                                       depth_renderbuffer));
+}
+
+
+void Renderer_iOS::initializeMultisampleFramebuffer(CAEAGLLayer* glayer) {
+    CGRect rect = [glayer bounds];
+    int w = (int)rect.size.width;
+    int h = (int)rect.size.height;
+
+    cerr << "Renderer_iOS initializing framebuffer with width/height: " << w << "/" << h << endl;
+
     GLuint color_renderbuffer, multisample_color_renderbuffer,
-           depth_renderbuffer, multisample_depth_renderbuffer;
+    depth_renderbuffer, multisample_depth_renderbuffer;
 
     glGenRenderbuffers(1, &color_renderbuffer);
     glGenRenderbuffers(1, &depth_renderbuffer);
@@ -185,30 +212,20 @@ void Renderer_iOS::initializeFramebuffer(CAEAGLLayer* glayer) {
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, w, h);
     CHECK_GL("failed to create depth_renderbuffer");
 
-    // TODO: pick one
-    /*
-    _framebuffer.reset(new Framebuffer(shared_from_this(),
-                                       color_renderbuffer,
-                                       depth_renderbuffer,
-                                       w, h));
-    */
-
     glBindRenderbuffer(GL_RENDERBUFFER, multisample_color_renderbuffer);
     glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER, 4, GL_RGBA8_OES, w, h);
     CHECK_GL("failed to create multisample_color_renderbuffer");
 
     glBindRenderbuffer(GL_RENDERBUFFER, multisample_depth_renderbuffer);
-    // TODO: pick one
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, w, h);
-//    glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT16, w, h);
+    glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT16, w, h);
     CHECK_GL("failed to create multisample_depth_renderbuffer");
 
     _framebuffer.reset(new MultisampleFramebuffer_iOS(shared_from_this(),
+                                                      w, h,
                                                       color_renderbuffer,
                                                       depth_renderbuffer,
                                                       multisample_color_renderbuffer,
-                                                      multisample_depth_renderbuffer,
-                                                      w, h));
+                                                      multisample_depth_renderbuffer));
 }
 
 

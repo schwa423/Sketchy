@@ -24,6 +24,7 @@ namespace schwa {namespace grfx {
 class Framebuffer : public Renderer::Resource {
     friend class Renderer;
  public:
+    // TODO: not sure I like passing in the width/height.
     Framebuffer(shared_ptr<Renderer> renderer,
                 GLsizei width, GLsizei height,
                 GLuint color_renderbuffer,
@@ -46,6 +47,7 @@ class Framebuffer : public Renderer::Resource {
 class MultisampleFramebuffer : public Framebuffer {
     friend class Renderer;
  public:
+    // TODO: not sure I like passing in the width/height.
     MultisampleFramebuffer(shared_ptr<Renderer> renderer,
                            GLsizei width, GLsizei height,
                            GLuint color_renderbuffer,

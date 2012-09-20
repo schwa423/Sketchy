@@ -30,7 +30,8 @@ Framebuffer::Framebuffer(shared_ptr<Renderer> renderer,
     glGenFramebuffers(1, &_framebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _color);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depth);
+    if (_depth != 0)
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depth);
     cerr << "Checking Framebuffer completeness..." << endl;
     checkFramebufferCompleteness();
 }
@@ -41,7 +42,8 @@ Framebuffer::~Framebuffer() {
     finalize([=](){
         glDeleteFramebuffers(1, &_framebuffer);
         glDeleteRenderbuffers(1, &_color);
-        glDeleteRenderbuffers(1, &_depth);
+        if (_depth != 0)
+            glDeleteRenderbuffers(1, &_depth);
     });
 }
 
@@ -74,7 +76,8 @@ MultisampleFramebuffer::MultisampleFramebuffer(shared_ptr<Renderer> renderer,
     glGenFramebuffers(1, &_multi_framebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, _multi_framebuffer);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _multi_color);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _multi_depth);
+    if (_multi_depth)
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _multi_depth);
     cerr << "Checking multisample Framebuffer completeness..." << endl;
     checkFramebufferCompleteness();
 }
@@ -85,7 +88,8 @@ MultisampleFramebuffer::~MultisampleFramebuffer() {
     finalize([=](){
         glDeleteFramebuffers(1, &_multi_framebuffer);
         glDeleteRenderbuffers(1, &_multi_color);
-        glDeleteRenderbuffers(1, &_multi_depth);
+        if (_multi_depth)
+            glDeleteRenderbuffers(1, &_multi_depth);
     });
 }
 

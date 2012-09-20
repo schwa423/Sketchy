@@ -50,6 +50,7 @@ class Renderer_iOS : public Renderer {
     Renderer_iOS();
     void initialize(CAEAGLLayer* glayer);
     void initializeFramebuffer(CAEAGLLayer* glayer);
+    void initializeMultisampleFramebuffer(CAEAGLLayer* glayer);
 
     virtual void swapBuffers();
 

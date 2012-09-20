@@ -98,8 +98,8 @@ using std::endl;
 		 nil];
 	self.contentScaleFactor = [[UIScreen mainScreen] scale];
 
-   if (![self initOldRenderer:glayer]) {
-//    if (![self initRenderer:glayer]) {
+// if (![self initOldRenderer:glayer]) {
+   if (![self initRenderer:glayer]) {
         cerr << "Failed to initialize renderer" << endl;
         return nil;
     }
