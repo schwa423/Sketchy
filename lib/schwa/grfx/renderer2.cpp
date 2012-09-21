@@ -13,6 +13,10 @@
 
 typedef std::lock_guard<std::mutex> lock_guard;
 
+#include <iostream>
+using std::cerr;
+using std::endl;
+
 // namespace schwa::grfx
 namespace schwa {namespace grfx {
 
@@ -63,12 +67,13 @@ void Renderer::render() {
 
         GLfloat red = renderCount / 255.0f;
         useFramebufferDuring(_framebuffer, [=](){
-            glViewport(50, 50, 512, 512);
-
             glClearColor(red, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
         });
     }
+    glFlush();
+    CHECK_GL("Renderer::render()... about to swap buffers");
+    
     swapBuffers();
 }
 

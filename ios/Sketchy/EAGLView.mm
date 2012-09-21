@@ -79,7 +79,7 @@ using std::endl;
     _view = grfx::View::New<sketchy::PageView>(_renderer);
     if (!_view) return FALSE;
     _view->setFramebuffer(_renderer->framebuffer());
-//    _renderer->setView(_view);
+    _renderer->setView(_view);
 
     return TRUE;
 }
@@ -98,7 +98,7 @@ using std::endl;
 		 nil];
 	self.contentScaleFactor = [[UIScreen mainScreen] scale];
 
-// if (![self initOldRenderer:glayer]) {
+//   if (![self initOldRenderer:glayer]) {
    if (![self initRenderer:glayer]) {
         cerr << "Failed to initialize renderer" << endl;
         return nil;

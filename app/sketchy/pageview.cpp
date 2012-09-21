@@ -17,17 +17,29 @@ using std::endl;
 // namespace schwa::app::sketchy
 namespace schwa {namespace app {namespace sketchy {
 
+
 void PageView::render() {
+    if (!_geometry.get()) _geometry.reset(new Sketchy::Geometry());
+    if (!_shader.get()) _shader.reset(new Sketchy::Shader());
+
+    glViewport(50, 50, 512, 512);
+
     glClearColor(0.5f, 0.5f, 0.7f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    _shader->bind();
+    _geometry->draw();
 }
+
 
 void PageView::destroyRendererState(shared_ptr<grfx::Renderer> renderer) {
     cerr << "XXXXX: MUST IMPLEMENT PageView destroyRendererState()" << endl;
 }
 
+
 void PageView::initializeRendererState(shared_ptr<grfx::Renderer> renderer) {
     cerr << "XXXXX: MUST IMPLEMENT PageView initializeRendererState()" << endl;
 }
+
 
 }}}  // namespace schwa::app::sketchy

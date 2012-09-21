@@ -35,7 +35,10 @@ using std::endl;
 - (id)initWithRenderer:(schwa::grfx::Renderer_iOS*)renderer context:(EAGLContext*)context
 {
 	self = [super init];
-	if (self) _renderer = renderer;
+	if (self) {
+        _renderer = renderer;
+        _context = context;
+    }
 	return self;
 }
 - (void)render:(CADisplayLink*)link
@@ -46,7 +49,9 @@ using std::endl;
 {
 	@synchronized(_thread) {
 		cerr << "running vsync loop at priority: " << [NSThread threadPriority] << endl;
-        [EAGLContext setCurrentContext: _context];
+        BOOL success = [EAGLContext setCurrentContext: _context];
+        if (success != YES)
+            cerr << "VsyncListener could not set OpenGL context." << endl;
 
 		// Create a display-link, but don't start it up yet.
 		CADisplayLink *link;
@@ -127,6 +132,8 @@ Renderer_iOS::Renderer_iOS() {
     _loaderContext = [[EAGLContext alloc]
                         initWithAPI:kEAGLRenderingAPIOpenGLES2
                         sharegroup:[_renderContext sharegroup]];
+    if (_renderContext == nil || _loaderContext == nil)
+        cerr << "Renderer_iOS could not create OpenGL contexts." << endl;
 
     _vsync = [[VsyncListener alloc] initWithRenderer:this context:_renderContext];
 }
@@ -146,9 +153,13 @@ void Renderer_iOS::initialize(CAEAGLLayer* glayer) {
 
     // Set render context to be current, so that we can
     // create framebuffers/renderbuffers, etc.
-    [EAGLContext setCurrentContext: _renderContext];
+    BOOL success = [EAGLContext setCurrentContext: _renderContext];
+    if (success != YES)
+        cerr << "Renderer_iOS couldnot set OpenGL context." << endl;
 
-    initializeMultisampleFramebuffer(glayer);
+    // TODO: enable multisample framebuffer
+    // initializeMultisampleFramebuffer(glayer);
+    initializeFramebuffer(glayer);
 
     // We're finished initializing OpenGL resources, so flush and
     // unset the current context... from now on, the _renderContext
@@ -231,7 +242,8 @@ void Renderer_iOS::initializeMultisampleFramebuffer(CAEAGLLayer* glayer) {
 
 void Renderer_iOS::swapBuffers() {
     glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer());
-    if (YES != [_renderContext presentRenderbuffer: GL_RENDERBUFFER]) {
+    CHECK_GL("filed to bind renderbuffer for swapBuffers()");
+    if (YES != [_renderContext presentRenderbuffer:GL_RENDERBUFFER]) {
         cerr << "failed to present renderbuffeer" << endl;
     }
 }

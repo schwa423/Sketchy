@@ -12,8 +12,13 @@
 
 #include "view.h"
 
+// TODO: remove HACK!!
+#include "Geometry.h"
+#include "Shader.h"
+
 // namespace schwa::app::sketchy
 namespace schwa {namespace app {namespace sketchy {
+
 
 class PageView : public grfx::View
 {
@@ -24,7 +29,12 @@ class PageView : public grfx::View
     // Called only by setRenderer().
     virtual void destroyRendererState(shared_ptr<grfx::Renderer> r);
     virtual void initializeRendererState(shared_ptr<grfx::Renderer> r);
+
+    // TODO: remove HACK!!
+    shared_ptr<Sketchy::Geometry> _geometry;
+    shared_ptr<Sketchy::Shader> _shader;
 };
+
 
 }}}  // namespace schwa::app::sketchy
 
