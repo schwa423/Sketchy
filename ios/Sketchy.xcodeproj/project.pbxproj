@@ -53,7 +53,7 @@
 		0370A02815FC0F03003C0164 /* framebuffer2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0370A02615FC0F03003C0164 /* framebuffer2.cpp */; };
 		0372821914C2C66A00819593 /* Page.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0372821814C2C66A00819593 /* Page.mm */; };
 		0372821C14C2CB6800819593 /* Page_shadow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0372821B14C2CB6700819593 /* Page_shadow.mm */; };
-		037C553714B14A1F00355B6D /* EAGLViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 037C553614B14A1F00355B6D /* EAGLViewController.mm */; };
+		037C553714B14A1F00355B6D /* SchwaGLViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 037C553614B14A1F00355B6D /* SchwaGLViewController.mm */; };
 		039192A814A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
 		039192A914A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
 		039AA5DE14E878F800C5390A /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039AA5DD14E878F800C5390A /* Material.cpp */; };
@@ -66,7 +66,7 @@
 		03DC93CD149E9F4F00F2A602 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03DC93CB149E9F4E00F2A602 /* MainStoryboard.storyboard */; };
 		03DC93D0149E9F4F00F2A602 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03DC93CF149E9F4F00F2A602 /* ViewController.mm */; };
 		03E2E7AD14ADBEA10019D869 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */; };
-		03E2E7B414AEC6B10019D869 /* EAGLViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E2E7B214AEC6B10019D869 /* EAGLViewController.xib */; };
+		03E2E7B414AEC6B10019D869 /* SchwaGLViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E2E7B214AEC6B10019D869 /* SchwaGLViewController.xib */; };
 		03F1482914B6F2900036EF9B /* Framebuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03F1482814B6F2900036EF9B /* Framebuffer.mm */; };
 		03F1482C14B6F3310036EF9B /* MultisampleFramebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1482B14B6F3310036EF9B /* MultisampleFramebuffer.cpp */; };
 		03F1482F14BA278C0036EF9B /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1482E14BA278C0036EF9B /* Camera.cpp */; };
@@ -143,7 +143,7 @@
 		0372821814C2C66A00819593 /* Page.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Page.mm; sourceTree = "<group>"; };
 		0372821B14C2CB6700819593 /* Page_shadow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Page_shadow.mm; path = shadow/Page_shadow.mm; sourceTree = "<group>"; };
 		0378F60515CBD9DD0083C230 /* Gists_SharedPointersWithClassHierarchy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Gists_SharedPointersWithClassHierarchy.h; path = include/gists/Gists_SharedPointersWithClassHierarchy.h; sourceTree = "<group>"; };
-		037C553614B14A1F00355B6D /* EAGLViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLViewController.mm; sourceTree = "<group>"; };
+		037C553614B14A1F00355B6D /* SchwaGLViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SchwaGLViewController.mm; sourceTree = "<group>"; };
 		038DC1F41542A05A000EBD8D /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		038DC1F51542A05A000EBD8D /* Fence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fence.h; sourceTree = "<group>"; };
 		038DC1F61542A05A000EBD8D /* Sleep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sleep.h; sourceTree = "<group>"; };
@@ -177,8 +177,8 @@
 		03DC93CE149E9F4F00F2A602 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		03DC93CF149E9F4F00F2A602 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		03E2E7B014AEC6B10019D869 /* EAGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLViewController.h; sourceTree = "<group>"; };
-		03E2E7B214AEC6B10019D869 /* EAGLViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EAGLViewController.xib; sourceTree = "<group>"; };
+		03E2E7B014AEC6B10019D869 /* SchwaGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchwaGLViewController.h; sourceTree = "<group>"; };
+		03E2E7B214AEC6B10019D869 /* SchwaGLViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SchwaGLViewController.xib; sourceTree = "<group>"; };
 		03F1482814B6F2900036EF9B /* Framebuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Framebuffer.mm; sourceTree = "<group>"; };
 		03F1482B14B6F3310036EF9B /* MultisampleFramebuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultisampleFramebuffer.cpp; sourceTree = "<group>"; };
 		03F1482E14BA278C0036EF9B /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
@@ -348,9 +348,9 @@
 				033E75E6146E65EC008896D5 /* Supporting Files */,
 				0343BF9214A6A75500C6ED4F /* SchwaGLView.h */,
 				0343BF9314A6A75500C6ED4F /* SchwaGLView.mm */,
-				03E2E7B014AEC6B10019D869 /* EAGLViewController.h */,
-				037C553614B14A1F00355B6D /* EAGLViewController.mm */,
-				03E2E7B214AEC6B10019D869 /* EAGLViewController.xib */,
+				03E2E7B014AEC6B10019D869 /* SchwaGLViewController.h */,
+				037C553614B14A1F00355B6D /* SchwaGLViewController.mm */,
+				03E2E7B214AEC6B10019D869 /* SchwaGLViewController.xib */,
 			);
 			path = Sketchy;
 			sourceTree = "<group>";
@@ -667,7 +667,7 @@
 				033E75FA146E65EC008896D5 /* first@2x.png in Resources */,
 				033E75FF146E65EC008896D5 /* second.png in Resources */,
 				033E7601146E65EC008896D5 /* second@2x.png in Resources */,
-				03E2E7B414AEC6B10019D869 /* EAGLViewController.xib in Resources */,
+				03E2E7B414AEC6B10019D869 /* SchwaGLViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -699,7 +699,7 @@
 				0343BF9414A6A75500C6ED4F /* SchwaGLView.mm in Sources */,
 				0343BF9914A793ED00C6ED4F /* Fence.cpp in Sources */,
 				0343BF9D14A7AF2400C6ED4F /* Event.cpp in Sources */,
-				037C553714B14A1F00355B6D /* EAGLViewController.mm in Sources */,
+				037C553714B14A1F00355B6D /* SchwaGLViewController.mm in Sources */,
 				0369557E14B57674001F42F4 /* Shader.cpp in Sources */,
 				03F1482914B6F2900036EF9B /* Framebuffer.mm in Sources */,
 				03F1482C14B6F3310036EF9B /* MultisampleFramebuffer.cpp in Sources */,

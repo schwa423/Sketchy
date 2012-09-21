@@ -1,5 +1,5 @@
 //
-//  EAGLViewController.mm
+//  SchwaGLViewController.mm
 //  Sketchy
 //
 //  Created by Joshua Gargus on 12/30/11.
@@ -10,7 +10,7 @@
 // verify that we're not leaking memory all the way down through
 // the SchwaGLView's Renderer, etc.
 
-#import "EAGLViewController.h"
+#import "SchwaGLViewController.h"
 
 #import "TouchHandler.h"
 using Sketchy::Input::Touch;
@@ -23,7 +23,7 @@ using std::endl;
 
 #import "SchwaGLView.h"
 
-@implementation EAGLViewController
+@implementation SchwaGLViewController
 
 // TODO: this isn't called... which init method is being called?
 // And what do we need to do there?  I guess the "page model" will

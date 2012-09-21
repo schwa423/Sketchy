@@ -7,7 +7,7 @@
 //
 
 #import "SecondViewController.h"
-#import "EAGLViewController.h"
+#import "SchwaGLViewController.h"
 
 @implementation SecondViewController
 
@@ -61,7 +61,7 @@
 - (IBAction)destroyRenderView:(id)sender {
 	fprintf(stderr, "destroyRenderView: button was clicked\n");
 	UITabBarController *parent = (UITabBarController*)self.parentViewController;
-	EAGLViewController *renderer = parent.viewControllers.lastObject;
+	SchwaGLViewController *renderer = parent.viewControllers.lastObject;
 	renderer.view = nil;
 }
 @end

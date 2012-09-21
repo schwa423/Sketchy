@@ -1,5 +1,5 @@
 //
-//  EAGLViewController.h
+//  SchwaGLViewController.h
 //  Sketchy
 //
 //  Created by Joshua Gargus on 12/30/11.
@@ -13,7 +13,7 @@
 #include <memory>
 using std::shared_ptr;
 
-@interface EAGLViewController : UIViewController {
+@interface SchwaGLViewController : UIViewController {
 
 @private
 	shared_ptr<Sketchy::Input::TouchHandler> _touchHandler;
