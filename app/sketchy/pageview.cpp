@@ -19,16 +19,22 @@ namespace schwa {namespace app {namespace sketchy {
 
 
 void PageView::render() {
-    if (!_geometry.get()) _geometry.reset(new Sketchy::Geometry());
-    if (!_shader.get()) _shader.reset(new Sketchy::Shader());
+    auto renderer = _renderer.lock();
+    auto framebuffer = _framebuffer.lock();
+    if (!renderer || !framebuffer) return;
 
-    glViewport(50, 50, 512, 512);
+    renderer->useFramebufferDuring(framebuffer, [=](){
+        if (!_geometry.get()) _geometry.reset(new Sketchy::Geometry());
+        if (!_shader.get()) _shader.reset(new Sketchy::Shader());
 
-    glClearColor(0.5f, 0.5f, 0.7f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+        glViewport(50, 50, 512, 512);
 
-    _shader->bind();
-    _geometry->draw();
+        glClearColor(0.5f, 0.5f, 0.7f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        _shader->bind();
+        _geometry->draw();
+    });
 }
 
 

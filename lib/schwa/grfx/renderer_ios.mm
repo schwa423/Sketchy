@@ -157,9 +157,7 @@ void Renderer_iOS::initialize(CAEAGLLayer* glayer) {
     if (success != YES)
         cerr << "Renderer_iOS couldnot set OpenGL context." << endl;
 
-    // TODO: enable multisample framebuffer
-    // initializeMultisampleFramebuffer(glayer);
-    initializeFramebuffer(glayer);
+    initializeMultisampleFramebuffer(glayer);
 
     // We're finished initializing OpenGL resources, so flush and
     // unset the current context... from now on, the _renderContext
@@ -203,7 +201,8 @@ void Renderer_iOS::initializeMultisampleFramebuffer(CAEAGLLayer* glayer) {
     int w = (int)rect.size.width;
     int h = (int)rect.size.height;
 
-    cerr << "Renderer_iOS initializing framebuffer with width/height: " << w << "/" << h << endl;
+    cerr << "Renderer_iOS initializing multisample framebuffer with width/height: "
+         << w << "/" << h << endl;
 
     GLuint color_renderbuffer, multisample_color_renderbuffer,
     depth_renderbuffer, multisample_depth_renderbuffer;

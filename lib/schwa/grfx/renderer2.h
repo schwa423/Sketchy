@@ -37,7 +37,7 @@ class Renderer : public std::enable_shared_from_this<Renderer> {
     // Bind the framebuffer during the execution of 'thunk', and resolve
     // it afterward.  If 'thunk' throws an exception, it will be caught
     // and rethrown, after first popping/resolving the framebuffer.
-    void useFramebufferDuring(shared_ptr<Framebuffer> fb, core::Thunk thunk);
+    void useFramebufferDuring(const shared_ptr<Framebuffer> &fb, core::Thunk thunk);
 
     // Set the view to be rendered.
     void setView(const shared_ptr<View>& view);
@@ -76,7 +76,7 @@ class Renderer : public std::enable_shared_from_this<Renderer> {
 
     // Stack of framebuffers used during rendering... top one is current render-target.
     std::stack<shared_ptr<Framebuffer>> _framebufferStack;
-    void resolveAndPopFramebuffer();
+    void resolveAndPopFramebuffer(const shared_ptr<Framebuffer> &fb);
 
     // Subclasses override to display the frame after rendering.
     virtual void swapBuffers() = 0;

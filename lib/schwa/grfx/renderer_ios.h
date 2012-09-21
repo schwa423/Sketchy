@@ -49,6 +49,8 @@ class Renderer_iOS : public Renderer {
     // can't obtain during the constructor.
     Renderer_iOS();
     void initialize(CAEAGLLayer* glayer);
+    
+    // One of these is called by initialize(); currently we use multisampling.
     void initializeFramebuffer(CAEAGLLayer* glayer);
     void initializeMultisampleFramebuffer(CAEAGLLayer* glayer);
 

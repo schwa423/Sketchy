@@ -20,26 +20,28 @@ using std::endl;
 // namespace schwa::grfx
 namespace schwa {namespace grfx {
 
-void Renderer::useFramebufferDuring(shared_ptr<Framebuffer> fb, core::Thunk thunk) {
+
+// TODO: unit tests, using both nullptr FB, and not.
+void Renderer::useFramebufferDuring(const shared_ptr<Framebuffer> &fb, core::Thunk thunk) {
     // Push and bind framebuffer, and execute thunk.
+    if (fb) fb->bind();
     _framebufferStack.push(fb);
-    fb->bind();
 
     // Execute 'thunk', and pop/resolve the framebuffer.
     try {
         thunk();
     } catch(...) {
-        resolveAndPopFramebuffer();
+        resolveAndPopFramebuffer(fb);
         throw;
     }
-    resolveAndPopFramebuffer();  // ... since we didn't execute the catch{}.
+    resolveAndPopFramebuffer(fb);  // ... since we didn't execute the catch{}.
 }
 
 
-void Renderer::resolveAndPopFramebuffer() {
-    _framebufferStack.top()->resolve();
+void Renderer::resolveAndPopFramebuffer(const shared_ptr<Framebuffer> &fb) {
+    if (fb) fb->resolve();
     _framebufferStack.pop();
-    if (!_framebufferStack.empty())
+    if (!_framebufferStack.empty() && _framebufferStack.top())
         _framebufferStack.top()->bind();
 }
 
