@@ -1,5 +1,5 @@
 //
-//  EAGLView.h
+//  SchwaGLView
 //  Sketchy
 //
 //  Created by Joshua Gargus on 12/24/11.
@@ -27,7 +27,7 @@ using namespace schwa;
 
 @class EAGLContext;
 
-@interface EAGLView : UIView {
+@interface SchwaGLView : UIView {
 @private
 
     // New shit.  Yeah!

@@ -1,5 +1,5 @@
 //
-//  EAGLView.mm
+//  SchwaGLView.mm
 //  Sketchy
 //
 //  Created by Joshua Gargus on 12/24/11.
@@ -8,7 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGLDrawable.h>
-#import "EAGLView.h"
+#import "SchwaGLView.h"
 
 #include "renderer_ios.h"
 #include "view.h"
@@ -35,7 +35,7 @@ using std::endl;
 //       and resume once it is visible again.
 
 // A class extension to declare private methods
-//@interface EAGLView (private)
+//@interface SchwaGLView (private)
 
 //- (BOOL)createFramebuffer;
 //- (void)destroyFramebuffer;
@@ -43,7 +43,7 @@ using std::endl;
 //@end
 
 
-@implementation EAGLView
+@implementation SchwaGLView
 
 // Subclasses of UIView must override this to use a
 // non-standard CALayer as a backing store.
@@ -59,8 +59,8 @@ using std::endl;
 
     // Error detection and reporting.
 	if (!_renderer2 || !_page2) {
-		if (!_renderer2) { cerr << "could not instantiate renderer in EAGLView" << endl; }
-		if (!_page2) { cerr << "could not instantiate page in EAGLView" << endl; }
+		if (!_renderer2) { cerr << "could not instantiate renderer in SchwaGLView" << endl; }
+		if (!_page2) { cerr << "could not instantiate page in SchwaGLView" << endl; }
 		_page2.reset();
 		_renderer2.reset();
 		return FALSE;
@@ -112,7 +112,7 @@ using std::endl;
 	// No need to tear down renderer here... Objective-C++ is 
 	// smart enough to automatically destroy the shared_ptr to
 	// the renderer.
-	cerr << "dealloc in EAGLView" << endl;
+	cerr << "dealloc SchwaGLView" << endl;
 }
 
 - (void)pauseRendering

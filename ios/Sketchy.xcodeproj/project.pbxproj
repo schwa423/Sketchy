@@ -36,7 +36,7 @@
 		033E7631146E77EB008896D5 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033E7630146E77EB008896D5 /* Node.cpp */; };
 		033E7634146E7816008896D5 /* Geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033E7633146E7816008896D5 /* Geometry.cpp */; };
 		0343BF8914A6854400C6ED4F /* Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF8814A6854400C6ED4F /* Renderer.mm */; };
-		0343BF9414A6A75500C6ED4F /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9314A6A75500C6ED4F /* EAGLView.mm */; };
+		0343BF9414A6A75500C6ED4F /* SchwaGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9314A6A75500C6ED4F /* SchwaGLView.mm */; };
 		0343BF9914A793ED00C6ED4F /* Fence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9814A793ED00C6ED4F /* Fence.cpp */; };
 		0343BF9A14A793ED00C6ED4F /* Fence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9814A793ED00C6ED4F /* Fence.cpp */; };
 		0343BF9D14A7AF2400C6ED4F /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9C14A7AF2400C6ED4F /* Event.cpp */; };
@@ -118,8 +118,8 @@
 		033E7630146E77EB008896D5 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
 		033E7633146E7816008896D5 /* Geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Geometry.cpp; sourceTree = "<group>"; };
 		0343BF8814A6854400C6ED4F /* Renderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Renderer.mm; sourceTree = "<group>"; };
-		0343BF9214A6A75500C6ED4F /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
-		0343BF9314A6A75500C6ED4F /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
+		0343BF9214A6A75500C6ED4F /* SchwaGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchwaGLView.h; sourceTree = "<group>"; };
+		0343BF9314A6A75500C6ED4F /* SchwaGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SchwaGLView.mm; sourceTree = "<group>"; };
 		0343BF9814A793ED00C6ED4F /* Fence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Fence.cpp; path = events/Fence.cpp; sourceTree = "<group>"; };
 		0343BF9C14A7AF2400C6ED4F /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Event.cpp; path = events/Event.cpp; sourceTree = "<group>"; };
 		0356A38115FF27D7006C43C1 /* platform_gl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = platform_gl.h; path = ../lib/schwa/grfx/platform_gl.h; sourceTree = "<group>"; };
@@ -346,8 +346,8 @@
 				033E75FE146E65EC008896D5 /* second.png */,
 				033E7600146E65EC008896D5 /* second@2x.png */,
 				033E75E6146E65EC008896D5 /* Supporting Files */,
-				0343BF9214A6A75500C6ED4F /* EAGLView.h */,
-				0343BF9314A6A75500C6ED4F /* EAGLView.mm */,
+				0343BF9214A6A75500C6ED4F /* SchwaGLView.h */,
+				0343BF9314A6A75500C6ED4F /* SchwaGLView.mm */,
 				03E2E7B014AEC6B10019D869 /* EAGLViewController.h */,
 				037C553614B14A1F00355B6D /* EAGLViewController.mm */,
 				03E2E7B214AEC6B10019D869 /* EAGLViewController.xib */,
@@ -696,7 +696,7 @@
 				033E7634146E7816008896D5 /* Geometry.cpp in Sources */,
 				039192A814A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */,
 				0343BF8914A6854400C6ED4F /* Renderer.mm in Sources */,
-				0343BF9414A6A75500C6ED4F /* EAGLView.mm in Sources */,
+				0343BF9414A6A75500C6ED4F /* SchwaGLView.mm in Sources */,
 				0343BF9914A793ED00C6ED4F /* Fence.cpp in Sources */,
 				0343BF9D14A7AF2400C6ED4F /* Event.cpp in Sources */,
 				037C553714B14A1F00355B6D /* EAGLViewController.mm in Sources */,

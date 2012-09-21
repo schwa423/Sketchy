@@ -8,7 +8,7 @@
 
 // TODO: build framework to test view loading/unloading...
 // verify that we're not leaking memory all the way down through
-// the EAGLView's Renderer, etc.
+// the SchwaGLView's Renderer, etc.
 
 #import "EAGLViewController.h"
 
@@ -21,7 +21,7 @@ using std::endl;
 
 #include <vector>
 
-#import "EAGLView.h"
+#import "SchwaGLView.h"
 
 @implementation EAGLViewController
 
@@ -74,14 +74,14 @@ using std::endl;
 - (void)viewDidDisappear:(BOOL)animated
 {
     cerr << "view did disappear" << endl;
-    [(EAGLView*)self.view pauseRendering];
+    [(SchwaGLView*)self.view pauseRendering];
     [super viewDidDisappear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     cerr << "view did appear" << endl;
-    [(EAGLView*)self.view unpauseRendering];
+    [(SchwaGLView*)self.view unpauseRendering];
     [super viewDidAppear:animated];
 }
 
