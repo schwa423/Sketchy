@@ -65,10 +65,12 @@ using std::endl;
     // e.g. self.myOutlet = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (NSInteger)supportedInterfaceOrientations
 {
-    // Return YES for supported orientations
-    return YES;
+    return UIInterfaceOrientationMaskPortrait
+         & UIInterfaceOrientationMaskLandscapeLeft
+         & UIInterfaceOrientationMaskLandscapeRight
+         & UIInterfaceOrientationMaskPortraitUpsideDown;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -83,6 +85,13 @@ using std::endl;
     cerr << "view did appear" << endl;
     [(SchwaGLView*)self.view unpauseRendering];
     [super viewDidAppear:animated];
+}
+
+// TODO: not clear that this is the moment we want to update the orientation...
+//       but maybe it is?
+- (void)viewWillLayoutSubviews
+{
+    [(SchwaGLView*)self.view updateOrientation];
 }
 
 - (void)printTouchInfo:(NSSet*)touches

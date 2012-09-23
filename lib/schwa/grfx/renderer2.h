@@ -27,6 +27,7 @@ using std::weak_ptr;
 namespace schwa {namespace grfx {
 
 class Framebuffer;
+class Renderbuffer;
 class View;
 
 class Renderer : public std::enable_shared_from_this<Renderer> {
@@ -90,7 +91,7 @@ class Renderer : public std::enable_shared_from_this<Renderer> {
     core::ThunkList _finalizers;
 
     // Handle of the default-framebuffer's color-renderbuffer.
-    GLuint colorRenderbuffer();
+    shared_ptr<Renderbuffer> colorRenderbuffer();
 
     std::mutex _mutex;
 };

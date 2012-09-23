@@ -11,6 +11,7 @@
 #define __schwa__grfx__framebuffer__
 
 #include "renderer2.h"
+#include "renderbuffer.h"
 
 #include <iostream>
 
@@ -27,8 +28,9 @@ class Framebuffer : public Renderer::Resource {
     // TODO: not sure I like passing in the width/height.
     Framebuffer(shared_ptr<Renderer> renderer,
                 GLsizei width, GLsizei height,
-                GLuint color_renderbuffer,
-                GLuint depth_renderbuffer);
+                const shared_ptr<Renderbuffer>& color_renderbuffer,
+                const shared_ptr<Renderbuffer>& depth_renderbuffer);
+
     virtual ~Framebuffer();
     virtual void resolve() { }
 
@@ -36,11 +38,18 @@ class Framebuffer : public Renderer::Resource {
     // Called by Renderer when pushed onto Framebuffer stack.
     virtual void bind();
 
+    GLuint _framebuffer;
+    int _width, _height;
+
+    shared_ptr<Renderbuffer> _color;
+    shared_ptr<Renderbuffer> _depth;
+
     // Check whether the currently-bound framebuffer is "complete".
     void checkFramebufferCompleteness();
 
-    GLuint _framebuffer, _color, _depth;
-    int _width, _height;
+    // Attach renderbuffer to the currently-bound framebuffer
+    // at the specified attachment point.
+    void attach(const shared_ptr<Renderbuffer>& renderbuffer, GLenum attachment);
 };
 
 
@@ -50,10 +59,11 @@ class MultisampleFramebuffer : public Framebuffer {
     // TODO: not sure I like passing in the width/height.
     MultisampleFramebuffer(shared_ptr<Renderer> renderer,
                            GLsizei width, GLsizei height,
-                           GLuint color_renderbuffer,
-                           GLuint depth_renderbuffer,
-                           GLuint multisample_color_renderbuffer,
-                           GLuint multisample_depth_renderbuffer);
+                           const shared_ptr<Renderbuffer>& color_renderbuffer,
+                           const shared_ptr<Renderbuffer>& depth_renderbuffer,
+                           const shared_ptr<Renderbuffer>& multisample_color_renderbuffer,
+                           const shared_ptr<Renderbuffer>& multisample_depth_renderbuffer);
+
     virtual ~MultisampleFramebuffer();
     virtual void resolve() = 0;
 
@@ -61,7 +71,9 @@ class MultisampleFramebuffer : public Framebuffer {
     // Called by Renderer when pushed onto Framebuffer stack.
     virtual void bind();
 
-    GLuint _multi_framebuffer, _multi_color, _multi_depth;
+    GLuint _multi_framebuffer;
+    shared_ptr<Renderbuffer> _multi_color;
+    shared_ptr<Renderbuffer> _multi_depth;
 };
 
 

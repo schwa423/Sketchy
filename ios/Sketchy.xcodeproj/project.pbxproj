@@ -45,6 +45,8 @@
 		0356A3881605560C006C43C1 /* scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0356A3861605560C006C43C1 /* scene.cpp */; };
 		0356A38B1605574A006C43C1 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0356A38916055749006C43C1 /* view.cpp */; };
 		0356A3931605DDD1006C43C1 /* pageview.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0356A3911605DDD1006C43C1 /* pageview.cpp */; };
+		0357AB80160F9ED50044DA75 /* renderbuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0357AB7E160F9ED50044DA75 /* renderbuffer.cpp */; };
+		0357AB84160F9EF10044DA75 /* renderbuffer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0357AB82160F9EF10044DA75 /* renderbuffer_ios.mm */; };
 		03594B731544383A00C090AD /* Flow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03594B721544383A00C090AD /* Flow.cpp */; };
 		03594B741544383A00C090AD /* Flow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03594B721544383A00C090AD /* Flow.cpp */; };
 		0369557E14B57674001F42F4 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0369557D14B57674001F42F4 /* Shader.cpp */; };
@@ -131,6 +133,10 @@
 		0356A38A16055749006C43C1 /* view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = view.h; path = ../lib/schwa/grfx/view.h; sourceTree = "<group>"; };
 		0356A3911605DDD1006C43C1 /* pageview.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pageview.cpp; path = ../app/sketchy/pageview.cpp; sourceTree = "<group>"; };
 		0356A3921605DDD1006C43C1 /* pageview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pageview.h; path = ../app/sketchy/pageview.h; sourceTree = "<group>"; };
+		0357AB7E160F9ED50044DA75 /* renderbuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = renderbuffer.cpp; path = ../lib/schwa/grfx/renderbuffer.cpp; sourceTree = "<group>"; };
+		0357AB7F160F9ED50044DA75 /* renderbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = renderbuffer.h; path = ../lib/schwa/grfx/renderbuffer.h; sourceTree = "<group>"; };
+		0357AB82160F9EF10044DA75 /* renderbuffer_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = renderbuffer_ios.mm; path = ../lib/schwa/grfx/renderbuffer_ios.mm; sourceTree = "<group>"; };
+		0357AB83160F9EF10044DA75 /* renderbuffer_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = renderbuffer_ios.h; path = ../lib/schwa/grfx/renderbuffer_ios.h; sourceTree = "<group>"; };
 		03594B721544383A00C090AD /* Flow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Flow.cpp; path = props/Flow.cpp; sourceTree = "<group>"; };
 		03594B751544388100C090AD /* Flow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Flow.h; path = include/props/Flow.h; sourceTree = "<group>"; };
 		0369557D14B57674001F42F4 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
@@ -476,6 +482,10 @@
 				0356A3871605560C006C43C1 /* scene.h */,
 				0356A38916055749006C43C1 /* view.cpp */,
 				0356A38A16055749006C43C1 /* view.h */,
+				0357AB7E160F9ED50044DA75 /* renderbuffer.cpp */,
+				0357AB7F160F9ED50044DA75 /* renderbuffer.h */,
+				0357AB82160F9EF10044DA75 /* renderbuffer_ios.mm */,
+				0357AB83160F9EF10044DA75 /* renderbuffer_ios.h */,
 			);
 			name = grfx;
 			sourceTree = "<group>";
@@ -722,6 +732,8 @@
 				0356A3881605560C006C43C1 /* scene.cpp in Sources */,
 				0356A38B1605574A006C43C1 /* view.cpp in Sources */,
 				0356A3931605DDD1006C43C1 /* pageview.cpp in Sources */,
+				0357AB80160F9ED50044DA75 /* renderbuffer.cpp in Sources */,
+				0357AB84160F9EF10044DA75 /* renderbuffer_ios.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

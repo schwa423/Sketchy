@@ -9,6 +9,7 @@
 
 #include "renderer_ios.h"
 #include "framebuffer_ios.h"
+#include "renderbuffer_ios.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -29,6 +30,7 @@ using std::endl;
 - (void) render:(CADisplayLink*)link;
 - (void) start;
 - (void) stop;
+- (bool) isPaused;
 - (void) dealloc;
 @end
 @implementation VsyncListener
@@ -101,6 +103,12 @@ using std::endl;
 		}
 	}
 }
+- (bool)isPaused
+{
+    @synchronized(self) {
+        return !_thread;
+    }
+}
 - (void)dealloc
 {
 	// Ensure that we've stopped our worker-thread.
@@ -149,6 +157,12 @@ void Renderer_iOS::unpauseRendering() {
 }
 
 
+bool Renderer_iOS::isPaused() {
+    return [_vsync isPaused];
+}
+
+
+// TODO: if re-initializing, need to destroy previous renderbuffers.
 void Renderer_iOS::initialize(CAEAGLLayer* glayer) {
 
     // Set render context to be current, so that we can
@@ -167,80 +181,76 @@ void Renderer_iOS::initialize(CAEAGLLayer* glayer) {
 }
 
 
-void Renderer_iOS::initializeFramebuffer(CAEAGLLayer* glayer) {
-    CGRect rect = [glayer bounds];
-    int w = (int)rect.size.width;
-    int h = (int)rect.size.height;
+void Renderer_iOS::initializeFramebuffer(CAEAGLLayer* layer) {
+    // We will replace it with a new one.
+    _framebuffer.reset();
 
-    cerr << "Renderer_iOS initializing framebuffer with width/height: " << w << "/" << h << endl;
+    CGRect rect = [layer bounds];
+    int width = (int)rect.size.width;
+    int height = (int)rect.size.height;
 
-    GLuint color_renderbuffer, depth_renderbuffer;
+    cerr << "Renderer_iOS initializing framebuffer with width/height: "
+        << width << "/" << height << endl;
 
-    glGenRenderbuffers(1, &color_renderbuffer);
-    glGenRenderbuffers(1, &depth_renderbuffer);
+    auto me = shared_from_this();
 
-    glBindRenderbuffer(GL_RENDERBUFFER, color_renderbuffer);
-    BOOL result = [_renderContext renderbufferStorage:GL_RENDERBUFFER fromDrawable:glayer];
-    if (result != YES) {
-        cerr << "failed to create color_renderbuffer from drawable layer" << endl;
+    auto color_renderbuffer = Renderbuffer_iOS::NewFromLayer(me, _renderContext, layer);
+    auto depth_renderbuffer = Renderbuffer::NewDepth(me, width, height, 1);
+
+    if (!color_renderbuffer || !depth_renderbuffer) {
+        cerr << "Renderer_iOS failed to create renderbuffers for default framebuffer" << endl;
+        color_renderbuffer.reset();
+        depth_renderbuffer.reset();
+        return;
     }
 
-    glBindRenderbuffer(GL_RENDERBUFFER, depth_renderbuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, w, h);
-    CHECK_GL("failed to create depth_renderbuffer");
-
-    _framebuffer.reset(new Framebuffer(shared_from_this(),
-                                       w, h,
+    _framebuffer.reset(new Framebuffer(me,
+                                       width, height,
                                        color_renderbuffer,
                                        depth_renderbuffer));
 }
 
 
-void Renderer_iOS::initializeMultisampleFramebuffer(CAEAGLLayer* glayer) {
-    CGRect rect = [glayer bounds];
-    int w = (int)rect.size.width;
-    int h = (int)rect.size.height;
+void Renderer_iOS::initializeMultisampleFramebuffer(CAEAGLLayer* layer) {
+    // We will replace it with a new one.
+    _framebuffer.reset();
+
+    CGRect rect = [layer bounds];
+    int width = (int)rect.size.width;
+    int height = (int)rect.size.height;
 
     cerr << "Renderer_iOS initializing multisample framebuffer with width/height: "
-         << w << "/" << h << endl;
+         << width << "/" << height << endl;
 
-    GLuint color_renderbuffer, multisample_color_renderbuffer,
-    depth_renderbuffer, multisample_depth_renderbuffer;
+    auto me = shared_from_this();
 
-    glGenRenderbuffers(1, &color_renderbuffer);
-    glGenRenderbuffers(1, &depth_renderbuffer);
-    glGenRenderbuffers(1, &multisample_color_renderbuffer);
-    glGenRenderbuffers(1, &multisample_depth_renderbuffer);
+    auto color_renderbuffer = Renderbuffer_iOS::NewFromLayer(me, _renderContext, layer);
+    auto depth_renderbuffer = Renderbuffer::NewDepth(me, width, height);
+    auto multisample_color_renderbuffer = Renderbuffer::NewColor(me, width, height, 4);
+    auto multisample_depth_renderbuffer = Renderbuffer::NewDepth(me, width, height, 4);
 
-    glBindRenderbuffer(GL_RENDERBUFFER, color_renderbuffer);
-    BOOL result = [_renderContext renderbufferStorage:GL_RENDERBUFFER fromDrawable:glayer];
-    if (result != YES) {
-        cerr << "failed to create color_renderbuffer from drawable layer" << endl;
+    if (!color_renderbuffer || !depth_renderbuffer ||
+        !multisample_color_renderbuffer || !multisample_depth_renderbuffer) {
+        cerr << "Renderer_iOS failed to create renderbuffers for default framebuffer" << endl;
+        color_renderbuffer.reset();
+        depth_renderbuffer.reset();
+        multisample_color_renderbuffer.reset();
+        multisample_depth_renderbuffer.reset();
+        return;
     }
 
-    glBindRenderbuffer(GL_RENDERBUFFER, depth_renderbuffer);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, w, h);
-    CHECK_GL("failed to create depth_renderbuffer");
-
-    glBindRenderbuffer(GL_RENDERBUFFER, multisample_color_renderbuffer);
-    glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER, 4, GL_RGBA8_OES, w, h);
-    CHECK_GL("failed to create multisample_color_renderbuffer");
-
-    glBindRenderbuffer(GL_RENDERBUFFER, multisample_depth_renderbuffer);
-    glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT16, w, h);
-    CHECK_GL("failed to create multisample_depth_renderbuffer");
-
-    _framebuffer.reset(new MultisampleFramebuffer_iOS(shared_from_this(),
-                                                      w, h,
-                                                      color_renderbuffer,
-                                                      depth_renderbuffer,
-                                                      multisample_color_renderbuffer,
-                                                      multisample_depth_renderbuffer));
+    _framebuffer.reset(
+        new MultisampleFramebuffer_iOS(me,
+                                       width, height,
+                                       color_renderbuffer,
+                                       depth_renderbuffer,
+                                       multisample_color_renderbuffer,
+                                       multisample_depth_renderbuffer));
 }
 
 
 void Renderer_iOS::swapBuffers() {
-    glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer());
+    colorRenderbuffer()->bind();
     CHECK_GL("filed to bind renderbuffer for swapBuffers()");
     if (YES != [_renderContext presentRenderbuffer:GL_RENDERBUFFER]) {
         cerr << "failed to present renderbuffeer" << endl;

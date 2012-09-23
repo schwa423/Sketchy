@@ -12,20 +12,12 @@
 
 #include "renderer_ios.h"
 #include "view.h"
+using schwa::grfx::Renderer_iOS;
 
 
 // TODO: Un-hardwire this
 #include "pageview.h"
 using namespace schwa::app;
-
-// Old shit. =================
-#include "Renderer.h"
-#include "Framebuffer.h"
-#include "Page.h"
-using Sketchy::Renderer;
-using Sketchy::Framebuffer;
-using Sketchy::Page;
-// End old shit. =============
 
 #import <iostream>
 using std::cerr;
@@ -52,28 +44,9 @@ using std::endl;
 	return [CAEAGLLayer class];
 }
 
-- (BOOL)initOldRenderer:(CAEAGLLayer *)glayer
-{
-    _renderer2 = Renderer::New(glayer);
-    _page2 = Page::New(_renderer2, _renderer2->defaultFramebuffer());
-
-    // Error detection and reporting.
-	if (!_renderer2 || !_page2) {
-		if (!_renderer2) { cerr << "could not instantiate renderer in SchwaGLView" << endl; }
-		if (!_page2) { cerr << "could not instantiate page in SchwaGLView" << endl; }
-		_page2.reset();
-		_renderer2.reset();
-		return FALSE;
-	}
-
-	// Hack something in for the renderer to draw.
-	_renderer2->addPage(_page2);
-    return TRUE;
-}
-
 - (BOOL)initRenderer:(CAEAGLLayer *)glayer
 {
-    _renderer = schwa::grfx::Renderer_iOS::New(glayer);
+    _renderer = std::dynamic_pointer_cast<Renderer_iOS>(Renderer_iOS::New(glayer));
     if (!_renderer) return FALSE;
 
     _view = grfx::View::New<sketchy::PageView>(_renderer);
@@ -98,7 +71,6 @@ using std::endl;
 		 nil];
 	self.contentScaleFactor = [[UIScreen mainScreen] scale];
 
-//   if (![self initOldRenderer:glayer]) {
    if (![self initRenderer:glayer]) {
         cerr << "Failed to initialize renderer" << endl;
         return nil;
@@ -117,26 +89,30 @@ using std::endl;
 
 - (void)pauseRendering
 {
-    if (_renderer.get()) _renderer->pauseRendering();
-    if (_renderer2.get()) _renderer2->pauseRendering();
+    _renderer->pauseRendering();
+
 }
 
 - (void)unpauseRendering
 {
-	if (_renderer.get()) _renderer->unpauseRendering();
-    if (_renderer2.get()) _renderer2->unpauseRendering();
+	_renderer->unpauseRendering();
 }
 
-- (shared_ptr<Sketchy::Page>)page2
+// TODO: finish this!!!
+- (void)updateOrientation
 {
-    return _page2;
-}
+    bool wasPaused = _renderer->isPaused();
+    _renderer->pauseRendering();
 
-- (shared_ptr<Sketchy::Page>)page
-{
-    return _page2;
-}
+    CGRect rect = [self.layer bounds];
+    int w = (int)rect.size.width;
+    int h = (int)rect.size.height;
 
+    cerr << "updateOrientation: layer bounds now: " << w << "/" << h << endl;
+    // _renderer->initialize((CAEAGLLayer*)self.layer);
+
+    if (!wasPaused) _renderer->unpauseRendering();
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.

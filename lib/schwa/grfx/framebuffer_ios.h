@@ -21,10 +21,10 @@ class MultisampleFramebuffer_iOS : public MultisampleFramebuffer {
 
     MultisampleFramebuffer_iOS(shared_ptr<Renderer> renderer,
                                GLsizei width, GLsizei height,
-                               GLuint color_renderbuffer,
-                               GLuint depth_renderbuffer,
-                               GLuint multisample_color_renderbuffer,
-                               GLuint multisample_depth_renderbuffer);
+                               const shared_ptr<Renderbuffer>& color_renderbuffer,
+                               const shared_ptr<Renderbuffer>& depth_renderbuffer,
+                               const shared_ptr<Renderbuffer>& multisample_color_renderbuffer,
+                               const shared_ptr<Renderbuffer>& multisample_depth_renderbuffer);
 
     virtual void resolve();
 };

@@ -14,13 +14,13 @@
 using std::shared_ptr;
 
 namespace Sketchy {
-	class Renderer;
+	class Renderer_iOS;
 	class Page;
 }
 
 // namespace schwa::grfx
 namespace schwa { namespace grfx {
-    class Renderer;
+    class Renderer_iOS;
     class View;
 }}  // namespace schwa::grfx
 using namespace schwa;
@@ -29,21 +29,12 @@ using namespace schwa;
 
 @interface SchwaGLView : UIView {
 @private
-
-    // New shit.  Yeah!
-    shared_ptr<grfx::Renderer> _renderer;
+    shared_ptr<grfx::Renderer_iOS> _renderer;
     shared_ptr<grfx::View> _view;
-
-    // Old shit.  Booo.
-	shared_ptr<Sketchy::Renderer> _renderer2;
-	shared_ptr<Sketchy::Page> _page2;
 }
 
 - (void)pauseRendering;
 - (void)unpauseRendering;
-
-// Hacky way to get at the page from the controller.
-- (shared_ptr<Sketchy::Page>)page2;
-- (shared_ptr<Sketchy::Page>)page;
+- (void)updateOrientation;
 
 @end

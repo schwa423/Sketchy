@@ -20,8 +20,8 @@ namespace schwa {namespace grfx {
 
 Framebuffer::Framebuffer(shared_ptr<Renderer> renderer,
                          GLsizei width, GLsizei height,
-                         GLuint color_renderbuffer,
-                         GLuint depth_renderbuffer) :
+                         const shared_ptr<Renderbuffer>& color_renderbuffer,
+                         const shared_ptr<Renderbuffer>& depth_renderbuffer) :
     Resource(renderer),
     _width(width), _height(height),
     _color(color_renderbuffer),
@@ -29,9 +29,10 @@ Framebuffer::Framebuffer(shared_ptr<Renderer> renderer,
 {
     glGenFramebuffers(1, &_framebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _color);
-    if (_depth != 0)
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depth);
+
+    attach(_color, GL_COLOR_ATTACHMENT0);
+    if (_depth) attach(_depth, GL_DEPTH_ATTACHMENT);
+
     cerr << "Checking Framebuffer completeness..." << endl;
     checkFramebufferCompleteness();
 }
@@ -41,9 +42,6 @@ Framebuffer::~Framebuffer() {
     // If renderer still exists, schedule deletion of OpenGL resources.
     finalize([=](){
         glDeleteFramebuffers(1, &_framebuffer);
-        glDeleteRenderbuffers(1, &_color);
-        if (_depth != 0)
-            glDeleteRenderbuffers(1, &_depth);
     });
 }
 
@@ -63,21 +61,29 @@ void Framebuffer::checkFramebufferCompleteness() {
 }
 
 
+// TODO: verify that renderbuffer dimensions match framebuffer dimensions.
+void Framebuffer::attach(const shared_ptr<Renderbuffer>& renderbuffer, GLenum attachment) {
+    if (!renderbuffer) return;
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, renderbuffer->_handle);
+}
+
+
 MultisampleFramebuffer::MultisampleFramebuffer(shared_ptr<Renderer> renderer,
                                                GLsizei width, GLsizei height,
-                                               GLuint color_renderbuffer,
-                                               GLuint depth_renderbuffer,
-                                               GLuint multisample_color_renderbuffer,
-                                               GLuint multisample_depth_renderbuffer) :
-    Framebuffer(renderer, width, height, color_renderbuffer, depth_renderbuffer),
-    _multi_color(multisample_color_renderbuffer),
-    _multi_depth(multisample_depth_renderbuffer)
+                                               const shared_ptr<Renderbuffer>& color_rbuffer,
+                                               const shared_ptr<Renderbuffer>& depth_rbuffer,
+                                               const shared_ptr<Renderbuffer>& multi_color_rbuffer,
+                                               const shared_ptr<Renderbuffer>& multi_depth_rbuffer) :
+    Framebuffer(renderer, width, height, color_rbuffer, depth_rbuffer),
+    _multi_color(multi_color_rbuffer),
+    _multi_depth(multi_depth_rbuffer)
 {
     glGenFramebuffers(1, &_multi_framebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, _multi_framebuffer);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _multi_color);
-    if (_multi_depth)
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _multi_depth);
+
+    attach(_multi_color, GL_COLOR_ATTACHMENT0);
+    if (_multi_depth) attach(_multi_depth, GL_DEPTH_ATTACHMENT);
+
     cerr << "Checking multisample Framebuffer completeness..." << endl;
     checkFramebufferCompleteness();
 }
@@ -87,9 +93,6 @@ MultisampleFramebuffer::~MultisampleFramebuffer() {
     // If renderer still exists, schedule deletion of OpenGL resources.
     finalize([=](){
         glDeleteFramebuffers(1, &_multi_framebuffer);
-        glDeleteRenderbuffers(1, &_multi_color);
-        if (_multi_depth)
-            glDeleteRenderbuffers(1, &_multi_depth);
     });
 }
 

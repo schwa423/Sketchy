@@ -80,7 +80,7 @@ void Renderer::render() {
 }
 
 
-GLuint Renderer::colorRenderbuffer() {
+shared_ptr<Renderbuffer> Renderer::colorRenderbuffer() {
     return _framebuffer->_color;
 }
 

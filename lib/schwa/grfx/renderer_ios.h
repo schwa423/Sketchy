@@ -22,9 +22,7 @@
 #error "this file should only be compiled on iOS"
 #endif
 
-
-#include <OpenGLES/ES2/gl.h>
-
+#include "platform_gl.h"
 
 @class VsyncListener;
 @class CAEAGLLayer;
@@ -41,6 +39,10 @@ class Renderer_iOS : public Renderer {
     // Start/stop the render-loop.
     virtual void pauseRendering();
     virtual void unpauseRendering();
+    bool isPaused();
+
+    // Initialize renderer with current layer.
+    void initialize(CAEAGLLayer* glayer);
 
  protected:
     // Don't construct directly, instead use New().
@@ -48,7 +50,7 @@ class Renderer_iOS : public Renderer {
     // that need a shared_ptr to the renderer, which we
     // can't obtain during the constructor.
     Renderer_iOS();
-    void initialize(CAEAGLLayer* glayer);
+
     
     // One of these is called by initialize(); currently we use multisampling.
     void initializeFramebuffer(CAEAGLLayer* glayer);

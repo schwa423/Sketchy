@@ -12,11 +12,22 @@
 
 #if defined(__APPLE__)
 #include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
 #else
 #error UNKNOWN PLATFORM
 #endif
 
-#define CHECK_GL(msg) { GLenum err = glGetError(); \
-if (err != GL_NO_ERROR) cerr << "GLError(" << err << "): " << msg << endl; }
+#include <iostream>
+
+#if defined(DEBUG)
+inline bool CHECK_GL(const char* msg) {
+    GLenum err = glGetError();
+    if (err == GL_NO_ERROR) return true;
+    std::cerr << "GLError(" << err << "): " << msg << std::endl;
+    return false;
+}
+#else
+#define CHECK_GL(msg) true;
+#endif
 
 #endif  // #ifndef __schwa__grfx__platform_gl__
