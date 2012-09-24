@@ -31,7 +31,7 @@ using std::endl;
 - (void) render:(CADisplayLink*)link;
 - (void) start;
 - (void) stop;
-- (bool) isPaused;
+- (bool) isRunning;
 - (void) dealloc;
 @end
 @implementation VsyncListener
@@ -111,10 +111,10 @@ using std::endl;
 		}
 	}
 }
-- (bool)isPaused
+- (bool)isRunning
 {
     @synchronized(self) {
-        return !_thread;
+        return _thread != nullptr;
     }
 }
 - (void)dealloc
@@ -153,18 +153,18 @@ Renderer_iOS::~Renderer_iOS() {
 }
 
 
-void Renderer_iOS::pauseRendering() {
-    [_vsync stop];
-}
-
-
-void Renderer_iOS::unpauseRendering() {
+void Renderer_iOS::startRendering() {
     [_vsync start];
 }
 
 
-bool Renderer_iOS::isPaused() {
-    return [_vsync isPaused];
+void Renderer_iOS::stopRendering() {
+    [_vsync stop];
+}
+
+
+bool Renderer_iOS::isRunning() {
+    return [_vsync isRunning];
 }
 
 

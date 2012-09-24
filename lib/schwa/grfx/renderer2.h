@@ -50,8 +50,8 @@ class Renderer : public std::enable_shared_from_this<Renderer> {
     void render();
 
     // Start/stop the render-loop.
-    virtual void pauseRendering() = 0;
-    virtual void unpauseRendering() = 0;
+    virtual void startRendering() = 0;
+    virtual void stopRendering() = 0;
 
     // Represents one or more OpenGL resources that work together as a unit.
     class Resource {

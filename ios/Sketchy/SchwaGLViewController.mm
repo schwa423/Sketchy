@@ -64,16 +64,16 @@ using std::endl;
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    cerr << "view did disappear" << endl;
-    [(SchwaGLView*)self.view pauseRendering];
+    cerr << "[SchwaGLViewController viewDidDisappear:]" << endl;
+    [(SchwaGLView*)self.view stopRendering];
 
     [super viewDidDisappear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    cerr << "view did appear" << endl;
-    [(SchwaGLView*)self.view unpauseRendering];
+    cerr << "[SchwaGLViewController viewDidAppear:]" << endl;
+    [(SchwaGLView*)self.view startRendering];
 
     // Whenever view appears, we potentially need to update
     // the orientation, since we views do not receive rotation

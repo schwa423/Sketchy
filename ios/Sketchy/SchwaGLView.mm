@@ -84,15 +84,15 @@ using std::endl;
 	cerr << "dealloc SchwaGLView" << endl;
 }
 
-- (void)pauseRendering
+- (void)startRendering
 {
-    _renderer->pauseRendering();
+    _renderer->startRendering();
 
 }
 
-- (void)unpauseRendering
+- (void)stopRendering
 {
-	_renderer->unpauseRendering();
+	_renderer->stopRendering();
 }
 
 - (void)updateOrientation:(UIInterfaceOrientation)orientation
@@ -102,13 +102,13 @@ using std::endl;
     // Stop rendering so that it's OK for the renderer
     // to use its OpenGL context in this thread.  Remember
     // whether we were rendering, so we can resume.
-    bool wasRendering = !_renderer->isPaused();
-    _renderer->pauseRendering();
+    bool wasRendering = _renderer->isRunning();
+    _renderer->stopRendering();
 
     // Allow the renderer to update appropriately.
     _renderer->initialize((CAEAGLLayer*)self.layer);
 
-    if (wasRendering) _renderer->unpauseRendering();
+    if (wasRendering) _renderer->startRendering();
 }
 
 @end

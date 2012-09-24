@@ -39,9 +39,9 @@ class Renderer_iOS : public Renderer {
     virtual ~Renderer_iOS();
 
     // Start/stop the render-loop.
-    virtual void pauseRendering();
-    virtual void unpauseRendering();
-    bool isPaused();
+    virtual void startRendering();
+    virtual void stopRendering();
+    bool isRunning();
 
     // Initialize renderer with current layer.
     void initialize(CAEAGLLayer* glayer);

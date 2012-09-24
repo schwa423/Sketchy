@@ -33,8 +33,8 @@ using namespace schwa;
     shared_ptr<grfx::View> _view;
 }
 
-- (void)pauseRendering;
-- (void)unpauseRendering;
+- (void)startRendering;
+- (void)stopRendering;
 
 // Notify renderer that the orientation has changed.
 - (void)updateOrientation:(UIInterfaceOrientation)orientation;
