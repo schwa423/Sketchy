@@ -469,23 +469,23 @@
 		0370A02215FBE97C003C0164 /* grfx */ = {
 			isa = PBXGroup;
 			children = (
-				0370A02315FBEA0F003C0164 /* renderer2.cpp */,
-				0370A02415FBEA0F003C0164 /* renderer2.h */,
 				0370A02615FC0F03003C0164 /* framebuffer2.cpp */,
 				0370A02715FC0F03003C0164 /* framebuffer2.h */,
-				030366D615FD5C4A003D6F91 /* renderer_ios.mm */,
-				030366D715FD5C4A003D6F91 /* renderer_ios.h */,
-				0356A38115FF27D7006C43C1 /* platform_gl.h */,
 				0356A38315FF32AB006C43C1 /* framebuffer_ios.mm */,
 				0356A38415FF32AB006C43C1 /* framebuffer_ios.h */,
-				0356A3861605560C006C43C1 /* scene.cpp */,
-				0356A3871605560C006C43C1 /* scene.h */,
-				0356A38916055749006C43C1 /* view.cpp */,
-				0356A38A16055749006C43C1 /* view.h */,
+				0356A38115FF27D7006C43C1 /* platform_gl.h */,
 				0357AB7E160F9ED50044DA75 /* renderbuffer.cpp */,
 				0357AB7F160F9ED50044DA75 /* renderbuffer.h */,
 				0357AB82160F9EF10044DA75 /* renderbuffer_ios.mm */,
 				0357AB83160F9EF10044DA75 /* renderbuffer_ios.h */,
+				0370A02315FBEA0F003C0164 /* renderer2.cpp */,
+				0370A02415FBEA0F003C0164 /* renderer2.h */,
+				030366D615FD5C4A003D6F91 /* renderer_ios.mm */,
+				030366D715FD5C4A003D6F91 /* renderer_ios.h */,
+				0356A3861605560C006C43C1 /* scene.cpp */,
+				0356A3871605560C006C43C1 /* scene.h */,
+				0356A38916055749006C43C1 /* view.cpp */,
+				0356A38A16055749006C43C1 /* view.h */,
 			);
 			name = grfx;
 			sourceTree = "<group>";
