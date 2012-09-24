@@ -61,9 +61,10 @@ void Framebuffer::checkFramebufferCompleteness() {
 }
 
 
-// TODO: verify that renderbuffer dimensions match framebuffer dimensions.
 void Framebuffer::attach(const shared_ptr<Renderbuffer>& renderbuffer, GLenum attachment) {
     if (!renderbuffer) return;
+    if (_width != renderbuffer->width() || _height != renderbuffer->height())
+        cerr << "ERROR: framebuffer and renderbuffer dimensions do not match" << endl;
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachment, GL_RENDERBUFFER, renderbuffer->_handle);
 }
 

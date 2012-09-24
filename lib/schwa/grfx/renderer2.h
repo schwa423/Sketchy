@@ -32,6 +32,8 @@ class View;
 
 class Renderer : public std::enable_shared_from_this<Renderer> {
  public:
+    virtual ~Renderer() { }
+
     // Return the default framebuffer.
     shared_ptr<Framebuffer> framebuffer() { return _framebuffer; }
 

@@ -9,6 +9,10 @@
 
 #include "renderbuffer.h"
 
+#include <iostream>
+using std::cerr;
+using std::endl;
+
 // namespace schwa::grfx
 namespace schwa {namespace grfx {
 
@@ -69,7 +73,9 @@ Renderbuffer::Renderbuffer(shared_ptr<Renderer> renderer, GLuint handle,
 
 Renderbuffer::~Renderbuffer() {
     // If renderer still exists, schedule deletion of OpenGL resources.
+    cerr << "scheduling deletion of renderbuffer: " << _handle << endl;
     finalize([=](){
+        cerr << "deleting renderbuffer: " << _handle << endl;
         glDeleteRenderbuffers(1, &_handle);
     });
 }

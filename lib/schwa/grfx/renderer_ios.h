@@ -34,7 +34,9 @@ namespace schwa {namespace grfx {
 
 class Renderer_iOS : public Renderer {
  public:
-    static shared_ptr<Renderer> New(CAEAGLLayer* glayer);
+    static shared_ptr<Renderer_iOS> New();
+
+    virtual ~Renderer_iOS();
 
     // Start/stop the render-loop.
     virtual void pauseRendering();

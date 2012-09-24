@@ -10,6 +10,7 @@
 #include "renderer_ios.h"
 #include "framebuffer_ios.h"
 #include "renderbuffer_ios.h"
+#include "view.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -85,6 +86,13 @@ using std::endl;
 					object:nil];
 		[_thread setThreadPriority: 1.0];
 		[_thread start];
+
+        // This is a hack to avoid a race-condition that can occur if
+        // stop() is called immediately after start(), before _loop is set.
+        while (!_loop) {
+            usleep(5000);
+            cerr << "waiting for vsync loop to start" << endl;
+        }
 	}
 }
 - (void)stop
@@ -121,15 +129,8 @@ using std::endl;
 // namespace schwa::grfx
 namespace schwa {namespace grfx {
 
-shared_ptr<Renderer> Renderer_iOS::New(CAEAGLLayer* glayer) {
-
-    shared_ptr<Renderer> renderer;
-    auto ios = new Renderer_iOS;
-    if (ios) {
-        renderer.reset(ios);
-        ios->initialize(glayer);
-    }
-    return renderer;
+shared_ptr<Renderer_iOS> Renderer_iOS::New() {
+    return shared_ptr<Renderer_iOS>(new Renderer_iOS);
 }
 
 
@@ -144,6 +145,11 @@ Renderer_iOS::Renderer_iOS() {
         cerr << "Renderer_iOS could not create OpenGL contexts." << endl;
 
     _vsync = [[VsyncListener alloc] initWithRenderer:this context:_renderContext];
+}
+
+
+Renderer_iOS::~Renderer_iOS() {
+    cerr << "destroying Renderer_iOS" << endl;
 }
 
 
@@ -169,9 +175,16 @@ void Renderer_iOS::initialize(CAEAGLLayer* glayer) {
     // create framebuffers/renderbuffers, etc.
     BOOL success = [EAGLContext setCurrentContext: _renderContext];
     if (success != YES)
-        cerr << "Renderer_iOS couldnot set OpenGL context." << endl;
+        cerr << "Renderer_iOS could not set OpenGL context." << endl;
+
+    // Destroy framebuffer/renderbuffers.  Run finalizers so that
+    // GL resources are actually destroyed, not just scheduled to be.
+    _framebuffer.reset();
+    runFinalizers();
 
     initializeMultisampleFramebuffer(glayer);
+
+    if (_view) _view->setFramebuffer(_framebuffer);
 
     // We're finished initializing OpenGL resources, so flush and
     // unset the current context... from now on, the _renderContext
@@ -250,6 +263,10 @@ void Renderer_iOS::initializeMultisampleFramebuffer(CAEAGLLayer* layer) {
 
 
 void Renderer_iOS::swapBuffers() {
+    if (!colorRenderbuffer()) {
+        cerr << "no color-renderbuffer to swap" << endl;
+        return;
+    }
     colorRenderbuffer()->bind();
     CHECK_GL("filed to bind renderbuffer for swapBuffers()");
     if (YES != [_renderContext presentRenderbuffer:GL_RENDERBUFFER]) {

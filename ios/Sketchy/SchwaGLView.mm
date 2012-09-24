@@ -13,7 +13,7 @@
 #include "renderer_ios.h"
 #include "view.h"
 using schwa::grfx::Renderer_iOS;
-
+using schwa::grfx::View;
 
 // TODO: Un-hardwire this
 #include "pageview.h"
@@ -44,16 +44,13 @@ using std::endl;
 	return [CAEAGLLayer class];
 }
 
-- (BOOL)initRenderer:(CAEAGLLayer *)glayer
+- (BOOL)initRenderer
 {
-    _renderer = std::dynamic_pointer_cast<Renderer_iOS>(Renderer_iOS::New(glayer));
+    _renderer = Renderer_iOS::New();
     if (!_renderer) return FALSE;
 
-    _view = grfx::View::New<sketchy::PageView>(_renderer);
-    if (!_view) return FALSE;
-    _view->setFramebuffer(_renderer->framebuffer());
+    _view = View::New<sketchy::PageView>(_renderer);
     _renderer->setView(_view);
-
     return TRUE;
 }
 
@@ -71,7 +68,7 @@ using std::endl;
 		 nil];
 	self.contentScaleFactor = [[UIScreen mainScreen] scale];
 
-   if (![self initRenderer:glayer]) {
+   if (![self initRenderer]) {
         cerr << "Failed to initialize renderer" << endl;
         return nil;
     }
@@ -98,29 +95,20 @@ using std::endl;
 	_renderer->unpauseRendering();
 }
 
-// TODO: finish this!!!
-- (void)updateOrientation
+- (void)updateOrientation:(UIInterfaceOrientation)orientation
 {
-    bool wasPaused = _renderer->isPaused();
+    cerr << "[SchwaGLView updateOrientation:]" << endl;
+
+    // Stop rendering so that it's OK for the renderer
+    // to use its OpenGL context in this thread.  Remember
+    // whether we were rendering, so we can resume.
+    bool wasRendering = !_renderer->isPaused();
     _renderer->pauseRendering();
 
-    CGRect rect = [self.layer bounds];
-    int w = (int)rect.size.width;
-    int h = (int)rect.size.height;
+    // Allow the renderer to update appropriately.
+    _renderer->initialize((CAEAGLLayer*)self.layer);
 
-    cerr << "updateOrientation: layer bounds now: " << w << "/" << h << endl;
-    // _renderer->initialize((CAEAGLLayer*)self.layer);
-
-    if (!wasPaused) _renderer->unpauseRendering();
+    if (wasRendering) _renderer->unpauseRendering();
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

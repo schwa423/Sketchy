@@ -25,20 +25,6 @@ using std::endl;
 
 @implementation SchwaGLViewController
 
-// TODO: this isn't called... which init method is being called?
-// And what do we need to do there?  I guess the "page model" will
-// live in the controller...
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    cerr << "initializing view-controller" << endl;
-
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)didReceiveMemoryWarning
 {
     // Releases the view if it doesn't have a superview.
@@ -51,18 +37,21 @@ using std::endl;
 
 - (void)viewDidLoad
 {
-    cerr << "view did load" << endl;
-    self.view.multipleTouchEnabled = TRUE;
+    cerr << "[SchwaGLViewController viewDidLoad]" << endl;
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+
+    // Mais, bien sur!
+    self.view.multipleTouchEnabled = TRUE;
+
+    // Guarantee that we always update the orientation of a new view
+    // (and hence initialize the default framebuffer appropriately).
+    _orientationValid = false;
 }
 
 - (void)viewDidUnload
 {
-    cerr << "view did unload" << endl;
+    cerr << "[SchwaGLViewController viewDidUnload]" << endl;
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (NSInteger)supportedInterfaceOrientations
@@ -77,6 +66,7 @@ using std::endl;
 {
     cerr << "view did disappear" << endl;
     [(SchwaGLView*)self.view pauseRendering];
+
     [super viewDidDisappear:animated];
 }
 
@@ -84,14 +74,37 @@ using std::endl;
 {
     cerr << "view did appear" << endl;
     [(SchwaGLView*)self.view unpauseRendering];
+
+    // Whenever view appears, we potentially need to update
+    // the orientation, since we views do not receive rotation
+    // events when not visible.
+    [self updateOrientation];
+
+    // Perhaps this should go first?  Not sure.
     [super viewDidAppear:animated];
 }
 
-// TODO: not clear that this is the moment we want to update the orientation...
-//       but maybe it is?
-- (void)viewWillLayoutSubviews
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
-    [(SchwaGLView*)self.view updateOrientation];
+    // Clearly, need to update orientation when rotating.
+    [self updateOrientation];
+}
+
+- (void)updateOrientation
+{
+    cerr << "[SchwaGLViewController updateOrientation]" << endl;
+
+    UIInterfaceOrientation newOrientation = [self interfaceOrientation];
+
+    if (_orientationValid && _orientation == newOrientation) {
+        cerr << "   ... early exit because valid orientation hasn't changed" << endl;
+        return;
+    }
+
+    // Remember new orientation, and update view.
+    _orientation = newOrientation;
+    _orientationValid = true;
+    [(SchwaGLView*)self.view updateOrientation: _orientation];
 }
 
 - (void)printTouchInfo:(NSSet*)touches
@@ -163,49 +176,5 @@ using std::endl;
 {
     _touchHandler = handler;
 }
-
-/*
-// Send a resized event when the orientation changes.
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    const UIInterfaceOrientation toInterfaceOrientation = [self interfaceOrientation];
-    SDL_WindowData *data = self->window->driverdata;
-    UIWindow *uiwindow = data->uiwindow;
-    SDL_VideoDisplay *display = SDL_GetDisplayForWindow(self->window);
-    SDL_DisplayData *displaydata = (SDL_DisplayData *) display->driverdata;
-    SDL_DisplayModeData *displaymodedata = (SDL_DisplayModeData *) display->current_mode.driverdata;
-    UIScreen *uiscreen = displaydata->uiscreen;
-    const int noborder = (self->window->flags & (SDL_WINDOW_FULLSCREEN|SDL_WINDOW_BORDERLESS));
-    CGRect frame = noborder ? [uiscreen bounds] : [uiscreen applicationFrame];
-    const CGSize size = frame.size;
-    int w, h;
-
-    switch (toInterfaceOrientation) {
-        case UIInterfaceOrientationPortrait:
-        case UIInterfaceOrientationPortraitUpsideDown:
-            w = (size.width < size.height) ? size.width : size.height;
-            h = (size.width > size.height) ? size.width : size.height;
-            break;
-
-        case UIInterfaceOrientationLandscapeLeft:
-        case UIInterfaceOrientationLandscapeRight:
-            w = (size.width > size.height) ? size.width : size.height;
-            h = (size.width < size.height) ? size.width : size.height;
-            break;
-
-        default:
-            SDL_assert(0 && "Unexpected interface orientation!");
-            return;
-    }
-
-    w = (int)(w * displaymodedata->scale);
-    h = (int)(h * displaymodedata->scale);
-
-    [uiwindow setFrame:frame];
-    [data->view setFrame:frame];
-    [data->view updateFrame];
-    SDL_SendWindowEvent(self->window, SDL_WINDOWEVENT_RESIZED, w, h);
-}
-*/
 
 @end

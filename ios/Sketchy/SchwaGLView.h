@@ -35,6 +35,8 @@ using namespace schwa;
 
 - (void)pauseRendering;
 - (void)unpauseRendering;
-- (void)updateOrientation;
+
+// Notify renderer that the orientation has changed.
+- (void)updateOrientation:(UIInterfaceOrientation)orientation;
 
 @end

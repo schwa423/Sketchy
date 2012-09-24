@@ -57,6 +57,9 @@ void Renderer::setView(const shared_ptr<View> &view) {
 void Renderer::render() {
     lock_guard lock(_mutex);
 
+    // Run finalizers to potentially free memory.
+    runFinalizers();
+
     // Render the view, if any.
     if (_view.get()) {
         _view->render();
@@ -73,14 +76,17 @@ void Renderer::render() {
             glClear(GL_COLOR_BUFFER_BIT);
         });
     }
-    glFlush();
+
+    // TODO: probably shouldn't be necessary.  Is it?
+    runFinalizers();
+
     CHECK_GL("Renderer::render()... about to swap buffers");
-    
     swapBuffers();
 }
 
 
 shared_ptr<Renderbuffer> Renderer::colorRenderbuffer() {
+    if (!_framebuffer) return nullptr;
     return _framebuffer->_color;
 }
 

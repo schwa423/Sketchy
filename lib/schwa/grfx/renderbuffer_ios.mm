@@ -27,15 +27,19 @@ shared_ptr<Renderbuffer> Renderbuffer_iOS::NewFromLayer(shared_ptr<Renderer> ren
     GLuint handle;
     glGenRenderbuffers(1, &handle);
     glBindRenderbuffer(GL_RENDERBUFFER, handle);
-    BOOL result = [context
-                   renderbufferStorage:GL_RENDERBUFFER
-                   fromDrawable:layer];
+
+    // First detach from any previous renderbuffer.
+    // Not sure if necessary, but seems prudent.
+    [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:nil];
+
+    BOOL result = [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:layer];
     if (result != YES) {
         cerr << "failed to create color_renderbuffer from drawable layer" << endl;
         return nullptr;
     }
 
-    return shared_ptr<Renderbuffer>(new Renderbuffer(renderer, handle,
+    return shared_ptr<Renderbuffer>(new Renderbuffer(renderer,
+                                                     handle,
                                                      width, height,
                                                      1, false));
 }

@@ -17,7 +17,12 @@ using std::shared_ptr;
 
 @private
 	shared_ptr<Sketchy::Input::TouchHandler> _touchHandler;
+
+    // Most recent orientation, and a flag to specify whether it is valid.
+    bool _orientationValid;
+    UIInterfaceOrientation _orientation;
 }
 
 - (void)setTouchHandler:(shared_ptr<Sketchy::Input::TouchHandler>)handler;
+- (void)updateOrientation;
 @end
