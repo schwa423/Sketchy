@@ -27,9 +27,9 @@ void PageView::render() {
         if (!_geometry.get()) _geometry.reset(new Sketchy::Geometry());
         if (!_shader.get()) _shader.reset(new Sketchy::Shader());
 
-        glViewport(50, 50, 512, 512);
+        glViewport(50, 50, 700, 700);
 
-        glClearColor(0.5f, 0.5f, 0.7f, 1.0f);
+        glClearColor(0.27f, 0.45f, 0.58f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         _shader->bind();

@@ -133,9 +133,9 @@ Shader::Shader() {
 	// TODO: would be nice if there was something like glBindAttribLocation() for
 	// uniforms.  AFAIK, there's no choice but to read it back from the program.
 	m_color = glGetUniformLocation(m_program, "colorIn");
-	m_colorVal[0] = 0.0;
-	m_colorVal[1] = 1.0;
-	m_colorVal[2] = 0.0;
+	m_colorVal[0] = 0.77;
+	m_colorVal[1] = 0.64;
+	m_colorVal[2] = 0.54;
 	m_colorVal[3] = 1.0;
 
 	m_timeEtc = glGetUniformLocation(m_program, "timeEtc");
