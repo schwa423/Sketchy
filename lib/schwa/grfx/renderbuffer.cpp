@@ -73,9 +73,9 @@ Renderbuffer::Renderbuffer(shared_ptr<Renderer> renderer, GLuint handle,
 
 Renderbuffer::~Renderbuffer() {
     // If renderer still exists, schedule deletion of OpenGL resources.
-    cerr << "scheduling deletion of renderbuffer: " << _handle << endl;
+    // TODO: remove once Clang can capture instance variables by copy, not reference.
+    auto _handle = this->_handle;
     finalize([=](){
-        cerr << "deleting renderbuffer: " << _handle << endl;
         glDeleteRenderbuffers(1, &_handle);
     });
 }

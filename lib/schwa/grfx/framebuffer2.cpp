@@ -40,6 +40,8 @@ Framebuffer::Framebuffer(shared_ptr<Renderer> renderer,
 
 Framebuffer::~Framebuffer() {
     // If renderer still exists, schedule deletion of OpenGL resources.
+    // TODO: remove once Clang can capture instance variables by copy, not reference.
+    auto _framebuffer = this->_framebuffer;
     finalize([=](){
         glDeleteFramebuffers(1, &_framebuffer);
     });
@@ -92,6 +94,8 @@ MultisampleFramebuffer::MultisampleFramebuffer(shared_ptr<Renderer> renderer,
 
 MultisampleFramebuffer::~MultisampleFramebuffer() {
     // If renderer still exists, schedule deletion of OpenGL resources.
+    // TODO: remove once Clang can capture instance variables by copy, not reference.
+    auto _multi_framebuffer = this->_multi_framebuffer;
     finalize([=](){
         glDeleteFramebuffers(1, &_multi_framebuffer);
     });
