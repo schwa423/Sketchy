@@ -19,15 +19,16 @@
 
 #include <iostream>
 
-#if defined(DEBUG)
+
 inline bool CHECK_GL(const char* msg) {
+#if defined(DEBUG)
     GLenum err = glGetError();
     if (err == GL_NO_ERROR) return true;
     std::cerr << "GLError(" << err << "): " << msg << std::endl;
     return false;
-}
 #else
-#define CHECK_GL(msg) true;
+    return true;
 #endif
+}
 
 #endif  // #ifndef __schwa__grfx__platform_gl__
