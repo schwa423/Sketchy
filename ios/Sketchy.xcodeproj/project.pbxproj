@@ -826,6 +826,7 @@
 					include,
 					../cross/include,
 					"../third-party/include",
+					"../third-party",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -858,6 +859,7 @@
 					include,
 					../cross/include,
 					"../third-party/include",
+					"../third-party",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";

@@ -19,8 +19,16 @@
 // namespace schwa::app::sketchy
 namespace schwa {namespace app {namespace sketchy {
 
+// Base-class for views that are inherently 2d.  They:
+// - have some notion of orientation (which way is up)
+// - can pass 2d UI events to their model.
+// TODO: promote to grfx once it works well.
+class View2d : public grfx::View {
 
-class PageView : public grfx::View
+};
+
+
+class PageView : public View2d
 {
  public:
     virtual void render();

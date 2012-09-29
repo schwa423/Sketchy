@@ -10,6 +10,9 @@
 #ifndef Sketchy_Shader_h
 #define Sketchy_Shader_h
 
+#include "Eigen/Geometry"
+using namespace Eigen;
+
 namespace Sketchy {
 
 class Shader
@@ -19,6 +22,9 @@ public:
 	~Shader();
 
 	void bind(void);
+
+    // Hack... assumes shader has a "transform"
+    void setTransform(const Affine2f& transform) { m_transformVal = transform; }
 
 private:
 	GLuint createShader(GLenum shaderType, const char *src);
@@ -32,7 +38,8 @@ private:
 	GLuint m_color;
 	GLfloat m_timeEtcVal[4];
 	GLuint m_timeEtc;
-
+    Affine2f m_transformVal;
+    GLuint m_transform;
 }; // class Shader
 
 } // namespace Sketchy
