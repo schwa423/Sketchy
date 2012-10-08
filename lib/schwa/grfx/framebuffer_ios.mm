@@ -8,34 +8,57 @@
 //
 
 #include "framebuffer_ios.h"
+#include "renderbuffer_ios.h"
 
 // namespace schwa::grfx
 namespace schwa {namespace grfx {
 
+
+#if defined(__APPLE__)
+shared_ptr<MultisampleFramebuffer> MultisampleFramebuffer::New(const shared_ptr<Renderer>& renderer,
+                                                                   const shared_ptr<Framebuffer>& resolve,
+                                                                   bool useDepth,
+                                                                   bool useStencil) {
+    return shared_ptr<MultisampleFramebuffer>(new MultisampleFramebuffer_iOS(renderer,
+                                                                             resolve,
+                                                                             useDepth,
+                                                                             useStencil));
+}
+#endif
+
+shared_ptr<Framebuffer> MultisampleFramebuffer_iOS::NewFromLayer(const shared_ptr<Renderer>& renderer,
+                                                                 EAGLContext* context,
+                                                                 CAEAGLLayer* layer,
+                                                                 bool useDepth,
+                                                                 bool useStencil) {
+    auto renderbuffer = Renderbuffer_iOS::NewFromLayer(renderer, context, layer);
+    auto framebuffer = Framebuffer::New(renderer, renderbuffer);
+    return shared_ptr<Framebuffer>(new MultisampleFramebuffer_iOS(renderer,
+                                                                  framebuffer,
+                                                                  useDepth,
+                                                                  useStencil));
+}
+
+
 // Simply delegate to superclass.
-MultisampleFramebuffer_iOS::MultisampleFramebuffer_iOS(
-                                    shared_ptr<Renderer> renderer,
-                                    GLsizei width, GLsizei height,
-                                    const shared_ptr<Renderbuffer>& color_renderbuffer,
-                                    const shared_ptr<Renderbuffer>& depth_renderbuffer,
-                                    const shared_ptr<Renderbuffer>& multisample_color_renderbuffer,
-                                    const shared_ptr<Renderbuffer>& multisample_depth_renderbuffer)
-    : MultisampleFramebuffer(renderer,
-                             width, height,
-                             color_renderbuffer,
-                             depth_renderbuffer,
-                             multisample_color_renderbuffer,
-                             multisample_depth_renderbuffer) { }
+MultisampleFramebuffer_iOS::MultisampleFramebuffer_iOS(const shared_ptr<Renderer>& renderer,
+                                                       const shared_ptr<Framebuffer>& resolve,
+                                                       bool useDepth,
+                                                       bool useStencil)
+    : MultisampleFramebuffer(renderer, resolve, useDepth, useStencil) {
+
+}
 
 
 void MultisampleFramebuffer_iOS::resolve() {
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER_APPLE, _framebuffer);
-	glBindFramebuffer(GL_READ_FRAMEBUFFER_APPLE, _multi_framebuffer);
-	glResolveMultisampleFramebufferAPPLE();
+    _resolve->bind(GL_DRAW_FRAMEBUFFER_APPLE);
+    _multi->bind(GL_READ_FRAMEBUFFER_APPLE);
+    glResolveMultisampleFramebufferAPPLE();
 
     // For efficiency, discard rendererbuffers now that we're done with them.
 	GLenum attachments[2] = { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT };
 	glDiscardFramebufferEXT(GL_READ_FRAMEBUFFER_APPLE, 2, attachments);
 }
+
 
 }}  // namespace schwa::grfx

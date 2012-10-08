@@ -1,21 +1,21 @@
 //
 //  TouchHandler.h
-//  Sketchy
+//  schwa::input
 //
 //  Created by Joshua Gargus on 9/6/12.
 //  Copyright (c) 2012 Schwaftwarez. All rights reserved.
 //
 
 
-#ifndef Sketchy_TouchEventHandler_h
-#define Sketchy_TouchEventHandler_h
+#ifndef __schwa__input__touch_handler__
+#define __schwa__input__touch_handler__
 
 #include <stdint.h>
 
 #include <vector>
 
-// namespace Sketchy::grfx
-namespace Sketchy {namespace Input {
+// namespace schwa::input
+namespace schwa {namespace input {
 
 class Touch {
  public:
@@ -57,7 +57,7 @@ class TouchHandler {
 };
 
 
-}}  // namespace Sketchy::Input
+}}  // namespace schwa::input
 
 
-#endif // #ifndef Sketchy_TouchEventHandler_h
+#endif  // #ifndef __schwa__input__touch_handler__

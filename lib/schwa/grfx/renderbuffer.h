@@ -11,23 +11,23 @@
 #define __schwa__grfx__renderbuffer__
 
 #include "renderer2.h"
+#include "framebuffer2.h"
 #include "platform_gl.h"
 
 // namespace schwa::grfx
 namespace schwa {namespace grfx {
 
-
-class Framebuffer;
-
-class Renderbuffer : public Renderer::Resource {
+class Renderbuffer : public Renderer::Resource, public Framebuffer::Attachment {
     friend class Framebuffer;
  public:
     // "Constructors".
     // TODO: consider making these instance-methods of Renderer.
     static shared_ptr<Renderbuffer> NewColor(shared_ptr<Renderer> renderer,
-                                             int width, int height, int samples=1);
+                                             uint width, uint height, int samples=1);
     static shared_ptr<Renderbuffer> NewDepth(shared_ptr<Renderer> renderer,
-                                             int width, int height, int samples=1);
+                                             uint width, uint height, int samples=1);
+    static shared_ptr<Renderbuffer> NewStencil(shared_ptr<Renderer> renderer,
+                                               uint width, uint height, int samples=1);
 
     virtual ~Renderbuffer();
 
@@ -39,30 +39,30 @@ class Renderbuffer : public Renderer::Resource {
     int height() const { return _height; }
     int samples() const { return _samples; }
 
-    // What type of renderbuffer is this, color or depth?
-    bool isDepth() const { return _depth; }
-    bool isColor() const { return !_depth; }
+    // What type of renderbuffer is this, color/depth/stencil?
+    bool isColor() const;
+    bool isDepth() const;
+    bool isStencil() const;
 
  protected:
     static shared_ptr<Renderbuffer> New(shared_ptr<Renderer> renderer,
-                                        int width, int height,
-                                        int samples, bool depth);
+                                        uint width, uint height,
+                                        int samples, GLenum format);
 
     Renderbuffer(shared_ptr<Renderer> renderer, GLuint handle,
-                 int width, int height, int samples, bool depth);
+                 uint width, uint height, int samples, GLenum format);
+
+    // TODO: comment
+    virtual void attach(GLenum attachmentPoint) const;
 
     // OpenGL renderbuffer ID
     GLuint _handle;
 
-    // Dimensions of renderbuffer.
-    int _width;
-    int _height;
-
     // Number of multisamples.
     int _samples;
 
-    // Is this a depth-buffer?  If not, it's a color-buffer.
-    bool _depth;
+    // Pixel-format.
+    GLenum _format;
 };
 
 

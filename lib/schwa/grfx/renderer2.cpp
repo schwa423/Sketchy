@@ -10,6 +10,7 @@
 #include "renderer2.h"
 #include "framebuffer2.h"
 #include "view.h"
+#include "presenter.h"
 
 typedef std::lock_guard<std::mutex> lock_guard;
 
@@ -19,6 +20,18 @@ using std::endl;
 
 // namespace schwa::grfx
 namespace schwa {namespace grfx {
+
+void Renderer::pauseRenderingDuring(core::Thunk action) {
+    bool wasRendering = isRunning();
+    if (wasRendering) stopRendering();
+    try {
+        action();
+    } catch(...) {
+        // TODO: something more informative
+        cerr << "caught exception in pauseRenderingDuring";
+    }
+    if (wasRendering) startRendering();
+}
 
 
 // TODO: unit tests, using both nullptr FB, and not.
@@ -46,48 +59,46 @@ void Renderer::resolveAndPopFramebuffer(const shared_ptr<Framebuffer> &fb) {
 }
 
 
-void Renderer::setView(const shared_ptr<View> &view) {
-    // TODO: enqueue set-view thunk instead of obtaining lock.
-    lock_guard lock(_mutex);
-    view->setFramebuffer(_framebuffer);
-    _view = view;
-}
-
-
 void Renderer::render() {
     lock_guard lock(_mutex);
 
     // Run finalizers to potentially free memory.
     runFinalizers();
 
-    // Render the view, if any.
-    if (_view.get()) {
-        _view->render();
-    } else {
-        // There was no view to render, so render default background.
-        static int renderCount = 1;
-        static int direction = -1;
-        renderCount += direction;
-        if (renderCount == 0 || renderCount == 255) direction *= -1;
+    // TODO: This is a decent hack, since if we are at 60fps, the inter-frame
+    //       time is 16.67ms.  But we will need something better.
+    static uint64_t time = 0;
+    time += 16;
 
-        GLfloat red = renderCount / 255.0f;
-        useFramebufferDuring(_framebuffer, [=](){
-            glClearColor(red, 0.0f, 0.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
-        });
+    // Tell all presenters to render.
+    int count = 0;
+    for (auto weak : _presenters) {
+        auto p = weak.lock();
+        if (p) {
+            p->render(time);
+            count++;
+        }
     }
+    if (count < _presenters.size()) cleanupPresenters();
 
     // TODO: probably shouldn't be necessary.  Is it?
     runFinalizers();
-
-    CHECK_GL("Renderer::render()... about to swap buffers");
-    swapBuffers();
 }
 
 
-shared_ptr<Renderbuffer> Renderer::colorRenderbuffer() {
-    if (!_framebuffer) return nullptr;
-    return _framebuffer->_color;
+void Renderer::cleanupPresenters() {
+    vector<weak_ptr<Presenter>> cleaned;
+    for (auto weak : _presenters) {
+        auto p = weak.lock();
+        if (p)
+            cleaned.push_back(p);
+    }
+    std::swap(cleaned, _presenters);
+}
+
+
+void Renderer::addPresenter(const shared_ptr<Presenter> &presenter) {
+    _presenters.push_back(presenter);
 }
 
 

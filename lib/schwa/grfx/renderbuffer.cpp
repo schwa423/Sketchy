@@ -17,28 +17,46 @@ using std::endl;
 namespace schwa {namespace grfx {
 
 
+static const int RENDERBUFFER_COLOR_FORMAT = GL_RGBA8_OES;
+static const int RENDERBUFFER_DEPTH_FORMAT = GL_DEPTH_COMPONENT16;
+static const int RENDERBUFFER_STENCIL_FORMAT = GL_DEPTH24_STENCIL8_OES;
+
+
 shared_ptr<Renderbuffer> Renderbuffer::NewColor(shared_ptr<Renderer> renderer,
-                                                int width, int height,
+                                                uint width, uint height,
                                                 int samples) {
-    return Renderbuffer::New(renderer, width, height, samples, false);
+    auto rb = Renderbuffer::New(renderer, width, height, samples, RENDERBUFFER_COLOR_FORMAT);
+    CHECK_GL("failed to instantiate color renderbuffer");
+    return rb;
 }
 
 
 shared_ptr<Renderbuffer> Renderbuffer::NewDepth(shared_ptr<Renderer> renderer,
-                                                int width, int height,
+                                                uint width, uint height,
                                                 int samples) {
-    return Renderbuffer::New(renderer, width, height, samples, true);
+    auto rb = Renderbuffer::New(renderer, width, height, samples, RENDERBUFFER_DEPTH_FORMAT);
+    CHECK_GL("failed to instantiate depth renderbuffer");
+    return rb;
+}
+
+
+// TODO: seems like we can only create stencil buffer using combined depth/stencil
+//       format... the current APIs need to be adjusted to take this into account
+shared_ptr<Renderbuffer> Renderbuffer::NewStencil(shared_ptr<Renderer> renderer,
+                                                uint width, uint height,
+                                                int samples) {
+    auto rb =  Renderbuffer::New(renderer, width, height, samples, RENDERBUFFER_STENCIL_FORMAT);
+    CHECK_GL("failed to instantiate stencil renderbuffer");
+    return rb;
 }
 
 
 shared_ptr<Renderbuffer> Renderbuffer::New(shared_ptr<Renderer> renderer,
-                                           int width, int height,
-                                           int samples, bool depth) {
+                                           uint width, uint height,
+                                           int samples, GLenum format) {
     GLuint handle;
     glGenRenderbuffers(1, &handle);
     glBindRenderbuffer(GL_RENDERBUFFER, handle);
-
-    GLenum format = depth ? GL_DEPTH_COMPONENT16 : GL_RGBA8_OES;
 
     if (samples == 1) {
         glRenderbufferStorage(GL_RENDERBUFFER, format, width, height);
@@ -57,17 +75,16 @@ shared_ptr<Renderbuffer> Renderbuffer::New(shared_ptr<Renderer> renderer,
 
     return shared_ptr<Renderbuffer>(new Renderbuffer(renderer, handle,
                                                      width, height,
-                                                     samples, depth));
+                                                     samples, format));
 }
 
 
 Renderbuffer::Renderbuffer(shared_ptr<Renderer> renderer, GLuint handle,
-                           int width, int height,
-                           int samples, bool depth) :
-    Renderer::Resource(renderer), _handle(handle),
-    _width(width), _height(height),
-    _samples(samples), _depth(depth) {
-
+                           uint width, uint height,
+                           int samples, GLenum format)
+    : Renderer::Resource(renderer), _handle(handle), _samples(samples), _format(format) {
+    _width = width;
+    _height = height;
 }
 
 
@@ -81,8 +98,28 @@ Renderbuffer::~Renderbuffer() {
 }
 
 
+bool Renderbuffer::isColor() const {
+    return RENDERBUFFER_COLOR_FORMAT == _format;
+}
+
+
+bool Renderbuffer::isDepth() const {
+    return RENDERBUFFER_DEPTH_FORMAT == _format;
+}
+
+
+bool Renderbuffer::isStencil() const {
+    return RENDERBUFFER_STENCIL_FORMAT == _format;
+}
+
+
 void Renderbuffer::bind() const {
     glBindRenderbuffer(GL_RENDERBUFFER, _handle);
+}
+
+
+void Renderbuffer::attach(GLenum attachmentPoint) const {
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, attachmentPoint, GL_RENDERBUFFER, _handle);
 }
 
 

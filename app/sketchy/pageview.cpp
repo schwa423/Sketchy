@@ -22,7 +22,7 @@ using namespace Eigen;
 namespace schwa {namespace app {namespace sketchy {
 
 
-void PageView::render() {
+void PageView::render(uint64_t time) {
     // Hack to try out Eigen, and to add a transformation to the page's strokes.
     const float TWOPI = 3.14159f * 2;
     static float angle = 0.0f;
@@ -30,24 +30,18 @@ void PageView::render() {
     if (angle > TWOPI) angle -= TWOPI;
     Affine2f transform = Translation2f(0.0f, 0.0f) * Rotation2Df(angle);
 
-    auto renderer = _renderer.lock();
-    auto framebuffer = _framebuffer.lock();
-    if (!renderer || !framebuffer) return;
+    if (!_geometry.get()) _geometry.reset(new Sketchy::Geometry());
+    if (!_shader.get()) _shader.reset(new Sketchy::Shader());
 
-    renderer->useFramebufferDuring(framebuffer, [=](){
-        if (!_geometry.get()) _geometry.reset(new Sketchy::Geometry());
-        if (!_shader.get()) _shader.reset(new Sketchy::Shader());
+    _shader->setTransform(transform);
 
-        _shader->setTransform(transform);
+    glViewport(50, 50, 700, 700);
 
-        glViewport(50, 50, 700, 700);
+    glClearColor(0.27f, 0.45f, 0.58f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-        glClearColor(0.27f, 0.45f, 0.58f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        _shader->bind();
-        _geometry->draw();
-    });
+    _shader->bind();
+    _geometry->draw();
 }
 
 

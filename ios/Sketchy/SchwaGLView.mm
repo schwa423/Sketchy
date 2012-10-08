@@ -11,28 +11,18 @@
 #import "SchwaGLView.h"
 
 #include "renderer_ios.h"
+#include "presenter_ios.h"
+#include "framebuffer_ios.h"
+
 #include "view.h"
 using schwa::grfx::Renderer_iOS;
+using schwa::grfx::LayerPresenter_iOS;
+using schwa::grfx::MultisampleFramebuffer_iOS;
 using schwa::grfx::View;
-
-// TODO: Un-hardwire this
-#include "pageview.h"
-using namespace schwa::app;
 
 #import <iostream>
 using std::cerr;
 using std::endl;
-
-// TODO: pause rendering when view is not visible,
-//       and resume once it is visible again.
-
-// A class extension to declare private methods
-//@interface SchwaGLView (private)
-
-//- (BOOL)createFramebuffer;
-//- (void)destroyFramebuffer;
-
-//@end
 
 
 @implementation SchwaGLView
@@ -44,14 +34,30 @@ using std::endl;
 	return [CAEAGLLayer class];
 }
 
+- (const shared_ptr<grfx::Renderer_iOS>&) renderer
+{
+    return _renderer;
+}
+
+- (const shared_ptr<grfx::Presenter>&) presenter
+{
+    return _presenter;
+}
+
+// Renderer must already be initialized.
+- (BOOL)initPresenter
+{
+    _presenter = _renderer->NewLayerPresenter();
+    if (!_presenter) return FALSE;
+    _renderer->addPresenter(_presenter);
+    return TRUE;
+}
+
 - (BOOL)initRenderer
 {
     _renderer = Renderer_iOS::New();
     if (!_renderer) return FALSE;
-
-    _view = View::New<sketchy::PageView>(_renderer);
-    _renderer->setView(_view);
-    return TRUE;
+    return [self initPresenter];
 }
 
 - (id)initWithCoder:(NSCoder *)coder
@@ -87,7 +93,6 @@ using std::endl;
 - (void)startRendering
 {
     _renderer->startRendering();
-
 }
 
 - (void)stopRendering
@@ -99,16 +104,22 @@ using std::endl;
 {
     cerr << "[SchwaGLView updateOrientation:]" << endl;
 
-    // Stop rendering so that it's OK for the renderer
-    // to use its OpenGL context in this thread.  Remember
-    // whether we were rendering, so we can resume.
+// TODO: Orientation changes are broken.  Both the new code (top) and the old code (bottom)
+//       seem to deadlock in the same way, which isn't surprising since the new is basically
+//       sugar around the old.  Fix Soon!
+#define XXXYXXX
+#ifdef XXXYXXX
+    _renderer->pauseRenderingDuring([&](){
+        _presenter->setFramebuffer(_renderer->NewFramebuffer((CAEAGLLayer*)self.layer, true));
+    });
+#else
+    // TODO: race-condition here?  Maybe add return value to stopRendering()... hmm, bit ugly.
     bool wasRendering = _renderer->isRunning();
     _renderer->stopRendering();
-
-    // Allow the renderer to update appropriately.
-    _renderer->initialize((CAEAGLLayer*)self.layer);
-
+    // TODO: test works with both multisample and non-
+    _presenter->setFramebuffer(_renderer->NewFramebuffer((CAEAGLLayer*)self.layer, true));
     if (wasRendering) _renderer->startRendering();
+#endif
 }
 
 @end

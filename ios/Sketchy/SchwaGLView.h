@@ -14,14 +14,13 @@
 using std::shared_ptr;
 
 namespace Sketchy {
-	class Renderer_iOS;
 	class Page;
 }
 
 // namespace schwa::grfx
 namespace schwa { namespace grfx {
+    class Presenter;
     class Renderer_iOS;
-    class View;
 }}  // namespace schwa::grfx
 using namespace schwa;
 
@@ -29,9 +28,15 @@ using namespace schwa;
 
 @interface SchwaGLView : UIView {
 @private
+    shared_ptr<grfx::Presenter> _presenter;
+
+    // TODO: eventually the renderer will not be associated with any single view.
     shared_ptr<grfx::Renderer_iOS> _renderer;
-    shared_ptr<grfx::View> _view;
 }
+
+- (const shared_ptr<grfx::Presenter>&) presenter;
+// TODO: this shouldn't be necessary once renderer is shared by all views in the app.
+- (const shared_ptr<grfx::Renderer_iOS>&) renderer;
 
 - (void)startRendering;
 - (void)stopRendering;

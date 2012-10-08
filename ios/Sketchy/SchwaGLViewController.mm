@@ -13,7 +13,7 @@
 #import "SchwaGLViewController.h"
 
 #import "TouchHandler.h"
-using Sketchy::Input::Touch;
+using schwa::input::Touch;
 
 #include <iostream>
 using std::cerr;
@@ -23,7 +23,25 @@ using std::endl;
 
 #import "SchwaGLView.h"
 
+#include "presenter.h"
+#include "renderer_ios.h"
+
+// TODO: Un-hardwire this
+#include "pageview.h"
+using namespace schwa;
+using namespace schwa::app;
+
+
 @implementation SchwaGLViewController
+
+- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)bundle
+{
+    self = [super initWithNibName:@"SchwaGLView" bundle:bundle];
+    if (self != nil) {
+        // Further initialization if needed
+    }
+    return self;
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -46,6 +64,13 @@ using std::endl;
     // Guarantee that we always update the orientation of a new view
     // (and hence initialize the default framebuffer appropriately).
     _orientationValid = false;
+
+    // Plug view into presenter.
+    // TODO: don't hardcode view creation.
+    auto presenter = [(SchwaGLView*)self.view presenter];
+    auto renderer = [(SchwaGLView*)self.view renderer];
+    auto page = schwa::grfx::View::New<sketchy::PageView>(renderer);
+    presenter->setView(page);
 }
 
 - (void)viewDidUnload
@@ -73,12 +98,13 @@ using std::endl;
 - (void)viewDidAppear:(BOOL)animated
 {
     cerr << "[SchwaGLViewController viewDidAppear:]" << endl;
-    [(SchwaGLView*)self.view startRendering];
 
     // Whenever view appears, we potentially need to update
     // the orientation, since we views do not receive rotation
     // events when not visible.
     [self updateOrientation];
+
+    [(SchwaGLView*)self.view startRendering];
 
     // Perhaps this should go first?  Not sure.
     [super viewDidAppear:animated];
@@ -130,7 +156,7 @@ using std::endl;
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if (_touchHandler.get()) {
+    if (_touchHandler) {
         _touchHandler->touchesBegan([self createTouches: touches]);
     } else {
         static long BEGAN = 0;
@@ -141,7 +167,7 @@ using std::endl;
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if (_touchHandler.get()) {
+    if (_touchHandler) {
         _touchHandler->touchesMoved([self createTouches: touches]);
     } else {
         static long MOVED = 0;
@@ -152,7 +178,7 @@ using std::endl;
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if (_touchHandler.get()) {
+    if (_touchHandler) {
         _touchHandler->touchesEnded([self createTouches: touches]);
     } else {
         static long ENDED = 0;
@@ -163,7 +189,7 @@ using std::endl;
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if (_touchHandler.get()) {
+    if (_touchHandler) {
         _touchHandler->touchesCancelled([self createTouches: touches]);
     } else {
         static long CANCELLED = 0;
@@ -172,7 +198,7 @@ using std::endl;
     }
 }
 
-- (void)setTouchHandler:(shared_ptr<Sketchy::Input::TouchHandler>)handler
+- (void)setTouchHandler:(shared_ptr<schwa::input::TouchHandler>)handler
 {
     _touchHandler = handler;
 }

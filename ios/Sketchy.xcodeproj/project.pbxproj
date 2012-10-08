@@ -59,6 +59,8 @@
 		039192A814A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
 		039192A914A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
 		039AA5DE14E878F800C5390A /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039AA5DD14E878F800C5390A /* Material.cpp */; };
+		039EC9551618DE39009FDA4D /* presenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039EC9531618DE38009FDA4D /* presenter.cpp */; };
+		039EC958161C2377009FDA4D /* presenter_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039EC956161C2377009FDA4D /* presenter_ios.mm */; };
 		03DC93BC149E9F4E00F2A602 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E75DF146E65EC008896D5 /* UIKit.framework */; };
 		03DC93BD149E9F4E00F2A602 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E75E1146E65EC008896D5 /* Foundation.framework */; };
 		03DC93BE149E9F4E00F2A602 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E75E3146E65EC008896D5 /* CoreGraphics.framework */; };
@@ -140,8 +142,8 @@
 		03594B721544383A00C090AD /* Flow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Flow.cpp; path = props/Flow.cpp; sourceTree = "<group>"; };
 		03594B751544388100C090AD /* Flow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Flow.h; path = include/props/Flow.h; sourceTree = "<group>"; };
 		0369557D14B57674001F42F4 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
-		0370A01D15F9BFE7003C0164 /* TouchHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TouchHandler.cpp; path = input/TouchHandler.cpp; sourceTree = "<group>"; };
-		0370A01F15F9C025003C0164 /* TouchHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchHandler.h; path = include/input/TouchHandler.h; sourceTree = "<group>"; };
+		0370A01D15F9BFE7003C0164 /* TouchHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TouchHandler.cpp; path = ../cross/input/TouchHandler.cpp; sourceTree = "<group>"; };
+		0370A01F15F9C025003C0164 /* TouchHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchHandler.h; path = ../cross/include/input/TouchHandler.h; sourceTree = "<group>"; };
 		0370A02315FBEA0F003C0164 /* renderer2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = renderer2.cpp; path = ../lib/schwa/grfx/renderer2.cpp; sourceTree = "<group>"; };
 		0370A02415FBEA0F003C0164 /* renderer2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = renderer2.h; path = ../lib/schwa/grfx/renderer2.h; sourceTree = "<group>"; };
 		0370A02615FC0F03003C0164 /* framebuffer2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = framebuffer2.cpp; path = ../lib/schwa/grfx/framebuffer2.cpp; sourceTree = "<group>"; };
@@ -172,6 +174,10 @@
 		038DC2091542A0EC000EBD8D /* ThreadOwner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThreadOwner.h; path = include/ThreadOwner.h; sourceTree = "<group>"; };
 		039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadOwner.cpp; sourceTree = "<group>"; };
 		039AA5DD14E878F800C5390A /* Material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
+		039EC9531618DE38009FDA4D /* presenter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = presenter.cpp; path = ../lib/schwa/grfx/presenter.cpp; sourceTree = "<group>"; };
+		039EC9541618DE39009FDA4D /* presenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = presenter.h; path = ../lib/schwa/grfx/presenter.h; sourceTree = "<group>"; };
+		039EC956161C2377009FDA4D /* presenter_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = presenter_ios.mm; path = ../lib/schwa/grfx/presenter_ios.mm; sourceTree = "<group>"; };
+		039EC957161C2377009FDA4D /* presenter_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = presenter_ios.h; path = ../lib/schwa/grfx/presenter_ios.h; sourceTree = "<group>"; };
 		03DC93BA149E9F4E00F2A602 /* SketchyUnitTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SketchyUnitTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03DC93C1149E9F4E00F2A602 /* SketchyUnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SketchyUnitTests-Info.plist"; sourceTree = "<group>"; };
 		03DC93C3149E9F4E00F2A602 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -375,7 +381,6 @@
 		033E762B146E76E8008896D5 /* cross */ = {
 			isa = PBXGroup;
 			children = (
-				0370A01915F9BF1F003C0164 /* input */,
 				03F1E96D15CF410B00E6E1DA /* geom */,
 				03386F841597ABCE0077986E /* tasks */,
 				03594B6E1544377200C090AD /* flow */,
@@ -433,18 +438,9 @@
 			name = flow;
 			sourceTree = "<group>";
 		};
-		0370A01915F9BF1F003C0164 /* input */ = {
-			isa = PBXGroup;
-			children = (
-				0370A01D15F9BFE7003C0164 /* TouchHandler.cpp */,
-			);
-			name = input;
-			sourceTree = "<group>";
-		};
 		0370A01B15F9BF46003C0164 /* input */ = {
 			isa = PBXGroup;
 			children = (
-				0370A01F15F9C025003C0164 /* TouchHandler.h */,
 			);
 			name = input;
 			sourceTree = "<group>";
@@ -460,6 +456,7 @@
 		0370A02115FBE972003C0164 /* schwa */ = {
 			isa = PBXGroup;
 			children = (
+				039EC94F161795B6009FDA4D /* input */,
 				030366D915FDDDFB003D6F91 /* core */,
 				0370A02215FBE97C003C0164 /* grfx */,
 			);
@@ -486,6 +483,10 @@
 				0356A3871605560C006C43C1 /* scene.h */,
 				0356A38916055749006C43C1 /* view.cpp */,
 				0356A38A16055749006C43C1 /* view.h */,
+				039EC9531618DE38009FDA4D /* presenter.cpp */,
+				039EC9541618DE39009FDA4D /* presenter.h */,
+				039EC956161C2377009FDA4D /* presenter_ios.mm */,
+				039EC957161C2377009FDA4D /* presenter_ios.h */,
 			);
 			name = grfx;
 			sourceTree = "<group>";
@@ -520,6 +521,15 @@
 			);
 			name = shadow;
 			path = include/shadow;
+			sourceTree = "<group>";
+		};
+		039EC94F161795B6009FDA4D /* input */ = {
+			isa = PBXGroup;
+			children = (
+				0370A01D15F9BFE7003C0164 /* TouchHandler.cpp */,
+				0370A01F15F9C025003C0164 /* TouchHandler.h */,
+			);
+			name = input;
 			sourceTree = "<group>";
 		};
 		03DC93BF149E9F4E00F2A602 /* SketchyUnitTests */ = {
@@ -734,6 +744,8 @@
 				0356A3931605DDD1006C43C1 /* pageview.cpp in Sources */,
 				0357AB80160F9ED50044DA75 /* renderbuffer.cpp in Sources */,
 				0357AB84160F9EF10044DA75 /* renderbuffer_ios.mm in Sources */,
+				039EC9551618DE39009FDA4D /* presenter.cpp in Sources */,
+				039EC958161C2377009FDA4D /* presenter_ios.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

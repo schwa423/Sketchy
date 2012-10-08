@@ -22,9 +22,14 @@ class Renderbuffer_iOS : public Renderbuffer {
  public:
     // "Constructors".
     // TODO: consider making these instance-methods of Renderer.
-    static shared_ptr<Renderbuffer> NewFromLayer(shared_ptr<Renderer> renderer,
+    static shared_ptr<Renderbuffer> NewFromLayer(const shared_ptr<Renderer>& renderer,
                                                  EAGLContext* context,
                                                  CAEAGLLayer* layer);
+
+ protected:
+    // Pass-through to superclass
+    Renderbuffer_iOS(shared_ptr<Renderer> renderer, GLuint handle,
+                     uint width, uint height, int samples, GLenum format);
 };
 
 

@@ -38,13 +38,19 @@ class Renderer_iOS : public Renderer {
 
     virtual ~Renderer_iOS();
 
-    // Start/stop the render-loop.
+    // Start/stop the render-loop.  Must only be called from the main thread.
+    // TODO: verify precondition?
     virtual void startRendering();
     virtual void stopRendering();
-    bool isRunning();
+    virtual bool isRunning();
 
-    // Initialize renderer with current layer.
-    void initialize(CAEAGLLayer* glayer);
+    // TODO: always creates a depth buffer... make this configurable?
+    // TODO: delete?
+    // Must call from main thread.  TODO: enforce
+    shared_ptr<Framebuffer> NewFramebuffer(CAEAGLLayer* layer, bool multisample = true);
+
+    // Must call from main thread.  TODO: enforce
+    shared_ptr<Presenter> NewLayerPresenter();
 
  protected:
     // Don't construct directly, instead use New().
@@ -53,16 +59,11 @@ class Renderer_iOS : public Renderer {
     // can't obtain during the constructor.
     Renderer_iOS();
 
-    
-    // One of these is called by initialize(); currently we use multisampling.
-    void initializeFramebuffer(CAEAGLLayer* glayer);
-    void initializeMultisampleFramebuffer(CAEAGLLayer* glayer);
-
-    virtual void swapBuffers();
-
  private:
+    // TODO: comment
     __strong EAGLContext* _renderContext;
     __strong EAGLContext* _loaderContext;
+    __strong EAGLContext* _defaultContext;
     __strong VsyncListener* _vsync;
 };
 

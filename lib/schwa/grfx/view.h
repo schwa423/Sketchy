@@ -10,6 +10,7 @@
 #ifndef __schwa__grfx__view__
 #define __schwa__grfx__view__
 
+#include <cstdint>
 #include <memory>
 using std::shared_ptr;
 using std::weak_ptr;
@@ -35,15 +36,11 @@ class View : public std::enable_shared_from_this<View> {
     void setRenderer(const shared_ptr<Renderer>& r);
     void clearRenderer();
 
-    // TODO: perhaps not all views should support this?
-    void setFramebuffer(const shared_ptr<Framebuffer>& fb) { _framebuffer = fb; }
-
     // Render the view
-    virtual void render() = 0;
+    virtual void render(uint64_t) = 0;
 
  protected:
     weak_ptr<Renderer> _renderer;
-    weak_ptr<Framebuffer> _framebuffer;
 
     // Called only by setRenderer().
     virtual void destroyRendererState(shared_ptr<Renderer> r) = 0;

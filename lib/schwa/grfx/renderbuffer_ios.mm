@@ -17,7 +17,7 @@ using std::endl;
 namespace schwa {namespace grfx {
 
 
-shared_ptr<Renderbuffer> Renderbuffer_iOS::NewFromLayer(shared_ptr<Renderer> renderer,
+shared_ptr<Renderbuffer> Renderbuffer_iOS::NewFromLayer(const shared_ptr<Renderer>& renderer,
                                                     EAGLContext* context,
                                                     CAEAGLLayer* layer) {
     CGRect rect = [layer bounds];
@@ -29,19 +29,27 @@ shared_ptr<Renderbuffer> Renderbuffer_iOS::NewFromLayer(shared_ptr<Renderer> ren
     glBindRenderbuffer(GL_RENDERBUFFER, handle);
 
     // First detach from any previous renderbuffer.
-    // Not sure if necessary, but seems prudent.
-    [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:nil];
+    // TODO: Not sure if necessary, but seems prudent.
+    if (YES != [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:nil]) {
+        cerr << "failed to clear renderbuffer storage somehow (whaaaa??)" << endl;
+    }
 
-    BOOL result = [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:layer];
-    if (result != YES) {
+    if (YES != [context renderbufferStorage:GL_RENDERBUFFER fromDrawable:layer]) {
         cerr << "failed to create color_renderbuffer from drawable layer" << endl;
         return nullptr;
     }
 
-    return shared_ptr<Renderbuffer>(new Renderbuffer(renderer,
-                                                     handle,
-                                                     width, height,
-                                                     1, false));
+    return shared_ptr<Renderbuffer>(new Renderbuffer_iOS(renderer,
+                                                         handle,
+                                                         width, height,
+                                                         1, GL_RGBA8_OES));
+}
+
+
+Renderbuffer_iOS::Renderbuffer_iOS(shared_ptr<Renderer> renderer, GLuint handle,
+                                   uint width, uint height, int samples, GLenum format)
+    : Renderbuffer(renderer, handle, width, height, samples, format) {
+
 }
 
 

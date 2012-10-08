@@ -31,7 +31,7 @@ class View2d : public grfx::View {
 class PageView : public View2d
 {
  public:
-    virtual void render();
+    virtual void render(uint64_t time);
 
  protected:
     // Called only by setRenderer().

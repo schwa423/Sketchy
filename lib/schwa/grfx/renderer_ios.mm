@@ -10,9 +10,12 @@
 #include "renderer_ios.h"
 #include "framebuffer_ios.h"
 #include "renderbuffer_ios.h"
+#include "presenter_ios.h"
 #include "view.h"
 
 #import <QuartzCore/QuartzCore.h>
+
+typedef std::lock_guard<std::mutex> lock_guard;
 
 #include <iostream>
 using std::cerr;
@@ -139,10 +142,23 @@ Renderer_iOS::Renderer_iOS() {
     // TODO: verify success of context creations.
     _renderContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     _loaderContext = [[EAGLContext alloc]
-                        initWithAPI:kEAGLRenderingAPIOpenGLES2
-                        sharegroup:[_renderContext sharegroup]];
-    if (_renderContext == nil || _loaderContext == nil)
+                      initWithAPI:kEAGLRenderingAPIOpenGLES2
+                      sharegroup:[_renderContext sharegroup]];
+    _defaultContext = [[EAGLContext alloc]
+                      initWithAPI:kEAGLRenderingAPIOpenGLES2
+                      sharegroup:[_renderContext sharegroup]];
+
+    if (_renderContext == nil || _loaderContext == nil || _defaultContext == nil) {
         cerr << "Renderer_iOS could not create OpenGL contexts." << endl;
+        _renderContext = _loaderContext = _defaultContext = nil;
+        return;
+    }
+
+    if (YES != [EAGLContext setCurrentContext: _defaultContext]) {
+        cerr << "Renderer_iOS could not set default OpenGL context." << endl;
+        _renderContext = _loaderContext = _defaultContext = nil;
+        return;
+    }
 
     _vsync = [[VsyncListener alloc] initWithRenderer:this context:_renderContext];
 }
@@ -154,12 +170,16 @@ Renderer_iOS::~Renderer_iOS() {
 
 
 void Renderer_iOS::startRendering() {
+    lock_guard lock(_mutex);
     [_vsync start];
+    cerr << "Renderer_iOS: started rendering" << endl;
 }
 
 
 void Renderer_iOS::stopRendering() {
+    lock_guard lock(_mutex);
     [_vsync stop];
+    cerr << "Renderer_iOS: stopped rendering" << endl;
 }
 
 
@@ -168,110 +188,49 @@ bool Renderer_iOS::isRunning() {
 }
 
 
-// TODO: if re-initializing, need to destroy previous renderbuffers.
-void Renderer_iOS::initialize(CAEAGLLayer* glayer) {
+shared_ptr<Framebuffer> Renderer_iOS::NewFramebuffer(CAEAGLLayer* layer, bool multisample) {
+    bool wasRendering = isRunning();
+    if (wasRendering) stopRendering();
+    core::ThunkAfterScope([&](){
+        if (wasRendering) startRendering();
+    });
 
-    // Set render context to be current, so that we can
-    // create framebuffers/renderbuffers, etc.
-    BOOL success = [EAGLContext setCurrentContext: _renderContext];
-    if (success != YES)
-        cerr << "Renderer_iOS could not set OpenGL context." << endl;
-
-    // Destroy framebuffer/renderbuffers.  Run finalizers so that
-    // GL resources are actually destroyed, not just scheduled to be.
-    _framebuffer.reset();
+    // You can't create two renderbuffers for the same layer; one must be
+    // destroyed before the second created.  Ensure that finalizers have
+    // a chance to run.  This is only safe if we're not rendering; otherwise
+    // the render-context might be using the old framebuffer/renderbuffers at
+    // the same time.
     runFinalizers();
 
-    initializeMultisampleFramebuffer(glayer);
-
-    if (_view) _view->setFramebuffer(_framebuffer);
-
-    // We're finished initializing OpenGL resources, so flush and
-    // unset the current context... from now on, the _renderContext
-    // will only be used in the vsync thread.
-    glFlush();
-    [EAGLContext setCurrentContext: nil];
-}
-
-
-void Renderer_iOS::initializeFramebuffer(CAEAGLLayer* layer) {
-    // We will replace it with a new one.
-    _framebuffer.reset();
-
     CGRect rect = [layer bounds];
     int width = (int)rect.size.width;
     int height = (int)rect.size.height;
 
-    cerr << "Renderer_iOS initializing framebuffer with width/height: "
-        << width << "/" << height << endl;
-
-    auto me = shared_from_this();
-
-    auto color_renderbuffer = Renderbuffer_iOS::NewFromLayer(me, _renderContext, layer);
-    auto depth_renderbuffer = Renderbuffer::NewDepth(me, width, height, 1);
-
-    if (!color_renderbuffer || !depth_renderbuffer) {
-        cerr << "Renderer_iOS failed to create renderbuffers for default framebuffer" << endl;
-        color_renderbuffer.reset();
-        depth_renderbuffer.reset();
-        return;
-    }
-
-    _framebuffer.reset(new Framebuffer(me,
-                                       width, height,
-                                       color_renderbuffer,
-                                       depth_renderbuffer));
-}
-
-
-void Renderer_iOS::initializeMultisampleFramebuffer(CAEAGLLayer* layer) {
-    // We will replace it with a new one.
-    _framebuffer.reset();
-
-    CGRect rect = [layer bounds];
-    int width = (int)rect.size.width;
-    int height = (int)rect.size.height;
-
-    cerr << "Renderer_iOS initializing multisample framebuffer with width/height: "
+    cerr << "Renderer_iOS creating framebuffer with width/height: "
          << width << "/" << height << endl;
 
     auto me = shared_from_this();
 
-    auto color_renderbuffer = Renderbuffer_iOS::NewFromLayer(me, _renderContext, layer);
-    auto depth_renderbuffer = Renderbuffer::NewDepth(me, width, height);
-    auto multisample_color_renderbuffer = Renderbuffer::NewColor(me, width, height, 4);
-    auto multisample_depth_renderbuffer = Renderbuffer::NewDepth(me, width, height, 4);
-
-    if (!color_renderbuffer || !depth_renderbuffer ||
-        !multisample_color_renderbuffer || !multisample_depth_renderbuffer) {
-        cerr << "Renderer_iOS failed to create renderbuffers for default framebuffer" << endl;
-        color_renderbuffer.reset();
-        depth_renderbuffer.reset();
-        multisample_color_renderbuffer.reset();
-        multisample_depth_renderbuffer.reset();
-        return;
+    // TODO: verify we're on the main thread (otherwise _defaultContext is wrong)
+    shared_ptr<Framebuffer> framebuffer;
+    if (multisample) {
+        framebuffer = MultisampleFramebuffer_iOS::NewFromLayer(me,
+                                                               _defaultContext,
+                                                               layer,
+                                                               true);
+    } else {
+        auto color_renderbuffer = Renderbuffer_iOS::NewFromLayer(me, _defaultContext, layer);
+        auto depth_renderbuffer = Renderbuffer::NewDepth(me, width, height, 1);
+        framebuffer = Framebuffer::New(me, color_renderbuffer, depth_renderbuffer);
     }
 
-    _framebuffer.reset(
-        new MultisampleFramebuffer_iOS(me,
-                                       width, height,
-                                       color_renderbuffer,
-                                       depth_renderbuffer,
-                                       multisample_color_renderbuffer,
-                                       multisample_depth_renderbuffer));
+    glFlush();  // so that framebuffer can be used in _renderContext
+    return framebuffer;
 }
 
 
-void Renderer_iOS::swapBuffers() {
-    if (!colorRenderbuffer()) {
-        cerr << "no color-renderbuffer to swap" << endl;
-        return;
-    }
-    colorRenderbuffer()->bind();
-    CHECK_GL("filed to bind renderbuffer for swapBuffers()");
-    if (YES != [_renderContext presentRenderbuffer:GL_RENDERBUFFER]) {
-        cerr << "failed to present renderbuffeer" << endl;
-    }
+shared_ptr<Presenter> Renderer_iOS::NewLayerPresenter() {
+    return shared_ptr<Presenter>(new LayerPresenter_iOS(shared_from_this(), _renderContext));
 }
 
 

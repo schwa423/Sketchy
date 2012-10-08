@@ -46,6 +46,20 @@ class ThunkList {
     std::vector<Thunk> _thunks;
 };
 
+
+// TODO: move to separate file
+// TODO: better name?
+// Defer execution of thunk until current scope is exited.
+class ThunkAfterScope {
+ public:
+    ThunkAfterScope(Thunk thunk) : _thunk(thunk) { }
+    ~ThunkAfterScope() { _thunk(); }
+
+ protected:
+    Thunk _thunk;
+};
+
+
 }  // namespace core
 }  // namespace schwa
 
