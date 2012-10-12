@@ -23,8 +23,10 @@ shared_ptr<Framebuffer> Framebuffer::New(const shared_ptr<Renderer>& renderer,
                                          shared_ptr<Attachment> color,
                                          shared_ptr<Attachment> depth,
                                          shared_ptr<Attachment> stencil) {
-    shared_ptr<Framebuffer> fb(new BasicFramebuffer(renderer, color, depth, stencil));
-    return fb;
+    return shared_ptr<Framebuffer>(new BasicFramebuffer(renderer,
+                                                        color,
+                                                        depth,
+                                                        stencil));
 }
 
 

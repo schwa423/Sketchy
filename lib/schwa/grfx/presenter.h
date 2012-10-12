@@ -32,9 +32,6 @@ class Presenter {
     // Set the view that will be renderered.
     void setView(const shared_ptr<View>& view);
 
-    // Set the framebuffer that the view will be rendered into.
-    virtual void setFramebuffer(const shared_ptr<Framebuffer>& framebuffer);
-
     // Render the specified view into the specified framebuffer.
     void render(uint64_t time);
 

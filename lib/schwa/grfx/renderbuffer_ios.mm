@@ -8,6 +8,7 @@
 //
 
 #include "renderbuffer_ios.h"
+#include "renderer_ios.h"
 
 #include <iostream>
 using std::cerr;

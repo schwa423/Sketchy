@@ -31,6 +31,7 @@
 // namespace schwa::grfx
 namespace schwa {namespace grfx {
 
+class LayerPresenter_iOS;
 
 class Renderer_iOS : public Renderer {
  public:
@@ -50,7 +51,7 @@ class Renderer_iOS : public Renderer {
     shared_ptr<Framebuffer> NewFramebuffer(CAEAGLLayer* layer, bool multisample = true);
 
     // Must call from main thread.  TODO: enforce
-    shared_ptr<Presenter> NewLayerPresenter();
+    shared_ptr<LayerPresenter_iOS> NewLayerPresenter();
 
  protected:
     // Don't construct directly, instead use New().

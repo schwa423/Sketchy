@@ -12,12 +12,10 @@
 
 #include "renderer_ios.h"
 #include "presenter_ios.h"
-#include "framebuffer_ios.h"
-
-#include "view.h"
 using schwa::grfx::Renderer_iOS;
 using schwa::grfx::LayerPresenter_iOS;
-using schwa::grfx::MultisampleFramebuffer_iOS;
+
+#include "view.h"
 using schwa::grfx::View;
 
 #import <iostream>
@@ -39,7 +37,7 @@ using std::endl;
     return _renderer;
 }
 
-- (const shared_ptr<grfx::Presenter>&) presenter
+- (const shared_ptr<grfx::LayerPresenter_iOS>&) presenter
 {
     return _presenter;
 }
@@ -104,22 +102,9 @@ using std::endl;
 {
     cerr << "[SchwaGLView updateOrientation:]" << endl;
 
-// TODO: Orientation changes are broken.  Both the new code (top) and the old code (bottom)
-//       seem to deadlock in the same way, which isn't surprising since the new is basically
-//       sugar around the old.  Fix Soon!
-#define XXXYXXX
-#ifdef XXXYXXX
     _renderer->pauseRenderingDuring([&](){
-        _presenter->setFramebuffer(_renderer->NewFramebuffer((CAEAGLLayer*)self.layer, true));
+        _presenter->setLayer((CAEAGLLayer*)self.layer);
     });
-#else
-    // TODO: race-condition here?  Maybe add return value to stopRendering()... hmm, bit ugly.
-    bool wasRendering = _renderer->isRunning();
-    _renderer->stopRendering();
-    // TODO: test works with both multisample and non-
-    _presenter->setFramebuffer(_renderer->NewFramebuffer((CAEAGLLayer*)self.layer, true));
-    if (wasRendering) _renderer->startRendering();
-#endif
 }
 
 @end

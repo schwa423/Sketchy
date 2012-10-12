@@ -20,22 +20,29 @@ class Renderer;
 namespace schwa {namespace grfx {
 
 
-class Renderbuffer_iOS;
+class Renderbuffer;
 
 // TODO: class description
 class LayerPresenter_iOS : public Presenter {
  public:
-    LayerPresenter_iOS(const shared_ptr<Renderer>& renderer, EAGLContext* context);
+    LayerPresenter_iOS(const shared_ptr<Renderer>& renderer,
+                       EAGLContext* renderContext,
+                       EAGLContext* defaultContext);
 
-    // Extend superclass version to extract color renderbuffer.
-    virtual void setFramebuffer(const shared_ptr<Framebuffer>& framebuffer);
+    void setLayer(CAEAGLLayer* layer);
 
  protected:
     // Uses iOS API to present renderbuffer to CoreAnimation.
     virtual void present();
 
-    shared_ptr<Renderbuffer_iOS> _renderbuffer;
-    EAGLContext* _context;
+    shared_ptr<Renderbuffer> _renderbuffer;
+    EAGLContext* _renderContext;
+    EAGLContext* _defaultContext;
+
+    // TODO: allow these to be set.
+    // Does layer support depth/stencil buffer?
+    bool _hasDepth;
+    bool _hasStencil;
 
 };  // class RenderbufferPresenter_iOS
 

@@ -46,9 +46,6 @@ class Framebuffer {
     // but providing it here in the base class simplifies client code.
     virtual void resolve() { }
 
-    // Return the framebuffer's (resolved) color-attachment.
-    virtual shared_ptr<Attachment> colorAttachment() = 0;
-
  protected:
     // Use static Framebuffer::New().
     Framebuffer() { }
@@ -106,6 +103,11 @@ class MultisampleFramebuffer : public Framebuffer {
                                                   bool useDepth = false,
                                                   bool useStencil = false);
 
+    static shared_ptr<MultisampleFramebuffer> New(const shared_ptr<Renderer>& renderer,
+                                                  const shared_ptr<Attachment>& color,
+                                                  bool useDepth = false,
+                                                  bool useStencil = false);
+
     // It's OK to change the target framebuffer, as long as it
     // has the same dimensions as the original.
     void setFramebuffer(const shared_ptr<Framebuffer>& resolve);
@@ -119,9 +121,6 @@ class MultisampleFramebuffer : public Framebuffer {
 
     // Resolving multisample framebuffer target is a platform-specific operation.
     virtual void resolve() = 0;
-
-    // Return the framebuffer's (resolved) color-attachment.
-    virtual shared_ptr<Attachment> colorAttachment() { return _resolve->colorAttachment(); }
 
  protected:
     // Use static MultisampleFramebuffer::New().
@@ -152,9 +151,6 @@ class BasicFramebuffer : public Framebuffer, public Renderer::Resource {
     // TODO: do we want to enforce this by making this protected,
     //       and making Renderer a friend?
     virtual void bind(GLenum target = GL_FRAMEBUFFER);
-
-    // Return the framebuffer's (resolved) color-attachment.
-    virtual shared_ptr<Attachment> colorAttachment() { return _color; }
 
  protected:
     // Check whether the currently-bound framebuffer is "complete".

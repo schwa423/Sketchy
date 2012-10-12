@@ -16,15 +16,28 @@ namespace schwa {namespace grfx {
 
 #if defined(__APPLE__)
 shared_ptr<MultisampleFramebuffer> MultisampleFramebuffer::New(const shared_ptr<Renderer>& renderer,
-                                                                   const shared_ptr<Framebuffer>& resolve,
-                                                                   bool useDepth,
-                                                                   bool useStencil) {
+                                                               const shared_ptr<Framebuffer>& resolve,
+                                                               bool useDepth,
+                                                               bool useStencil) {
     return shared_ptr<MultisampleFramebuffer>(new MultisampleFramebuffer_iOS(renderer,
                                                                              resolve,
                                                                              useDepth,
                                                                              useStencil));
 }
+
+
+shared_ptr<MultisampleFramebuffer> MultisampleFramebuffer::New(const shared_ptr<Renderer>& renderer,
+                                                               const shared_ptr<Attachment>& color,
+                                                               bool useDepth,
+                                                               bool useStencil) {
+    auto fb = Framebuffer::New(renderer, color);
+    return shared_ptr<MultisampleFramebuffer>(new MultisampleFramebuffer_iOS(renderer,
+                                                                             fb,
+                                                                             useDepth,
+                                                                             useStencil));
+}
 #endif
+
 
 shared_ptr<Framebuffer> MultisampleFramebuffer_iOS::NewFromLayer(const shared_ptr<Renderer>& renderer,
                                                                  EAGLContext* context,

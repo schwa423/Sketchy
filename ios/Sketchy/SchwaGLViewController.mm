@@ -23,8 +23,8 @@ using std::endl;
 
 #import "SchwaGLView.h"
 
-#include "presenter.h"
 #include "renderer_ios.h"
+#include "presenter_ios.h"
 
 // TODO: Un-hardwire this
 #include "pageview.h"

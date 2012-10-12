@@ -72,7 +72,6 @@ shared_ptr<Renderbuffer> Renderbuffer::New(shared_ptr<Renderer> renderer,
     }
 
     if (!CHECK_GL("failed to create renderbuffer")) return nullptr;
-
     return shared_ptr<Renderbuffer>(new Renderbuffer(renderer, handle,
                                                      width, height,
                                                      samples, format));

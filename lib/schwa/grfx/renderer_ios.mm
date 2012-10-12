@@ -229,8 +229,10 @@ shared_ptr<Framebuffer> Renderer_iOS::NewFramebuffer(CAEAGLLayer* layer, bool mu
 }
 
 
-shared_ptr<Presenter> Renderer_iOS::NewLayerPresenter() {
-    return shared_ptr<Presenter>(new LayerPresenter_iOS(shared_from_this(), _renderContext));
+shared_ptr<LayerPresenter_iOS> Renderer_iOS::NewLayerPresenter() {
+    return shared_ptr<LayerPresenter_iOS>(new LayerPresenter_iOS(shared_from_this(),
+                                                                _renderContext,
+                                                                _defaultContext));
 }
 
 

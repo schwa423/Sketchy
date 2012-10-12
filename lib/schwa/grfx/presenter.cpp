@@ -28,15 +28,6 @@ void Presenter::setView(const shared_ptr<View>& view) {
 }
 
 
-void Presenter::setFramebuffer(const shared_ptr<Framebuffer>& framebuffer) {
-    if (framebuffer == _framebuffer) return;
-    _framebuffer = framebuffer;
-
-    // TODO: if there is a view, update it for the new framebuffer dimensions, etc.
-    cerr << "WARNING!!! Presenter::setFramebuffer() is not completely implemented" << endl;
-}
-
-
 void Presenter::render(uint64_t time) {
     _renderer->useFramebufferDuring(_framebuffer, [&](){
         if (_view) {
