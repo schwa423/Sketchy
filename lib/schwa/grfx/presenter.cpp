@@ -18,13 +18,27 @@ using std::endl;
 namespace schwa {namespace grfx {
 
 
+Presenter::Presenter(const shared_ptr<Renderer>& r) : _renderer(r), _width(0), _height(0) {
+
+}
+
+
 void Presenter::setView(const shared_ptr<View>& view) {
     if (view == _view) return;
 
-    // TODO: view needs to be updated for framebuffer dimensions, etc.
-    cerr << "WARNING!!! Presenter::setView() is not completely implemented" << endl;
-
     _view = view;
+    if (_view)
+        _view->setBounds(_width, _height);
+}
+
+
+void Presenter::setBounds(uint16_t width, uint16_t height) {
+    if (_width == width && _height == height) return;
+
+    _width = width;
+    _height = height;
+    if (_view)
+        _view->setBounds(_width, _height);
 }
 
 

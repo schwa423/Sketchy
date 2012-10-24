@@ -28,11 +28,13 @@ using std::vector;
 // namespace schwa::grfx
 namespace schwa {namespace grfx {
 
-
 class Framebuffer;
 class View;
 class Presenter;
 
+// Save typing... we use this a lot (probably more than we should).
+class Renderer;
+typedef const shared_ptr<Renderer>& Renderer_ptr;
 
 class Renderer : public std::enable_shared_from_this<Renderer> {
  public:

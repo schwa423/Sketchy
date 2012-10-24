@@ -26,7 +26,7 @@ class Renderer;
 // TODO: class description
 class Presenter {
  public:
-    Presenter(const shared_ptr<Renderer>& r) : _renderer(r) {}
+    Presenter(const shared_ptr<Renderer>& r);
     virtual ~Presenter() {}
 
     // Set the view that will be renderered.
@@ -45,9 +45,13 @@ class Presenter {
     // applying a blur or other effect).
     virtual void present() = 0;
 
+    // Used to update view bounds when either the view or the framebuffer changes.
+    void setBounds(uint16_t width, uint16_t height);
+
     shared_ptr<View> _view;
     shared_ptr<Framebuffer> _framebuffer;
     shared_ptr<Renderer> _renderer;
+    uint16_t _width, _height;
 };
 
 

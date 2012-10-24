@@ -15,6 +15,12 @@
 // namespace schwa::grfx
 namespace schwa {namespace grfx {
 
+void View::setBounds(uint16_t width, uint16_t height) {
+    _width = width;
+    _height = height;
+}
+
+
 void View::setRenderer(const shared_ptr<Renderer>& newRenderer) {
     shared_ptr<Renderer> currentRenderer = _renderer.lock();
     if (currentRenderer == newRenderer) return; // no change

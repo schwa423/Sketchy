@@ -11,13 +11,15 @@
 #define __schwa__app__sketchy__pageview__
 
 #include "view.h"
+#include "strokeshader.h"
 
 // TODO: remove HACK!!
 #include "Geometry.h"
-#include "Shader.h"
+
 
 // namespace schwa::app::sketchy
 namespace schwa {namespace app {namespace sketchy {
+
 
 // Base-class for views that are inherently 2d.  They:
 // - have some notion of orientation (which way is up)
@@ -35,16 +37,20 @@ class PageView : public View2d
 
  protected:
     // Called only by setRenderer().
-    virtual void destroyRendererState(shared_ptr<grfx::Renderer> r);
-    virtual void initializeRendererState(shared_ptr<grfx::Renderer> r);
+    virtual void destroyRendererState(grfx::Renderer_ptr r);
+    virtual void initializeRendererState(grfx::Renderer_ptr r);
+
+    shared_ptr<StrokeShader> _shader;
+    shared_ptr<grfx::Renderer> _renderer;
+
+    Eigen::Affine2f _transform;
 
     // TODO: remove HACK!!
     shared_ptr<Sketchy::Geometry> _geometry;
-    shared_ptr<Sketchy::Shader> _shader;
 };
 
 
 }}}  // namespace schwa::app::sketchy
 
-#endif  // #ifndef __schwa__app__sketchy__pageview__
 
+#endif  // #ifndef __schwa__app__sketchy__pageview__

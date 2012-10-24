@@ -51,5 +51,3 @@ class LayerPresenter_iOS : public Presenter {
 
 
 #endif  // #ifndef __schwa__grfx__presenter_ios__
-
-

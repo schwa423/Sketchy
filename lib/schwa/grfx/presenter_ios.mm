@@ -44,7 +44,7 @@ void LayerPresenter_iOS::setLayer(CAEAGLLayer *layer) {
     _renderbuffer = Renderbuffer_iOS::NewFromLayer(_renderer, _defaultContext, layer);
     _framebuffer = MultisampleFramebuffer::New(_renderer, _renderbuffer, _hasDepth, _hasStencil);
 
-    // TODO: update view bounds
+    setBounds(_framebuffer->width(), _framebuffer->height());
 }
 
 
