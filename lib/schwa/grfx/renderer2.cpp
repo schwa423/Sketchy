@@ -60,7 +60,13 @@ void Renderer::resolveAndPopFramebuffer(const shared_ptr<Framebuffer> &fb) {
 
 
 void Renderer::render() {
-    lock_guard lock(_mutex);
+    // TODO: is this the best approach?  The reason we do this is
+    //       that Renderer_iOS grabs the mutex to stop rendering,
+    //       then waits for the render-thread to finish... but
+    //       the render-thread will deadlock if it tries to render
+    //       once more.  Well, it does the job.
+    if (!_mutex.try_lock()) return;
+    lock_guard lock(_mutex, std::adopt_lock);
 
     // Run finalizers to potentially free memory.
     runFinalizers();
