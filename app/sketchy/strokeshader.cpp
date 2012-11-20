@@ -20,7 +20,8 @@ void StrokeShader::initializeProgram() {
     glUseProgram(_program);
     CHECK_GL("StrokeShader::initializeProgram()  failed to set program before binding uniforms");
 
-    setUniformLocation(_widthTimeLengths, "widthTimeLengths");
+    setUniformLocation(_widthTimeLengths, "widthTimeAndLengths");
+    setUniformLocation(_speedFreq, "speedAndFreq");
     setUniformLocation(_color, "colorIn");
     setUniformLocation(_transform, "transform");
 }
@@ -34,6 +35,7 @@ void StrokeShader::bindAttribLocations() {
 
 void StrokeShader::invalidateUniforms() {
     _widthTimeLengths.invalidate();
+    _speedFreq.invalidate();
     _color.invalidate();
     _transform.invalidate();
 }
@@ -43,6 +45,8 @@ void StrokeShader::bind() {
     this->Shader::bind();
     _widthTimeLengths.apply();
     CHECK_GL("StrokeShader::bind()... applied _widthTimeLengths");
+    _speedFreq.apply();
+    CHECK_GL("StrokeShader::bind()... applied _speedFreq");
     _color.apply();
     CHECK_GL("StrokeShader::bind()... applied _color");
     _transform.apply();
@@ -57,18 +61,19 @@ const char* StrokeShader::vertexShaderSource() {
      "\n    attribute vec4 lengthEtc; "
      "\n    uniform vec4 colorIn; "
      "\n    varying vec4 color; "
-     "\n    uniform vec4 widthTimeLengths; "
+     "\n    uniform vec4 widthTimeAndLengths; "
+     "\n    uniform vec4 speedAndFreq; "
      "\n    uniform mat3 transform; "
      "\n    void main() "
      "\n    { "
      "\n      // retrieve time and default stroke width "
-     "\n      float width = widthTimeLengths.x; "
-     "\n      float time = widthTimeLengths.y; "
+     "\n      float width = widthTimeAndLengths.x; "
+     "\n      float time = widthTimeAndLengths.y; "
      "\n      // modify width at each vertex "
-     "\n      float speed = time * 6.0; "
-     "\n      float freq = 0.5; "
+     "\n      float speed = speedAndFreq.x; "
+     "\n      float freq = speedAndFreq.y; "
      "\n      // per-vertex scale between 50% and 100% of default stroke width "
-     "\n      float scale = cos(lengthEtc.x * freq + speed) / 4.0 + 0.75; "
+     "\n      float scale = cos(lengthEtc.x * freq + (time * speed)) / 4.0 + 0.75; "
      "\n      width *= scale; "
      "\n      vec2 pos = posAndNorm.xy; "
      "\n      vec2 norm = posAndNorm.zw * vec2(width); "

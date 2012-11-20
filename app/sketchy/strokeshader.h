@@ -34,6 +34,8 @@ class StrokeShader : public grfx::Shader {
     inline void setTime(GLfloat time)                { _widthTimeLengths.set(time, 1);        }
     inline void setStartLength(GLfloat startLength)  { _widthTimeLengths.set(startLength, 2); }
     inline void setEndLength(GLfloat endLength)      { _widthTimeLengths.set(endLength, 3);   }
+    inline void setSpeed(GLfloat speed)              { _speedFreq.set(speed, 0);              }
+    inline void setFrequency(GLfloat freq)           { _speedFreq.set(freq, 1);               }
 
  protected:
     virtual void initializeProgram();
@@ -43,6 +45,7 @@ class StrokeShader : public grfx::Shader {
     virtual const char* fragmentShaderSource();
 
     UniformFloat4  _widthTimeLengths;
+    UniformFloat4  _speedFreq;
     UniformFloat4  _color;
     UniformMatrix3 _transform;
 };

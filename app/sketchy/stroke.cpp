@@ -152,9 +152,9 @@ shared_ptr<Stroke> Stroke::example1(const shared_ptr<StrokeShader>& shader) {
     auto path = Sketchy::Geom::Arc::piecewisePath(start_angle, start_pos, radii, end_angles);
 
     auto stroke = new Stroke(path, shader);
-    GLfloat color[4] {0.87f, 0.5f, 0.5f, 1.0f};
+    GLfloat color[4] {0.5f, 0.87f, 0.5f, 0.08f};
     stroke->setColor(color);
-    stroke->setWidth(5.f);
+    stroke->setWidth(10.f);
 
     return shared_ptr<Stroke>(stroke);
 }
@@ -242,7 +242,8 @@ void Stroke::draw(Renderer_ptr renderer, uint64_t time) {
 
     // TODO: make this async, instead of tesselating at render-time.
     if (_dirty) {
-        int vertexCount = 2 * static_cast<int>(_pathLength);  // 1 stroke-division per mm
+        // TODO: need better LOD calculation.
+        int vertexCount = static_cast<int>(_pathLength);
         int triangleCount = (vertexCount - 2) * 2;
 
         std::unique_ptr<Vertex[]> vertices(new Vertex[vertexCount]);
