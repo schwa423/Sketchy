@@ -22,6 +22,17 @@ using namespace Eigen;
 namespace schwa {namespace app {namespace sketchy {
 
 
+PageView::PageView() {
+    // TODO: want to share shader between multiple pages.
+    _shader.reset(new StrokeShader());
+
+    // Add some strokes so we're not watching a blank page.
+    _strokes.push_back(Stroke::example1(_shader));
+    // auto examples = Stroke::example2(_shader);
+    // _strokes.assign(examples.begin(), examples.end());
+}
+
+
 void PageView::render(uint64_t time) {
     // TODO: We're not using a completely full-screen display (eg: the tab-bar at screen bottom
     //       takes some space), and so the width and height are not merely swapped upon device
@@ -33,17 +44,16 @@ void PageView::render(uint64_t time) {
 
     const float TWOPI = 3.14159f * 2;
     static float angle = 0.0f;
-    angle += 0.02f;
+    angle += 0.007f;
     if (angle > TWOPI) angle -= TWOPI;
 
     auto transform = viewScale * Rotation2Df(angle);
-
-    if (!_geometry.get()) _geometry.reset(new Sketchy::Geometry());
 
     // TODO: HACK!!
     static GLfloat strokeTime = 0.0f;
     strokeTime += 1.f / 60.f;
 
+    // Set shader-uniforms which apply to all strokes.
     _shader->setTime(strokeTime);
     _shader->setTransform(transform);
 
@@ -52,31 +62,49 @@ void PageView::render(uint64_t time) {
     glClearColor(0.27f, 0.68f, 0.45f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    _shader->bind();
     CHECK_GL("just bound stroke-shader; about to draw page-geometry");
-    _geometry->draw();
+    for (auto& stroke : _strokes)
+        stroke->draw(_renderer, time);
+
     CHECK_GL("just drew page-geometry");
 }
 
 
 void PageView::destroyRendererState(grfx::Renderer_ptr renderer) {
-    _shader.reset();
+    // TODO: our usage of destroyRendererState() conflates two use-cases:
+    //         - view is being destroyed (eg: because OS tells us to free memory)
+    //         - renderer is destroyed
+    //       ... but this isn't quite right, because it can lead to destroying the
+    //       shader too often (eg: if another view continues to use the same shader).
+    //       Solution: perhaps add a weak-set in the renderer for shaders so that they'll
+    //       be destroyed when nobody is using them, or explicitly when the renderer is
+    //       destroyed.
+    _shader->destroyRendererState(renderer);
+
+    for (auto& stroke : _strokes)
+        stroke->destroyRendererState(renderer);
 }
 
 
 void PageView::initializeRendererState(grfx::Renderer_ptr renderer) {
+    if (_renderer == renderer) return;
+    _renderer = renderer;
+
     // Shaders/programs can't be shared via OpenGL sharegroups (unfortunately),
-    // but since Shaders are lazily initialize on the first call to bind(),
+    // but since Shaders are lazily initialized on the first call to bind(),
     // it's OK to instantiate it here.
-    _shader.reset(new StrokeShader(renderer));
+    _shader->initializeRendererState(renderer);
 
-    GLfloat color[4] {0.87f, 0.5f, 0.5f, 1.0f};
-    _shader->setColor(color);
+    // TODO: this is a hack!  Just because this view is appearing
+    //       (perhaps because it has just been instantiated) doesn't
+    //       imply that the Renderer has been destroyed/recreated,
+    //       and that therefore the index-buffer is invalid.
+    //       See comment in destroyRendererState()... this might be
+    //       another example of a resource shared between views, and
+    //       which should therefore be held by the Renderer.
+    Stroke::clearIndexBuffer();
 
-    _shader->setTime(0.f);
-    _shader->setWidth(5.f);
-    _shader->setStartLength(0);
-    _shader->setEndLength(0);
+    // TODO: kick off asynchronous stroke loading.
 }
 
 

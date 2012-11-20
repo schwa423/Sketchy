@@ -25,13 +25,16 @@ namespace schwa {namespace grfx {
 
 class Shader : public Renderer::Resource {
  public:
-    Shader(Renderer_ptr renderer);
+    Shader();
     virtual ~Shader();
 
     virtual void bind();
 
     // Has the shader been sucessfully initialized (compiled/linked)?
     bool isValid() const { return _initialized && _program; }
+
+    void initializeRendererState(Renderer_ptr renderer);
+    void destroyRendererState(Renderer_ptr renderer);
 
  protected:
     GLuint _vertex;
@@ -40,10 +43,11 @@ class Shader : public Renderer::Resource {
     bool   _initialized;
 
     virtual void initializeProgram();
+    virtual void bindAttribLocations() = 0;
+    virtual void invalidateUniforms() = 0;
     virtual const char* vertexShaderSource() = 0;
     virtual const char* fragmentShaderSource() = 0;
     GLuint compileShader(GLenum shaderType, const char *src);
-
 
     // Base class for Uniform variables.  Only function is to allow
     // the owning shader to initialize the uniform's location.
@@ -63,12 +67,13 @@ class Shader : public Renderer::Resource {
     // Look-up and set the location for the uniform with the specified name.
     void setUniformLocation(UniformBase& uniform, const char* name);
 
-
+    // TODO: class comments for Uniform and children.
     template<typename T>
     class Uniform : public UniformBase {
      public:
         Uniform() : UniformBase(), _dirty(true) { }
 
+        void invalidate() { _dirty = true; }
         bool dirty() const { return _dirty; }
 
         void operator= (const T& val) {

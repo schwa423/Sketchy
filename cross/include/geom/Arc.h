@@ -69,7 +69,9 @@ class Arc {
 
     // Total length of arc.
     float length() const {
-        return M_PI * 2 * fabs(end_radians - start_radians) * radius;
+        return fabs(end_radians - start_radians) * 2 * radius;
+        // TODO: version below was wrong... write test to show the verion above is correct.
+        // return M_PI * 2 * fabs(end_radians - start_radians) * radius;
     }
 
     // 2d cartesian position of start of arc.
@@ -151,9 +153,11 @@ class Arc {
 template<class Vertex>
 // TODO: return task instead of void.
 //Task::TaskPtr
-void tesselate(Vertex* vertices, int total_vertex_count,
-                        const std::vector<Arc>& arcs,
-                        float total_length, float length_offset = 0) {
+void tesselate(Vertex* vertices,
+               int total_vertex_count,
+               const std::vector<Arc>& arcs,
+               float total_length,
+               float length_offset = 0) {
     class Helper {
      public:
         // Helper function for writing pairs of vertices.
@@ -205,7 +209,7 @@ void tesselate(Vertex* vertices, int total_vertex_count,
 
         // Resets every arc to maintain accuracy.
         // TODO: might be faster to initialize only once, but I doubt it.
-        float cumulative_length = (generated_vertex_count / 2 - 1) * spacing + length_offset;
+        float cumulative_length = (generated_vertex_count / 2) * spacing + length_offset;
 
         float normal_flip = (arc_radians < 0) ? -1.0f : 1.0f;
 

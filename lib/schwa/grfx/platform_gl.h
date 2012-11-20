@@ -20,12 +20,17 @@
 #include <iostream>
 
 
-inline bool CHECK_GL(const char* msg) {
-#if defined(DEBUG)
+// Check for GL error in both Debug and Release mode.
+inline bool ALWAYS_CHECK_GL(const char* msg) {
     GLenum err = glGetError();
     if (err == GL_NO_ERROR) return true;
     std::cerr << "GLError(" << err << "): " << msg << std::endl;
     return false;
+}
+
+inline bool CHECK_GL(const char* msg) {
+#if defined(DEBUG)
+    return ALWAYS_CHECK_GL(msg);
 #else
     return true;
 #endif

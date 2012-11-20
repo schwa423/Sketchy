@@ -11,10 +11,9 @@
 #define __schwa__app__sketchy__pageview__
 
 #include "view.h"
+#include "stroke.h"
 #include "strokeshader.h"
-
-// TODO: remove HACK!!
-#include "Geometry.h"
+#include "mesh.h"
 
 
 // namespace schwa::app::sketchy
@@ -33,20 +32,21 @@ class View2d : public grfx::View {
 class PageView : public View2d
 {
  public:
+    PageView();
+
     virtual void render(uint64_t time);
 
  protected:
     // Called only by setRenderer().
     virtual void destroyRendererState(grfx::Renderer_ptr r);
     virtual void initializeRendererState(grfx::Renderer_ptr r);
-
-    shared_ptr<StrokeShader> _shader;
+    // TODO: we're shadowing the _renderer variable in grfx::View.
     shared_ptr<grfx::Renderer> _renderer;
 
-    Eigen::Affine2f _transform;
+    std::vector<shared_ptr<Stroke>> _strokes;
+    shared_ptr<StrokeShader> _shader;
 
-    // TODO: remove HACK!!
-    shared_ptr<Sketchy::Geometry> _geometry;
+    Eigen::Affine2f _transform;
 };
 
 

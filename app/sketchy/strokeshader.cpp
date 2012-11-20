@@ -26,6 +26,19 @@ void StrokeShader::initializeProgram() {
 }
 
 
+void StrokeShader::bindAttribLocations() {
+    glBindAttribLocation(_program, POS_AND_NORM, "posAndNorm");
+    glBindAttribLocation(_program, LENGTH_ETC, "lengthEtc");
+}
+
+
+void StrokeShader::invalidateUniforms() {
+    _widthTimeLengths.invalidate();
+    _color.invalidate();
+    _transform.invalidate();
+}
+
+
 void StrokeShader::bind() {
     this->Shader::bind();
     _widthTimeLengths.apply();
@@ -52,18 +65,18 @@ const char* StrokeShader::vertexShaderSource() {
      "\n      float width = widthTimeLengths.x; "
      "\n      float time = widthTimeLengths.y; "
      "\n      // modify width at each vertex "
-     "\n      float speed = time * 12.0; "
-     "\n      float freq = 0.1; "
+     "\n      float speed = time * 6.0; "
+     "\n      float freq = 0.5; "
      "\n      // per-vertex scale between 50% and 100% of default stroke width "
      "\n      float scale = cos(lengthEtc.x * freq + speed) / 4.0 + 0.75; "
      "\n      width *= scale; "
-     "\n    	 vec2 pos = posAndNorm.xy; "
-     "\n    	 vec2 norm = posAndNorm.zw * vec2(width); "
+     "\n      vec2 pos = posAndNorm.xy; "
+     "\n      vec2 norm = posAndNorm.zw * vec2(width); "
      "\n      vec3 vert = transform * vec3((pos + norm) / 150.0, 1.0); "
-     "\n    	 gl_Position.xy = vert.xy; "
-     "\n    	 gl_Position.z = 0.0; "
-     "\n    	 gl_Position.w = 1.0; "
-     "\n    	 color = colorIn; "
+     "\n      gl_Position.xy = vert.xy; "
+     "\n      gl_Position.z = 0.0; "
+     "\n      gl_Position.w = 1.0; "
+     "\n      color = colorIn; "
      "\n    } ";
 }
 

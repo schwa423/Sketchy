@@ -67,6 +67,7 @@
 		03DC93CA149E9F4E00F2A602 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 03DC93C9149E9F4E00F2A602 /* AppDelegate.m */; };
 		03DC93CD149E9F4F00F2A602 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03DC93CB149E9F4E00F2A602 /* MainStoryboard.storyboard */; };
 		03DC93D0149E9F4F00F2A602 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03DC93CF149E9F4F00F2A602 /* ViewController.mm */; };
+		03DE89C5163CECCA0023B7D3 /* stroke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DE89C3163CECCA0023B7D3 /* stroke.cpp */; };
 		03E2E7AD14ADBEA10019D869 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */; };
 		03E2E7B414AEC6B10019D869 /* SchwaGLViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E2E7B214AEC6B10019D869 /* SchwaGLViewController.xib */; };
 		03F1482C14B6F3310036EF9B /* MultisampleFramebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1482B14B6F3310036EF9B /* MultisampleFramebuffer.cpp */; };
@@ -178,6 +179,8 @@
 		03DC93CC149E9F4E00F2A602 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		03DC93CE149E9F4F00F2A602 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		03DC93CF149E9F4F00F2A602 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		03DE89C3163CECCA0023B7D3 /* stroke.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stroke.cpp; path = ../app/sketchy/stroke.cpp; sourceTree = "<group>"; };
+		03DE89C4163CECCA0023B7D3 /* stroke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stroke.h; path = ../app/sketchy/stroke.h; sourceTree = "<group>"; };
 		03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		03E2E7B014AEC6B10019D869 /* SchwaGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchwaGLViewController.h; sourceTree = "<group>"; };
 		03E2E7B214AEC6B10019D869 /* SchwaGLViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SchwaGLViewController.xib; sourceTree = "<group>"; };
@@ -407,6 +410,8 @@
 				0356A3921605DDD1006C43C1 /* pageview.h */,
 				038E2D5E1634E4B3008E4645 /* strokeshader.cpp */,
 				038E2D5F1634E4B3008E4645 /* strokeshader.h */,
+				03DE89C3163CECCA0023B7D3 /* stroke.cpp */,
+				03DE89C4163CECCA0023B7D3 /* stroke.h */,
 			);
 			name = sketchy;
 			sourceTree = "<group>";
@@ -437,6 +442,7 @@
 		0370A02115FBE972003C0164 /* schwa */ = {
 			isa = PBXGroup;
 			children = (
+				03FE4AC5164E339000C9748B /* job */,
 				039EC94F161795B6009FDA4D /* input */,
 				030366D915FDDDFB003D6F91 /* core */,
 				0370A02215FBE97C003C0164 /* grfx */,
@@ -552,6 +558,13 @@
 				03F1E96E15CF413700E6E1DA /* Arc.cpp */,
 			);
 			name = geom;
+			sourceTree = "<group>";
+		};
+		03FE4AC5164E339000C9748B /* job */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = job;
 			sourceTree = "<group>";
 		};
 		03FFFF3214A1E10C0012FB3F /* tests */ = {
@@ -714,6 +727,7 @@
 				038E2D59162B3678008E4645 /* mesh.cpp in Sources */,
 				038E2D5D162B7E54008E4645 /* shader2.cpp in Sources */,
 				038E2D601634E4B3008E4645 /* strokeshader.cpp in Sources */,
+				03DE89C5163CECCA0023B7D3 /* stroke.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

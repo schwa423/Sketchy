@@ -38,13 +38,23 @@ static std::string getErrorLog(GLuint obj, glGetObjiv getLength, glGetObjInfoLog
 }
 
 
-Shader::Shader(Renderer_ptr renderer)
-    : Renderer::Resource(renderer), _vertex(0), _fragment(0), _program(0), _initialized(false) {
+Shader::Shader() : Renderer::Resource(nullptr),
+                   _initialized(false),
+                   _vertex(0), _fragment(0), _program(0) {
 
 }
 
 
-Shader::~Shader() {
+void Shader::initializeRendererState(Renderer_ptr renderer) {
+    // TODO: assert current renderer is NULL
+    // TODO: not quite sure why we can't just do this in destroyRendererState() ?
+    _renderer = renderer;
+    _vertex = _fragment = _program = 0;
+    _initialized = false;
+}
+
+
+void Shader::destroyRendererState(Renderer_ptr renderer) {
     // TODO: remove once Clang can capture instance variables by copy, not reference.
     auto _vertex   = this->_vertex;
     auto _fragment = this->_fragment;
@@ -54,6 +64,14 @@ Shader::~Shader() {
         glDeleteShader(_vertex);
         glDeleteShader(_fragment);
     });
+    _initialized = false;
+    _renderer.reset();
+    invalidateUniforms();
+}
+
+
+Shader::~Shader() {
+    destroyRendererState(nullptr);
 }
 
 
@@ -88,9 +106,8 @@ void Shader::initializeProgram() {
     glAttachShader(_program, _vertex);
     glAttachShader(_program, _fragment);
 
-    // TODO: HACK!!!!!!!!!  This is stroke-specific
-    glBindAttribLocation(_program, 0, "posAndNorm");
-	glBindAttribLocation(_program, 1, "lengthEtc");
+    // Allow subclasses to specify which attribs are bound to which locations.
+    bindAttribLocations();
 
     GLint linked;
     glLinkProgram(_program);
