@@ -51,6 +51,11 @@ void Shader::initializeRendererState(Renderer_ptr renderer) {
     _renderer = renderer;
     _vertex = _fragment = _program = 0;
     _initialized = false;
+
+    // It would be "nicer" to do this in destroyRendererState(), but
+    // we call that from the destructor, after subclass destructors
+    // have already run.
+    invalidateUniforms();
 }
 
 
@@ -66,7 +71,6 @@ void Shader::destroyRendererState(Renderer_ptr renderer) {
     });
     _initialized = false;
     _renderer.reset();
-    invalidateUniforms();
 }
 
 
