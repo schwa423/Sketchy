@@ -147,12 +147,12 @@ shared_ptr<Stroke> Stroke::example1(const shared_ptr<StrokeShader>& shader) {
     float start_angle = M_PI*7/6;
     Sketchy::Geom::Point2d start_pos(-110.0f, -110.0);
     std::vector<float> radii{150.0, 90.0, 30.0, 45.0, 120.0};
-    std::vector<float> end_angles{M_PI/2, M_PI/-2, M_PI*5/-4, M_PI*-1, 0};
+    std::vector<float> end_angles{M_PI/2, M_PI/-2, M_PI*5/-4, M_PI*-1, M_PI/8};
 
     auto path = Sketchy::Geom::Arc::piecewisePath(start_angle, start_pos, radii, end_angles);
 
     auto stroke = new Stroke(path, shader);
-    GLfloat color[4] {0.5f, 0.87f, 0.5f, 0.08f};
+    GLfloat color[4] {0.45f, 0.92f, 0.45f, 0.08f};
     stroke->setColor(color);
     stroke->setWidth(10.f);
 
@@ -244,6 +244,7 @@ void Stroke::draw(Renderer_ptr renderer, uint64_t time) {
     if (_dirty) {
         // TODO: need better LOD calculation.
         int vertexCount = static_cast<int>(_pathLength);
+        if (vertexCount % 2 == 1) vertexCount++;
         int triangleCount = (vertexCount - 2) * 2;
 
         std::unique_ptr<Vertex[]> vertices(new Vertex[vertexCount]);

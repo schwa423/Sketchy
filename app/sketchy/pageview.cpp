@@ -27,7 +27,7 @@ PageView::PageView() {
     _shader.reset(new StrokeShader());
 
     // Add some strokes so we're not watching a blank page.
-    for (int i = 0; i < 12; i++)
+    for (int i = 0; i < 15; i++)
         _strokes.push_back(Stroke::example1(_shader));
 
     // _strokes.assign(examples.begin(), examples.end());
@@ -46,7 +46,7 @@ void PageView::render(uint64_t time) {
     // Cause all strokes to rotate around center at fixed rate.
     const float TWOPI = 3.14159f * 2;
     static float angle = 0.0f;
-    angle += 0.003f;
+    angle += 0.004f;
     if (angle > TWOPI) angle -= TWOPI;
 
     // TODO: HACK!!
@@ -56,6 +56,7 @@ void PageView::render(uint64_t time) {
 
     glViewport(0, 0, _width, _height);
     glClearColor(0.19f, 0.19f, 0.35f, 1.0f);
+    glClearColor(0.1f, 0.1f, 0.25f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_BLEND);
     glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -63,11 +64,11 @@ void PageView::render(uint64_t time) {
     CHECK_GL("just bound stroke-shader; about to draw page-geometry");
     float angleOffset = 0.0f;
     float speed = 14.0f;
-    float freq = 0.16f;
+    float freq = 0.10f;
     for (auto& stroke : _strokes) {
         // Give each stroke a slightly different sine-wave frequency and speed.
         auto transform = viewScale * Rotation2Df(angle + angleOffset);
-        angleOffset += 0.1;
+        angleOffset += 0.12;
         speed -= 1.0;
         freq += 0.02;
         _shader->setTransform(transform);
