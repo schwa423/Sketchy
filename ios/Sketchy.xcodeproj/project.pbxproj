@@ -69,7 +69,6 @@
 		03DE89C5163CECCA0023B7D3 /* stroke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DE89C3163CECCA0023B7D3 /* stroke.cpp */; };
 		03E2E7AD14ADBEA10019D869 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */; };
 		03E2E7B414AEC6B10019D869 /* SchwaGLViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E2E7B214AEC6B10019D869 /* SchwaGLViewController.xib */; };
-		03F1482C14B6F3310036EF9B /* MultisampleFramebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1482B14B6F3310036EF9B /* MultisampleFramebuffer.cpp */; };
 		03F1482F14BA278C0036EF9B /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1482E14BA278C0036EF9B /* Camera.cpp */; };
 		03F1E97015CF413700E6E1DA /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1E96E15CF413700E6E1DA /* Arc.cpp */; };
 		03F1E97115CF413700E6E1DA /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1E96E15CF413700E6E1DA /* Arc.cpp */; };
@@ -149,7 +148,6 @@
 		038DC1FC1542A06F000EBD8D /* Shadow_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shadow_impl.h; sourceTree = "<group>"; };
 		038DC1FE1542A0BA000EBD8D /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Camera.h; path = include/Camera.h; sourceTree = "<group>"; };
 		038DC2011542A0BA000EBD8D /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Material.h; path = include/Material.h; sourceTree = "<group>"; };
-		038DC2021542A0BA000EBD8D /* MultisampleFramebuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MultisampleFramebuffer.h; path = include/MultisampleFramebuffer.h; sourceTree = "<group>"; };
 		038DC2031542A0BA000EBD8D /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = include/Node.h; sourceTree = "<group>"; };
 		038DC2061542A0BA000EBD8D /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Scene.h; path = include/Scene.h; sourceTree = "<group>"; };
 		038DC2081542A0EC000EBD8D /* Loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Loop.h; path = include/Loop.h; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 		03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		03E2E7B014AEC6B10019D869 /* SchwaGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchwaGLViewController.h; sourceTree = "<group>"; };
 		03E2E7B214AEC6B10019D869 /* SchwaGLViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SchwaGLViewController.xib; sourceTree = "<group>"; };
-		03F1482B14B6F3310036EF9B /* MultisampleFramebuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultisampleFramebuffer.cpp; sourceTree = "<group>"; };
 		03F1482E14BA278C0036EF9B /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		03F1E96C15CEE5FC00E6E1DA /* Arc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Arc.h; path = include/geom/Arc.h; sourceTree = "<group>"; };
 		03F1E96E15CF413700E6E1DA /* Arc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Arc.cpp; path = geom/Arc.cpp; sourceTree = "<group>"; };
@@ -233,13 +230,6 @@
 			name = base;
 			sourceTree = "<group>";
 		};
-		0337E37814C234DB00D6339A /* core */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = core;
-			sourceTree = "<group>";
-		};
 		03386F801597AAFB0077986E /* tasks */ = {
 			isa = PBXGroup;
 			children = (
@@ -271,7 +261,6 @@
 		033B325A153FEF6000AEFF6A /* include */ = {
 			isa = PBXGroup;
 			children = (
-				0370A01B15F9BF46003C0164 /* input */,
 				03F1E96A15CEE59900E6E1DA /* geom */,
 				0378F60415CBD9610083C230 /* gists */,
 				0305264E15BD2A280043238C /* base */,
@@ -280,7 +269,6 @@
 				038DC2091542A0EC000EBD8D /* ThreadOwner.h */,
 				038DC1FE1542A0BA000EBD8D /* Camera.h */,
 				038DC2011542A0BA000EBD8D /* Material.h */,
-				038DC2021542A0BA000EBD8D /* MultisampleFramebuffer.h */,
 				038DC2031542A0BA000EBD8D /* Node.h */,
 				038DC2061542A0BA000EBD8D /* Scene.h */,
 				038DC1F71542A06F000EBD8D /* shadow */,
@@ -368,12 +356,10 @@
 				03386F841597ABCE0077986E /* tasks */,
 				03594B6E1544377200C090AD /* flow */,
 				033B325A153FEF6000AEFF6A /* include */,
-				0337E37814C234DB00D6339A /* core */,
 				0343BF9514A7932D00C6ED4F /* events */,
 				033E762D146E77B5008896D5 /* Scene.cpp */,
 				033E7630146E77EB008896D5 /* Node.cpp */,
 				039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */,
-				03F1482B14B6F3310036EF9B /* MultisampleFramebuffer.cpp */,
 				03F1482E14BA278C0036EF9B /* Camera.cpp */,
 				039AA5DD14E878F800C5390A /* Material.cpp */,
 			);
@@ -417,13 +403,6 @@
 				03594B721544383A00C090AD /* Flow.cpp */,
 			);
 			name = flow;
-			sourceTree = "<group>";
-		};
-		0370A01B15F9BF46003C0164 /* input */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = input;
 			sourceTree = "<group>";
 		};
 		0370A02015FBE965003C0164 /* lib */ = {
@@ -698,7 +677,6 @@
 				0343BF9914A793ED00C6ED4F /* Fence.cpp in Sources */,
 				0343BF9D14A7AF2400C6ED4F /* Event.cpp in Sources */,
 				037C553714B14A1F00355B6D /* SchwaGLViewController.mm in Sources */,
-				03F1482C14B6F3310036EF9B /* MultisampleFramebuffer.cpp in Sources */,
 				03F1482F14BA278C0036EF9B /* Camera.cpp in Sources */,
 				039AA5DE14E878F800C5390A /* Material.cpp in Sources */,
 				03594B731544383A00C090AD /* Flow.cpp in Sources */,
