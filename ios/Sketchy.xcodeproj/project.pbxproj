@@ -876,6 +876,7 @@
 					include,
 					../cross/include,
 					"../third-party/include",
+					"../third-party",
 				);
 				INFOPLIST_FILE = "SketchyUnitTests/SketchyUnitTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -898,6 +899,7 @@
 					include,
 					../cross/include,
 					"../third-party/include",
+					"../third-party",
 				);
 				INFOPLIST_FILE = "SketchyUnitTests/SketchyUnitTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";

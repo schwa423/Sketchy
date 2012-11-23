@@ -11,7 +11,7 @@
 #include "gtest/gtest.h"
 
 #include "props/Flow.h"
-#include <Eigen/Dense>
+#include "Eigen/Dense"
 
 
 namespace std {
