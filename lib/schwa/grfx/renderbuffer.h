@@ -10,8 +10,8 @@
 #ifndef __schwa__grfx__renderbuffer__
 #define __schwa__grfx__renderbuffer__
 
-#include "renderer2.h"
-#include "framebuffer2.h"
+#include "renderer.h"
+#include "framebuffer.h"
 #include "platform_gl.h"
 
 // namespace schwa::grfx

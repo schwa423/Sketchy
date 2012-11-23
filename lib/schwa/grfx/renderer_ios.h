@@ -10,7 +10,7 @@
 #ifndef __schwa__grfx__renderer_ios__
 #define __schwa__grfx__renderer_ios__
 
-#include "renderer2.h"
+#include "renderer.h"
 
 // Ensure that we're on iOS.
 #if defined(__APPLE__)

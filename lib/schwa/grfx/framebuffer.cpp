@@ -7,7 +7,7 @@
 //
 //
 
-#include "framebuffer2.h"
+#include "framebuffer.h"
 #include "renderbuffer.h"
 #include "platform_gl.h"
 

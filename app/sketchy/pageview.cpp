@@ -8,7 +8,7 @@
 //
 
 #include "pageview.h"
-#include "renderer2.h"
+#include "renderer.h"
 
 #include <iostream>
 using std::cerr;

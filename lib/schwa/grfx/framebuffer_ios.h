@@ -10,7 +10,7 @@
 #ifndef __schwa__grfx__framebuffer_ios__
 #define __schwa__grfx__framebuffer_ios__
 
-#include "framebuffer2.h"
+#include "framebuffer.h"
 
 @class CAEAGLLayer;
 

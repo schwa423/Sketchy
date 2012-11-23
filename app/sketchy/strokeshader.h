@@ -10,7 +10,7 @@
 #define __schwa__app__sketchy__strokeshader__
 
 
-#include "shader2.h"
+#include "shader.h"
 
 
 // namespace schwa::app::sketchy

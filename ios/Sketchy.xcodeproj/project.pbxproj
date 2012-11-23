@@ -45,11 +45,11 @@
 		03594B731544383A00C090AD /* Flow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03594B721544383A00C090AD /* Flow.cpp */; };
 		03594B741544383A00C090AD /* Flow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03594B721544383A00C090AD /* Flow.cpp */; };
 		0370A01E15F9BFE7003C0164 /* TouchHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0370A01D15F9BFE7003C0164 /* TouchHandler.cpp */; };
-		0370A02515FBEA0F003C0164 /* renderer2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0370A02315FBEA0F003C0164 /* renderer2.cpp */; };
-		0370A02815FC0F03003C0164 /* framebuffer2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0370A02615FC0F03003C0164 /* framebuffer2.cpp */; };
+		0370A02515FBEA0F003C0164 /* renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0370A02315FBEA0F003C0164 /* renderer.cpp */; };
+		0370A02815FC0F03003C0164 /* framebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0370A02615FC0F03003C0164 /* framebuffer.cpp */; };
 		037C553714B14A1F00355B6D /* SchwaGLViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 037C553614B14A1F00355B6D /* SchwaGLViewController.mm */; };
 		038E2D59162B3678008E4645 /* mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 038E2D57162B3678008E4645 /* mesh.cpp */; };
-		038E2D5D162B7E54008E4645 /* shader2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 038E2D5B162B7E54008E4645 /* shader2.cpp */; };
+		038E2D5D162B7E54008E4645 /* shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 038E2D5B162B7E54008E4645 /* shader.cpp */; };
 		038E2D601634E4B3008E4645 /* strokeshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 038E2D5E1634E4B3008E4645 /* strokeshader.cpp */; };
 		039192A814A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
 		039192A914A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
@@ -129,10 +129,10 @@
 		03594B751544388100C090AD /* Flow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Flow.h; path = include/props/Flow.h; sourceTree = "<group>"; };
 		0370A01D15F9BFE7003C0164 /* TouchHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TouchHandler.cpp; path = ../cross/input/TouchHandler.cpp; sourceTree = "<group>"; };
 		0370A01F15F9C025003C0164 /* TouchHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchHandler.h; path = ../cross/include/input/TouchHandler.h; sourceTree = "<group>"; };
-		0370A02315FBEA0F003C0164 /* renderer2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = renderer2.cpp; path = ../lib/schwa/grfx/renderer2.cpp; sourceTree = "<group>"; };
-		0370A02415FBEA0F003C0164 /* renderer2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = renderer2.h; path = ../lib/schwa/grfx/renderer2.h; sourceTree = "<group>"; };
-		0370A02615FC0F03003C0164 /* framebuffer2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = framebuffer2.cpp; path = ../lib/schwa/grfx/framebuffer2.cpp; sourceTree = "<group>"; };
-		0370A02715FC0F03003C0164 /* framebuffer2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = framebuffer2.h; path = ../lib/schwa/grfx/framebuffer2.h; sourceTree = "<group>"; };
+		0370A02315FBEA0F003C0164 /* renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = renderer.cpp; path = ../lib/schwa/grfx/renderer.cpp; sourceTree = "<group>"; };
+		0370A02415FBEA0F003C0164 /* renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = renderer.h; path = ../lib/schwa/grfx/renderer.h; sourceTree = "<group>"; };
+		0370A02615FC0F03003C0164 /* framebuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = framebuffer.cpp; path = ../lib/schwa/grfx/framebuffer.cpp; sourceTree = "<group>"; };
+		0370A02715FC0F03003C0164 /* framebuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = framebuffer.h; path = ../lib/schwa/grfx/framebuffer.h; sourceTree = "<group>"; };
 		0378F60515CBD9DD0083C230 /* Gists_SharedPointersWithClassHierarchy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Gists_SharedPointersWithClassHierarchy.h; path = include/gists/Gists_SharedPointersWithClassHierarchy.h; sourceTree = "<group>"; };
 		037C553614B14A1F00355B6D /* SchwaGLViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SchwaGLViewController.mm; sourceTree = "<group>"; };
 		038DC1F41542A05A000EBD8D /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
@@ -144,8 +144,8 @@
 		038DC2091542A0EC000EBD8D /* ThreadOwner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThreadOwner.h; path = include/ThreadOwner.h; sourceTree = "<group>"; };
 		038E2D57162B3678008E4645 /* mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mesh.cpp; path = ../lib/schwa/grfx/mesh.cpp; sourceTree = "<group>"; };
 		038E2D58162B3678008E4645 /* mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mesh.h; path = ../lib/schwa/grfx/mesh.h; sourceTree = "<group>"; };
-		038E2D5B162B7E54008E4645 /* shader2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = shader2.cpp; path = ../lib/schwa/grfx/shader2.cpp; sourceTree = "<group>"; };
-		038E2D5C162B7E54008E4645 /* shader2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = shader2.h; path = ../lib/schwa/grfx/shader2.h; sourceTree = "<group>"; };
+		038E2D5B162B7E54008E4645 /* shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = shader.cpp; path = ../lib/schwa/grfx/shader.cpp; sourceTree = "<group>"; };
+		038E2D5C162B7E54008E4645 /* shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = shader.h; path = ../lib/schwa/grfx/shader.h; sourceTree = "<group>"; };
 		038E2D5E1634E4B3008E4645 /* strokeshader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = strokeshader.cpp; path = ../app/sketchy/strokeshader.cpp; sourceTree = "<group>"; };
 		038E2D5F1634E4B3008E4645 /* strokeshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = strokeshader.h; path = ../app/sketchy/strokeshader.h; sourceTree = "<group>"; };
 		039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadOwner.cpp; sourceTree = "<group>"; };
@@ -407,8 +407,8 @@
 		0370A02215FBE97C003C0164 /* grfx */ = {
 			isa = PBXGroup;
 			children = (
-				0370A02615FC0F03003C0164 /* framebuffer2.cpp */,
-				0370A02715FC0F03003C0164 /* framebuffer2.h */,
+				0370A02615FC0F03003C0164 /* framebuffer.cpp */,
+				0370A02715FC0F03003C0164 /* framebuffer.h */,
 				0356A38315FF32AB006C43C1 /* framebuffer_ios.mm */,
 				0356A38415FF32AB006C43C1 /* framebuffer_ios.h */,
 				0356A38115FF27D7006C43C1 /* platform_gl.h */,
@@ -416,8 +416,8 @@
 				0357AB7F160F9ED50044DA75 /* renderbuffer.h */,
 				0357AB82160F9EF10044DA75 /* renderbuffer_ios.mm */,
 				0357AB83160F9EF10044DA75 /* renderbuffer_ios.h */,
-				0370A02315FBEA0F003C0164 /* renderer2.cpp */,
-				0370A02415FBEA0F003C0164 /* renderer2.h */,
+				0370A02315FBEA0F003C0164 /* renderer.cpp */,
+				0370A02415FBEA0F003C0164 /* renderer.h */,
 				030366D615FD5C4A003D6F91 /* renderer_ios.mm */,
 				030366D715FD5C4A003D6F91 /* renderer_ios.h */,
 				0356A3861605560C006C43C1 /* scene.cpp */,
@@ -430,8 +430,8 @@
 				039EC957161C2377009FDA4D /* presenter_ios.h */,
 				038E2D57162B3678008E4645 /* mesh.cpp */,
 				038E2D58162B3678008E4645 /* mesh.h */,
-				038E2D5B162B7E54008E4645 /* shader2.cpp */,
-				038E2D5C162B7E54008E4645 /* shader2.h */,
+				038E2D5B162B7E54008E4645 /* shader.cpp */,
+				038E2D5C162B7E54008E4645 /* shader.h */,
 			);
 			name = grfx;
 			sourceTree = "<group>";
@@ -661,8 +661,8 @@
 				03386F8C1597AC2F0077986E /* Worker.cpp in Sources */,
 				03F1E97015CF413700E6E1DA /* Arc.cpp in Sources */,
 				0370A01E15F9BFE7003C0164 /* TouchHandler.cpp in Sources */,
-				0370A02515FBEA0F003C0164 /* renderer2.cpp in Sources */,
-				0370A02815FC0F03003C0164 /* framebuffer2.cpp in Sources */,
+				0370A02515FBEA0F003C0164 /* renderer.cpp in Sources */,
+				0370A02815FC0F03003C0164 /* framebuffer.cpp in Sources */,
 				030366D815FD5C4A003D6F91 /* renderer_ios.mm in Sources */,
 				0356A38515FF32AB006C43C1 /* framebuffer_ios.mm in Sources */,
 				0356A3881605560C006C43C1 /* scene.cpp in Sources */,
@@ -673,7 +673,7 @@
 				039EC9551618DE39009FDA4D /* presenter.cpp in Sources */,
 				039EC958161C2377009FDA4D /* presenter_ios.mm in Sources */,
 				038E2D59162B3678008E4645 /* mesh.cpp in Sources */,
-				038E2D5D162B7E54008E4645 /* shader2.cpp in Sources */,
+				038E2D5D162B7E54008E4645 /* shader.cpp in Sources */,
 				038E2D601634E4B3008E4645 /* strokeshader.cpp in Sources */,
 				03DE89C5163CECCA0023B7D3 /* stroke.cpp in Sources */,
 			);

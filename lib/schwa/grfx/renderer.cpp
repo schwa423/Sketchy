@@ -7,8 +7,8 @@
 //
 //
 
-#include "renderer2.h"
-#include "framebuffer2.h"
+#include "renderer.h"
+#include "framebuffer.h"
 #include "view.h"
 #include "presenter.h"
 

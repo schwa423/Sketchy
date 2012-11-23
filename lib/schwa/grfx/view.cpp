@@ -8,7 +8,7 @@
 //
 
 #include "view.h"
-#include "renderer2.h"
+#include "renderer.h"
 
 #include <exception>
 

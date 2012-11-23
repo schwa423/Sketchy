@@ -8,7 +8,7 @@
 //
 
 #include "presenter.h"
-#include "renderer2.h"
+#include "renderer.h"
 #include "view.h"
 
 using std::cerr;

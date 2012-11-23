@@ -10,7 +10,7 @@
 #ifndef __schwa__grfx__framebuffer__
 #define __schwa__grfx__framebuffer__
 
-#include "renderer2.h"
+#include "renderer.h"
 
 #include <iostream>
 

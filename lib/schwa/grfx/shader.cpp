@@ -7,7 +7,7 @@
 //
 //
 
-#include "shader2.h"
+#include "shader.h"
 
 #include <iostream>
 using std::cerr;
