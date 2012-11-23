@@ -31,8 +31,6 @@
 		033E75FF146E65EC008896D5 /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = 033E75FE146E65EC008896D5 /* second.png */; };
 		033E7601146E65EC008896D5 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033E7600146E65EC008896D5 /* second@2x.png */; };
 		033E762A146E6742008896D5 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E7628146E6742008896D5 /* OpenGLES.framework */; };
-		033E762E146E77B5008896D5 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033E762D146E77B5008896D5 /* Scene.cpp */; };
-		033E7631146E77EB008896D5 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033E7630146E77EB008896D5 /* Node.cpp */; };
 		0343BF9414A6A75500C6ED4F /* SchwaGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9314A6A75500C6ED4F /* SchwaGLView.mm */; };
 		0343BF9914A793ED00C6ED4F /* Fence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9814A793ED00C6ED4F /* Fence.cpp */; };
 		0343BF9A14A793ED00C6ED4F /* Fence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9814A793ED00C6ED4F /* Fence.cpp */; };
@@ -55,7 +53,6 @@
 		038E2D601634E4B3008E4645 /* strokeshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 038E2D5E1634E4B3008E4645 /* strokeshader.cpp */; };
 		039192A814A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
 		039192A914A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */; };
-		039AA5DE14E878F800C5390A /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039AA5DD14E878F800C5390A /* Material.cpp */; };
 		039EC9551618DE39009FDA4D /* presenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 039EC9531618DE38009FDA4D /* presenter.cpp */; };
 		039EC958161C2377009FDA4D /* presenter_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 039EC956161C2377009FDA4D /* presenter_ios.mm */; };
 		03DC93BC149E9F4E00F2A602 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E75DF146E65EC008896D5 /* UIKit.framework */; };
@@ -69,7 +66,6 @@
 		03DE89C5163CECCA0023B7D3 /* stroke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DE89C3163CECCA0023B7D3 /* stroke.cpp */; };
 		03E2E7AD14ADBEA10019D869 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */; };
 		03E2E7B414AEC6B10019D869 /* SchwaGLViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E2E7B214AEC6B10019D869 /* SchwaGLViewController.xib */; };
-		03F1482F14BA278C0036EF9B /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1482E14BA278C0036EF9B /* Camera.cpp */; };
 		03F1E97015CF413700E6E1DA /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1E96E15CF413700E6E1DA /* Arc.cpp */; };
 		03F1E97115CF413700E6E1DA /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1E96E15CF413700E6E1DA /* Arc.cpp */; };
 		03F4878B14C4EE8A0065D187 /* ShadowTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F4878914C4ECCB0065D187 /* ShadowTest.cpp */; };
@@ -112,8 +108,6 @@
 		033E7600146E65EC008896D5 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
 		033E7608146E65ED008896D5 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		033E7628146E6742008896D5 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		033E762D146E77B5008896D5 /* Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
-		033E7630146E77EB008896D5 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
 		0343BF9214A6A75500C6ED4F /* SchwaGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchwaGLView.h; sourceTree = "<group>"; };
 		0343BF9314A6A75500C6ED4F /* SchwaGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SchwaGLView.mm; sourceTree = "<group>"; };
 		0343BF9814A793ED00C6ED4F /* Fence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Fence.cpp; path = events/Fence.cpp; sourceTree = "<group>"; };
@@ -146,10 +140,6 @@
 		038DC1F61542A05A000EBD8D /* Sleep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sleep.h; sourceTree = "<group>"; };
 		038DC1FB1542A06F000EBD8D /* Shadow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shadow.h; sourceTree = "<group>"; };
 		038DC1FC1542A06F000EBD8D /* Shadow_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shadow_impl.h; sourceTree = "<group>"; };
-		038DC1FE1542A0BA000EBD8D /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Camera.h; path = include/Camera.h; sourceTree = "<group>"; };
-		038DC2011542A0BA000EBD8D /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Material.h; path = include/Material.h; sourceTree = "<group>"; };
-		038DC2031542A0BA000EBD8D /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Node.h; path = include/Node.h; sourceTree = "<group>"; };
-		038DC2061542A0BA000EBD8D /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Scene.h; path = include/Scene.h; sourceTree = "<group>"; };
 		038DC2081542A0EC000EBD8D /* Loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Loop.h; path = include/Loop.h; sourceTree = "<group>"; };
 		038DC2091542A0EC000EBD8D /* ThreadOwner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThreadOwner.h; path = include/ThreadOwner.h; sourceTree = "<group>"; };
 		038E2D57162B3678008E4645 /* mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mesh.cpp; path = ../lib/schwa/grfx/mesh.cpp; sourceTree = "<group>"; };
@@ -159,7 +149,6 @@
 		038E2D5E1634E4B3008E4645 /* strokeshader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = strokeshader.cpp; path = ../app/sketchy/strokeshader.cpp; sourceTree = "<group>"; };
 		038E2D5F1634E4B3008E4645 /* strokeshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = strokeshader.h; path = ../app/sketchy/strokeshader.h; sourceTree = "<group>"; };
 		039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ThreadOwner.cpp; sourceTree = "<group>"; };
-		039AA5DD14E878F800C5390A /* Material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
 		039EC9531618DE38009FDA4D /* presenter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = presenter.cpp; path = ../lib/schwa/grfx/presenter.cpp; sourceTree = "<group>"; };
 		039EC9541618DE39009FDA4D /* presenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = presenter.h; path = ../lib/schwa/grfx/presenter.h; sourceTree = "<group>"; };
 		039EC956161C2377009FDA4D /* presenter_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = presenter_ios.mm; path = ../lib/schwa/grfx/presenter_ios.mm; sourceTree = "<group>"; };
@@ -179,7 +168,6 @@
 		03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		03E2E7B014AEC6B10019D869 /* SchwaGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchwaGLViewController.h; sourceTree = "<group>"; };
 		03E2E7B214AEC6B10019D869 /* SchwaGLViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SchwaGLViewController.xib; sourceTree = "<group>"; };
-		03F1482E14BA278C0036EF9B /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		03F1E96C15CEE5FC00E6E1DA /* Arc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Arc.h; path = include/geom/Arc.h; sourceTree = "<group>"; };
 		03F1E96E15CF413700E6E1DA /* Arc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Arc.cpp; path = geom/Arc.cpp; sourceTree = "<group>"; };
 		03F4878914C4ECCB0065D187 /* ShadowTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShadowTest.cpp; sourceTree = "<group>"; };
@@ -267,10 +255,6 @@
 				03386F801597AAFB0077986E /* tasks */,
 				038DC2081542A0EC000EBD8D /* Loop.h */,
 				038DC2091542A0EC000EBD8D /* ThreadOwner.h */,
-				038DC1FE1542A0BA000EBD8D /* Camera.h */,
-				038DC2011542A0BA000EBD8D /* Material.h */,
-				038DC2031542A0BA000EBD8D /* Node.h */,
-				038DC2061542A0BA000EBD8D /* Scene.h */,
 				038DC1F71542A06F000EBD8D /* shadow */,
 				038DC1F31542A05A000EBD8D /* events */,
 				033B32541537F9FC00AEFF6A /* props */,
@@ -357,11 +341,7 @@
 				03594B6E1544377200C090AD /* flow */,
 				033B325A153FEF6000AEFF6A /* include */,
 				0343BF9514A7932D00C6ED4F /* events */,
-				033E762D146E77B5008896D5 /* Scene.cpp */,
-				033E7630146E77EB008896D5 /* Node.cpp */,
 				039192A714A1CC6300F1D4C7 /* ThreadOwner.cpp */,
-				03F1482E14BA278C0036EF9B /* Camera.cpp */,
-				039AA5DD14E878F800C5390A /* Material.cpp */,
 			);
 			name = cross;
 			path = ../cross;
@@ -670,15 +650,11 @@
 				033E75F0146E65EC008896D5 /* AppDelegate.m in Sources */,
 				033E75F6146E65EC008896D5 /* FirstViewController.m in Sources */,
 				033E75FD146E65EC008896D5 /* SecondViewController.mm in Sources */,
-				033E762E146E77B5008896D5 /* Scene.cpp in Sources */,
-				033E7631146E77EB008896D5 /* Node.cpp in Sources */,
 				039192A814A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */,
 				0343BF9414A6A75500C6ED4F /* SchwaGLView.mm in Sources */,
 				0343BF9914A793ED00C6ED4F /* Fence.cpp in Sources */,
 				0343BF9D14A7AF2400C6ED4F /* Event.cpp in Sources */,
 				037C553714B14A1F00355B6D /* SchwaGLViewController.mm in Sources */,
-				03F1482F14BA278C0036EF9B /* Camera.cpp in Sources */,
-				039AA5DE14E878F800C5390A /* Material.cpp in Sources */,
 				03594B731544383A00C090AD /* Flow.cpp in Sources */,
 				03386F861597ABF80077986E /* Task.cpp in Sources */,
 				03386F891597AC080077986E /* Queue.cpp in Sources */,
