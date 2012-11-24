@@ -69,6 +69,11 @@
 		03F1E97015CF413700E6E1DA /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1E96E15CF413700E6E1DA /* Arc.cpp */; };
 		03F1E97115CF413700E6E1DA /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F1E96E15CF413700E6E1DA /* Arc.cpp */; };
 		03F4878B14C4EE8A0065D187 /* ShadowTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F4878914C4ECCB0065D187 /* ShadowTest.cpp */; };
+		03F8F12116602A5000FC8A2B /* free_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F8F11F16602A5000FC8A2B /* free_list.cpp */; };
+		03F8F12216602A5000FC8A2B /* free_list.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F8F11F16602A5000FC8A2B /* free_list.cpp */; };
+		03F8F1251660558A00FC8A2B /* FreeListTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F8F1231660558A00FC8A2B /* FreeListTest.cpp */; };
+		03F8F12816605A5900FC8A2B /* job.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F8F12616605A5900FC8A2B /* job.cpp */; };
+		03F8F12916605A5900FC8A2B /* job.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03F8F12616605A5900FC8A2B /* job.cpp */; };
 		03FFFF3714A1E1CF0012FB3F /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03FFFF3414A1E1CF0012FB3F /* gtest-all.cc */; };
 		03FFFF3814A1E1CF0012FB3F /* LoopTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03FFFF3514A1E1CF0012FB3F /* LoopTest.cpp */; };
 /* End PBXBuildFile section */
@@ -171,6 +176,11 @@
 		03F1E96C15CEE5FC00E6E1DA /* Arc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Arc.h; path = include/geom/Arc.h; sourceTree = "<group>"; };
 		03F1E96E15CF413700E6E1DA /* Arc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Arc.cpp; path = geom/Arc.cpp; sourceTree = "<group>"; };
 		03F4878914C4ECCB0065D187 /* ShadowTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShadowTest.cpp; sourceTree = "<group>"; };
+		03F8F11F16602A5000FC8A2B /* free_list.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = free_list.cpp; path = ../lib/schwa/mem/free_list.cpp; sourceTree = "<group>"; };
+		03F8F12016602A5000FC8A2B /* free_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = free_list.h; path = ../lib/schwa/mem/free_list.h; sourceTree = "<group>"; };
+		03F8F1231660558A00FC8A2B /* FreeListTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FreeListTest.cpp; sourceTree = "<group>"; };
+		03F8F12616605A5900FC8A2B /* job.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = job.cpp; path = ../job/job.cpp; sourceTree = "<group>"; };
+		03F8F12716605A5900FC8A2B /* job.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = job.h; path = ../job/job.h; sourceTree = "<group>"; };
 		03FFFF3414A1E1CF0012FB3F /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "gtest-all.cc"; sourceTree = "<group>"; };
 		03FFFF3514A1E1CF0012FB3F /* LoopTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoopTest.cpp; sourceTree = "<group>"; };
 		03FFFF3C14A1E1EC0012FB3F /* gtest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gtest.h; sourceTree = "<group>"; };
@@ -396,6 +406,7 @@
 		0370A02115FBE972003C0164 /* schwa */ = {
 			isa = PBXGroup;
 			children = (
+				03F8F11E16602A0000FC8A2B /* mem */,
 				03FE4AC5164E339000C9748B /* job */,
 				039EC94F161795B6009FDA4D /* input */,
 				030366D915FDDDFB003D6F91 /* core */,
@@ -514,9 +525,20 @@
 			name = geom;
 			sourceTree = "<group>";
 		};
+		03F8F11E16602A0000FC8A2B /* mem */ = {
+			isa = PBXGroup;
+			children = (
+				03F8F11F16602A5000FC8A2B /* free_list.cpp */,
+				03F8F12016602A5000FC8A2B /* free_list.h */,
+			);
+			name = mem;
+			sourceTree = "<group>";
+		};
 		03FE4AC5164E339000C9748B /* job */ = {
 			isa = PBXGroup;
 			children = (
+				03F8F12616605A5900FC8A2B /* job.cpp */,
+				03F8F12716605A5900FC8A2B /* job.h */,
 			);
 			name = job;
 			sourceTree = "<group>";
@@ -531,6 +553,7 @@
 				033B3257153FE94A00AEFF6A /* PropertyTest.cpp */,
 				03324AF215B23A1400D062EE /* Task_QueueTest.cpp */,
 				0306579315B54DF300C9D5AC /* Task_WorkerTest.cpp */,
+				03F8F1231660558A00FC8A2B /* FreeListTest.cpp */,
 			);
 			name = tests;
 			path = ../tests;
@@ -676,6 +699,8 @@
 				038E2D5D162B7E54008E4645 /* shader.cpp in Sources */,
 				038E2D601634E4B3008E4645 /* strokeshader.cpp in Sources */,
 				03DE89C5163CECCA0023B7D3 /* stroke.cpp in Sources */,
+				03F8F12116602A5000FC8A2B /* free_list.cpp in Sources */,
+				03F8F12816605A5900FC8A2B /* job.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,6 +725,9 @@
 				03324AF315B23A1400D062EE /* Task_QueueTest.cpp in Sources */,
 				0306579415B54DF300C9D5AC /* Task_WorkerTest.cpp in Sources */,
 				03F1E97115CF413700E6E1DA /* Arc.cpp in Sources */,
+				03F8F12216602A5000FC8A2B /* free_list.cpp in Sources */,
+				03F8F1251660558A00FC8A2B /* FreeListTest.cpp in Sources */,
+				03F8F12916605A5900FC8A2B /* job.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
