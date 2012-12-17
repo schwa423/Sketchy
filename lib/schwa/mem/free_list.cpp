@@ -23,7 +23,7 @@ FreeList::FreeList(void* start, void* end, size_t elementSize)
 }
 
 
-FreeList::FreeList(void* start, int elementCount, size_t elementSize)
+FreeList::FreeList(void* start, uint32_t elementCount, size_t elementSize)
     : _freeCount(elementCount), _maxCount(elementCount), _elementSize(elementSize) {
     union {
         void* as_void;
@@ -37,30 +37,28 @@ FreeList::FreeList(void* start, int elementCount, size_t elementSize)
 
     // Link remaining elements of free-list to the head.
     for (size_t i=1; i<elementCount; ++i) {
-        tail.as_link->next = reinterpret_cast<Link*>(tail.as_char + elementSize);
-        tail.as_link = tail.as_link->next;
+        auto next = reinterpret_cast<Link*>(tail.as_char + elementSize);
+        link(tail.as_link, next);
+        tail.as_link = next;
     }
 
     // Finally, the last element doesn't have a next element to link to.
-    tail.as_link->next = nullptr;
+    unlink(tail.as_link);
 }
 
 
-void* FreeList::obtain() {
+Link* FreeList::obtain() {
     Link* next = _head;
     if (_head != nullptr) {
-        _head = _head->next;
+        _head = unlink(_head);
         _freeCount--;
     }
     return next;
 }
 
 
-void FreeList::release(void* ptr) {
-    // TODO: assert that ptr is plausible (i.e. multiple of element-size)
-    Link* newHead = static_cast<Link*>(ptr);
-    newHead->next = _head;
-    _head = newHead;
+void FreeList::release(Link* newHead) {
+    _head = link(newHead, _head);
     _freeCount++;
 }
 

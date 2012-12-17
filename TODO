@@ -1,0 +1,37 @@
+
+
+BEFORE NEXT COMMIT:
+
+More unit-testing:
+- job::impl::Queue
+- job::JobId.  Since JobPool is a friend, make a mock version in the test file.
+- job::JobPool.  Is general coverage sufficient?  Also, thread-safety.
+- job::Queue
+
+- benchmarked job overhead at about 40us/job on iPad 2.  Not bad for no profiling/optimization, but 10us would be nicer.
+
+- find way to avoid making JobData be or contain a union.  Tricky.  For one thing, it would probably require pushing the union down into Job,
+  with the following implications:
+  - could not implement using a Kernel trampoline, since the Kernel does not have access to the Job itself.
+  - would need another variant of JobPool::obtain() which takes a KernelLambda as an argument.
+
+- test yield()   (wait... is it even implemented yet?)
+
+- add worker-priority to Boss (all workers answering to a Boss have the same thread-priority).
+
+- General cleanup of job.h/cpp.  Document them.
+
+- API to determine number of CPUs at runtime  (see NUM_CPUS in sketchy.cpp)
+
+- Apache License v2.0 yo!  (plus NOTICE file)
+
+
+
+
+OLDER (STILL VALID?)
+
+- fix the shadowing of _renderer in PageView.
+- clean up VAO upon destruction of StrokeMesh.
+- glBindVertexArrayOES(0) necessary after draw?
+- make tesselate() a static function of Arc, move into schwa::
+- class comments for Uniform.

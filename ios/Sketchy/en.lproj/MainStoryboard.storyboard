@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2549" systemVersion="12B19" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C60" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="4">
     <dependencies>
-        <deployment defaultVersion="1296" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1498"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
     </dependencies>
     <scenes>
         <!--First View Controller - First-->
         <scene sceneID="11">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>
                 <viewController id="2" customClass="FirstViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="17">
                         <rect key="frame" x="0.0" y="20" width="768" height="955"/>
@@ -38,13 +37,13 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="First" image="first" id="7"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="10" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3041" y="150"/>
         </scene>
         <!--Second View Controller - Second-->
         <scene sceneID="13">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="12" sceneMemberID="firstResponder"/>
                 <viewController id="3" customClass="SecondViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="16">
                         <rect key="frame" x="0.0" y="20" width="768" height="955"/>
@@ -85,13 +84,13 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Second" image="second" id="6"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="12" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3042" y="1284"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="15">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="14" sceneMemberID="firstResponder"/>
                 <tabBarController id="4" sceneMemberID="viewController">
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="5">
@@ -105,13 +104,13 @@
                         <segue destination="5BJ-n4-47O" kind="relationship" relationship="viewControllers" id="Y1H-pu-txj"/>
                     </connections>
                 </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="14" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2023" y="718"/>
         </scene>
         <!--SchwaGL View Controller - Renderer View Controller-->
         <scene sceneID="mDK-1q-YUb">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nn1-da-c13" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="Foo" title="Renderer View Controller" id="5BJ-n4-47O" customClass="SchwaGLViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pe8-Yb-BnB" customClass="SchwaGLView">
                         <rect key="frame" x="0.0" y="20" width="768" height="955"/>
@@ -120,6 +119,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="LHT-uk-g7l"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nn1-da-c13" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3032" y="2471"/>
         </scene>
@@ -128,23 +128,6 @@
         <image name="first" width="16" height="16"/>
         <image name="second" width="16" height="16"/>
     </resources>
-    <classes>
-        <class className="FirstViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/FirstViewController.h"/>
-        </class>
-        <class className="SchwaGLView" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SchwaGLView.h"/>
-        </class>
-        <class className="SchwaGLViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SchwaGLViewController.h"/>
-        </class>
-        <class className="SecondViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SecondViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="destroyRenderView:"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>

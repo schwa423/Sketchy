@@ -11,43 +11,64 @@
 #define __schwa__mem__free_list__
 
 #include <cstddef>
+#include <stdint.h>
+
 
 // namespace schwa::mem
 namespace schwa {namespace mem {
 
 
+struct Link {
+    friend class Linker;
+    const Link* nextLink() const { return _next; }
+ private:
+    Link* _next;
+};
+
+
+class Linker {
+ protected:
+    // Link target to its new next link, and return the target.
+    // TODO: perhaps we should return "next" instead of "target", since
+    //       we probably have "target" in our hand, but maybe not "next"?
+    inline Link* link(Link* target, Link* next) const {
+        target->_next = next;
+        return target;
+    }
+
+    // Unlink target from its next link, and return that link.
+    inline Link* unlink(Link* target) const {
+        auto next = target->_next;
+        target->_next = nullptr;
+        return next;
+    }
+};
+
+
 // Free-list for rapid allocation of fixed-size objects.
 // Inspired by "Molecular Musings" blog.
-class FreeList {
+class FreeList : public Linker {
  public:
     FreeList(void* start, void* end, size_t elementSize);
-    FreeList(void* start, int elementCount, size_t elementSize);
+    FreeList(void* start, uint32_t elementCount, size_t elementSize);
 
     // Obtain pointer to unused element, or nullptr if none are available.
-    void* obtain();
+    Link* obtain();
 
     // Add the element back to the free-list, so it can be reused.
-    void release(void* ptr);
+    void release(Link* ptr);
 
     // Return the current / maximum number of elements in the free-list.
-    int freeCount() const { return _freeCount; }
-    int maxCount() const { return _maxCount; }
-
-    // Elements in free-list must be subclasses of Link.
-    // TODO: will this break in cases where there is multiple-inheritance?
-    struct Link {
-        friend class FreeList;
-     private:
-        Link* next;
-    };
+    uint32_t freeCount() const { return _freeCount; }
+    uint32_t maxCount() const { return _maxCount; }
 
  protected:
     Link* _head;
 
     // Free-list could operate without these values,
     // but it doesn't hurt to keep track of them.
-    int _freeCount;
-    int _maxCount;
+    uint32_t _freeCount;
+    uint32_t _maxCount;
     size_t _elementSize;
 };
 

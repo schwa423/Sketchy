@@ -14,8 +14,9 @@
 #include <functional>
 #include <vector>
 
-namespace schwa {
-namespace core {
+
+// namespace schwa::core
+namespace schwa {namespace core {
 
 typedef std::function<void ()> Thunk;
 
@@ -60,9 +61,7 @@ class ThunkAfterScope {
 };
 
 
-}  // namespace core
-}  // namespace schwa
-
+}}  // namespace schwa::core
 
 
 #endif  // #ifndef __schwa__core__thunk_list__
