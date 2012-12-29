@@ -2,7 +2,9 @@
 //  hackity.cpp
 //  schwa
 //
-//  Copyright (c) 2012 Schwaftwarez. All rights reserved.
+//  Created by Josh Gargus on 12/27/12.
+//  Copyright (c) 2012 Schwaftwarez.
+//  Licensed under the Apache License, Version 2.0.
 //
 //
 

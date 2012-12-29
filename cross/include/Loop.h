@@ -3,7 +3,8 @@
 //  Sketchy
 //
 //  Created by Joshua Gargus on 11/28/11.
-//  Copyright (c) 2011 Schwaftwarez. All rights reserved.
+//  Copyright (c) 2011 Schwaftwarez.
+//  Licensed under the Apache License, Version 2.0.
 //
 
 //  TODO: who destroys Task?  Is Task* appropriate to put in queue?

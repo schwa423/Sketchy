@@ -3,7 +3,8 @@
 //  schwa::app::sketchy
 //
 //  Created by Josh Gargus on 9/16/12.
-//  Copyright (c) 2012 Schwaftwarez. All rights reserved.
+//  Copyright (c) 2012 Schwaftwarez.
+//  Licensed under the Apache License, Version 2.0.
 //
 //
 

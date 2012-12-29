@@ -3,7 +3,8 @@
 //  schwa::job
 //
 //  Created by Josh Gargus on 12/13/12.
-//  Copyright (c) 2012 Schwaftwarez. All rights reserved.
+//  Copyright (c) 2012 Schwaftwarez.
+//  Licensed under the Apache License, Version 2.0.
 //
 //
 //  Spawn's class name is a pun, because it both represents a job that has been spawned,

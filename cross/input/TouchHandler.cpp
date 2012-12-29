@@ -3,7 +3,8 @@
 //  schwa::input
 //
 //  Created by Joshua Gargus on 9/6/12.
-//  Copyright (c) 2012 Schwaftwarez. All rights reserved.
+//  Copyright (c) 2012 Schwaftwarez.
+//  Licensed under the Apache License, Version 2.0.
 //
 
 #include "TouchHandler.h"

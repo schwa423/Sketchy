@@ -3,7 +3,8 @@
 //  Sketchy Unit Tests
 //
 //  Created by Joshua Gargus on 12/20/11.
-//  Copyright (c) 2011 Schwaftwarez. All rights reserved.
+//  Copyright (c) 2011 Schwaftwarez.
+//  Licensed under the Apache License, Version 2.0.
 //
 
 #include "gtest/gtest.h"

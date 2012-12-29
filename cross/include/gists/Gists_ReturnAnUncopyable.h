@@ -3,7 +3,8 @@
 //  schwa::gist
 //
 //  Created by Josh Gargus on 12/14/12.
-//  Copyright (c) 2012 Schwaftwarez. All rights reserved.
+//  Copyright (c) 2012 Schwaftwarez.
+//  Licensed under the Apache License, Version 2.0.
 //
 //  The purpose of this gist is to demonstrate how we can
 //  trigger a behavior in the destructor of an object, and

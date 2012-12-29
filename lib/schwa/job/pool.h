@@ -3,7 +3,8 @@
 //  schwa::job
 //
 //  Created by Josh Gargus on 12/16/12.
-//  Copyright (c) 2012 Schwaftwarez. All rights reserved.
+//  Copyright (c) 2012 Schwaftwarez.
+//  Licensed under the Apache License, Version 2.0.
 //
 //
 //  TODO: consider having one global JobPool.  Then, we wouldn't need to

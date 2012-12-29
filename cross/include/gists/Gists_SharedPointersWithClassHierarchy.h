@@ -3,7 +3,8 @@
 //  Sketchy
 //
 //  Created by Josh Gargus on 8/3/12.
-//  Copyright (c) 2012 Schwaftwarez. All rights reserved.
+//  Copyright (c) 2012 Schwaftwarez.
+//  Licensed under the Apache License, Version 2.0.
 //
 
 #ifndef Sketchy_Gists_SharedPointersWithClassHierarchy_h
