@@ -8,16 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		030366D815FD5C4A003D6F91 /* renderer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030366D615FD5C4A003D6F91 /* renderer_ios.mm */; };
-		0306579415B54DF300C9D5AC /* Task_WorkerTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0306579315B54DF300C9D5AC /* Task_WorkerTest.cpp */; };
-		03324AF315B23A1400D062EE /* Task_QueueTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03324AF215B23A1400D062EE /* Task_QueueTest.cpp */; };
 		03375D5B168C470100B388A0 /* hackity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03375D59168C470100B388A0 /* hackity.cpp */; };
 		03375D5C168C470100B388A0 /* hackity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03375D59168C470100B388A0 /* hackity.cpp */; };
-		03386F861597ABF80077986E /* Task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03386F851597ABF80077986E /* Task.cpp */; };
-		03386F871597ABF80077986E /* Task.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03386F851597ABF80077986E /* Task.cpp */; };
-		03386F891597AC080077986E /* Queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03386F881597AC080077986E /* Queue.cpp */; };
-		03386F8A1597AC080077986E /* Queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03386F881597AC080077986E /* Queue.cpp */; };
-		03386F8C1597AC2F0077986E /* Worker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03386F8B1597AC2F0077986E /* Worker.cpp */; };
-		03386F8D1597AC2F0077986E /* Worker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03386F8B1597AC2F0077986E /* Worker.cpp */; };
 		033B3258153FE94A00AEFF6A /* PropertyTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 033B3257153FE94A00AEFF6A /* PropertyTest.cpp */; };
 		033E75E0146E65EC008896D5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E75DF146E65EC008896D5 /* UIKit.framework */; };
 		033E75E2146E65EC008896D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E75E1146E65EC008896D5 /* Foundation.framework */; };
@@ -114,16 +106,8 @@
 		030366D715FD5C4A003D6F91 /* renderer_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = renderer_ios.h; path = ../lib/schwa/grfx/renderer_ios.h; sourceTree = "<group>"; };
 		030366DA15FDDE46003D6F91 /* thunk_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = thunk_list.h; path = ../lib/schwa/core/thunk_list.h; sourceTree = "<group>"; };
 		0305265015BD2A800043238C /* Watcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Watcher.h; path = include/base/Watcher.h; sourceTree = "<group>"; };
-		0306579315B54DF300C9D5AC /* Task_WorkerTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Task_WorkerTest.cpp; sourceTree = "<group>"; };
-		03324AF215B23A1400D062EE /* Task_QueueTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Task_QueueTest.cpp; sourceTree = "<group>"; };
 		03375D59168C470100B388A0 /* hackity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = hackity.cpp; path = ../lib/schwa/core/hackity.cpp; sourceTree = "<group>"; };
 		03375D5A168C470100B388A0 /* hackity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hackity.h; path = ../lib/schwa/core/hackity.h; sourceTree = "<group>"; };
-		03386F811597AB3B0077986E /* Task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Task.h; path = include/tasks/Task.h; sourceTree = "<group>"; };
-		03386F821597AB610077986E /* Queue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = include/tasks/Queue.h; sourceTree = "<group>"; };
-		03386F831597AB8C0077986E /* Worker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Worker.h; path = include/tasks/Worker.h; sourceTree = "<group>"; };
-		03386F851597ABF80077986E /* Task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Task.cpp; path = tasks/Task.cpp; sourceTree = "<group>"; };
-		03386F881597AC080077986E /* Queue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Queue.cpp; path = tasks/Queue.cpp; sourceTree = "<group>"; };
-		03386F8B1597AC2F0077986E /* Worker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Worker.cpp; path = tasks/Worker.cpp; sourceTree = "<group>"; };
 		033B3257153FE94A00AEFF6A /* PropertyTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PropertyTest.cpp; sourceTree = "<group>"; };
 		033E75DB146E65EC008896D5 /* Sketchy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sketchy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		033E75DF146E65EC008896D5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -295,26 +279,6 @@
 			name = base;
 			sourceTree = "<group>";
 		};
-		03386F801597AAFB0077986E /* tasks */ = {
-			isa = PBXGroup;
-			children = (
-				03386F811597AB3B0077986E /* Task.h */,
-				03386F821597AB610077986E /* Queue.h */,
-				03386F831597AB8C0077986E /* Worker.h */,
-			);
-			name = tasks;
-			sourceTree = "<group>";
-		};
-		03386F841597ABCE0077986E /* tasks */ = {
-			isa = PBXGroup;
-			children = (
-				03386F851597ABF80077986E /* Task.cpp */,
-				03386F881597AC080077986E /* Queue.cpp */,
-				03386F8B1597AC2F0077986E /* Worker.cpp */,
-			);
-			name = tasks;
-			sourceTree = "<group>";
-		};
 		033B32541537F9FC00AEFF6A /* props */ = {
 			isa = PBXGroup;
 			children = (
@@ -329,7 +293,6 @@
 				03F1E96A15CEE59900E6E1DA /* geom */,
 				0378F60415CBD9610083C230 /* gists */,
 				0305264E15BD2A280043238C /* base */,
-				03386F801597AAFB0077986E /* tasks */,
 				038DC2081542A0EC000EBD8D /* Loop.h */,
 				038DC2091542A0EC000EBD8D /* ThreadOwner.h */,
 				038DC1F71542A06F000EBD8D /* shadow */,
@@ -421,7 +384,6 @@
 			isa = PBXGroup;
 			children = (
 				03F1E96D15CF410B00E6E1DA /* geom */,
-				03386F841597ABCE0077986E /* tasks */,
 				03594B6E1544377200C090AD /* flow */,
 				033B325A153FEF6000AEFF6A /* include */,
 				0343BF9514A7932D00C6ED4F /* events */,
@@ -645,8 +607,6 @@
 				03FFFF3514A1E1CF0012FB3F /* LoopTest.cpp */,
 				03F4878914C4ECCB0065D187 /* ShadowTest.cpp */,
 				033B3257153FE94A00AEFF6A /* PropertyTest.cpp */,
-				03324AF215B23A1400D062EE /* Task_QueueTest.cpp */,
-				0306579315B54DF300C9D5AC /* Task_WorkerTest.cpp */,
 				03F8F1231660558A00FC8A2B /* mem_FreeListTest.cpp */,
 				03FBE27F1678894B005CA6A9 /* job_QueueTest.cpp */,
 				03FBE29B16867BA1005CA6A9 /* job_WorkerTest.cpp */,
@@ -787,9 +747,6 @@
 				0343BF9D14A7AF2400C6ED4F /* Event.cpp in Sources */,
 				037C553714B14A1F00355B6D /* SchwaGLViewController.mm in Sources */,
 				03594B731544383A00C090AD /* Flow.cpp in Sources */,
-				03386F861597ABF80077986E /* Task.cpp in Sources */,
-				03386F891597AC080077986E /* Queue.cpp in Sources */,
-				03386F8C1597AC2F0077986E /* Worker.cpp in Sources */,
 				03F1E97015CF413700E6E1DA /* Arc.cpp in Sources */,
 				0370A01E15F9BFE7003C0164 /* TouchHandler.cpp in Sources */,
 				0370A02515FBEA0F003C0164 /* renderer.cpp in Sources */,
@@ -836,11 +793,6 @@
 				0343BF9E14A7AF2400C6ED4F /* Event.cpp in Sources */,
 				033B3258153FE94A00AEFF6A /* PropertyTest.cpp in Sources */,
 				03594B741544383A00C090AD /* Flow.cpp in Sources */,
-				03386F871597ABF80077986E /* Task.cpp in Sources */,
-				03386F8A1597AC080077986E /* Queue.cpp in Sources */,
-				03386F8D1597AC2F0077986E /* Worker.cpp in Sources */,
-				03324AF315B23A1400D062EE /* Task_QueueTest.cpp in Sources */,
-				0306579415B54DF300C9D5AC /* Task_WorkerTest.cpp in Sources */,
 				03F1E97115CF413700E6E1DA /* Arc.cpp in Sources */,
 				03F8F12216602A5000FC8A2B /* free_list.cpp in Sources */,
 				03F8F1251660558A00FC8A2B /* mem_FreeListTest.cpp in Sources */,
