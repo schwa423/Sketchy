@@ -16,8 +16,10 @@
 
 #include <memory>
 
+#include "queue2.h"
 #include "worker2.h"
 #include "kernel.h"
+#include "pool.h"
 
 #include "hackity.h"
 
