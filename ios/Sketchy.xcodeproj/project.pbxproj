@@ -25,6 +25,10 @@
 		033E75FF146E65EC008896D5 /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = 033E75FE146E65EC008896D5 /* second.png */; };
 		033E7601146E65EC008896D5 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 033E7600146E65EC008896D5 /* second@2x.png */; };
 		033E762A146E6742008896D5 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033E7628146E6742008896D5 /* OpenGLES.framework */; };
+		034217CF1698DF4300E55DEF /* mem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 034217CD1698DF4300E55DEF /* mem.cpp */; };
+		034217D01698DF4300E55DEF /* mem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 034217CD1698DF4300E55DEF /* mem.cpp */; };
+		034217D51698DF5C00E55DEF /* queue_mpmc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 034217D31698DF5C00E55DEF /* queue_mpmc.cpp */; };
+		034217D61698DF5C00E55DEF /* queue_mpmc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 034217D31698DF5C00E55DEF /* queue_mpmc.cpp */; };
 		0343BF9414A6A75500C6ED4F /* SchwaGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9314A6A75500C6ED4F /* SchwaGLView.mm */; };
 		0343BF9914A793ED00C6ED4F /* Fence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9814A793ED00C6ED4F /* Fence.cpp */; };
 		0343BF9A14A793ED00C6ED4F /* Fence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0343BF9814A793ED00C6ED4F /* Fence.cpp */; };
@@ -130,6 +134,10 @@
 		033E7600146E65EC008896D5 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
 		033E7608146E65ED008896D5 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		033E7628146E6742008896D5 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		034217CD1698DF4300E55DEF /* mem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mem.cpp; path = ../lib/schwa/mem/mem.cpp; sourceTree = "<group>"; };
+		034217CE1698DF4300E55DEF /* mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mem.h; path = ../lib/schwa/mem/mem.h; sourceTree = "<group>"; };
+		034217D31698DF5C00E55DEF /* queue_mpmc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = queue_mpmc.cpp; path = ../lib/schwa/async/queue_mpmc.cpp; sourceTree = "<group>"; };
+		034217D41698DF5C00E55DEF /* queue_mpmc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = queue_mpmc.h; path = ../lib/schwa/async/queue_mpmc.h; sourceTree = "<group>"; };
 		0343BF9214A6A75500C6ED4F /* SchwaGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchwaGLView.h; sourceTree = "<group>"; };
 		0343BF9314A6A75500C6ED4F /* SchwaGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SchwaGLView.mm; sourceTree = "<group>"; };
 		0343BF9814A793ED00C6ED4F /* Fence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; name = Fence.cpp; path = events/Fence.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -393,6 +401,15 @@
 			path = ../cross;
 			sourceTree = "<group>";
 		};
+		034217D21698DF4D00E55DEF /* async */ = {
+			isa = PBXGroup;
+			children = (
+				034217D31698DF5C00E55DEF /* queue_mpmc.cpp */,
+				034217D41698DF5C00E55DEF /* queue_mpmc.h */,
+			);
+			name = async;
+			sourceTree = "<group>";
+		};
 		0343BF9514A7932D00C6ED4F /* events */ = {
 			isa = PBXGroup;
 			children = (
@@ -444,6 +461,7 @@
 		0370A02115FBE972003C0164 /* schwa */ = {
 			isa = PBXGroup;
 			children = (
+				034217D21698DF4D00E55DEF /* async */,
 				03FBE26E16773AC6005CA6A9 /* job */,
 				03F8F11E16602A0000FC8A2B /* mem */,
 				039EC94F161795B6009FDA4D /* input */,
@@ -569,6 +587,8 @@
 		03F8F11E16602A0000FC8A2B /* mem */ = {
 			isa = PBXGroup;
 			children = (
+				034217CD1698DF4300E55DEF /* mem.cpp */,
+				034217CE1698DF4300E55DEF /* mem.h */,
 				03F8F11F16602A5000FC8A2B /* free_list.cpp */,
 				03F8F12016602A5000FC8A2B /* free_list.h */,
 			);
@@ -775,6 +795,8 @@
 				03FBE295167F0723005CA6A9 /* kernel.cpp in Sources */,
 				03FBE2A01687E1E6005CA6A9 /* sketchy.cpp in Sources */,
 				03375D5B168C470100B388A0 /* hackity.cpp in Sources */,
+				034217CF1698DF4300E55DEF /* mem.cpp in Sources */,
+				034217D51698DF5C00E55DEF /* queue_mpmc.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -808,6 +830,8 @@
 				03FBE296167F0723005CA6A9 /* kernel.cpp in Sources */,
 				03FBE29C16867BA1005CA6A9 /* job_WorkerTest.cpp in Sources */,
 				03375D5C168C470100B388A0 /* hackity.cpp in Sources */,
+				034217D01698DF4300E55DEF /* mem.cpp in Sources */,
+				034217D61698DF5C00E55DEF /* queue_mpmc.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

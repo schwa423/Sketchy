@@ -15,6 +15,10 @@
 #include "job.h"
 #include "pool.h"
 
+#include "mem.h"
+
+#include <atomic>
+using std::atomic;
 
 // namespace schwa::job
 namespace schwa {namespace job {
@@ -28,6 +32,38 @@ TEST(job_QueueTest, SimpleCreation) {
 
 
 TEST(job_QueueTest, MoveSpawnInvalidatesJobId) {
+    
+    struct foo {
+        int f1;
+        int f2;
+//        void* f3;
+//        void* f4;
+//        void* f5;
+//        void* f6;
+//        void* f7;
+    };
+    
+    struct bar {
+        void* p1;
+        void* p2;
+    };
+    
+    atomic<int> a;
+    atomic<bool> b;
+    atomic<void*> c;
+    atomic<foo> d;
+    atomic<bar> e;
+    
+    EXPECT_TRUE(a.is_lock_free());
+    EXPECT_TRUE(b.is_lock_free());
+    EXPECT_TRUE(c.is_lock_free());
+    EXPECT_TRUE(d.is_lock_free());
+    EXPECT_TRUE(e.is_lock_free());
+    
+    EXPECT_EQ(CACHE_LINE_SIZE, 64);
+    
+    
+    
     JobPool pool;
     std::condition_variable cond;
     std::mutex mutex;
