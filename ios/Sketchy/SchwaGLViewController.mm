@@ -13,7 +13,7 @@
 
 #import "SchwaGLViewController.h"
 
-#import "TouchHandler.h"
+#import "touch.h"
 using schwa::input::Touch;
 
 #include <iostream>
@@ -72,11 +72,13 @@ using namespace schwa::app;
     auto renderer = [(SchwaGLView*)self.view renderer];
     auto page = schwa::grfx::View::New<sketchy::PageView>(renderer);
     presenter->setView(page);
+    [self setTouchHandler: page->touchHandler()];
 }
 
 - (void)viewDidUnload
 {
     cerr << "[SchwaGLViewController viewDidUnload]" << endl;
+    [self setTouchHandler: nullptr];
     [super viewDidUnload];
 }
 
