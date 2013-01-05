@@ -12,14 +12,21 @@
 #define __schwa__app__sketchy__pageview__
 
 #include "view.h"
+#include "page.h"
+
+
 #include "stroke.h"
 #include "strokeshader.h"
 #include "mesh.h"
 
 
+
 // namespace schwa::app::sketchy
 namespace schwa {namespace app {namespace sketchy {
 
+    
+class Page;
+    
 
 // Base-class for views that are inherently 2d.  They:
 // - have some notion of orientation (which way is up)
@@ -43,9 +50,8 @@ class PageView : public View2d
     virtual void initializeRendererState(grfx::Renderer_ptr r);
     // TODO: we're shadowing the _renderer variable in grfx::View.
     shared_ptr<grfx::Renderer> _renderer;
-
-    std::vector<shared_ptr<Stroke>> _strokes;
-    shared_ptr<StrokeShader> _shader;
+    
+    shared_ptr<Page> _page;
 
     Eigen::Affine2f _transform;
 };

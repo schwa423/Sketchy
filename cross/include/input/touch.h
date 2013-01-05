@@ -1,5 +1,5 @@
 //
-//  TouchHandler.h
+//  touch.h
 //  schwa::input
 //
 //  Created by Joshua Gargus on 9/6/12.

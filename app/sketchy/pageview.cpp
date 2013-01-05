@@ -10,6 +10,7 @@
 
 #include "pageview.h"
 #include "renderer.h"
+#include "page.h"
 
 #include <iostream>
 using std::cerr;
@@ -19,19 +20,13 @@ using std::endl;
 #include "Eigen/Geometry"
 using namespace Eigen;
 
+
 // namespace schwa::app::sketchy
 namespace schwa {namespace app {namespace sketchy {
 
 
-PageView::PageView() {
-    // TODO: want to share shader between multiple pages.
-    _shader.reset(new StrokeShader());
+PageView::PageView() : _page(new Page) {
 
-    // Add some strokes so we're not watching a blank page.
-    for (int i = 0; i < 15; i++)
-        _strokes.push_back(Stroke::example1(_shader));
-
-    // _strokes.assign(examples.begin(), examples.end());
 }
 
 
@@ -43,13 +38,31 @@ void PageView::render(uint64_t time) {
     auto viewScale = ((_width < _height)
                             ? Scaling(1.f, ratio)
                             : Scaling(1.f/ratio, 1.f));
+    
+    
+    // TODO: HACK!!
+    static GLfloat strokeTime = 0.0f;
+    strokeTime += 1.f / 60.f;
+    _shader->setTime(strokeTime);
 
-    // Cause all strokes to rotate around center at fixed rate.
-    const float TWOPI = 3.14159f * 2;
-    static float angle = 0.0f;
-    angle += 0.004f;
-    if (angle > TWOPI) angle -= TWOPI;
+    
+    
+    
 
+    // TODO: use wall-clock time instead of "strokeTime" hack
+    auto transform = Scaling(viewScale);
+    _page->render(strokeTime, _renderer, transform);
+    
+    
+    
+    
+    
+    )
+
+
+    
+    
+    
     // TODO: HACK!!
     static GLfloat strokeTime = 0.0f;
     strokeTime += 1.f / 60.f;

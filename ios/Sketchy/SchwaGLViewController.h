@@ -9,7 +9,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "TouchHandler.h"
+#import "touch.h"
 
 namespace schwa {
 namespace input {

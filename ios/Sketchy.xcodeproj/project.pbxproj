@@ -38,7 +38,7 @@
 		0357AB84160F9EF10044DA75 /* renderbuffer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0357AB82160F9EF10044DA75 /* renderbuffer_ios.mm */; };
 		03594B731544383A00C090AD /* Flow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03594B721544383A00C090AD /* Flow.cpp */; };
 		03594B741544383A00C090AD /* Flow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03594B721544383A00C090AD /* Flow.cpp */; };
-		0370A01E15F9BFE7003C0164 /* TouchHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0370A01D15F9BFE7003C0164 /* TouchHandler.cpp */; };
+		0370A01E15F9BFE7003C0164 /* touch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0370A01D15F9BFE7003C0164 /* touch.cpp */; };
 		0370A02515FBEA0F003C0164 /* renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0370A02315FBEA0F003C0164 /* renderer.cpp */; };
 		0370A02815FC0F03003C0164 /* framebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0370A02615FC0F03003C0164 /* framebuffer.cpp */; };
 		037C553714B14A1F00355B6D /* SchwaGLViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 037C553614B14A1F00355B6D /* SchwaGLViewController.mm */; };
@@ -60,6 +60,14 @@
 		03DE89C5163CECCA0023B7D3 /* stroke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DE89C3163CECCA0023B7D3 /* stroke.cpp */; };
 		03E2E7AD14ADBEA10019D869 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */; };
 		03E2E7B414AEC6B10019D869 /* SchwaGLViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E2E7B214AEC6B10019D869 /* SchwaGLViewController.xib */; };
+		03E658301690EFB200A9A4C8 /* mem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E6582E1690EFB200A9A4C8 /* mem.cpp */; };
+		03E658311690EFB200A9A4C8 /* mem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E6582E1690EFB200A9A4C8 /* mem.cpp */; };
+		03E658361691225F00A9A4C8 /* queue_mpmc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E658341691225F00A9A4C8 /* queue_mpmc.cpp */; };
+		03E658371691225F00A9A4C8 /* queue_mpmc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E658341691225F00A9A4C8 /* queue_mpmc.cpp */; };
+		03E6583A16983E7800A9A4C8 /* page.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E6583816983E7800A9A4C8 /* page.cpp */; };
+		03E6583B16983E7800A9A4C8 /* page.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E6583816983E7800A9A4C8 /* page.cpp */; };
+		03E6583E1698409500A9A4C8 /* layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E6583C1698409500A9A4C8 /* layer.cpp */; };
+		03E6583F1698409500A9A4C8 /* layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03E6583C1698409500A9A4C8 /* layer.cpp */; };
 		03ED3912168DA7EE00682AC6 /* seven_ravens_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 03ED3911168DA7ED00682AC6 /* seven_ravens_icon.png */; };
 		03ED3915168DAA7400682AC6 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 03ED3914168DAA7300682AC6 /* Default-Landscape~ipad.png */; };
 		03ED3917168DAA8500682AC6 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 03ED3916168DAA8500682AC6 /* Default-Landscape@2x~ipad.png */; };
@@ -150,8 +158,8 @@
 		03594B721544383A00C090AD /* Flow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; name = Flow.cpp; path = props/Flow.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		03594B751544388100C090AD /* Flow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = Flow.h; path = include/props/Flow.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0359DEA0168F6DC300F5182F /* Gists_BenchmarkOldJobOverhead.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Gists_BenchmarkOldJobOverhead.h; path = include/gists/Gists_BenchmarkOldJobOverhead.h; sourceTree = "<group>"; };
-		0370A01D15F9BFE7003C0164 /* TouchHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TouchHandler.cpp; path = ../cross/input/TouchHandler.cpp; sourceTree = "<group>"; };
-		0370A01F15F9C025003C0164 /* TouchHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchHandler.h; path = ../cross/include/input/TouchHandler.h; sourceTree = "<group>"; };
+		0370A01D15F9BFE7003C0164 /* touch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = touch.cpp; path = ../cross/input/touch.cpp; sourceTree = "<group>"; };
+		0370A01F15F9C025003C0164 /* touch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = touch.h; path = ../cross/include/input/touch.h; sourceTree = "<group>"; };
 		0370A02315FBEA0F003C0164 /* renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = renderer.cpp; path = ../lib/schwa/grfx/renderer.cpp; sourceTree = "<group>"; };
 		0370A02415FBEA0F003C0164 /* renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = renderer.h; path = ../lib/schwa/grfx/renderer.h; sourceTree = "<group>"; };
 		0370A02615FC0F03003C0164 /* framebuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; name = framebuffer.cpp; path = ../lib/schwa/grfx/framebuffer.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -191,6 +199,14 @@
 		03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		03E2E7B014AEC6B10019D869 /* SchwaGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchwaGLViewController.h; sourceTree = "<group>"; };
 		03E2E7B214AEC6B10019D869 /* SchwaGLViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SchwaGLViewController.xib; sourceTree = "<group>"; };
+		03E6582E1690EFB200A9A4C8 /* mem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mem.cpp; path = ../lib/schwa/mem/mem.cpp; sourceTree = "<group>"; };
+		03E6582F1690EFB200A9A4C8 /* mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mem.h; path = ../lib/schwa/mem/mem.h; sourceTree = "<group>"; };
+		03E658341691225F00A9A4C8 /* queue_mpmc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = queue_mpmc.cpp; path = ../lib/schwa/async/queue_mpmc.cpp; sourceTree = "<group>"; };
+		03E658351691225F00A9A4C8 /* queue_mpmc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = queue_mpmc.h; path = ../lib/schwa/async/queue_mpmc.h; sourceTree = "<group>"; };
+		03E6583816983E7800A9A4C8 /* page.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = page.cpp; path = ../app/sketchy/page.cpp; sourceTree = "<group>"; };
+		03E6583916983E7800A9A4C8 /* page.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = page.h; path = ../app/sketchy/page.h; sourceTree = "<group>"; };
+		03E6583C1698409500A9A4C8 /* layer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = layer.cpp; path = ../app/sketchy/layer.cpp; sourceTree = "<group>"; };
+		03E6583D1698409500A9A4C8 /* layer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = layer.h; path = ../app/sketchy/layer.h; sourceTree = "<group>"; };
 		03ED3911168DA7ED00682AC6 /* seven_ravens_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = seven_ravens_icon.png; sourceTree = "<group>"; };
 		03ED3914168DAA7300682AC6 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		03ED3916168DAA8500682AC6 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
@@ -413,8 +429,12 @@
 		0356A38D1605DC76006C43C1 /* sketchy */ = {
 			isa = PBXGroup;
 			children = (
+				03E6583C1698409500A9A4C8 /* layer.cpp */,
+				03E6583D1698409500A9A4C8 /* layer.h */,
 				0356A3911605DDD1006C43C1 /* pageview.cpp */,
 				0356A3921605DDD1006C43C1 /* pageview.h */,
+				03E6583816983E7800A9A4C8 /* page.cpp */,
+				03E6583916983E7800A9A4C8 /* page.h */,
 				038E2D5E1634E4B3008E4645 /* strokeshader.cpp */,
 				038E2D5F1634E4B3008E4645 /* strokeshader.h */,
 				03DE89C3163CECCA0023B7D3 /* stroke.cpp */,
@@ -444,6 +464,7 @@
 		0370A02115FBE972003C0164 /* schwa */ = {
 			isa = PBXGroup;
 			children = (
+				03E658331691220900A9A4C8 /* async */,
 				03FBE26E16773AC6005CA6A9 /* job */,
 				03F8F11E16602A0000FC8A2B /* mem */,
 				039EC94F161795B6009FDA4D /* input */,
@@ -520,8 +541,8 @@
 		039EC94F161795B6009FDA4D /* input */ = {
 			isa = PBXGroup;
 			children = (
-				0370A01D15F9BFE7003C0164 /* TouchHandler.cpp */,
-				0370A01F15F9C025003C0164 /* TouchHandler.h */,
+				0370A01D15F9BFE7003C0164 /* touch.cpp */,
+				0370A01F15F9C025003C0164 /* touch.h */,
 			);
 			name = input;
 			sourceTree = "<group>";
@@ -550,6 +571,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		03E658331691220900A9A4C8 /* async */ = {
+			isa = PBXGroup;
+			children = (
+				03E658341691225F00A9A4C8 /* queue_mpmc.cpp */,
+				03E658351691225F00A9A4C8 /* queue_mpmc.h */,
+			);
+			name = async;
+			sourceTree = "<group>";
+		};
 		03F1E96A15CEE59900E6E1DA /* geom */ = {
 			isa = PBXGroup;
 			children = (
@@ -571,6 +601,8 @@
 			children = (
 				03F8F11F16602A5000FC8A2B /* free_list.cpp */,
 				03F8F12016602A5000FC8A2B /* free_list.h */,
+				03E6582E1690EFB200A9A4C8 /* mem.cpp */,
+				03E6582F1690EFB200A9A4C8 /* mem.h */,
 			);
 			name = mem;
 			sourceTree = "<group>";
@@ -748,7 +780,7 @@
 				037C553714B14A1F00355B6D /* SchwaGLViewController.mm in Sources */,
 				03594B731544383A00C090AD /* Flow.cpp in Sources */,
 				03F1E97015CF413700E6E1DA /* Arc.cpp in Sources */,
-				0370A01E15F9BFE7003C0164 /* TouchHandler.cpp in Sources */,
+				0370A01E15F9BFE7003C0164 /* touch.cpp in Sources */,
 				0370A02515FBEA0F003C0164 /* renderer.cpp in Sources */,
 				0370A02815FC0F03003C0164 /* framebuffer.cpp in Sources */,
 				030366D815FD5C4A003D6F91 /* renderer_ios.mm in Sources */,
@@ -775,6 +807,10 @@
 				03FBE295167F0723005CA6A9 /* kernel.cpp in Sources */,
 				03FBE2A01687E1E6005CA6A9 /* sketchy.cpp in Sources */,
 				03375D5B168C470100B388A0 /* hackity.cpp in Sources */,
+				03E658301690EFB200A9A4C8 /* mem.cpp in Sources */,
+				03E658361691225F00A9A4C8 /* queue_mpmc.cpp in Sources */,
+				03E6583A16983E7800A9A4C8 /* page.cpp in Sources */,
+				03E6583E1698409500A9A4C8 /* layer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -808,6 +844,10 @@
 				03FBE296167F0723005CA6A9 /* kernel.cpp in Sources */,
 				03FBE29C16867BA1005CA6A9 /* job_WorkerTest.cpp in Sources */,
 				03375D5C168C470100B388A0 /* hackity.cpp in Sources */,
+				03E658311690EFB200A9A4C8 /* mem.cpp in Sources */,
+				03E658371691225F00A9A4C8 /* queue_mpmc.cpp in Sources */,
+				03E6583B16983E7800A9A4C8 /* page.cpp in Sources */,
+				03E6583F1698409500A9A4C8 /* layer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

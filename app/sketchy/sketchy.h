@@ -32,6 +32,7 @@
 
 #include "boss.h"
 #include "pool.h"
+#include "touch.h"
 
 
 // namespace schwa::app::sketchy

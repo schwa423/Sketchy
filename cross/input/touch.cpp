@@ -1,5 +1,5 @@
 //
-//  TouchHandler.cpp
+//  touch.cpp
 //  schwa::input
 //
 //  Created by Joshua Gargus on 9/6/12.
@@ -7,7 +7,7 @@
 //  Licensed under the Apache License, Version 2.0.
 //
 
-#include "TouchHandler.h"
+#include "touch.h"
 
 // namespace schwa::input
 namespace schwa {namespace input {

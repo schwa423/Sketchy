@@ -110,6 +110,22 @@ class Stroke {
     // Stroke properties to be bound as shader-uniforms.
     float _width;
     float _color[4];
+
+
+ // TODO: hack!  Some of these properties won't end up being part of Stroke/StrokeShader.
+ public:
+    void setSpeed(float speed) { _speed = speed; }
+    void setFrequency(float freq) { _frequency = freq; }
+    void setTransform(const Eigen::Affine2f& transform) { _transform = transform; }
+    float speed() const { return _speed; }
+    float frequency() const { return _frequency; }
+    const Eigen::Affine2f& transform() const { return _transform; }
+    
+ // TODO: hack!  Some of these properties won't end up being part of Stroke/StrokeShader.
+ protected:
+    float           _speed;
+    float           _frequency;
+    Eigen::Affine2f _transform;
 };
 
 
