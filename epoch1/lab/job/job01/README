@@ -1,0 +1,60 @@
+
+
+
+========== public API for schwa::job ==========
+
+What should it look like?  Most of the time, users will deal only with Jobs, Queues, and JobIDs.
+However, there will be less frequent cases (such as app initialization, when the app is paused or
+resumed, and during debugging) where the user might also interact with Boss and Worker.
+
+-- configuration time --
+boss
+worker
+
+-- lifecycle control --
+boss
+worker
+
+-- normal runtime --
+job
+queue
+job_id
+
+
+// The only thing you need to include!
+#include "job.h"
+using namespace schwa;
+
+
+// When we write application code, we say things like:
+job::queue& q = queue_from_somewhere();
+auto job = q.spawn(SomeJobDesc(args));
+
+
+
+========== Thread Local Storage ==========
+
+TLS management obviously belongs with Worker (since both queue and job-pool use TLS, and since
+the thread has a 1-1 association with the Worker, at least during the thread lifetime).  TLS
+management should probably reside in BaseWorker
+
+Is TLS initialized in the worker's constructor?  Maybe not... at least part of it must happen
+upon worker-thread creation.
+
+
+
+========== Misc Responsibilities ==========
+
+Queue and JobPool have full responsibility for communicating with their peers (perhaps via
+their "master") to balance distribution of work and memory.  The precise mechanism used is
+specified by the template arguments to GenericWorker.
+
+Workers just pull jobs from queues and execute them.
+
+Workers deal with a single queue.  If we want eg: multiple priorities, just specialize
+GenericWorker with an appropriate queue type, for example: a specialized priority queue
+which encapsulates multiple fixed-priority queues.
+
+
+
+

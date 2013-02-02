@@ -12,7 +12,7 @@
       'configurations': {
         'Debug': {
           'xcode_settings': {
-            'OTHER_CFLAGS': [ '<@(CC_LD_FLAGS)', ],
+            'OTHER_CFLAGS': [ '<@(CC_LD_FLAGS)', '-O0', ],
             'OTHER_LDFLAGS': [ '<@(CC_LD_FLAGS)', ],
           },
         },

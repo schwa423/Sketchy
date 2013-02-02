@@ -1,4 +1,4 @@
-#include "job00/job_impl.h"
+ #include "job00/job_impl.h"
 #include "job00/job_pool.h"
 
 #include <new>
@@ -8,7 +8,7 @@
 // - allocate memory from a JobPool, chosen at compile-time
 //   to have big-enough objects.
 // - in that memory, instantiate concrete JobImpl subclass.
-template <class JobDescT> 
+template <class JobDescT>
 JobImpl* JobImpl::Create(JobDescT&& desc) {
 
   typedef GenericJobImpl<JobDescT> JobT;

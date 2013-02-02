@@ -27,13 +27,14 @@
         'job00/job_pool.cpp',
       ],
     },
-    # TARGET worker_01.exe
+    # TARGET generic_worker_01.exe
     {
-      'target_name': 'worker_01.exe',
+      'target_name': 'generic_worker_01.exe',
       'type': 'executable',
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
-        'job01/test_worker.cpp',
+        'job01/test_generic_worker.cpp',
+        'job01/generic_worker.cpp',
       ],
     },
   ],
