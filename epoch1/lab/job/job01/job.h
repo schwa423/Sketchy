@@ -1,5 +1,5 @@
-#ifndef __schwa__job__job__
-#define __schwa__job__job__
+#ifndef __schwa__job01__job__
+#define __schwa__job01__job__
 
 
 /*
@@ -36,4 +36,4 @@ class Job {
 */
 
 
-#endif  // #ifndef __schwa__job__job__
+#endif  // #ifndef __schwa__job01__job__

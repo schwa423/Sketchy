@@ -31,7 +31,7 @@ public:
     };
 };
 
-typedef job::impl::GenericWorker<FakeJobPool, FakeJobQueue> FakeWorker;
+typedef job01::impl::GenericWorker<FakeJobPool, FakeJobQueue> FakeWorker;
 
 int main(void) {
     FakeJobPool pool;

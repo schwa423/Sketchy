@@ -1,5 +1,5 @@
-#ifndef __schwa__job__generic_worker__
-#define __schwa__job__generic_worker__
+#ifndef __schwa__job01__generic_worker__
+#define __schwa__job01__generic_worker__
 
 
 #include <atomic>
@@ -13,8 +13,8 @@ using std::endl;
 
 #include <assert.h>
 
-// schwa::job::impl
-namespace schwa { namespace job { namespace impl {
+// schwa::job01::impl =========================================================
+namespace schwa { namespace job01 { namespace impl {
 
 
 /// BaseWorker provides basic functionality that does not require knowledge of the
@@ -108,7 +108,7 @@ private:
 };
 
 
-}}}  // schwa::job::impl
+}}}  // schwa::job01::impl ====================================================
 
 
-#endif  // #ifndef __schwa__job__generic_worker__
+#endif  // #ifndef __schwa__job01__generic_worker__

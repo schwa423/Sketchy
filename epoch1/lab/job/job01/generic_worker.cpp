@@ -1,8 +1,8 @@
 #include "job01/generic_worker.h"
 
 
-// schwa::job::impl
-namespace schwa { namespace job { namespace impl {
+// schwa::job01::impl =========================================================
+namespace schwa { namespace job01 { namespace impl {
 
 
 BaseWorker::BaseWorker() : _running(false)
@@ -106,5 +106,5 @@ std::ostream& operator<<(std::ostream& stream, const BaseWorker& worker) {
 }
 
 
-}}}  // schwa::job::impl
+}}}  // schwa::job01::impl ====================================================
 
