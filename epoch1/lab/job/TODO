@@ -1,0 +1,81 @@
+== priorities ==
+
+
+
+===============================================================================
+== code health ================================================================
+
+Versions of a package (eg: job00, job01) should have their own distinct namespaces (eg: schwa::job00)... that way, we can use two versions of the
+package at once without name clashses (eg: use schwa::job07 to run the
+debugger UI to debug app running on experimental schwa::job08)
+- retroactively make job00 and job01 work this way.
+_______________________________________________________________________________
+
+
+
+
+===============================================================================
+== features ===================================================================
+
+Pass Jobs between (aspects of the same) Queues/Pools in different Workers
+- need help of Bookkeeper (Accountant)
+_______________________________________________________________________________
+
+Job-duration memory allocations:
+  - reduced fragmentation
+    - release in large chunks when job dies
+    - can defrag at finer granularity
+  - easier tracking
+_______________________________________________________________________________
+
+"Environments"
+- Jobs can modify the environment that spawned child jobs live in.
+  - eg: some jobs might manage memory-pool that children should allocate from
+    - maybe this belongs at JobDescription level?  First prototype it there...
+
+===============================================================================
+== debugging support ==========================================================
+
+Scan through jobs in pools.
+- since we know where the jobs live, we can just walk through them linearly
+- filter jobs
+  - filter by job-description (use schwa::meta::TypeList)
+  - or by decorations on Job/JobDescription
+_______________________________________________________________________________
+
+Job Decoration
+- investigate how to use metaprogramming to decorate job
+- example decorations:
+  - age (birth time)
+  - resource use
+    - cpu and/or memory use
+    - total, current, and/or statistical-historical
+_______________________________________________________________________________
+
+Instrumentation
+- how often are jobs passed between workers?
+  - measure both job-flow between Queues, and between JobPools
+_______________________________________________________________________________
+
+"Separate instances" of schwa::job
+- Give debugger:
+  - its own pools/queues/workers
+  - UI that overlays/embeds rest of app
+  - control over other Bosses
+    - start/stop
+    - if stopped, step individual workers as well as bookkeeper
+_______________________________________________________________________________
+
+User interface
+- overlay or embed rest of app
+- performance dashboard
+- start/stop/step Workers
+
+
+
+
+
+
+
+
+

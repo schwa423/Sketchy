@@ -52,6 +52,9 @@ void BaseWorker::stop()
 
 void BaseWorker::processInterrupt()
 {
+    // Lock worker while processing interrupt.
+    lock lk(_mutex);
+
     cerr << "processInterrupt()     " << *this << endl;
 
     // Load flags again, now that we have the lock...

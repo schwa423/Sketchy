@@ -74,6 +74,18 @@ public:
 
 private:
     void work() {
+        /*
+        auto job = _queue.next();
+        if (!job) {
+            std::this_thread::yield();
+            return;
+        }
+
+        Job
+
+
+        auto job =
+        */
         cerr << "working (unfinished)!  " << *this << endl;
     }
 
@@ -82,15 +94,12 @@ private:
             // Happily work until we're interrupted.
             while(!interrupted()) work();
 
-            // Lock worker while doing bookkeeping.
-            {
-                lock l(_mutex);
-                processInterrupt();
+            // We were just interrupted... do the necessary bookkeeping.
+            processInterrupt();
 
-                // While processing the interrupt,
-                // we encountered the STOP_WORKING flag.
-                if (!_running) return;
-            }
+            // While processing the interrupt,
+            // we encountered the STOP_WORKING flag.
+            if (!_running) return;
         }
     }
 
