@@ -1,5 +1,9 @@
-#ifndef __schwa__job__link__
-#define __schwa__job__link__
+#ifndef __schwa__job00__link__
+#define __schwa__job00__link__
+
+
+// schwa::job00 ===============================================================
+namespace schwa { namespace job00 {
 
 
 template <class LinkT>
@@ -21,4 +25,7 @@ private:
 };
 
 
-#endif  // #ifndef __schwa__job__link__
+}}  // schwa::job00 ===========================================================
+
+
+#endif  // #ifndef __schwa__job00__link__

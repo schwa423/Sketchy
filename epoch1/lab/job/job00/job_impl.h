@@ -1,9 +1,13 @@
-#ifndef __schwa__job__job_impl__
-#define __schwa__job__job_impl__
+#ifndef __schwa__job00__job_impl__
+#define __schwa__job00__job_impl__
 
 #include "job00/link.h"
 
 #include <utility>
+
+
+// schwa::job00 ===============================================================
+namespace schwa { namespace job00 {
 
 
 class Queue;
@@ -97,4 +101,7 @@ class GenericJobImpl : public JobImpl {
 };
 
 
-#endif  // #ifndef __schwa__job__job_impl__
+}}  // schwa::job00 ===========================================================
+
+
+#endif  // #ifndef __schwa__job00__job_impl__

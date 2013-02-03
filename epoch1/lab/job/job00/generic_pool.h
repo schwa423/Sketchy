@@ -1,11 +1,15 @@
-#ifndef __schwa__job__generic_pool__
-#define __schwa__job__generic_pool__
+#ifndef __schwa__job00__generic_pool__
+#define __schwa__job00__generic_pool__
 
 #include <type_traits>
 #include <cstddef>
 #include <stdint.h>
 #include <new>
 #include <functional>
+
+
+// schwa::job00 ===============================================================
+namespace schwa { namespace job00 {
 
 // Generic pool of linked objects which support the following interface:
 //  class LinkT {
@@ -84,4 +88,8 @@ private:
 };
 
 
-#endif  // #ifndef __schwa__job__generic_pool__
+}}  // schwa::job00 ===========================================================
+
+
+
+#endif  // #ifndef __schwa__job00__generic_pool__

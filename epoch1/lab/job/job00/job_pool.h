@@ -1,5 +1,5 @@
-#ifndef __schwa__job__job_pool__
-#define __schwa__job__job_pool__
+#ifndef __schwa__job00__job_pool__
+#define __schwa__job00__job_pool__
 
 #include "job00/job_impl.h"
 #include "job00/generic_pool.h"
@@ -12,6 +12,11 @@
 #include <iostream>
 using std::cerr;
 using std::endl;
+
+
+// schwa::job00 ===============================================================
+namespace schwa { namespace job00 {
+
 
 const int CACHE_LINE_SIZE = 64;
 
@@ -99,4 +104,7 @@ private:
 };
 
 
-#endif  // #ifndef __schwa__job__job_pool__
+}}  // schwa::job00 ===========================================================
+
+
+#endif  // #ifndef __schwa__job00__job_pool__

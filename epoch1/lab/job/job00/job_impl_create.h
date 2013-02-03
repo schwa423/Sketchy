@@ -1,8 +1,15 @@
+#ifndef __schwa__job00__job_impl_create__
+#define __schwa__job00__job_impl_create__
+
 #include "job00/job_impl.h"
 #include "job00/job_pool.h"
 
 #include <new>
 #include <assert.h>
+
+
+// schwa::job00 ===============================================================
+namespace schwa { namespace job00 {
 
 // Use template magic to create a GenericJobImpl<JobDescT>.
 // - allocate memory from a JobPool, chosen at compile-time
@@ -57,3 +64,9 @@ void GenericJobImpl<JobDescT>::CastAndDo(JobImpl* ptr, JobImpl::operation op) {
       assert(unknownJobOperation);
   }
 }
+
+
+}}  // schwa::job00 ===========================================================
+
+
+#endif  // #ifndef __schwa__job00__job_impl_create__

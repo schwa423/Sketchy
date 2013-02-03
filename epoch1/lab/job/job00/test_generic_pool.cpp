@@ -1,5 +1,6 @@
 #include "job00/generic_pool.h"
 #include "job00/link.h"
+using namespace schwa::job00;
 
 #include <assert.h>
 
@@ -7,6 +8,8 @@
 #include <vector>
 using namespace std;
 
+
+// There is a JobPool::CACHE_LINE_SIZE, but we're testing GenericPool here.
 const int CACHE_LINE_SIZE = 64;
 
 

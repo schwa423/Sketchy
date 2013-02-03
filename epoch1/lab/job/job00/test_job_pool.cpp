@@ -1,5 +1,6 @@
 #include "job00/job_pool.h"
 #include "job00/job_impl_create.h"
+using namespace schwa::job00;
 
 #include <assert.h>
 
