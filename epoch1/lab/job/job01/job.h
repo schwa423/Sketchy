@@ -10,7 +10,7 @@
 class Job {
 
 
-  Job(JobImpl* impl, ) : impl_(impl), doomed_(doomed) { }
+  Job(JobImpl* impl, ) : _impl(impl), _doomed(doomed) { }
 
   Job(Job&& moved) : impl_(moved.impl_), doomed_(moved.doomed_) {
     moved.impl_ = nullptr;
@@ -26,10 +26,10 @@ class Job {
 
 
   private:
-    JobImpl* impl_;
+    JobImpl* _impl;
 
 
-    bool     doomed_
+    bool     _doomed
 
 
 };

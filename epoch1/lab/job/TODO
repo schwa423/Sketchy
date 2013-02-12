@@ -5,12 +5,10 @@
 ===============================================================================
 == code health ================================================================
 
-Versions of a package (eg: job00, job01) should have their own distinct namespaces (eg: schwa::job00)... that way, we can use two versions of the
-package at once without name clashses (eg: use schwa::job07 to run the
-debugger UI to debug app running on experimental schwa::job08)
-- retroactively make job00 and job01 work this way.
+stuff
 _______________________________________________________________________________
 
+more stuf
 
 
 

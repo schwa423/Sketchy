@@ -5,6 +5,9 @@ using namespace schwa;
 using job01::Link;
 using job01::Linker;
 
+#include <iostream>
+using namespace std;
+
 #include <assert.h>
 
 class TestLink : public Link<TestLink> {
@@ -108,4 +111,6 @@ int main(void) {
     assert(q2.next() == &link2);
     assert(q2.next() == &link3);
     assert(q2.next() == nullptr);
+
+    cerr << "job01/test_link...  PASSED!" << endl;
 }

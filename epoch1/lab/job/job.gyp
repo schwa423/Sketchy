@@ -37,5 +37,14 @@
         'job01/generic_worker.cpp',
       ],
     },
+    # TARGET test_link_01.exe
+    {
+      'target_name': 'test_link_01.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/tests/test_link.cpp',
+      ],
+    }
   ],
 }
