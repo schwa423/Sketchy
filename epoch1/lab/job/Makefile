@@ -5,7 +5,7 @@ all: job00 job01
 
 job00: job_pool_00.exe generic_pool_00.exe
 
-job01: generic_worker_01.exe test_link_01.exe
+job01: test_generic_worker_01.exe test_link_01.exe
 
 job.xcodeproj: job.gyp
 	gyp --depth=. -f xcode
