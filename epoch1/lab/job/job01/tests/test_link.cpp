@@ -112,5 +112,5 @@ int main(void) {
     assert(q2.next() == &link3);
     assert(q2.next() == nullptr);
 
-    cerr << "job01/test_link...  PASSED!" << endl;
+    cerr << "job01/test_link...  PASSED!" << endl << endl;
 }

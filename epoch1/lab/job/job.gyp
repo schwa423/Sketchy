@@ -45,6 +45,15 @@
       'sources': [
         'job01/tests/test_link.cpp',
       ],
-    }
+    },
+    # TARGET test_queue_01.exe
+    {
+      'target_name': 'test_queue_01.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/tests/test_queue.cpp',
+      ],
+    },
   ],
 }
