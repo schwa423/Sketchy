@@ -72,6 +72,15 @@
       'sources': [
         'job01/tests/test_padding.cpp',
       ],
-    },    
+    },  
+    # TARGET test_core__queue_01.exe
+    {
+      'target_name': 'test_core__queue_01.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/core/tests/test_queue.cpp',
+      ],
+    },
   ],
 }
