@@ -1,4 +1,11 @@
-// Josh Gargus 2013
+//
+//  link.h
+//  schwa::job01
+//
+//  Copyright (c) 2013 Schwaftwarez
+//  Licence: Apache v2.0
+//
+
 
 #ifndef __schwa__job01__link__
 #define __schwa__job01__link__

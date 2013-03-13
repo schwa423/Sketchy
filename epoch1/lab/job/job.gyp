@@ -8,6 +8,9 @@
     ],
   },
   'targets': [
+
+    # schwa::job00 ============================================================
+
     # TARGET generic_pool_00.exe
     {
       'target_name': 'generic_pool_00.exe',
@@ -27,6 +30,10 @@
         'job00/job_pool.cpp',
       ],
     },
+
+
+    # schwa::job01 ============================================================
+
     # TARGET test_generic_worker_01.exe
     {
       'target_name': 'test_generic_worker_01.exe',
@@ -35,15 +42,6 @@
       'sources': [
         'job01/tests/test_generic_worker.cpp',
         'job01/generic_worker.cpp',
-      ],
-    },
-    # TARGET test_link_01.exe
-    {
-      'target_name': 'test_link_01.exe',
-      'type': 'executable',
-      'defines': [ '<@(COMMON_DEFINES)', ],
-      'sources': [
-        'job01/tests/test_link.cpp',
       ],
     },
     # TARGET test_queue_01.exe
@@ -73,6 +71,19 @@
         'job01/tests/test_padding.cpp',
       ],
     },  
+
+
+    # schwa::job01::core ======================================================
+
+    # TARGET test_core__link_01.exe
+    {
+      'target_name': 'test_core__link_01.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/core/tests/test_link.cpp',
+      ],
+    },
     # TARGET test_core__queue_01.exe
     {
       'target_name': 'test_core__queue_01.exe',

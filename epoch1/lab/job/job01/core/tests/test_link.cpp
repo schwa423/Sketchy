@@ -1,4 +1,14 @@
-#include "job01/link.h"
+//
+// test_link.cpp
+// schwa::job01::test
+//
+//  Copyright (c) 2013 Schwaftwarez
+//  Licence: Apache v2.0
+//
+//
+
+
+#include "job01/core/link.h"
 
 using namespace schwa;
 
@@ -112,5 +122,5 @@ int main(void) {
     assert(q2.next() == &link3);
     assert(q2.next() == nullptr);
 
-    cerr << "job01/test_link...  PASSED!" << endl << endl;
+    cerr << "job01/core/test_link...  PASSED!" << endl << endl;
 }

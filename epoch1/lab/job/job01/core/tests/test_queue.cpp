@@ -1,5 +1,6 @@
+#include "job01/core/link.h"
 #include "job01/core/queue.h"
-#include "job01/link.h"
+
 using namespace schwa;
 
 #include <assert.h>
