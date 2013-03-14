@@ -5,13 +5,14 @@
 ===============================================================================
 == code health ================================================================
 
-Move "link.h" from "job01" to "job01/core".  
+some stuf
 _______________________________________________________________________________
 
 Tests for "job01::core" should live in "job01/core/tests", not "job01/tests".
+UPDATE: partially done... test_padding remains.
 _______________________________________________________________________________
 
-more stuf
+use uint8_t for index and count
 
 
 

@@ -86,9 +86,9 @@ class RingElement : public impl::BaseRingElement {
 // Generic ring class, parameterized by the concrete element-type,
 // and by the number of elements in the ring.
 template <class ElemT, int RingSize>
-class StaticRing : public impl::BaseRing {
+class Ring : public impl::BaseRing {
  public:
-	StaticRing() {
+	Ring() {
 		for (int i = 0; i < RingSize; i++) {
 			setIndexAndCount(_elements[i], i, RingSize);
 		}

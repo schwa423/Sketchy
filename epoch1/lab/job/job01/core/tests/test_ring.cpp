@@ -46,7 +46,7 @@ void testFooRing() {
 	const int PaddedSize = 64;
 	// Typedefs.
 	typedef Foo<PaddedSize> FooT;
-	typedef StaticRing<FooT, RingSize> RingT;
+	typedef Ring<FooT, RingSize> RingT;
 	// Static assertions.
 	static_assert(sizeof(RingT) == PaddedSize*RingSize, "unexpected ring size");
 
@@ -109,7 +109,7 @@ void testSingleElementFooRing() {
 	const int RingSize = 1;
 	// Typedefs.
 	typedef Foo<PaddedSize> FooT;
-	typedef StaticRing<FooT, RingSize> RingT;
+	typedef Ring<FooT, RingSize> RingT;
 	// Static assertions.
 	static_assert(sizeof(RingT) == PaddedSize, "unexpected ring size");
 
@@ -144,7 +144,7 @@ void testThatDataIsNotMessedUp() {
 	const int RingSize = 100;
 	// Typedefs.
 	typedef Foo<PaddedSize> FooT;
-	typedef StaticRing<FooT, RingSize> RingT;
+	typedef Ring<FooT, RingSize> RingT;
 
 	RingT ring;
 	FooT* foo;

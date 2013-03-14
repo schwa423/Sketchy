@@ -53,15 +53,6 @@
         'job01/tests/test_queue.cpp',
       ],
     },
-    # TARGET test_ring_01.exe
-    {
-      'target_name': 'test_ring_01.exe',
-      'type': 'executable',
-      'defines': [ '<@(COMMON_DEFINES)', ],
-      'sources': [
-        'job01/tests/test_ring.cpp',
-      ],
-    },  
     # TARGET test_padding_01.exe
     {
       'target_name': 'test_padding_01.exe',
@@ -91,6 +82,15 @@
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
         'job01/core/tests/test_queue.cpp',
+      ],
+    },
+    # TARGET test_core__ring_01.exe
+    {
+      'target_name': 'test_core__ring_01.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/core/tests/test_ring.cpp',
       ],
     },
   ],
