@@ -36,5 +36,10 @@ class Padded : public WrappedT {
 };
 
 
+// TODO: use constant, like CACHE_LINE_SIZE or something, instead of 64.
+template <class WrappedT>
+class CacheLine : public Padded<WrappedT, 64> { };
+
+
 }}}  // schwa::job01::core ====================================================
 #endif  // #ifndef __schwa__job01__core__padding__

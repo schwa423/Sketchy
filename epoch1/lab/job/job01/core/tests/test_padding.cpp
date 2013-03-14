@@ -73,5 +73,5 @@ int main(void) {
 	testPadding<65,66>();
 	testPadding<66,66>();
 
-    cerr << "job01/test_padding...  PASSED!" << endl << endl;
+    cerr << "job01/core/test_padding...  PASSED!" << endl << endl;
 }

@@ -53,15 +53,7 @@
         'job01/tests/test_queue.cpp',
       ],
     },
-    # TARGET test_padding_01.exe
-    {
-      'target_name': 'test_padding_01.exe',
-      'type': 'executable',
-      'defines': [ '<@(COMMON_DEFINES)', ],
-      'sources': [
-        'job01/tests/test_padding.cpp',
-      ],
-    },  
+ 
 
 
     # schwa::job01::core ======================================================
@@ -75,6 +67,15 @@
         'job01/core/tests/test_link.cpp',
       ],
     },
+    # TARGET test_core__padding_01.exe
+    {
+      'target_name': 'test_core__padding_01.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/core/tests/test_padding.cpp',
+      ],
+    },  
     # TARGET test_core__queue_01.exe
     {
       'target_name': 'test_core__queue_01.exe',

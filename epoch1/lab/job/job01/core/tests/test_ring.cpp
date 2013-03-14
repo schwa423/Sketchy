@@ -191,5 +191,5 @@ int main(void) {
 	// Misc tests.
 	testThatDataIsNotMessedUp();
 
-	std::cerr << "job01/test_ring...  PASSED!" << std::endl << std::endl;
+	std::cerr << "job01/core/test_ring...  PASSED!" << std::endl << std::endl;
 }
