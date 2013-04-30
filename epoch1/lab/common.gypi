@@ -26,8 +26,12 @@
       },
     }],
   ],
+  # TODO: why doesn't this do anything?  (I had to copy into eg: job.gyp)
   'target_defaults': {
-    'include_dirs': [ ],
+    'include_dirs': [
+      '../job',
+      '../mem',
+    ],
     'defines': [
 #      'BREAK_COMPILE=1',
     ],
