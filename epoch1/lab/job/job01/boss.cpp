@@ -1,16 +1,14 @@
 //
-//  queue.h
+//  boss.cpp
 //  schwa::job01
 //
 //  Copyright (c) 2013 Schwaftwarez
 //  Licence: Apache v2.0
 //
+//
 
 
-#ifndef __schwa__job01__queue__
-#define __schwa__job01__queue__
-
-
+#include "job01/boss.h"
 
 
 // schwa::job01 ===============================================================
@@ -18,9 +16,7 @@ namespace schwa { namespace job01 {
 
 
 
+// TODO: delete me?
+	
 
 }}  // schwa::job01 ===========================================================
-
-
-#endif  // #ifndef __schwa__job01__queue__
-

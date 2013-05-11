@@ -7,10 +7,18 @@
 //
 //  Generic wrappers to pad wrapped classes to the desired size.
 //
+//  *** DEPRECATED? ***
+//      - maybe better to use std C++ functionality like alignas()
+//  *** TODO ***
+//      - move to schwa::job01::mem
+//
 
 
 #ifndef __schwa__job01__core__padding__
 #define __schwa__job01__core__padding__
+
+
+#include "job01/host/host.h"
 
 
 // schwa::job01::core =========================================================
@@ -36,9 +44,15 @@ class Padded : public WrappedT {
 };
 
 
-// TODO: use constant, like CACHE_LINE_SIZE or something, instead of 64.
-template <class WrappedT>
-class CacheLine : public Padded<WrappedT, 64> { };
+
+// *** EXPERIMENTAL / DEPRECATED? ***   not used anywhere
+template <class WrappedT, int AlreadyUsed = 0>
+class CacheLine : public Padded<WrappedT, schwa::job01::host::CACHE_LINE_SIZE - AlreadyUsed> { 
+ public:
+	CacheLine() {
+//		assert(this % host::CACHE_LINE_SIZE == 0);
+	}
+};
 
 
 }}}  // schwa::job01::core ====================================================

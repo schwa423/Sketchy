@@ -1,3 +1,12 @@
+//
+//  job_pool.h
+//  schwa::job01
+//
+//  Copyright (c) 2013 Schwaftwarez
+//  Licence: Apache v2.0
+//
+
+
 #ifndef __schwa__job01__job_pool__
 #define __schwa__job01__job_pool__
 

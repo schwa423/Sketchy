@@ -23,7 +23,17 @@ namespace schwa { namespace job01 { namespace core {
 template <class LinkT>
 class Queue : protected Linker<LinkT> {
  public:
-	typedef LinkT ElemT;
+    typedef LinkT ElemT;
+
+    // Default constructor... create an empty queue.
+    Queue() : _head(nullptr), _tail(nullptr), _count(0) { }
+
+    // Constructor which takes values from another queue.
+    Queue(Queue<ElemT>&& rval)
+      : _head(rval._head), _tail(rval._tail), _count(rval._count) {
+        rval._head = rval._tail = nullptr;
+        rval._count = 0;
+    }
 
 	// Number of enqueued elements.
     int count() { return _count; }
@@ -44,16 +54,8 @@ class Queue : protected Linker<LinkT> {
     Queue<ElemT> next(int length);
 
 protected:
-    Queue() : _head(nullptr), _tail(nullptr), _count(0) { }
-
     Queue(ElemT* head, ElemT* tail, int count)
-    : _head(head), _tail(tail), _count(count) { }
-
-    Queue(Queue<ElemT>&& rval)
-    : _head(rval._head), _tail(rval._tail), _count(rval._count) {
-        rval._head = rval._tail = nullptr;
-        rval._count = 0;
-    }
+      : _head(head), _tail(tail), _count(count) { }
 
 private:
     // Quick sanity check... ensure that _head and _tail values

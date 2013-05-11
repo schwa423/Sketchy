@@ -76,7 +76,7 @@ class RingElement : public impl::BaseRingElement {
  	// TODO: would be nice to not reinterpret_cast()... perhaps make
  	//       PaddedElemT a proper subclass, and static_cast() to it?
  	ElemT* elementAt(int elemIndex) {
- 		int byteDiff = (elemIndex - index()) * PaddedSize;
+ 		int byteDiff = (elemIndex - ringIndex()) * PaddedSize;
  		char* ptr = &(reinterpret_cast<char*>(this)[byteDiff]);
  		return reinterpret_cast<ElemT*>(ptr);
  	}

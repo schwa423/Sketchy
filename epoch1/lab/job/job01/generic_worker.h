@@ -39,7 +39,8 @@ protected:
     void processInterrupt();
     virtual void printOn(std::ostream& stream) const;
 
-    // This must be implemented by GenericWorker, since it knows the actual type of JobPoolT and QueueT.
+    // This must be implemented by GenericWorker, since it knows the actual
+    // type of JobPoolT and QueueT.
     virtual void workerThreadFunc() = 0;
 
     enum FlagNames {
@@ -55,13 +56,17 @@ protected:
 
     typedef std::lock_guard<std::mutex> lock;
 
-    friend std::ostream& operator<<(std::ostream& stream, const BaseWorker& worker);
-    friend std::ostream& operator<<(std::ostream& stream, const BaseWorker::Flags& worker);
+    friend std::ostream& operator<<(std::ostream& stream,
+                                    const BaseWorker& worker);
+    friend std::ostream& operator<<(std::ostream& stream,
+                                    const BaseWorker::Flags& worker);
 };
 
 // For pretty printing.
-std::ostream& operator<<(std::ostream& stream, const BaseWorker& worker);
-std::ostream& operator<<(std::ostream& stream, const BaseWorker::Flags& worker);
+std::ostream& operator<<(std::ostream& stream,
+                         const BaseWorker& worker);
+std::ostream& operator<<(std::ostream& stream,
+                         const BaseWorker::Flags& worker);
 
 
 /// Uses template specialization

@@ -1,3 +1,12 @@
+//
+//  job.h
+//  schwa::job01
+//
+//  Copyright (c) 2013 Schwaftwarez
+//  Licence: Apache v2.0
+//
+
+
 #ifndef __schwa__job01__job__
 #define __schwa__job01__job__
 

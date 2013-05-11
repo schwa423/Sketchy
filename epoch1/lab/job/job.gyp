@@ -7,6 +7,13 @@
 #      'BREAK_COMPILE=1',
     ],
   },
+  # TODO: Why can't I just put this in common.gypi ?
+  'target_defaults': {
+    'include_dirs': [
+      '../job',
+      '../mem',
+    ],
+  },
   'targets': [
 
     # schwa::job00 ============================================================
@@ -34,6 +41,16 @@
 
     # schwa::job01 ============================================================
 
+    # TARGET test_boss_01.exe
+    {
+      'target_name': 'test_boss_01.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/tests/test_boss.cpp',
+        'job01/boss.cpp',
+      ],
+    },
     # TARGET test_generic_worker_01.exe
     {
       'target_name': 'test_generic_worker_01.exe',
@@ -44,17 +61,16 @@
         'job01/generic_worker.cpp',
       ],
     },
-    # TARGET test_queue_01.exe
+    # TARGET test_jobqueue_01.exe
     {
-      'target_name': 'test_queue_01.exe',
+      'target_name': 'test_jobqueue_01.exe',
       'type': 'executable',
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
-        'job01/tests/test_queue.cpp',
+        'job01/tests/test_jobqueue.cpp',
       ],
     },
  
-
 
     # schwa::job01::core ======================================================
 

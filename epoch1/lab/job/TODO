@@ -8,7 +8,7 @@
 use uint8_t for index and count
 _______________________________________________________________________________
 
-some stuff
+experiment with alignas() keyword
 _______________________________________________________________________________
 
 some more stuff
@@ -71,8 +71,11 @@ User interface
 - overlay or embed rest of app
 - performance dashboard
 - start/stop/step Workers
+_______________________________________________________________________________
 
-
+Optimizations
+- use byte for ring index -> asset ring-size < 256
+  - use metaprogramming to make this automatic, depending on ring size selected
 
 
 
