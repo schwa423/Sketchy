@@ -18,30 +18,34 @@ namespace schwa { namespace job01 {
 template <class LinkT>
 class Linker;
 
-template <class LinkT>
+template <class LinkT, typename LinkPtr = LinkT*>
 class Link {
     friend class Linker<LinkT>;
 
 public:
+    typedef LinkPtr Ptr;
+
     Link() : _next(nullptr) { }
-    LinkT* nextLink() { return _next; }
+    LinkPtr nextLink() { return _next; }
 
 private:
-    LinkT* _next;
+    LinkPtr _next;
 };
 
 
 template <class LinkT>
 class Linker {
  protected:
+    typedef typename LinkT::Ptr LinkPtr;
+
     // Link target to its new next link, and return that next link.
-    inline LinkT* link(LinkT* target, LinkT* next) {
+    inline LinkPtr link(LinkPtr target, LinkPtr next) {
         target->_next = next;
         return next;
     }
 
     // Unlink target from its next link, and return that link.
-    inline LinkT* unlink(LinkT* target) {
+    inline LinkPtr unlink(LinkPtr target) {
         auto next = target->_next;
         target->_next = nullptr;
         return next;
