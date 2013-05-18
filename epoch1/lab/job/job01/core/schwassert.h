@@ -16,10 +16,10 @@
 //    Define this before including "schwassert.h" to disable use of assertions,
 //    even in debug builds.
 //
-//  SCHWASSERT(condition, message)
+//  SCHWASSERT(COND, MSG)
 //    Assert that the condition evaluates to true, otherwise print the message and break.
 //
-//  SCHWASSERT_CODE(code)
+//  SCHWASSERT_CODE(CODE)
 //    Allow insertion of arbitrary code, only if assertions are enabled.  For example,
 //    add instance variables to track and verify invariants that should be implicitly
 //    maintained in release builds.
@@ -28,6 +28,11 @@
 //    Currently just calls assert(false).  Want to use platform-specific hook to
 //    break in debugger, if connected to one.
 //
+//  SCHWASSERT_LOCKED(MUTEX, MSG)
+//    Assert that the mutex is currently locked by the active thread.
+//
+//  *** TODO ***
+//      - implement SCHWASSERT_LOCKED (it's not clear how)
 //
 
 
@@ -50,7 +55,8 @@
     // Assertions are disabled.
     #define SCHWASSERT_BREAK()
     #define SCHWASSERT(COND, MSG)
-    #define SCHWASSERT_CODE(x)
+    #define SCHWASSERT_CODE(CODE)
+    #define SCHWASSERT_LOCKED(MUTEX, MSG)
 #else
     // Assertions are enabled.
 
@@ -81,7 +87,11 @@
 
 // Allow conditional inclusion of arbitrary code to facilitate assertions,
 // for example, to add additional state to a class to verify implicit invariants.
-#define SCHWASSERT_CODE(x) x
+#define SCHWASSERT_CODE(CODE) CODE
+
+// Assert that the mutex is already locked by the current thread
+// *** TODO ***   unimplemented... how to implement this?
+#define SCHWASSERT_LOCKED(MUTEX, MSG)
 
 // Test if the condition is true.  If not, log it, and possibly trigger breakpoint.
 #define SCHWASSERT(COND, MSG)                                         \

@@ -1,6 +1,6 @@
 //
 // test_link.cpp
-// schwa::job01::test
+// schwa::job01::core::test
 //
 //  Copyright (c) 2013 Schwaftwarez
 //  Licence: Apache v2.0

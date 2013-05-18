@@ -1,3 +1,13 @@
+//
+// test_queue.cpp
+// schwa::job01::core::test
+//
+//  Copyright (c) 2013 Schwaftwarez
+//  Licence: Apache v2.0
+//
+//
+
+
 #include "job01/core/link.h"
 #include "job01/core/queue.h"
 

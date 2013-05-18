@@ -11,8 +11,8 @@
 #define __schwa__job01__link__
 
 
-// schwa::job01 ===============================================================
-namespace schwa { namespace job01 {
+// schwa::job01::core =========================================================
+namespace schwa { namespace job01 { namespace core {
 
 
 template <class LinkT>
@@ -53,7 +53,6 @@ class Linker {
 };
 
 
-}}  // schwa::job01 ===========================================================
-
+}}}  // schwa::job01::core ====================================================
 
 #endif  // #ifndef __schwa__job01__link__

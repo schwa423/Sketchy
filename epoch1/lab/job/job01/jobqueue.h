@@ -7,7 +7,6 @@
 //
 //  *** TODO ***
 //      - unit test !!!
-//      - use schwassert.h
 //
 
 
@@ -18,6 +17,7 @@
 #include "job01/core/padding.h"
 #include "job01/core/queue.h"
 #include "job01/core/ring.h"
+#include "job01/core/schwassert.h"
 #include "job01/host/host.h"
 #include "job01/impl/job_impl.h"
 
@@ -25,14 +25,6 @@
 
 #include <mutex>
 #include <algorithm>
-
-// TODO: put in include file
-#ifndef SCHWASSERT
-#include <assert.h>    
-#define SCHWASSERT(COND, MSG) assert(COND)
-// Assert that the mutex is already locked by the current thread (how to implement?)
-#define SCHWASSERT_LOCKED(MUTEX, MSG)
-#endif
 
 
 // schwa::job01 ===============================================================
@@ -180,8 +172,9 @@ class JobQueue : public core::RingElement<JobQueue, 3*host::CACHE_LINE_SIZE> {
     //
     // USAGE: 
     // - must be called from worker-thread which owns this queue
-    // - we must not hold the lock on our mutex, since we will lock the requestor's mutex.
-    int fulfillRequest(Request* reqs, int reqInd, int reqCount, int available) {
+    // - we must not hold the lock on our mutex, 
+    //   since we will lock the requestor's mutex.
+    int fulfillRequest(Request* reqs, int reqInd, int numReqs, int available) {
         Request& request = reqs[reqInd];
 
         // Try to give as many jobs as were requested.
@@ -205,7 +198,7 @@ class JobQueue : public core::RingElement<JobQueue, 3*host::CACHE_LINE_SIZE> {
             ++reqInd;  // skip forwarding this request... see below.
         }
 
-        if (numJobs == available && reqInd < reqCount) {
+        if (numJobs == available && reqInd < numReqs) {
             // There are no more jobs available to fulfill requests, so forward
             // all unfulfilled requests to the next peer (including the current
             // request, if it was only partially fulfilled).
@@ -220,7 +213,7 @@ class JobQueue : public core::RingElement<JobQueue, 3*host::CACHE_LINE_SIZE> {
             }
 
             // Now the next peer is locked: forward all remaining requests.
-            while (reqInd < reqCount) {
+            while (reqInd < numReqs) {
                 peer->receiveJobRequest(reqs[reqInd++]);
             }
         } else {
@@ -233,8 +226,9 @@ class JobQueue : public core::RingElement<JobQueue, 3*host::CACHE_LINE_SIZE> {
 };
 
 
-class JobQueueRing : public core::Ring<JobQueue, host::NUM_CPUS> {
-
+template <int RingSize = host::NUM_CPUS>
+class JobQueueRing : public core::Ring<JobQueue, RingSize> {
+    static_assert (RingSize <= host::NUM_CPUS, "too many JobQueues in ring");
 
 
 };
