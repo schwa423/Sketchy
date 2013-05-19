@@ -23,7 +23,7 @@
 namespace schwa { namespace job01 { namespace impl {
 
 
-class JobImpl : public Link<JobImpl> {
+class JobImpl : public core::Link<JobImpl> {
  private:
  	int foo, bar, baz;
 };

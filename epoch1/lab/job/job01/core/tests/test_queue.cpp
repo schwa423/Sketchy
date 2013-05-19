@@ -12,18 +12,19 @@
 #include "job01/core/queue.h"
 
 using namespace schwa;
+using namespace schwa::job01::core;
 
 #include <assert.h>
 
 #include <iostream>
 
 
-class TestLink : public job01::Link<TestLink> { 
+class TestLink : public Link<TestLink> { 
  public:
     int index;
 };
 
-class TestQueue : public job01::core::Queue<TestLink> { 
+class TestQueue : public Queue<TestLink> { 
  public:
  	TestQueue(Queue<TestLink>&& other) : Queue<TestLink>(std::move(other)) { }
     TestQueue() : Queue<TestLink>() { }

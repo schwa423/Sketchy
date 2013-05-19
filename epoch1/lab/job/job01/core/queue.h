@@ -24,6 +24,7 @@ template <class LinkT>
 class Queue : protected Linker<LinkT> {
  public:
     typedef LinkT ElemT;
+    typedef typename LinkT::Ptr ElemPtr;
 
     // Default constructor... create an empty queue.
     Queue() : _head(nullptr), _tail(nullptr), _count(0) { }
@@ -39,14 +40,14 @@ class Queue : protected Linker<LinkT> {
     int count() { return _count; }
 
     // Add element to the queue.
-    void add(ElemT* elem);
+    void add(ElemPtr elem);
 
     // Move all elements from the other queue to the back of this queue.
     void add(Queue<ElemT>* other);
     void add(Queue<ElemT>& other) { this->add(&other); }
 
     // Pull the next element from the queue, or nullptr.
-    ElemT* next();
+    ElemPtr next();
 
     // Attempt to make a new queue of the desired length by taking elements
     // from this queue.  If this queue has too few elements, return the biggest
@@ -54,7 +55,7 @@ class Queue : protected Linker<LinkT> {
     Queue<ElemT> next(int length);
 
 protected:
-    Queue(ElemT* head, ElemT* tail, int count)
+    Queue(ElemPtr head, ElemPtr tail, int count)
       : _head(head), _tail(tail), _count(count) { }
 
 private:
@@ -62,15 +63,15 @@ private:
     // are consistent with _count.
     void sanityCheck();
 
-    ElemT* _head;
-    ElemT* _tail;
+    ElemPtr _head;
+    ElemPtr _tail;
     int   _count;
 };
 
 
 // Add element to the queue.
 template <class ElemT>
-inline void Queue<ElemT>::add(ElemT* elem) {
+inline void Queue<ElemT>::add(typename ElemT::Ptr elem) {
     assert(elem != nullptr);
     assert(elem->nextLink() == nullptr);
 
@@ -117,11 +118,11 @@ inline void Queue<ElemT>::add(Queue<ElemT>* other) {
 
 // Pull the next element from the queue, or nullptr.
 template <class ElemT>
-inline ElemT* Queue<ElemT>::next() {
+inline typename ElemT::Ptr Queue<ElemT>::next() {
     switch(_count) {
         case 0: {
             assert(_head == nullptr && _tail == nullptr);
-            return nullptr;
+            return ElemPtr(nullptr);
         }
         case 1: {
             assert(_head == _tail);

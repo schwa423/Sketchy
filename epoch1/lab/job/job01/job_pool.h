@@ -6,6 +6,7 @@
 //  Licence: Apache v2.0
 //
 
+/*
 
 #ifndef __schwa__job01__job_pool__
 #define __schwa__job01__job_pool__
@@ -64,7 +65,7 @@ private:
     typedef SubPool<LARGE,  2> LargeJobPool;
     typedef SubPool<JUMBO,  3> JumboJobPool;
 
-    static JobPool global_pool_;
+    static JobPool s_global_pool_;
     SmallJobPool  small_;
     MediumJobPool medium_;
     LargeJobPool  large_;
@@ -117,3 +118,4 @@ private:
 
 
 #endif  // #ifndef __schwa__job01__job_pool__
+*/

@@ -91,16 +91,6 @@
       'sources': [
         'job01/core/tests/test_padding.cpp',
       ],
-    }, 
-    # TARGET test_core__pool_01.exe
-    {
-      'target_name': 'test_core__pool_01.exe',
-      'type': 'executable',
-      'defines': [ '<@(COMMON_DEFINES)', ],
-      'sources': [
-        'job01/core/tests/test_pool.cpp',
-        'job01/core/pool.cpp',        
-      ],
     },  
     # TARGET test_core__queue_01.exe
     {
@@ -118,6 +108,20 @@
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
         'job01/core/tests/test_ring.cpp',
+      ],
+    },
+
+
+    # schwa::job01::mem ======================================================
+
+    # TARGET test_job01_mem__blocks.exe
+    {
+      'target_name': 'test_job01_mem__blocks.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/mem/tests/test_blocks.cc',
+        'job01/mem/blocks.cc',
       ],
     },
   ],

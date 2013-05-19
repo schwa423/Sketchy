@@ -11,9 +11,7 @@
 #include "job01/core/link.h"
 
 using namespace schwa;
-
-using job01::Link;
-using job01::Linker;
+using namespace schwa::job01::core;
 
 #include <iostream>
 using namespace std;
