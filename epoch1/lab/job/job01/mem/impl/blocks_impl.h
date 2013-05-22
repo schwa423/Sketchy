@@ -19,11 +19,6 @@ namespace schwa { namespace job01 { namespace mem {
 using std::nullptr_t;
 
 
-// Base class for all blocks.
-// TODO: try to get rid of this.	
-class Block { };
-
-
 // schwa::job01::mem::impl ====================================================
 namespace impl {
 using namespace std;
@@ -106,7 +101,7 @@ class BlockRefImpl {
     // Return raw pointer to the referenced Block (or nullptr).
     // Delegates to BlockArrayManager::GetBlock()... since this hasn't yet been
     // declared, the implementation is found below.
-    Block* GetBlock() const;
+    void* GetBlock() const;
 
     friend class BlockArrayManager;
 }; // class BlockRefImpl
@@ -142,7 +137,7 @@ class BlockArrayImpl {
     const BlockArrayRef id;           // refers to this BlockArray
     const int           count;        // number of blocks in this BlockArray
     const size_t        stride;       // byte-increment between adjacent Blocks
-    Block* const        first_block;  // base address to which index is added
+    void* const         first_block;  // base address to which index is added
 
     // Maximum number of blocks that a BlockArray can be instantiated with.
     // The determining factor is the number of bits BlockRefImpl has available
@@ -152,7 +147,7 @@ class BlockArrayImpl {
  protected:
     // TODO: document 
     BlockArrayImpl(const BlockArrayRef& ref, // newly-minted ref to this array
-    		       Block* first,             // first in contiguous array of blocks
+    		       void* first,              // first in contiguous array of blocks
     		       int block_count,          // number of blocks in the array 
     		       size_t block_stride)      // stride between consecutive blocks
     : id(ref), count(block_count), stride(block_stride), first_block(first) { 
@@ -214,7 +209,7 @@ class BlockArrayManager {
 
     // Return a raw pointer to the specified block.  No bounds-checking, 
  	// in order to minimize the overhead of BlockRef compared to raw pointers.
-    static Block* GetBlock(const BlockRefImpl& ref) {
+    static void* GetBlock(const BlockRefImpl& ref) {
     	// Find the BlockArray that the block lives in.
         ArrayInfo& info = _info[ref._array];
 
@@ -223,7 +218,7 @@ class BlockArrayManager {
 
         // Compute and return a raw pointer to the block.
         uint8_t* block = &(info.block_mem[byte_index]);
-        return reinterpret_cast<Block*>(block);
+        return block;
     }
 
  private:
@@ -248,7 +243,7 @@ class BlockArrayManager {
 //
 
 // Return raw pointer to the referenced Block (or nullptr).
-inline Block* BlockRefImpl::GetBlock() const {
+inline void* BlockRefImpl::GetBlock() const {
     if (_block == kNullBlock) {
         return nullptr;  // not a valid ref
     }

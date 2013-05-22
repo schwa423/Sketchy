@@ -31,8 +31,6 @@
 //
 //    - benchmark
 //
-//    - get rid of Block?
-//
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -99,13 +97,12 @@ class BlockRef : public impl::BlockRefImpl {
 // satisfy most use-cases, but users are free to implement their
 // own subclasses of BlockArray.
 // TODO: document differently now that this is no longer called TypedBlockArray.
-template <typename BlockType, int NumBlocks = impl::BlockArrayImpl::kMaxBlocks>
+template <typename BlockT, int NumBlocks = impl::BlockArrayImpl::kMaxBlocks>
 class BlockArray : public impl::BlockArrayImpl {
 	friend class BlockTests;
 	friend class impl::BlockArrayManager;
 
  public:
-	typedef BlockType BlockT;
 	typedef BlockRef<BlockT> BlockRefT;
 
  	// Return a ref to the block at the specified index

@@ -29,7 +29,7 @@ typedef BlockRef<TestJob> TestJobRef;
 
 
 // Job definition.
-class alignas(64) TestJob : public core::Link<TestJob, TestJobRef>, public Block {
+class alignas(64) TestJob : public core::Link<TestJob, TestJobRef> {
  public:        
  	TestJob() { }
 
