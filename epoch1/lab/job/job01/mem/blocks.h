@@ -37,6 +37,8 @@
 //
 //    - pretty ostream printing of public types
 //
+//    - benchmark
+//
 //
 //////////////////////////////////////////////////////////////////////////////
 
@@ -51,6 +53,11 @@
 #include "job01/core/schwassert.h"
 #include "job01/mem/util.h"
 
+#include "job01/mem/impl/blocks_impl.h"
+
+// TODO: remove
+#include <iostream>
+using namespace std;
 
 // schwa::job01::mem ==========================================================
 namespace schwa { namespace job01 { namespace mem {
@@ -95,6 +102,7 @@ class BlockArrayRef {
 //       - avoid ugliness like JobRef in test_blocks.cc
 //       - do away with "class Block" altogether?
 class BlockRef {
+
  public:
  	// Anyone can create a invalid/null ref.  This is handy, for example,
  	// for creating unintialized variables that will later be stored into.
@@ -126,29 +134,63 @@ class BlockRef {
     	return !(*this == ref);
     }    
 
-    // Return raw pointer to the referenced Block (or nullptr).
-    // Delegates to BlockArrayManager::GetBlock()... since this hasn't yet been
-    // declared, the implementation is found below.
-    Block* GetBlock() const;
-
  protected:
  	// Only BlockArrays can create valid/non-null refs to a block.
     friend class BlockArray; 
  	BlockRef(BlockArrayRef array_ref, uint16_t block_index)
     : _array(array_ref), _block(block_index) { }
 
- private:
-    BlockArrayRef _array;  // identifies the array which contains the block.
-    uint16_t      _block;  // identifies the block within the containing array.
+ protected:
+ 	uint8_t		  _reserved;  // we have an extra byte... reserve for later.
+    BlockArrayRef _array;     // identifies the array which contains the block.
+    uint16_t      _block;     // identifies the block within the containing array.
+
 
     friend class BlockArrayManager;   // uses kNullBlock.
     static const uint16_t kNullBlock = numeric_limits<uint16_t>::max();
+
+ protected:
+    // Return raw pointer to the referenced Block (or nullptr).
+    // Delegates to BlockArrayManager::GetBlock()... since this hasn't yet been
+    // declared, the implementation is found below.
+    Block* GetBlock() const;
+
+}; // class BlockRef
+
+// Current design intends BlockRefs to be 4 bytes in size.  We only
+// use/need 3 for addressing, but since these will probably alignof() == 4
+// anyway, we explicitly reserve one byte for unspecified future use.
+static_assert(sizeof(BlockRef) == 4, "ref is wrong size");
+
+
+template <typename BlockT>
+class TypedBlockRef : public BlockRef {
+ public:
+ 	TypedBlockRef() : BlockRef() { }
+	TypedBlockRef(nullptr_t ptr) : BlockRef(nullptr) { }
+
+	// Allow dereferencing through ref as though it is a pointer type.
+	BlockT* operator->() {
+		return static_cast<BlockT*>(GetBlock());
+	}
+
+	// Allows using static_cast to transform to raw pointer.
+	explicit operator BlockT*() const {
+		return static_cast<BlockT*>(GetBlock());
+	}
+
+ protected:
+ 	// Only BlockArrays can create valid/non-null refs to a block.
+    friend class BlockArray; 
+ 	TypedBlockRef(BlockArrayRef array_ref, uint16_t block_index)
+    : BlockRef(array_ref, block_index) { }
 };
 
 
 // Base class for all block-arrays.
 // TODO: document subclass responsibilities.
 class BlockArray {
+
     friend class BlockArrayManager;
 
  public: // functions
@@ -193,6 +235,13 @@ class BlockArray {
     	SCHWASSERT(block_stride == 64, "bad stride");
       	SCHWASSERT(count <= kMaxBlocks, "maximum block count exceeded");
     }
+
+    // Allow subclasses to create specialized BlockRefs without needing to be
+    // a friend of that type of BlockRef.
+    template <typename BlockRefT>
+    BlockRefT CreateRef(BlockArrayRef array_ref, uint16_t block_index) const {
+    	return BlockRefT(array_ref, block_index);
+    }
 };
 
 
@@ -200,17 +249,35 @@ class BlockArray {
 // must be a subclass of Block).  TypedBlockArray is intended to
 // satisfy most use-cases, but users are free to implement their
 // own subclasses of BlockArray.
-template <typename BlockT, int NumBlocks = BlockArray::kMaxBlocks>
+template <typename BlockType, int NumBlocks = BlockArray::kMaxBlocks>
 class TypedBlockArray : public BlockArray {
+	friend class BlockTests;
 	friend class BlockArrayManager;
+
+
+ public:
+	typedef BlockType BlockT;
+	typedef TypedBlockRef<BlockT> BlockRefT;
+
+
+ 	// Return a ref to the block at the specified index
+	// (or a null-ref if the index is invalid).
+	BlockRefT operator[](int32_t block_index) const {
+		if (block_index >= 0 && block_index < count) {
+			return CreateRef<BlockRefT>(id, block_index);
+		} else {
+			return BlockRefT(nullptr);
+		}
+	}
 
  protected:
  	// "id" is a newly-minted ref to this array.
- 	// This is the only way
+ 	// This is the only way that new TypedBlockArrays are instantiated.
  	TypedBlockArray(const BlockArrayRef& id)
  	: BlockArray(id, _blocks, NumBlocks,
  				 // Memory alignment issues prevent using sizeof(BlockT) here.
- 				 PointerDifference(_blocks, _blocks + 1)) { }
+				 PointerDifference(_blocks, _blocks + 1)) {
+ 	}
 
     // Raw memory for blocks.
  	BlockT _blocks[NumBlocks];
@@ -277,7 +344,7 @@ class BlockArrayManager {
     }
 
  private:
- 	
+
     // No constructor: everything is static/global.
     BlockArrayManager() {}
 

@@ -1,17 +1,18 @@
 //
-// test_blocks.cc
-// schwa::job01::mem::test
+//    test_blocks.cc
+//    schwa::job01::mem::test
 //
-//  Copyright (c) 2013 Schwaftwarez
-//  Licence: Apache v2.0
+//    Copyright (c) 2013 Schwaftwarez
+//    Licence: Apache v2.0
 //
+//    Exercise raw block-allocation using a simplified job-queue as an example.
 //
+///////////////////////////////////////////////////////////////////////////////
 
 
 #include "job01/core/link.h"
 #include "job01/core/queue.h"
 #include "job01/mem/blocks.h"
-
 using namespace schwa::job01;
 using namespace schwa::job01::mem;
 
@@ -22,90 +23,39 @@ using std::cerr;
 using std::endl;
 
 
-class Job;
+// Forward declaration of TestJob, so we can define the reference-type.
+class TestJob;
+typedef schwa::job01::mem::TypedBlockRef<TestJob> TestJobRef;
 
 
-// Users can wrap BlockRef for convenience.
-class JobRef {
- public:
- 	JobRef() { }
- 	explicit JobRef(const BlockRef& ref) : _ref(ref) { }
+// Job definition.
+class alignas(64) TestJob : public core::Link<TestJob, TestJobRef>, public Block {
+ public:        
+ 	TestJob() { }
 
- 	JobRef& operator=(const BlockRef& ref) {
- 		_ref = ref;
- 	}
-
- 	// Can't define until after Job is declared.
- 	Job* GetJob() const;
-
- 	// Make it handy to access the job.
- 	Job* operator->() {
- 		return GetJob();
- 	}
-
- 	// Comparison with null.
-    bool operator== (nullptr_t p) const {
-        return _ref == nullptr;
-    }
-    bool operator!= (nullptr_t p) const {
-        return _ref != nullptr;
-    }
-
-    // Comparison with other refs.
-    bool operator== (const JobRef& ref) const {
-        return _ref == ref._ref;
-    }  
-    bool operator!= (const JobRef& ref) const {
-        return _ref != ref._ref;
-    }  
-
- private:
- 	BlockRef _ref;
+ 	uint8_t  foo;
+    uint16_t bar;
+    uint32_t baz;
 };
 
 
-
-class alignas(64) Job : public core::Link<Job, JobRef>,
-                        public Block {
- public:                  	
-    int index;
-};
-
-
-// Now that Job has been declared, we can define this function.
-inline Job* JobRef::GetJob() const {
-	return static_cast<Job*>(_ref.GetBlock());
-}
-
-
+// BlockArray containing jobs.
 const int kJobArraySize = 1024;
-class JobArray : public TypedBlockArray<Job, kJobArraySize> {
-	// So that the protected constructor can be called.
-	// TODO: this is ugly... how can we get around this?
-	friend class BlockArrayManager;
+typedef TypedBlockArray<TestJob, kJobArraySize> TestJobArray;
 
+
+class TestJobQueue : public core::Queue<TestJob> {
  public:
- 	Job* GetJob(int index) {
- 		return &_blocks[index];
- 	}
-
- protected:
- 	JobArray(const BlockArrayRef& id) : TypedBlockArray(id) { }
-};
-
-
-class JobQueue : public core::Queue<Job> {
- public:
- 	// Allocate a new JobArray, and add the jobs to the queue.
+ 	// Allocate a new TestJobArray, and add the jobs to the queue.
  	void allocateJobs() {
- 		// Allocate a new JobArray, and remember that we allocated it.
- 		JobArray& jobs = *(BlockArray::create<JobArray>());
+ 		// Allocate a new TestJobArray, and remember that we allocated it.
+ 		TestJobArray& jobs = *(BlockArray::create<TestJobArray>());
  		_arrays.push_back(jobs.id);
 
  		// Add the jobs.
  		for (int i = 0; i < kJobArraySize; i++) {
- 			jobs.GetJob(i)->index = i;
- 			add(JobRef(jobs[i]));
+ 			jobs[i]->baz = i;
+ 			add(TestJobRef(jobs[i]));
  		}
  	}
 
@@ -114,45 +64,62 @@ class JobQueue : public core::Queue<Job> {
 };
 
 
+// Friend of TypedBlockArray etc., to facilitate testing.
+namespace schwa { namespace job01 { namespace mem {
+class BlockTests {
+public:
 
+	static TestJob* GetBlockFromArray(TestJobArray& array, int index) {
+		return array._blocks + index;
+	}
+
+};
+}}}
+
+
+// Test that we can obtain TestJobRefs to the array's contents, and that
+// out-of-bounds accesses do not cause problems.
 void testBlockAccess() {
-	JobArray& jobs1 = *(BlockArray::create<JobArray>());
- 	JobArray& jobs2 = *(BlockArray::create<JobArray>());
+	TestJobArray& jobs1 = *(BlockArray::create<TestJobArray>());
+ 	TestJobArray& jobs2 = *(BlockArray::create<TestJobArray>());
 
 	for (int i = 0; i < kJobArraySize; ++i) {
 	 	// Test that BlockRef computes the correct pointers.
-		assert(jobs1[i].GetBlock() != nullptr);
-		assert(jobs2[i].GetBlock() != nullptr);		
-		assert(jobs1[i].GetBlock() == jobs1.GetJob(i));
-		assert(jobs2[i].GetBlock() == jobs2.GetJob(i));		
-		assert(jobs1[i].GetBlock() != jobs2[i].GetBlock());
+	 	assert(jobs1[i] != nullptr);
+	    assert(jobs2[i] != nullptr);
+	 	assert(static_cast<TestJob*>(jobs1[i]) != nullptr);
+	 	assert(static_cast<TestJob*>(jobs2[i]) != nullptr);
+	 	assert(static_cast<TestJob*>(jobs1[i]) == BlockTests::GetBlockFromArray(jobs1, i));
+	 	assert(static_cast<TestJob*>(jobs2[i]) == BlockTests::GetBlockFromArray(jobs2, i));
+		assert(static_cast<TestJob*>(jobs1[i]) != static_cast<TestJob*>(jobs2[i]));
 	}
 
 	// Test out-of-bounds accesses.
-	assert(jobs1[-1].GetBlock() == nullptr);
-	assert(jobs2[-1].GetBlock() == nullptr);
-	assert(jobs1[kJobArraySize].GetBlock() == nullptr);
-	assert(jobs2[kJobArraySize].GetBlock() == nullptr);
+	assert(static_cast<TestJob*>(jobs1[-1]) == nullptr);
+	assert(static_cast<TestJob*>(jobs2[-1]) == nullptr);
+	assert(static_cast<TestJob*>(jobs1[kJobArraySize]) == nullptr);
+	assert(static_cast<TestJob*>(jobs2[kJobArraySize]) == nullptr);
 }
 
 
+// Show that jobs allocated from an array can be enqueued and dequeued.
 void testSimpleJobQueue() {
-	JobQueue q1, q2;
+	TestJobQueue q1, q2;
 
 	assert(q1.count() == 0);
 	assert(q1.count() == 0);
 
 	q1.allocateJobs();
 
-	JobRef prev;
+	TestJobRef prev;
 	for (int i = 0; i < 512; ++i) {
-		JobRef job = q1.next();
+		TestJobRef job = q1.next();
 
 		// Since the job was removed from the queue, it should be unlinked.
 		assert(job->nextLink() == nullptr);
 
-		// Jobs were added in order.
-		assert(i == job->index);
+		// TestJobs were added in order.
+		assert(i == job->baz);
 
 		// Add the job to the other queue.
 		q2.add(job);
