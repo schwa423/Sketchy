@@ -25,7 +25,7 @@ using std::endl;
 
 // Forward declaration of TestJob, so we can define the reference-type.
 class TestJob;
-typedef schwa::job01::mem::TypedBlockRef<TestJob> TestJobRef;
+typedef BlockRef<TestJob> TestJobRef;
 
 
 // Job definition.
@@ -41,7 +41,7 @@ class alignas(64) TestJob : public core::Link<TestJob, TestJobRef>, public Block
 
 // BlockArray containing jobs.
 const int kJobArraySize = 1024;
-typedef TypedBlockArray<TestJob, kJobArraySize> TestJobArray;
+typedef BlockArray<TestJob, kJobArraySize> TestJobArray;
 
 
 class TestJobQueue : public core::Queue<TestJob> {
@@ -49,7 +49,7 @@ class TestJobQueue : public core::Queue<TestJob> {
  	// Allocate a new TestJobArray, and add the jobs to the queue.
  	void allocateJobs() {
  		// Allocate a new TestJobArray, and remember that we allocated it.
- 		TestJobArray& jobs = *(BlockArray::create<TestJobArray>());
+ 		TestJobArray& jobs = *(Create<TestJobArray>());
  		_arrays.push_back(jobs.id);
 
  		// Add the jobs.
@@ -60,11 +60,11 @@ class TestJobQueue : public core::Queue<TestJob> {
  	}
 
  private:
- 	std::vector<BlockArrayRef> _arrays;
+ 	std::vector<impl::BlockArrayRef> _arrays;
 };
 
 
-// Friend of TypedBlockArray etc., to facilitate testing.
+// Friend of BlockArray etc., to facilitate testing.
 namespace schwa { namespace job01 { namespace mem {
 class BlockTests {
 public:
@@ -80,8 +80,8 @@ public:
 // Test that we can obtain TestJobRefs to the array's contents, and that
 // out-of-bounds accesses do not cause problems.
 void testBlockAccess() {
-	TestJobArray& jobs1 = *(BlockArray::create<TestJobArray>());
- 	TestJobArray& jobs2 = *(BlockArray::create<TestJobArray>());
+	TestJobArray& jobs1 = *(Create<TestJobArray>());
+ 	TestJobArray& jobs2 = *(Create<TestJobArray>());
 
 	for (int i = 0; i < kJobArraySize; ++i) {
 	 	// Test that BlockRef computes the correct pointers.

@@ -121,7 +121,7 @@
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
         'job01/mem/tests/test_blocks.cc',
-        'job01/mem/blocks.cc',
+        'job01/mem/impl/blocks_impl.cc',
       ],
     },
   ],
