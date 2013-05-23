@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--
+
+Usage:
+
+JobBoss boss;
+
+
+typedef impl::PriorityJobQueue<3> JobQueue;
+
+
+Boss<JobQueue> boss;
+
+JobQueue& q = boss.GetQueue();
+
+Job j = q.spawn(FooJobDesc(arg1, arg2, arg3));
+
+Job j2 = j.spawn(FooChildJobDesc(arg1));
+
+
+JobDescription::Run(Job& j, JobQueue& q) {
+	
+	// Whatever we want!
+}
+
+
+ 
+
+Future<FooChildJobDesc::ResultType>???
+
+
+
+
+
+
+Points to elaborate on:
+
+==== responsiveness:
+     - scheduling should support breaking large jobs into small pieces (low-latency, prioritization)
+
+
+==== instrumentibility
+     - template metaprogramming for flexible, low-overhead instrumentation
+     - eg: decorate some or all JobDescriptions with a template wrapper
+         - all jobs of a specified type
+         - every 10th job
+
+-->
+<html>
+<title>ǝ::job01</title>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+
+<h1> module <a href="../../schwa.html">ǝ</a>::job01 </h1>
+
+<p> ǝ::job01 is the first version of ǝ's new job-scheduler, which the ambitious goal of evolving into a groundbreaking interactive system for controlling and integrating all available computational resources (CPU/GPU/disk/network/co-processor/sensors/etc).</p>
+
+<p> This version focuses on low-overhead, low-latency scheduling of CPU resources on mobile multicore platforms.  Here are the main design goals, and a few words about each:
+	<ul>
+	<li> efficiency: minimize scheduling overhead to maximize actual work done, and make efficient use of the memory hierarchy.</li>
+	<li> responsiveness: jobs cooperatively run for short time slices, so the system can quickly adapt to priority changes.</li>
+	<li> simplicity: a few powerful abstractions allow the system to be small but powerfully expressive.</li>
+	<li> instrumentibility: use template metaprogramming to control the recording of various performance statistics, for example by decorating the job-description class.</li>
+		<ul>
+		<li> record stats (slice-time, total-time, job-type, priority level, etc). of every 10th job.</li>
+		<li> record stats for every job of some type (or set of types).</li>
+		<li> supports unit-tests and automated performance tests.</li>
+		<li> provide empirical support for architectural decisions.</li>
+		</ul>
+	</li>
+	<li> "scalability" <b>(better name?)</b>: complimentary to "simplicity"... well-designed abstractions naturally support a wide range of use-cases:
+		<ul>
+		<li> async I/O </li>	
+		<li> spliting up large, embarassingly parallel jobs</li>
+		<li> long-lived Jobs (eg: lifetime of a Croquet Island or Dart Isolate)</li>
+		</ul>
+	</li>
+	</ul>
+</p>
+
+
+<h1> a note on submodules </h1>
+<p> ǝ::job01 has a number of submodules:
+	<ul>
+	<li> ǝ::job01::core </li>
+	<li> ǝ::job01::host </li>
+	<li> ǝ::job01::mem </li>
+	<li> ǝ::job01::time </li>
+	</ul>
+	The natural position of these modules would be next to ǝ::job01, for example ǝ::core00.  However, that would suggest a level of general usability that I'm not aiming for yet (with the exception of the public ǝ::job API).  Therefore, I make them submodules of ǝ::job01, and concern myself with only two goals:
+	<br> -=-=-=-= minimum necessary to support ǝ::job well (this makes it easier to properly adapt when new use-cases arrive )
+	<br> -=-=-=-= learning experience for when it is time to do the "real" versions of those submodules
+</p>
+
+
+</body>
+</html>
