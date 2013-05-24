@@ -40,7 +40,6 @@
 #include <limits>
 #include <cstdint>
 
-#include "job01/core/link.h"
 #include "job01/core/meta.h"
 #include "job01/core/schwassert.h"
 #include "job01/mem/util.h"

@@ -13,6 +13,7 @@
 #include "job01/core/link.h"
 #include "job01/core/queue.h"
 #include "job01/mem/blocks.h"
+#include "job01/dbg/dbg.h"
 using namespace schwa::job01;
 using namespace schwa::job01::mem;
 
@@ -150,10 +151,57 @@ void testSimpleJobQueue() {
 }
 
 
-int main() {
+void testPerformance(TestJobRef* refs, TestJob** ptrs) {
+	// Obtain a bunch of job-refs so that we can see
+	// how fast they can be dereferenced.
+	for(int i = 0; i < 100; ++i) {
+		TestJobArray& jobs = *(Create<TestJobArray>());
+		for(int j = 0; j < 1000; ++j) {
+			refs[i * 1000 + j] = jobs[j];
+		}
+	}
 
+	{	// Print out how long it takes to obtain a gazillion raw pointers
+		// from their corresponding block-refs.
+		dbg::ScopeTimer t([](time::msecs elapsed) {
+			cerr << "finished 100 million real iterations in " 
+			     << elapsed << endl;
+		});
+
+		for (int i = 0; i < 1000; ++i) {
+			for (int j = 0; j < 100000; ++j) {
+				ptrs[j] = static_cast<TestJob*>(refs[j]);
+			}
+		}
+	}
+
+	{   // Print out how long it takes to obtain a gazillion raw pointers
+		// from their corresponding block-refs.
+		dbg::ScopeTimer t([](time::msecs elapsed) {
+			cerr << "finished 100 million bogus iterations in " 
+			     << elapsed << endl;
+		});
+
+		for (int i = 0; i < 1000; ++i) {
+			for (int j = 0; j < 100000; ++j) {
+				ptrs[j] = ptrs[100000-j];
+			}
+		}
+	}
+}
+
+
+int main() {
 	testBlockAccess();
 	testSimpleJobQueue();
+
+	// If we don't pass in these arrays, the optimized build will
+	// eliminate the benchmark loop as dead code (at least on XCode).
+	TestJobRef refs[100000];
+	TestJob*   ptrs[100000];
+
+	// TODO: incorporate this into a perf-test framework.
+//	testPerformance(refs, ptrs);
 
     cerr << "job01/mem/test_blocks...  PASSED!" << endl << endl;
 }

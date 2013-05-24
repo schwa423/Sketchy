@@ -34,4 +34,4 @@ job.xcodeproj: job.gyp
 	gyp --depth=. -f xcode
 
 %.exe: job.xcodeproj
-	xcodebuild -project job.xcodeproj -target $@
+	xcodebuild -configuration Debug -project job.xcodeproj -target $@
