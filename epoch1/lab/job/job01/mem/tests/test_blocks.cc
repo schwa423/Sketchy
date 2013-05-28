@@ -12,6 +12,7 @@
 
 #include "job01/core/link.h"
 #include "job01/core/queue.h"
+#include "job01/mem/align.h"
 #include "job01/mem/blocks.h"
 #include "job01/dbg/dbg.h"
 using namespace schwa::job01;
@@ -30,7 +31,7 @@ typedef BlockRef<TestJob> TestJobRef;
 
 
 // Job definition.
-class alignas(64) TestJob : public core::Link<TestJob, TestJobRef> {
+class__cache_align  TestJob : public core::Link<TestJob, TestJobRef> {
  public:        
  	TestJob() { }
 
@@ -195,13 +196,15 @@ int main() {
 	testBlockAccess();
 	testSimpleJobQueue();
 
-	// If we don't pass in these arrays, the optimized build will
-	// eliminate the benchmark loop as dead code (at least on XCode).
-	TestJobRef refs[100000];
-	TestJob*   ptrs[100000];
+    if (false) {
+    	// If we don't pass in these arrays, the optimized build will
+    	// eliminate the benchmark loop as dead code (at least on XCode).
+    	TestJobRef refs[100000];
+    	TestJob*   ptrs[100000];
 
-	// TODO: incorporate this into a perf-test framework.
-//	testPerformance(refs, ptrs);
+    	// TODO: incorporate this into a perf-test framework.
+        testPerformance(refs, ptrs);
+    }
 
     cerr << "job01/mem/test_blocks...  PASSED!" << endl << endl;
 }

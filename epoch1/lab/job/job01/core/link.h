@@ -1,14 +1,17 @@
 //
-//  link.h
-//  schwa::job01
+//    link.h
+//    schwa::job01::core
 //
-//  Copyright (c) 2013 Schwaftwarez
-//  Licence: Apache v2.0
+//    Copyright (c) 2013 Schwaftwarez
+//    Licence: Apache v2.0
 //
+//    Low-level building blocks for intrusively-linked data structures.
+//
+///////////////////////////////////////////////////////////////////////////////
 
 
-#ifndef __schwa__job01__link__
-#define __schwa__job01__link__
+#ifndef __schwa__job01__core__link__
+#define __schwa__job01__core__link__
 
 
 // schwa::job01::core =========================================================
@@ -17,6 +20,7 @@ namespace schwa { namespace job01 { namespace core {
 
 template <class LinkT>
 class Linker;
+
 
 template <class LinkT, typename LinkPtr = LinkT*>
 class Link {
@@ -55,4 +59,4 @@ class Linker {
 
 }}}  // schwa::job01::core ====================================================
 
-#endif  // #ifndef __schwa__job01__link__
+#endif  // #ifndef __schwa__job01__core__link__

@@ -39,6 +39,9 @@ class Queue : protected Linker<LinkT> {
 	// Number of enqueued elements.
     int count() { return _count; }
 
+    // True if there are any enqueued elements.
+    bool empty() { return 0 == _count; }
+
     // Add element to the queue.
     void add(ElemPtr elem);
 

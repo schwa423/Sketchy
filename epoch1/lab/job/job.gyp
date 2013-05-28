@@ -70,7 +70,21 @@
         'job01/tests/test_jobqueue.cpp',
       ],
     },
+
+
+    # schwa::job01::impl ======================================================
  
+    # TARGET test_job01_impl__jobpool.exe
+    {
+      'target_name': 'test_job01_impl__jobpool.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/impl/tests/test_jobpool.cc',
+        'job01/mem/impl/blocks_impl.cc',
+      ],
+    },   
+
 
     # schwa::job01::core ======================================================
 
@@ -110,7 +124,15 @@
         'job01/core/tests/test_ring.cpp',
       ],
     },
-
+    # TARGET test_job01_core__meta.exe
+    {
+      'target_name': 'test_job01_core__meta.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/core/tests/test_meta.cc',
+      ],
+    },
 
     # schwa::job01::mem ======================================================
 

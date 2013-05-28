@@ -7,7 +7,6 @@
 //
 //    Utilities for template metaprogramming.
 //
-//
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -15,11 +14,17 @@
 #define __schwa__job01__core__meta__
 
 
-// The first argument is used as a template parameter only if it is
-// a subclass of the second.  Otherwise, the template is not matched.
+// Add this as the last argument to a function that you want to
+// be enabled for types whose size is within the specified range.
+#define SCHWA_ONLY_IF_SIZE_BETWEEN(TYPE, LO, HI)   \
+typename std::enable_if<(sizeof(TYPE) > LO) &&     \
+                        (sizeof(TYPE) <= HI)>::type* dummy = nullptr
+
+
+// Add this as the last argument to a function that you want to
+// be enabled for only for types that are subclasses of the given base type.
 #define SCHWA_USE_IF_SUBCLASS(PARAM_T, BASE_T) \
-typename PARAM_T,                              \
-class = typename std::enable_if<std::is_base_of<BASE_T, PARAM_T>::value>::type
+typename std::enable_if<std::is_base_of<BASE_T, PARAM_T>::value>::type* dummy = nullptr
 
 
 #endif  // #ifndef __schwa__job01__core__meta__

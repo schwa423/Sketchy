@@ -31,6 +31,8 @@
 //
 //    - benchmark
 //
+//    - cross platform way to implement #pragma pack()
+//
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -43,7 +45,6 @@
 #include "job01/core/meta.h"
 #include "job01/core/schwassert.h"
 #include "job01/mem/util.h"
-
 #include "job01/mem/impl/blocks_impl.h"
 
 
@@ -52,14 +53,15 @@ namespace schwa { namespace job01 { namespace mem {
 
 
 // Instantiate a new instance of the specified BlockArray subclass.
-template <SCHWA_USE_IF_SUBCLASS(BlockArrayT, impl::BlockArrayImpl)>				        
-inline BlockArrayT* Create() {
+template <typename BlockArrayT>
+inline BlockArrayT* Create(SCHWA_USE_IF_SUBCLASS(BlockArrayT, impl::BlockArrayImpl)) {
 	return impl::BlockArrayManager::Create<BlockArrayT>();
 }
 
 
 // A strongly-typed reference to an object in a BlockArray.
-// Can be compared, assigned, and dereferenced.
+// Can be compared, assigned, and dereferenced.  
+#pragma pack(push, 1) 
 template <typename BlockT>
 class BlockRef : public impl::BlockRefImpl {
  public:
@@ -89,6 +91,7 @@ class BlockRef : public impl::BlockRefImpl {
  	BlockRef(impl::BlockArrayRef array_ref, uint16_t block_index)
     : impl::BlockRefImpl(array_ref, block_index) { }
 };
+#pragma pack(pop)
 
 
 // BlockArray where the block-type is specified by the user (but

@@ -19,6 +19,12 @@
 // schwa::job01::dbg ==========================================================
 namespace schwa { namespace job01 { namespace dbg {
 
+
+// Convenient ways to print an expression and what it evaluates to.
+#define SCHWA_OSTREAM(x) #x << " == " << x
+#define SCHWA_PRINT(x) cerr << SCHWA_OSTREAM(x) << endl;
+
+
 // ScopeTimer starts timing when it is created, and executes a callback
 // with the elapsed time when it is destroyed.
 class ScopeTimer {

@@ -1,13 +1,15 @@
 //
-//  jobqueue.h
-//  schwa::job01
+//    jobqueue.h
+//    schwa::job01
 //
-//  Copyright (c) 2013 Schwaftwarez
-//  Licence: Apache v2.0
+//    Copyright (c) 2013 Schwaftwarez
+//    Licence: Apache v2.0
 //
-//  *** TODO ***
-//      - unit test !!!
+//    *** TODO ***
+//        - unit test !!!
 //
+///////////////////////////////////////////////////////////////////////////////
+
 
 
 #ifndef __schwa__job01__jobqueue__
@@ -38,12 +40,12 @@ class JobQueue : public core::RingElement<JobQueue, 3*host::CACHE_LINE_SIZE> {
 
     // Obtain the next job from the queue.
     // If there are none available, ask our peers for some.
-    impl::JobImpl* nextJob() {
+    impl::JobX* nextJob() {
         auto job = _queue.next();
         if (!job)
             requestJobsFromPeers();
 
-        return job;
+        return static_cast<impl::JobX*>(job);
     }
 
     // Do any bookkeeping necessary to communicate with the queue's peers.
@@ -89,7 +91,7 @@ class JobQueue : public core::RingElement<JobQueue, 3*host::CACHE_LINE_SIZE> {
     }
 
  protected:
-    typedef core::Queue<impl::JobImpl> JobChain;
+    typedef core::Queue<impl::JobX> JobChain;
     typedef std::lock_guard<std::mutex> lock;
 
     // Number of jobs to ask for if you don't have any.

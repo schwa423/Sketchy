@@ -56,8 +56,8 @@ class BlockRefImpl {
  public:
  	// Anyone can create a invalid/null ref.  This is handy, for example,
  	// for creating unintialized variables that will later be stored into.
-    BlockRefImpl() : _array(0), _block(kNullBlock) { }
-    BlockRefImpl(nullptr_t ptr) : _array(0), _block(kNullBlock) { }
+    BlockRefImpl() : _block(kNullBlock), _array(0) { }
+    BlockRefImpl(nullptr_t ptr) : _block(kNullBlock), _array(0) { }
 
     static const uint16_t kNullBlock = numeric_limits<uint16_t>::max();
 
@@ -90,12 +90,11 @@ class BlockRefImpl {
  	// Only BlockArrayImpls can create valid/non-null refs to a block.
     friend class BlockArrayImpl; 
  	BlockRefImpl(BlockArrayRef array_ref, uint16_t block_index)
-    : _array(array_ref), _block(block_index) { }
+    : _block(block_index), _array(array_ref) { }
 
  protected:
- 	uint8_t		  _reserved;  // we have an extra byte... reserve for later.
+ 	uint16_t      _block;     // identifies the block within the containing array.
     BlockArrayRef _array;     // identifies the array which contains the block.
-    uint16_t      _block;     // identifies the block within the containing array.
 
  protected:
     // Return raw pointer to the referenced Block (or nullptr).

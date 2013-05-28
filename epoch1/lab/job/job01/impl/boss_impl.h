@@ -18,12 +18,14 @@
 #include "job01/jobqueue.h"
 #include "job01/worker.h"
 
+#include "job01/mem/align.h"
+
 
 // schwa::job01::impl =========================================================
 namespace schwa { namespace job01 { namespace impl {
 
 
-class alignas(host::CACHE_LINE_SIZE) BossImpl {
+class__cache_align  BossImpl {
  protected:
 	void initializeWorker(Worker* worker, JobQueue* queue) {
 		worker->initialize(queue);
