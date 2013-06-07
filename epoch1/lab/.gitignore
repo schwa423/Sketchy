@@ -1,3 +1,4 @@
 *.exe
 *.xcodeproj
 build/
+.schwa_BUILDCONFIG

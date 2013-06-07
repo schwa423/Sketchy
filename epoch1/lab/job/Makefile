@@ -16,9 +16,11 @@ job01_impl_tests: test_job01_impl__jobpool.exe
 job01_core_tests: test_core__link_01.exe test_job01_core__meta.exe \
 	test_core__padding_01.exe test_core__queue_01.exe test_core__ring_01.exe
 
-job01_mem_tests: test_job01_mem__blocks.exe
+job01_mem_tests: test_job01_mem__blocks.exe test_job01_mem__ref.exe
 
-job01: job01_tests job01_impl_tests job01_core_tests job01_mem_tests
+job01_obj_tests: test_job01_obj__obj.exe
+
+job01: job01_tests job01_impl_tests job01_core_tests job01_mem_tests job01_obj_tests
 
 run_job01_tests: job01
 	./build/${BUILDCONFIG}/test_boss_01.exe
@@ -35,9 +37,13 @@ run_job01_tests: job01
 run_tests: run_job01_tests
 
 # Run the thing we're currently developing.
-dev_test: test_job01_mem__blocks.exe test_job01_impl__jobpool.exe
-	./build/${BUILDCONFIG}/test_job01_mem__blocks.exe
-	./build/${BUILDCONFIG}/test_job01_impl__jobpool.exe
+dev_test: test_job01_obj__obj.exe
+	./build/${BUILDCONFIG}/test_job01_obj__obj.exe
+#dev_test: test_job01_mem__ref.exe
+#	./build/${BUILDCONFIG}/test_job01_mem__ref.exe
+#dev_test: test_job01_mem__blocks.exe test_job01_impl__jobpool.exe	
+#   ./build/${BUILDCONFIG}/test_job01_mem__blocks.exe
+#	./build/${BUILDCONFIG}/test_job01_impl__jobpool.exe
 
 job.xcodeproj: job.gyp
 	gyp --depth=. -f xcode

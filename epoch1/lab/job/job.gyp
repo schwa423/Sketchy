@@ -134,7 +134,8 @@
       ],
     },
 
-    # schwa::job01::mem ======================================================
+
+    # schwa::job01::mem =======================================================
 
     # TARGET test_job01_mem__blocks.exe
     {
@@ -144,6 +145,29 @@
       'sources': [
         'job01/mem/tests/test_blocks.cc',
         'job01/mem/impl/blocks_impl.cc',
+      ],
+    },
+    # TARGET test_job01_mem__ref.exe
+    {
+      'target_name': 'test_job01_mem__ref.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/mem/tests/test_ref.cc',
+      ],
+    },
+
+
+    # schwa::job01::obj =======================================================
+
+    # TARGET test_job01_obj__obj.exe
+    {
+      'target_name': 'test_job01_obj__obj.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/obj/tests/test_obj.cc',
+        'job01/obj/obj.cc',
       ],
     },
   ],

@@ -30,6 +30,7 @@ public:
     typedef LinkPtr Ptr;
 
     Link() : _next(nullptr) { }
+    Link(LinkPtr& ptr) : _next(ptr) { }
     LinkPtr nextLink() { return _next; }
 
 private:

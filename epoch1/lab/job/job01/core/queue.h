@@ -1,11 +1,11 @@
 //
-//  queue.h
-//  schwa::job01::core
+//    queue.h
+//    schwa::job01::core
 //
-//  Copyright (c) 2013 Schwaftwarez
-//  Licence: Apache v2.0
+//    Copyright (c) 2013 Schwaftwarez
+//    Licence: Apache v2.0
 //
-//
+//////////////////////////////////////////////////////////////////////////////
 
 
 #ifndef __schwa__job01__core__queue__
@@ -48,6 +48,7 @@ class Queue : protected Linker<LinkT> {
     // Move all elements from the other queue to the back of this queue.
     void add(Queue<ElemT>* other);
     void add(Queue<ElemT>& other) { this->add(&other); }
+    void add(Queue<ElemT>&& other) { this->add(&other); }    
 
     // Pull the next element from the queue, or nullptr.
     ElemPtr next();
@@ -58,6 +59,9 @@ class Queue : protected Linker<LinkT> {
     Queue<ElemT> next(int length);
 
 protected:
+    // It is the caller's responsibility to ensure that the head is
+    // transitively linked to the tail, and that the count is correct.
+    // TODO: debug-mode verification of these conditions.
     Queue(ElemPtr head, ElemPtr tail, int count)
       : _head(head), _tail(tail), _count(count) { }
 
