@@ -26,6 +26,7 @@
 #include "job01/mem/blocks.h"
 
 #include <atomic>
+#include <new>
 
 
 // schwa::job01::impl =========================================================
@@ -41,11 +42,12 @@ typedef mem::BlockRef<JobX> JobRef;
 
 // Base class for (internal implementation of) jobs in the job-system.
 class JobX : public core::Link<JobX, JobRef> {
-	friend class JobPool;
+  friend class JobPool;
+  friend class JobArray;
 
  public:
     // Overridden in subclasses.
-    virtual void Run() = 0;
+    virtual void Run() { };
 
  protected:
     // This is the constructor called by AlignedJobX during JobPool
@@ -95,6 +97,12 @@ class JobX : public core::Link<JobX, JobRef> {
     // this many children, but we might as well, because atomics
     // are always going to be at least 4 bytes.
   	std::atomic<uint32_t> _children;
+
+
+    static void InitForJobArray(JobX* ptr) {
+        ptr->_generation = 1;
+        new(ptr) JobX();
+    }
 };
 
 // Size breakdown:

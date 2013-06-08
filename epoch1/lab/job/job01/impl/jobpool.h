@@ -36,6 +36,20 @@ namespace schwa { namespace job01 { namespace impl {
 using host::CACHE_LINE_SIZE;
 
 
+
+// BlockArray containing jobs.
+const int kJobArraySize = 1024;
+typedef BlockArray<sizeof(JobX), JobX, kJobArraySize> JobArrayBase;
+class JobArray : public JobArrayBase {
+ protected:
+    virtual void InitBlocks() {
+        for (int i = 0; i < kJobArraySize; i++) {
+            JobX::InitForJobArray(GetBlockPtr(i));
+        }
+    }
+};
+
+
 // Has a number of sub-pools which contain a free-list of unallocated jobs...
 // each one holds jobs of a specific size (1, 2, 4, or 8 cache-lines large).
 class JobPool {
@@ -49,19 +63,15 @@ class JobPool {
      public:
         // BlockArray containing jobs of the desired size.
         static const int kJobArraySize = 1024;
+        static const int BlockSize = host::CACHE_LINE_SIZE << SIZE_CODE;
         typedef AlignedJobX<SIZE_CODE> JobT;
-        typedef mem::BlockArray<JobT, kJobArraySize> JobArray;
 
         JobRef Alloc() {
             if (_queue.empty()) {
                 JobArray* jobs = Create<JobArray>();
-                _arrays.push_back(jobs->id);
+                _arrays.push_back(jobs->id());
                 for (int i = 0; i < kJobArraySize; i++) {
-                    BlockRef<JobT> block_ref = (*jobs)[i];
-                    // TODO: ugh!!
-                    JobRef* job_ref = reinterpret_cast<JobRef*>(&block_ref);
-
-                    _queue.add(*job_ref);
+                    _queue.add((*jobs)[i]);
                 }
             }
             return _queue.next();

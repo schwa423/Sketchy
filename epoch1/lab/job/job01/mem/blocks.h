@@ -99,7 +99,7 @@ class BlockRef : public impl::BlockRefImpl {
 // satisfy most use-cases, but users are free to implement their
 // own subclasses of BlockArray.
 // TODO: document differently now that this is no longer called TypedBlockArray.
-template <typename BlockT, int NumBlocks = impl::BlockArrayImpl::kMaxBlocks>
+template <int BlockSize, typename BlockT, int NumBlocks = impl::BlockArrayImpl::kMaxBlocks>
 class BlockArray : public impl::BlockArrayImpl {
 	friend class BlockTests;
 	friend class impl::BlockArrayManager;
@@ -111,23 +111,28 @@ class BlockArray : public impl::BlockArrayImpl {
 	// (or a null-ref if the index is invalid).
 	BlockRefT operator[](int32_t block_index) const {
 		if (block_index >= 0 && block_index < count) {
-			return CreateRef<BlockRefT>(id, block_index);
+			return CreateRef<BlockRefT>(id(), block_index);
 		} else {
 			return BlockRefT(nullptr);
 		}
 	}
 
  protected:
- 	// "id" is a newly-minted ref to this array.
  	// This is the only way that new BlockArrays are instantiated.
- 	BlockArray(const impl::BlockArrayRef& id)
- 	: impl::BlockArrayImpl(id, _blocks, NumBlocks,
-                           // Cannot use sizeof(BlockT) here due to mem-alignment.
-						   PointerDifference(_blocks, _blocks + 1)) {
+ 	BlockArray() : impl::BlockArrayImpl(_blocks,
+ 			 		                    NumBlocks,
+			 		                    BlockSize,
+     		 		                    alignof(BlockT)) { }
+
+ 	// Used for initialization.
+ 	BlockT* GetBlockPtr(int32_t block_index) {
+ 		SCHWASSERT(block_index >= 0 && block_index < count,
+ 				   "invalid block-index in GetBlockPtr()");
+ 		return reinterpret_cast<BlockT*>(_blocks + (block_index * stride));
  	}
 
-    // Raw memory for blocks.
- 	BlockT _blocks[NumBlocks];
+    // Raw memory for blocks, aligned properly for the specified block-type.
+ 	uint8_t alignas(alignof(BlockT)) _blocks[BlockSize * NumBlocks];
 };
 
 

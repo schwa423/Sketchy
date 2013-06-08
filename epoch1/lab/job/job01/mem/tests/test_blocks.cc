@@ -43,7 +43,16 @@ class__cache_align  TestJob : public core::Link<TestJob, TestJobRef> {
 
 // BlockArray containing jobs.
 const int kJobArraySize = 1024;
-typedef BlockArray<TestJob, kJobArraySize> TestJobArray;
+typedef BlockArray<sizeof(TestJob), TestJob, kJobArraySize> TestJobArrayBase;
+class TestJobArray : public TestJobArrayBase {
+ protected:
+ 	virtual void InitBlocks() {
+ 		for (int i = 0; i < kJobArraySize; i++) {
+ 			// Initialize all blocks with placement-new.
+ 			new (GetBlockPtr(i)) TestJob;
+ 		}
+ 	}
+};
 
 
 class TestJobQueue : public core::Queue<TestJob> {
@@ -52,7 +61,7 @@ class TestJobQueue : public core::Queue<TestJob> {
  	void allocateJobs() {
  		// Allocate a new TestJobArray, and remember that we allocated it.
  		TestJobArray& jobs = *(Create<TestJobArray>());
- 		_arrays.push_back(jobs.id);
+ 		_arrays.push_back(jobs.id());
 
  		// Add the jobs.
  		for (int i = 0; i < kJobArraySize; i++) {
@@ -72,7 +81,7 @@ class BlockTests {
 public:
 
 	static TestJob* GetBlockFromArray(TestJobArray& array, int index) {
-		return array._blocks + index;
+		return reinterpret_cast<TestJob*>(array._blocks) + index;
 	}
 
 };

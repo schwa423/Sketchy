@@ -147,15 +147,6 @@
         'job01/mem/impl/blocks_impl.cc',
       ],
     },
-    # TARGET test_job01_mem__ref.exe
-    {
-      'target_name': 'test_job01_mem__ref.exe',
-      'type': 'executable',
-      'defines': [ '<@(COMMON_DEFINES)', ],
-      'sources': [
-        'job01/mem/tests/test_ref.cc',
-      ],
-    },
 
 
     # schwa::job01::obj =======================================================

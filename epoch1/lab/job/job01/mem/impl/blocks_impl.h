@@ -36,7 +36,17 @@ class BlockArrayRef {
     friend class BlockRefImpl;
 
  public:
-    // BlockArrayRef variables can be assigned to.
+    enum { kNull = 255 };
+
+    // Anyone can create a "nullptr" ref, but non-null refs
+    // are unforgeable and can only be instantiated by our
+    // friends.
+
+    // NOTE: as an aside, one might and, of course, via copy-construction... but I don't
+    // think of that as instantiation, but rather setting a
+    // pointer-variable, no different than "Foo* foo = bar")
+    BlockArrayRef() : _index(kNull) { }
+
     BlockArrayRef& operator=(const BlockArrayRef& other) {
     	_index = other._index;
     }
@@ -114,7 +124,6 @@ static_assert(sizeof(BlockRefImpl) == 4, "ref is wrong size");
 // Base class for all block-arrays.
 // TODO: document subclass responsibilities.
 class BlockArrayImpl {
-
     friend class BlockArrayManager;
 
  public: 
@@ -126,17 +135,19 @@ class BlockArrayImpl {
 	// (or a null-ref if the index is invalid).
 	BlockRefImpl operator[](int block_index) const {
 		if (block_index >= 0 && block_index < count) {
-			return BlockRefImpl(id, block_index);
+			return BlockRefImpl(_self, block_index);
 		} else {
 			return BlockRefImpl(nullptr);
 		}
 	}
 
  public:
-    const BlockArrayRef id;           // refers to this BlockArray
-    const int           count;        // number of blocks in this BlockArray
-    const size_t        stride;       // byte-increment between adjacent Blocks
-    void* const         first_block;  // base address to which index is added
+    const BlockArrayRef& id() const { return _self; }
+    void* const          first_block;  // base address to which index is added
+    const int            count;        // number of blocks in this BlockArray
+    const size_t         stride;       // byte-increment between adjacent Blocks
+    const size_t         alignment;    // alignment of specified Block type
+
 
     // Maximum number of blocks that a BlockArray can be instantiated with.
     // The determining factor is the number of bits BlockRefImpl has available
@@ -145,11 +156,12 @@ class BlockArrayImpl {
 
  protected:
     // TODO: document 
-    BlockArrayImpl(const BlockArrayRef& ref, // newly-minted ref to this array
-    		       void* first,              // first in contiguous array of blocks
+    BlockArrayImpl(void* first,              // first in contiguous array of blocks
     		       int block_count,          // number of blocks in the array 
-    		       size_t block_stride)      // stride between consecutive blocks
-    : id(ref), count(block_count), stride(block_stride), first_block(first) { 
+                   size_t block_stride,      // stride between consecutive blocks
+                   size_t block_align)       // stride between consecutive blocks  
+    : first_block(first), count(block_count),
+      stride(block_stride), alignment(block_align) { 
     	SCHWASSERT(block_stride == 64, "bad stride");
       	SCHWASSERT(count <= kMaxBlocks, "maximum block count exceeded");
     }
@@ -160,6 +172,13 @@ class BlockArrayImpl {
     BlockRefT CreateRef(BlockArrayRef array_ref, uint16_t block_index) const {
     	return BlockRefT(array_ref, block_index);
     }
+
+    // Subclasses can implement this to initialize the block-memory.
+    virtual void InitBlocks() { };
+
+ private:
+    BlockArrayRef _self;           // refers to this BlockArray
+    void InitRefToSelf(const BlockArrayRef& ref) { _self = ref; }
 };
 
 
@@ -179,7 +198,12 @@ class BlockArrayManager {
 
         // Create pool with the next available ID.
         BlockArrayRef id = _count++;
-        BlockArrayT* array = new BlockArrayT(id);
+        BlockArrayT* array = new BlockArrayT;
+        array->InitRefToSelf(id);
+
+        // TODO: C++ is dumb... if I'm friend of a base class,
+        //       I should be able to call a protected virtual function.
+        static_cast<BlockArrayImpl*>(array)->InitBlocks();
 
         // Record the info necessary to find a Block* from only
         // the BlockArrayRef and object-index within the bool.  Storing the
@@ -216,8 +240,7 @@ class BlockArrayManager {
         size_t byte_index = ref._block * info.stride;
 
         // Compute and return a raw pointer to the block.
-        uint8_t* block = &(info.block_mem[byte_index]);
-        return block;
+        return info.block_mem + byte_index;
     }
 
  private:
