@@ -17,6 +17,26 @@
 //    TODO:
 //      - more documentation
 //
+//      - Defragmentation (random notes):
+//        - small bits of defragmentation can happen opportunistically
+//          in low priority jobs...
+//        - ... which synergizes nicely with long-lived jobs that allocate
+//          memory from different pools
+//        - can imagine a GC algorithm that would cause workers to start
+//          filtering jobs from one particular JobPool (ie: simple comparison
+//          against the PoolID).  Filtered jobs would be stashed on the side in
+//          a JobChain; as soon as the filter is turned off, they would be
+//          inserted at the front of the queue.  Workers could use a separate
+//          run-loop function for this, since it would require overhead for 
+//          each dequeued job... when switching between modes, the worker would
+//          - exit the current run-loop (interrupt-processing sets a flag)
+//          - check a status flag, and find that slower "defrag run-loop"
+//            function should be used
+//          - when defragmentation job finishes, it sets interrupt flag, and
+//            which will cause "defrag run-loop" to exit.
+//          - status flag will be checked, and find that "fast-path run-loop"
+//            should now be used.
+//
 ///////////////////////////////////////////////////////////////////////////////
 
 
