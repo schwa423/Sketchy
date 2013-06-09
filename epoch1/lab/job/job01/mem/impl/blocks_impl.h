@@ -194,7 +194,7 @@ class BlockArrayManager {
     // TODO: throw exception if full, or otherwise unable to create array.        
     template <typename BlockArrayT>
     static BlockArrayT* Create() {
-        SCHWASSERT(_num_pools < kMaxArrays, "exceeded maximum number of arrays");
+        SCHWASSERT(_count < kMaxArrays, "exceeded maximum number of arrays");
 
         // Create pool with the next available ID.
         BlockArrayRef id = _count++;

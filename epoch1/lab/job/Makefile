@@ -26,13 +26,14 @@ run_job01_tests: job01
 	./build/${BUILDCONFIG}/test_boss_01.exe
 	./build/${BUILDCONFIG}/test_generic_worker_01.exe
 	./build/${BUILDCONFIG}/test_jobqueue_01.exe
+	./build/${BUILDCONFIG}/test_job01_impl__jobpool.exe		
 	./build/${BUILDCONFIG}/test_core__link_01.exe
+	./build/${BUILDCONFIG}/test_job01_core__meta.exe	
 	./build/${BUILDCONFIG}/test_core__padding_01.exe
 	./build/${BUILDCONFIG}/test_core__queue_01.exe
 	./build/${BUILDCONFIG}/test_core__ring_01.exe
-	./build/${BUILDCONFIG}/test_job01_core__meta.exe	
 	./build/${BUILDCONFIG}/test_job01_mem__blocks.exe
-	./build/${BUILDCONFIG}/test_job01_impl__jobpool.exe	
+	./build/${BUILDCONFIG}/test_job01_obj__obj.exe
 
 run_tests: run_job01_tests
 
