@@ -18,7 +18,7 @@ job01_core_tests: test_job01_core__link.exe test_job01_core__meta.exe \
 	test_job01_core__padding.exe test_job01_core__queue.exe \
 	test_job01_core__ring.exe
 
-job01_mem_tests: test_job01_mem__blocks.exe
+job01_mem_tests:
 
 job01_obj_tests: test_job01_obj__obj.exe
 
@@ -34,7 +34,6 @@ run_job01_tests: job01
 	./build/${BUILDCONFIG}/test_job01_core__padding.exe
 	./build/${BUILDCONFIG}/test_job01_core__queue.exe
 	./build/${BUILDCONFIG}/test_job01_core__ring.exe
-	./build/${BUILDCONFIG}/test_job01_mem__blocks.exe
 	./build/${BUILDCONFIG}/test_job01_obj__obj.exe
 
 run_tests: run_job01_tests

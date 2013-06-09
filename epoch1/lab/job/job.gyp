@@ -81,7 +81,6 @@
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
         'job01/impl/tests/test_jobpool.cc',
-        'job01/mem/impl/blocks_impl.cc',
         'job01/obj/obj.cc',        
       ],
     },   
@@ -132,20 +131,6 @@
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
         'job01/core/tests/test_meta.cc',
-      ],
-    },
-
-
-    # schwa::job01::mem =======================================================
-
-    # TARGET test_job01_mem__blocks.exe
-    {
-      'target_name': 'test_job01_mem__blocks.exe',
-      'type': 'executable',
-      'defines': [ '<@(COMMON_DEFINES)', ],
-      'sources': [
-        'job01/mem/tests/test_blocks.cc',
-        'job01/mem/impl/blocks_impl.cc',
       ],
     },
 

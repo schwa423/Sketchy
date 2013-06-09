@@ -16,6 +16,9 @@
 //
 //    TODO:
 //      - more documentation
+//      - pretty ostream printing of public types
+//      - benchmark
+//      - cross platform way to implement #pragma pack()
 //
 //      - Defragmentation (random notes):
 //        - small bits of defragmentation can happen opportunistically
@@ -52,9 +55,9 @@
 enum ObjSizeCode { k64Bytes = 0, k128Bytes, k256Bytes, k512Bytes };
 
 
-//  A reference to an object which trades off a small amount of performance
-//  compared to a raw pointer, but in return gains a number of advantages.
-//  The main ones are:
+//  A strongly-typed reference to an object which can be compared, assigned,
+//  and dereferenced.  It trades off a small amount of performance compared to
+//  a raw pointer, but in return gains a number of advantages, such as:
 //
 //    - relocatable objects: a pool of objects can be relocated in memory,
 //        yet any refs to these objects will remain valid.  The caveat is that
