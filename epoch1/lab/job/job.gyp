@@ -41,9 +41,9 @@
 
     # schwa::job01 ============================================================
 
-    # TARGET test_boss_01.exe
+    # TARGET test_job01__boss.exe
     {
-      'target_name': 'test_boss_01.exe',
+      'target_name': 'test_job01__boss.exe',
       'type': 'executable',
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
@@ -51,9 +51,9 @@
         'job01/boss.cpp',
       ],
     },
-    # TARGET test_generic_worker_01.exe
+    # TARGET test_job01__generic_worker.exe
     {
-      'target_name': 'test_generic_worker_01.exe',
+      'target_name': 'test_job01__generic_worker.exe',
       'type': 'executable',
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
@@ -61,9 +61,9 @@
         'job01/generic_worker.cpp',
       ],
     },
-    # TARGET test_jobqueue_01.exe
+    # TARGET test_job01__jobqueue.exe
     {
-      'target_name': 'test_jobqueue_01.exe',
+      'target_name': 'test_job01__jobqueue.exe',
       'type': 'executable',
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
@@ -89,36 +89,36 @@
 
     # schwa::job01::core ======================================================
 
-    # TARGET test_core__link_01.exe
+    # TARGET test_job01_core__link.exe
     {
-      'target_name': 'test_core__link_01.exe',
+      'target_name': 'test_job01_core__link.exe',
       'type': 'executable',
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
         'job01/core/tests/test_link.cpp',
       ],
     },
-    # TARGET test_core__padding_01.exe
+    # TARGET test_job01_core__padding.exe
     {
-      'target_name': 'test_core__padding_01.exe',
+      'target_name': 'test_job01_core__padding.exe',
       'type': 'executable',
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
         'job01/core/tests/test_padding.cpp',
       ],
     },  
-    # TARGET test_core__queue_01.exe
+    # TARGET test_job01_core__queue.exe
     {
-      'target_name': 'test_core__queue_01.exe',
+      'target_name': 'test_job01_core__queue.exe',
       'type': 'executable',
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
         'job01/core/tests/test_queue.cpp',
       ],
     },
-    # TARGET test_core__ring_01.exe
+    # TARGET test_job01_core__ring.exe
     {
-      'target_name': 'test_core__ring_01.exe',
+      'target_name': 'test_job01_core__ring.exe',
       'type': 'executable',
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
