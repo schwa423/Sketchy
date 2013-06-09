@@ -82,6 +82,7 @@
       'sources': [
         'job01/impl/tests/test_jobpool.cc',
         'job01/mem/impl/blocks_impl.cc',
+        'job01/obj/obj.cc',        
       ],
     },   
 

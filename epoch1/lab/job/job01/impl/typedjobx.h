@@ -23,11 +23,10 @@
 // schwa::job01::impl =========================================================
 namespace schwa { namespace job01 { namespace impl {
 
-// TODO: revisit public vs. private.
+
 template <typename JobDescT>
 class TypedJobX : public JobX {
  public:
-
     virtual ~TypedJobX() { }
 
     virtual void Run() {
@@ -40,28 +39,6 @@ class TypedJobX : public JobX {
 
     JobDescT _description;
 };
-
-template <typename JobDescT>
-constexpr unsigned SizeCode(SCHWA_ONLY_IF_SIZE_BETWEEN(TypedJobX<JobDescT>, 0, 64)) {
-    return 0;
-}
-template <typename JobDescT>
-constexpr unsigned SizeCode(SCHWA_ONLY_IF_SIZE_BETWEEN(TypedJobX<JobDescT>, 64, 128)) {
-    return 1;
-}
-template <typename JobDescT>
-constexpr unsigned SizeCode(SCHWA_ONLY_IF_SIZE_BETWEEN(TypedJobX<JobDescT>, 128, 256)) {
-    return 2;
-}
-template <typename JobDescT>
-constexpr unsigned SizeCode(SCHWA_ONLY_IF_SIZE_BETWEEN(TypedJobX<JobDescT>, 256, 512)) {
-    return 3;
-}
-template <typename JobDescT>
-constexpr unsigned SizeCode2() {
-    return SizeCode<JobDescT>();
-}
-
 
 
 }}}  // schwa::job01::impl ====================================================

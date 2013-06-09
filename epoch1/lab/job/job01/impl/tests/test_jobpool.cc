@@ -69,10 +69,6 @@ int main() {
     JobPool pool;
     JobStats stats;
 
-    // TODO: if we comment out this line, we get a linker error... apparently
-    //       this forces a template instantiation somehow.  Figure out what to do.
-    cerr << "SIZE-CODE OF GUY:  " << SizeCode2<JobStatsTracker>() << endl;
-
     assert(0 == stats.allocs);
     assert(0 == stats.runs);
     assert(0 == stats.deallocs);

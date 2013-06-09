@@ -67,6 +67,7 @@ enum ObjSizeCode { k64Bytes = 0, k128Bytes, k256Bytes, k512Bytes };
 //        fit too many 8-byte pointers to other objects in a cacheline-sized
 //        (i.e. 64 byte) object with a 16-byte header (8 for the pointer to the
 //        virtual function table, and 8 for an intrusive link pointer).
+#pragma pack(push, 1) 
 template <typename ObjT>
 class ObjRef {
     friend class ObjMaker;
@@ -86,7 +87,12 @@ class ObjRef {
     //       places, such as core::Queue, which are designed to 
     //       use both raw pointers, and pointer-like refs.
     ObjT* operator->() { return ptr(); }
-    const ObjT* operator->() const { return ptr(); }    
+    const ObjT* operator->() const { return ptr(); }
+
+    // Allows using static_cast to transform to raw pointer.
+    explicit operator ObjT*() {
+        return ptr();
+    }
 
     // Assign another ref to this one (so they both refer to the same Obj)...
     ObjRef& operator=(const ObjRef& other);
@@ -110,6 +116,7 @@ class ObjRef {
 
     enum { kNull = std::numeric_limits<uint16_t>::max() };
 };
+#pragma pack(pop) 
 
 
 // Base class for objects which:
@@ -117,6 +124,7 @@ class ObjRef {
 // - TODO: more to follow
 template <typename ObjT>
 class Obj : public core::Link<ObjT, ObjRef<ObjT>> {
+    friend class ObjMaker;
     friend class Unborn;
 
  public:
@@ -200,44 +208,6 @@ class ObjMaker {
     // but instantiable subclasses are allowed.
     ObjMaker() { }
 
-    // Return a chain of objects of the specified type.
-    // If there are not enough unborn objects of the correct size,
-    // allocate more raw memory to create new ones.
-    //
-    // NOTE: This function is protected since it has the power to
-    //       create any kind of objects... we don't want to give
-    //       this power to everyone.  Instead, subclasses can 
-    //       provide more limited access to this functionality.
-    template <typename ObjT>
-    static core::Queue<ObjT> MakeObjects(int desiredCount);
-
-    // Return objects to their maker.
-    //
-    // NOTE: not yet implemented.
-    template <typename ObjT>
-    static void UnmakeObjects(core::Queue<ObjT>& objects);
-
- private:
-    // Allocate raw memory for some new Unborn objects,
-    // and add them to the appropriate free-list.
-    static bool MakeMoreUnborn(ObjSizeCode code);
-
-    // Holds information used to dereference an ObjRef.
-    struct Array {
-        uint8_t* _pointer;
-        size_t   _stride;
-
-        // Set to initial state before use.
-        void Init();
-
-        // Allocate enough space for "count" objects of size "stride".
-        // Return false if the memory could not be allocated, true otherwise.
-        bool Alloc(size_t stride, size_t count);
-
-        // Free the pointer.
-        void Free();
-    };
-
     // TODO: un-hardwire kNumObjSizes and kMaxArrayCount.
     //       The former corresponds to the 2-bit ObjSizeCode,
     //       and the latter is what fits in a uint8_t.
@@ -245,13 +215,37 @@ class ObjMaker {
            kMaxArrayCount = 256,
            kMaxArraySize = UnbornRef::kNull };
 
+    // Return a chain of *unconstructed* objects of the specified type...
+    // the caller needs to use placement-new to construct them before use.
+    // 
+    // If there are not enough unborn objects of the correct size, allocate
+    // more raw memory to create new ones.
+    //
+    // NOTE: This function is protected since it has the power to
+    //       create any kind of objects... we don't want to give
+    //       this power to everyone.  Instead, subclasses can 
+    //       provide more limited access to this functionality.
+    template <typename ObjT, ObjSizeCode size_code>
+    static core::Queue<ObjT> MakeObjects(int desiredCount);
 
-    static Array         s_arrays[kMaxArrayCount];
-    static int           s_array_count;
-    static UnbornQueue   s_unborn[kNumObjSizes];
-    static std::mutex    s_mutex;
+    // NOTE: Compiler bug?  This version of MakeObjects() should not be
+    // required; I should just be able to have one version (the one above)
+    // where a default value for size_code is computed as:
+    //    size_code = ObjMaker::SizeCodeFor<ObjT>()
+    // but my compiler can't tell that SizeCodeFor() is a constexpr even though
+    // it's explicitly marked as a freeking constexpr.  Grr.  So instead, I
+    // make another version of the function that first computes the size_code
+    // before calling the original version.
+    template <typename ObjT>
+    static core::Queue<ObjT> MakeObjects(int desiredCount) {
+        return MakeObjects<ObjT, ObjMaker::SizeCodeFor<ObjT>()>(desiredCount);
+    }
 
-    typedef std::lock_guard<std::mutex> lock_guard;
+    // Return objects to their maker.
+    //
+    // NOTE: not yet implemented.
+    template <typename ObjT>
+    static void UnmakeObjects(core::Queue<ObjT>& objects);
 
     // Compile-time computation of size-code for the specified object-type.
     template <typename ObjT>
@@ -278,7 +272,39 @@ class ObjMaker {
                                                                         512)) {
         return k512Bytes;
     }
+    // Run-time look up of size-code for the specified object.
+    template <typename ObjT>
+    static ObjSizeCode SizeCodeForPtr(ObjT* ptr) {
+        return static_cast<Obj<ObjT>*>(ptr)->_size_code;
+    }
 
+ private:
+    // Allocate raw memory for some new Unborn objects,
+    // and add them to the appropriate free-list.
+    static bool MakeMoreUnborn(ObjSizeCode code);
+
+    // Holds information used to dereference an ObjRef.
+    struct Array {
+        uint8_t* _pointer;
+        size_t   _stride;
+
+        // Set to initial state before use.
+        void Init();
+
+        // Allocate enough space for "count" objects of size "stride".
+        // Return false if the memory could not be allocated, true otherwise.
+        bool Alloc(size_t stride, size_t count);
+
+        // Free the pointer.
+        void Free();
+    };
+
+    static Array         s_arrays[kMaxArrayCount];
+    static int           s_array_count;
+    static UnbornQueue   s_unborn[kNumObjSizes];
+    static std::mutex    s_mutex;
+
+    typedef std::lock_guard<std::mutex> lock_guard;
 };
 
 
@@ -361,19 +387,28 @@ ObjT* ObjMaker::Lookup(ObjRef<ObjT>& ref) {
 }
 
 
-// Return a chain of objects of the specified type.
-// If there are not enough unborn objects of the correct size,
-// allocate more raw memory to create new ones.
-template <typename ObjT>
+// Return a chain of *unconstructed* objects of the specified type...
+// the caller needs to use placement-new to construct them before use.
+//
+// If there are not enough unborn objects of the correct size, allocate
+// more raw memory to create new ones.
+template <typename ObjT, ObjSizeCode size_code>
 core::Queue<ObjT> ObjMaker::MakeObjects(int desiredCount) {
     // Ensure we don't accidentally make a non-Obj.
     static_assert(std::is_base_of<Obj<ObjT>, ObjT>::value,
                   "ObjT must be a sublass of Obj<ObjT>");
 
-    lock_guard lock(s_mutex);
+    // The explicitly-requested size-code must be at least as large
+    // as the minimum size-code for the specified type.
+    static_assert(size_code >= SizeCodeFor<ObjT>(),
+                  "Explicitly requested size-code too small for ObjT");
 
-    ObjSizeCode size_code = SizeCodeFor<ObjT>();
-    assert(size_code < kNumObjSizes);
+    // Sanity check on our own coding.
+    static_assert(size_code < kNumObjSizes,
+                  "Hey stoopid, what did you do to break this?");
+
+    // Safe to call this from any thread.
+    lock_guard lock(s_mutex);
 
     // Get the free-list of unborn objects of the correct size.
     auto& unborn = s_unborn[size_code];
@@ -395,7 +430,7 @@ core::Queue<ObjT> ObjMaker::MakeObjects(int desiredCount) {
                                             ? unborn.count()
                                             : desiredCount;
 
-    // Collect a list of newly-constructed ObjT.
+    // Collect a list of un-constructed ObjT.
     core::Queue<ObjT> result;
     UnbornRef ref;
     for (int i = 0; i < returnedCount; ++i) {
@@ -403,12 +438,11 @@ core::Queue<ObjT> ObjMaker::MakeObjects(int desiredCount) {
         ref = unborn.next();
         // Dereference it to obtain a raw pointer.
         Unborn* ptr = ref.ptr();
-        // Use placement-new to create an ObjT in its place.
-        // NOTE: there no need to call ~Unborn() since it is a no-op.
-        new (ptr) ObjT();
-        // The reference now points to an ObjT instead of an Unborn,
-        // but it doesn't know that.  Force it to recognize its new
-        // type, and add it to the result-queue.
+        // Destroy the Unborn.  
+        ptr->~Unborn();
+        // The reference now points to an (unconstructed) ObjT instead of an
+        // Unborn, but it doesn't know that.  Coerce it to the correct type,
+        // and add it to the result-queue.
         result.add(*reinterpret_cast<ObjRef<ObjT>*>(&ref));
     }
 

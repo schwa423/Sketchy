@@ -37,11 +37,10 @@ run_job01_tests: job01
 run_tests: run_job01_tests
 
 # Run the thing we're currently developing.
-#dev_test: test_job01_obj__obj.exe
-#	./build/${BUILDCONFIG}/test_job01_obj__obj.exe
-dev_test: test_job01_mem__blocks.exe test_job01_impl__jobpool.exe	
-	./build/${BUILDCONFIG}/test_job01_mem__blocks.exe
+dev_test: job01_impl_tests job01_obj_tests job01_tests
 	./build/${BUILDCONFIG}/test_job01_impl__jobpool.exe
+	./build/${BUILDCONFIG}/test_job01_obj__obj.exe
+	./build/${BUILDCONFIG}/test_jobqueue_01.exe
 
 job.xcodeproj: job.gyp
 	gyp --depth=. -f xcode
