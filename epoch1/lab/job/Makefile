@@ -43,6 +43,8 @@ dev_test: job01_impl_tests job01_obj_tests job01_tests
 	./build/${BUILDCONFIG}/test_job01_impl__jobpool.exe
 	./build/${BUILDCONFIG}/test_job01_obj__obj.exe
 	./build/${BUILDCONFIG}/test_job01__jobqueue.exe
+	./build/${BUILDCONFIG}/test_job01__boss.exe	
+
 
 job.xcodeproj: job.gyp
 	gyp --depth=. -f xcode

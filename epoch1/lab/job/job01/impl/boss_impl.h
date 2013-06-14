@@ -27,8 +27,8 @@ namespace schwa { namespace job01 { namespace impl {
 
 class__cache_align  BossImpl {
  protected:
-	void initializeWorker(Worker* worker, JobQueue* queue) {
-		worker->initialize(queue);
+	void initializeWorker(Worker& worker, JobQueue* queue) {
+		worker.initialize(queue);
 	}
 };
 

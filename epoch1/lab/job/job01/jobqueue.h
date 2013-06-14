@@ -40,7 +40,7 @@ class JobQueue : public core::RingElement<JobQueue, 3*host::CACHE_LINE_SIZE> {
 
     // Obtain the next job from the queue.
     // If there are none available, ask our peers for some.
-    impl::JobX* nextJob() {
+    impl::JobX* NextJob() {
         auto job = _queue.next();
         if (!job)
             requestJobsFromPeers();

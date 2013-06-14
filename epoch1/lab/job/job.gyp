@@ -49,6 +49,8 @@
       'sources': [
         'job01/tests/test_boss.cpp',
         'job01/boss.cpp',
+        'job01/worker.cc',
+        'job01/obj/obj.cc',        
       ],
     },
     # TARGET test_job01__generic_worker.exe

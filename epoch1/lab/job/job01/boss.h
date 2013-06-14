@@ -53,19 +53,22 @@ namespace schwa { namespace job01 {
 
 
 template <int NUM_WORKERS>
-class CACHE_ALIGNED Boss : public impl::BossImpl {
+class__cache_align Boss : public impl::BossImpl {
  public:
 	Boss() {
  		for (int i = 0; i < NUM_WORKERS; i++) {
-	 		auto worker = _workers.elementAt(i);
+	 		auto& worker = _workers[i];
 	 		auto queue  = _queues.elementAt(i);
 	 		initializeWorker(worker, queue);
  		}
 	}
 
+    void startWorkers();
+    void stopWorkers();
+
  private:
  	core::Ring<JobQueue, NUM_WORKERS> _queues;
- 	core::Ring<Worker, NUM_WORKERS>   _workers;
+    Worker _workers[NUM_WORKERS];
 };
 
 

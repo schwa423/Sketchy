@@ -1,22 +1,26 @@
 //
-//  worker.h
-//  schwa::job01
+//    worker.h
+//    schwa::job01
 //
-//  Copyright (c) 2013 Schwaftwarez
-//  Licence: Apache v2.0
+//    Copyright (c) 2013 Schwaftwarez
+//    Licence: Apache v2.0
 //
-//  *** TODO **
-//      - just a sketch... once we have JobQueue finished and tested
-//        it will be time to think about the interface to Worker.
+//    Simple version, just to get things up and running.  Manages a thread.
+//    Loops on a queue, pulling jobs off to execute.
 //
+///////////////////////////////////////////////////////////////////////////////
 
 
 #ifndef __schwa__job01__worker__
 #define __schwa__job01__worker__
 
 
-#include "job01/core/ring.h"
 #include "job01/host/host.h"
+#include "job01/impl/jobpool.h"
+#include "job01/jobqueue.h"
+
+#include <mutex>
+#include <thread>
 
 
 // schwa::job01 ===============================================================
@@ -28,9 +32,9 @@ namespace impl {
 }
 
 
-class Worker : public core::RingElement<Worker, host::CACHE_LINE_SIZE> {
+class__cache_align Worker {
  public:
- 	Worker() : _queue(nullptr) { }
+ 	Worker();
 
  private:
  	void initialize(JobQueue* queue) { 
@@ -40,8 +44,23 @@ class Worker : public core::RingElement<Worker, host::CACHE_LINE_SIZE> {
 
 	friend class impl::BossImpl;
 
+    void start();
+    void stop();
+
  private:
- 	JobQueue* _queue;
+    void run();
+
+    virtual void processJobs();
+
+    enum WorkerState { kProcessing, kStopped };
+
+ 	JobQueue*     _queue;
+    impl::JobPool _pool;
+    std::mutex    _mutex;
+    bool          _interrupted;
+    bool          _is_stopped;
+    WorkerState   _state;
+    std::thread   _thread;
 };
 
 
