@@ -25,6 +25,13 @@
         'SDKROOT': 'macosx10.8',
       },
     }],
+    ['OS=="emscripten"', {
+      'variables': {
+        'CCPATH': '~/hacking/emscripten',
+        'CC': '<@(CCPATH)/emcc',
+        'CXX': '<@(CCPATH)/em++',
+      },
+    }],
   ],
   # TODO: why doesn't this do anything?  (I had to copy into eg: job.gyp)
   'target_defaults': {
