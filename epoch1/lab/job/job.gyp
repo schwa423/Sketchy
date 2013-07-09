@@ -50,7 +50,7 @@
         'job01/tests/test_boss.cpp',
         'job01/boss.cpp',
         'job01/worker.cc',
-        'job01/obj/obj.cc',        
+        'job01/obj/obj.cc',
       ],
     },
     # TARGET test_job01__generic_worker.exe
@@ -72,10 +72,30 @@
         'job01/tests/test_jobqueue.cpp',
       ],
     },
+    # TARGET test_job01__worker.exe
+    {
+      'target_name': 'test_job01__worker.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/tests/test_worker.cc',
+        'job01/worker2.cc',
+      ],
+    },
+    # TARGET example_job01__threadloop_signalhandler.exe
+    {
+      'target_name': 'example_job01__threadloop_signalhandler.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/examples/example_threadloop_signalhandler.cc',
+        'job01/thread/threadloop.cc',
+      ],
+    },
 
 
     # schwa::job01::impl ======================================================
- 
+
     # TARGET test_job01_impl__jobpool.exe
     {
       'target_name': 'test_job01_impl__jobpool.exe',
@@ -83,9 +103,9 @@
       'defines': [ '<@(COMMON_DEFINES)', ],
       'sources': [
         'job01/impl/tests/test_jobpool.cc',
-        'job01/obj/obj.cc',        
+        'job01/obj/obj.cc',
       ],
-    },   
+    },
 
 
     # schwa::job01::core ======================================================
@@ -107,7 +127,7 @@
       'sources': [
         'job01/core/tests/test_padding.cpp',
       ],
-    },  
+    },
     # TARGET test_job01_core__queue.exe
     {
       'target_name': 'test_job01_core__queue.exe',

@@ -10,7 +10,9 @@ all: job00 job01
 job00: job_pool_00.exe generic_pool_00.exe
 
 job01_tests: test_job01__boss.exe test_job01__generic_worker.exe \
-	test_job01__jobqueue.exe
+	test_job01__jobqueue.exe test_job01__worker.exe
+
+job01_examples: example_job01__threadloop_signalhandler.exe
 
 job01_impl_tests: test_job01_impl__jobpool.exe
 
@@ -28,9 +30,9 @@ run_job01_tests: job01
 	./build/${BUILDCONFIG}/test_job01__boss.exe
 	./build/${BUILDCONFIG}/test_job01__generic_worker.exe
 	./build/${BUILDCONFIG}/test_job01__jobqueue.exe
-	./build/${BUILDCONFIG}/test_job01_impl__jobpool.exe		
+	./build/${BUILDCONFIG}/test_job01_impl__jobpool.exe
 	./build/${BUILDCONFIG}/test_job01_core__link.exe
-	./build/${BUILDCONFIG}/test_job01_core__meta.exe	
+	./build/${BUILDCONFIG}/test_job01_core__meta.exe
 	./build/${BUILDCONFIG}/test_job01_core__padding.exe
 	./build/${BUILDCONFIG}/test_job01_core__queue.exe
 	./build/${BUILDCONFIG}/test_job01_core__ring.exe
@@ -39,11 +41,8 @@ run_job01_tests: job01
 run_tests: run_job01_tests
 
 # Run the thing we're currently developing.
-dev_test: job01_impl_tests job01_obj_tests job01_tests
-	./build/${BUILDCONFIG}/test_job01_impl__jobpool.exe
-	./build/${BUILDCONFIG}/test_job01_obj__obj.exe
-	./build/${BUILDCONFIG}/test_job01__jobqueue.exe
-	./build/${BUILDCONFIG}/test_job01__boss.exe	
+dev_test: example_job01__threadloop_signalhandler.exe
+	./build/${BUILDCONFIG}/example_job01__threadloop_signalhandler.exe
 
 
 job.xcodeproj: job.gyp

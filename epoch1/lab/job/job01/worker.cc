@@ -7,27 +7,14 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-
 #include "job01/worker.h"
 
-
-
 typedef std::lock_guard<std::mutex> lock_guard;
-
 
 // schwa::job01 ===============================================================
 namespace schwa { namespace job01 {
 
-
-
-Worker::Worker() : _queue(nullptr), _interrupted(false), _is_stopped(true) {
-
-
-
-}
-
-
-
+Worker::Worker() : _queue(nullptr), _interrupted(false), _running(false) {}
 
 void Worker::start() {
     lock_guard lock(_mutex);
@@ -39,7 +26,6 @@ void Worker::start() {
     _thread = std::thread(&Worker::run, this);
 }
 
-
 void Worker::stop() {
     lock_guard lock(_mutex);
     if (_state == kStopped) {
@@ -49,8 +35,6 @@ void Worker::stop() {
 
     _thread.join();
 }
-
-
 
 void Worker::run() {
     while (true) {
@@ -64,10 +48,24 @@ void Worker::run() {
     }
 }
 
+// TODO: work-in-progress, probably broken
+void Worker::Loop() {
+    while (true) {
+        base::Stack<JobRequest> requests;
 
-void Worker::processJobs() {
-    while(!_interrupted) {
+        if (_interrupted) {
+            lock_guard lock(_mutex);
+            _interrupted = false;
+
+            requests.Add(_queue->HandleInterrupt());
+
+            // Receive
+            ReceiveMessages();
+            if (!_running)
+                return;
+        }
         auto job = _queue->NextJob();
+        ProcessMessages();
         if (job) {
             job->Run();
         } else {
@@ -76,5 +74,8 @@ void Worker::processJobs() {
     }
 }
 
+void Worker::ReceiveMessages() {
+
+}
 
 }}  // schwa::job01 ===========================================================
