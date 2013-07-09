@@ -25,11 +25,15 @@ namespace schwa { namespace job01 { namespace mem {
 #define e__align64      alignas(64)
 #define e__cache_align  alignas(host::CACHE_LINE_SIZE)
 #define class__cache_align  class e__cache_align
+#define align_64        alignas(64)
+#define align_cacheline alignas(host::CACHE_LINE_SIZE)
 #else
-#define e__align64   
-#define e__cache_align  
-#define class__cache_align  class 
-#endif    
+#define e__align64
+#define e__cache_align
+#define class__cache_align  class
+#define align_64
+#define align_cacheline
+#endif
 
 
 }}}  // schwa::job01::mem =====================================================
