@@ -32,7 +32,8 @@
 // schwa::job01 ===============================================================
 namespace schwa { namespace job01 {
 
-class JobQueue : public core::RingElement<JobQueue, 3*host::CACHE_LINE_SIZE> {
+// TODO: go on diet... do we really need 256 bytes?
+class JobQueue : public core::RingElement<JobQueue, 4*host::CACHE_LINE_SIZE> {
 
 
  public:
@@ -53,12 +54,12 @@ class JobQueue : public core::RingElement<JobQueue, 3*host::CACHE_LINE_SIZE> {
         if (!_interrupted) return;
 
         // Will hold copies of requests for processing outside of the critical
-        // section below.  This is necessary for avoiding deadlock, whether 
+        // section below.  This is necessary for avoiding deadlock, whether
         // passing jobs to the requestor or forwarding unfulfilled requests to
         // the next queue in the ring.
         Request reqs[kMaxRequests];
         int reqCount;
- 
+
         {
             lock lk(_mutex);
             _interrupted = false;
@@ -116,7 +117,7 @@ class JobQueue : public core::RingElement<JobQueue, 3*host::CACHE_LINE_SIZE> {
 
         JobQueue* requestor;    // who is requesting the jobs?
         int desired;            // number of jobs requested
-    }; 
+    };
 
     // Properties accessed only from our worker's thread.
     JobChain _queue;
@@ -159,7 +160,7 @@ class JobQueue : public core::RingElement<JobQueue, 3*host::CACHE_LINE_SIZE> {
             SCHWASSERT(_requestSent && !_requestFinished, "bad request state");
             _requestFinished = true;
         } else {
-            // Enqueue request for later processing. 
+            // Enqueue request for later processing.
             SCHWASSERT(_requestCount < kMaxRequests, "too many job requests");
             _requests[_requestCount++] = req;
         }
@@ -169,12 +170,12 @@ class JobQueue : public core::RingElement<JobQueue, 3*host::CACHE_LINE_SIZE> {
     // can only be partially fulfilled (i.e. not enough jobs are available),
     // decrement the number of desired jobs in the request, and forward it to
     // the next queue in the ring.  Otherwise, pass the fulfilled request to
-    // the requestor at the same time as giving it the jobs... that way it 
+    // the requestor at the same time as giving it the jobs... that way it
     // knows it can issue another request for more jobs.
     //
-    // USAGE: 
+    // USAGE:
     // - must be called from worker-thread which owns this queue
-    // - we must not hold the lock on our mutex, 
+    // - we must not hold the lock on our mutex,
     //   since we will lock the requestor's mutex.
     int fulfillRequest(Request* reqs, int reqInd, int numReqs, int available) {
         Request& request = reqs[reqInd];

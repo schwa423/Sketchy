@@ -101,14 +101,18 @@ class JobX : public obj::Obj<JobX> {
 // larger size of the pointer to the virtual function table.
 // If so, deal with it later.
 #if SCHWA_32_BIT
+static_assert(!SCHWA_64_BIT, "cannot set both SCHWA_32_BIT and SCHWA_64_BIT");
 static_assert(sizeof(JobX) == 16, "JobX should be 16 bytes");
 #elif SCHWA_64_BIT
+static_assert(!SCHWA_32_BIT, "cannot set both SCHWA_32_BIT and SCHWA_64_BIT");
 static_assert(sizeof(JobX) == 20, "JobX should be 20 bytes");
 static_assert(sizeof(obj::Obj<JobX>) == 12, "super class should be 12 bytes");
 static_assert(sizeof(JobRef) == 3, "JobRef should be 3 bytes");
 //static_assert(sizeof(JobX._children) == 8, "JobRef._children should be 4 bytes");
 static_assert(sizeof(std::atomic<uint32_t>) == 4, "std::atomic<uint32_t> should be 4 bytes");
 static_assert(sizeof(core::Link<JobX, JobRef>) == 11, "link should be 3 bytes");
+#else
+#error exactly one of SCHWA_32_BIT or SCHWA_64_BIT must be set
 #endif
 
 }}}  // schwa::job01::impl ====================================================

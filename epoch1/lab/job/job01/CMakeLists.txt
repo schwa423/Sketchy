@@ -38,7 +38,8 @@ set (JOB01_DBG_HDR
 )
 
 set (JOB01_HOST_HDR
-  host/host.h
+  # Generated from job01/host/host.h.in
+  "${PROJECT_BINARY_DIR}/job01/host/host.h"
 )
 
 set (JOB01_IMPL_HDR
@@ -68,6 +69,11 @@ set (JOB01_TIME_HDR
   time/time_util.h
 )
 
+configure_file (
+  "${PROJECT_SOURCE_DIR}/job01/host/host.h.in"
+  "${PROJECT_BINARY_DIR}/job01/host/host.h"
+)
+
 set (JOB01_SRC ${JOB01_SRC} ${JOB01_OBJ_SRC} ${JOB01_THREAD_SRC})
 set (JOB01_HDR
   ${JOB01_HDR}
@@ -84,6 +90,9 @@ set (JOB01_HDR
 ### TODO what is this for?
 set (JOB01_INSTALL)
 
+### Set include paths
+# This one first, so we find generated headers.
+include_directories (${PROJECT_BINARY_DIR})
 include_directories (../../mem)
 include_directories (../)
 

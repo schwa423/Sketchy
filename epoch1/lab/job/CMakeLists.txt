@@ -30,6 +30,16 @@ option (SCHWA_BUILD_DYNAMIC "Build dynamic libraries" OFF)
 option (SCHWA_BUILD_STATIC "Build static libraries" ON)
 option (SCHWA_64_BIT "Build 64-bit libraries (32-bit otherwise" ON)
 
+# Change from ON/OFF to true/false (so we can substitute this value into header
+# files).  Also, define SCHWA_32_BIT to be the opposite.
+if (SCHWA_64_BIT)
+set (SCHWA_64_BIT true)
+set (SCHWA_32_BIT false)
+else (SCHWA_64_BIT)
+set (SCHWA_64_BIT false)
+set (SCHWA_32_BIT true)
+endif (SCHWA_64_BIT)
+
 # Set compile flags
 set (SCHWA_COMPILER_FLAGS "-std=c++11 -stdlib=libc++")
 if (SCHWA_64_BIT)
@@ -42,6 +52,10 @@ set (DYNAMIC_LIB_FLAGS "${DYNAMIC_LIB_FLAGS} ${SCHWA_COMPILER_FLAGS}")
 set (STATIC_LIB_FLAGS "${STATIC_LIB_FLAGS} ${SCHWA_COMPILER_FLAGS}")
 set (CMAKE_CFLAGS ${SCHWA_COMPILER_FLAGS})
 set (CMAKE_CXX_FLAGS ${SCHWA_COMPILER_FLAGS})
+
+# TODO: integrate somewhere
+set (CMAKE_EXE_LINKER_FLAGS "-std=c++11 -lc++")
+
 
 # Add compile flags to library properties.
 set (DYNAMIC_LIB_PROPS ${DYNAMIC_LIB_PROPS} COMPILE_FLAGS ${DYNAMIC_LIB_FLAGS})
