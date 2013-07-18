@@ -80,6 +80,7 @@
       'sources': [
         'job01/tests/test_worker.cc',
         'job01/worker2.cc',
+        'job01/thread/threadloop.cc',
       ],
     },
     # TARGET example_job01__threadloop_signalhandler.exe

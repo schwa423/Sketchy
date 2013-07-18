@@ -21,7 +21,7 @@ namespace schwa { namespace job01 { namespace core {
 template <class LinkT>
 class Linker;
 
-
+#pragma pack(push, 1)
 template <class LinkT, typename LinkPtr = LinkT*>
 class Link {
     friend class Linker<LinkT>;
@@ -33,10 +33,11 @@ public:
     Link(LinkPtr& ptr) : _next(ptr) { }
     LinkPtr nextLink() { return _next; }
 
+    virtual ~Link() {}
 private:
     LinkPtr _next;
 };
-
+#pragma pack(pop)
 
 template <class LinkT>
 class Linker {

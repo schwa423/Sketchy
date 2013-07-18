@@ -13,7 +13,8 @@
 #include <thread>
 typedef std::thread Thread;  // TODO: move this into job01::thread
 
-#include "job01/base/thread/synchronization.h"
+#include "job01/thread/synchronization.h"
+#include "job01/thread/threadloop.h"
 
 #include "job01/mem/align.h"
 using namespace schwa::job01::mem;  // TODO: cumbersome

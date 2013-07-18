@@ -52,19 +52,20 @@ class JobX : public obj::Obj<JobX> {
     // This is the constructor called by TypedJobX when allocating
     // a job from a JobPool.
     JobX() : _priority(0),
-             _generation(_generation+1),
-             _schedulable(true), 
+//             _generation(_generation+1),
+             _schedulable(true),
              _parent(nullptr),
              _children(0) {
+      ++_generation;
     }
 
     // Destructor and constructor update the _generation,
     // to catch potential misuse.
-    virtual ~JobX() { 
+    virtual ~JobX() {
         ++_generation;
-        SCHWASSERT(0 == _generation % 2, 
-                   "generation must be even after destruction");        
-    } 
+        SCHWASSERT(0 == _generation % 2,
+                   "generation must be even after destruction");
+    }
 
  private:
     // JobRef is 3 bytes, so explicitly reserve 4th byte until
@@ -78,7 +79,7 @@ class JobX : public obj::Obj<JobX> {
   	// Number of outstanding children.  We don't need to support
     // this many children, but we might as well, because atomics
     // are always going to be at least 4 bytes.
-  	std::atomic<uint32_t> _children;
+    std::atomic<uint32_t> _children;
 
 
     static void InitForJobArray(JobX* ptr) {
@@ -95,15 +96,20 @@ class JobX : public obj::Obj<JobX> {
 //   4 bytes:  children
 //   ---------
 //   16 bytes total
-//   
+//
 // This might be different on 64-bit platforms due to the
 // larger size of the pointer to the virtual function table.
 // If so, deal with it later.
-
+#if SCHWA_32_BIT
 static_assert(sizeof(JobX) == 16, "JobX should be 16 bytes");
-
-
-
+#elif SCHWA_64_BIT
+static_assert(sizeof(JobX) == 20, "JobX should be 20 bytes");
+static_assert(sizeof(obj::Obj<JobX>) == 12, "super class should be 12 bytes");
+static_assert(sizeof(JobRef) == 3, "JobRef should be 3 bytes");
+//static_assert(sizeof(JobX._children) == 8, "JobRef._children should be 4 bytes");
+static_assert(sizeof(std::atomic<uint32_t>) == 4, "std::atomic<uint32_t> should be 4 bytes");
+static_assert(sizeof(core::Link<JobX, JobRef>) == 11, "link should be 3 bytes");
+#endif
 
 }}}  // schwa::job01::impl ====================================================
 

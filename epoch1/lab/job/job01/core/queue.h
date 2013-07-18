@@ -20,11 +20,16 @@
 namespace schwa { namespace job01 { namespace core {
 
 
+template <typename T>
+class Stack;
+
 template <class LinkT>
 class Queue : protected Linker<LinkT> {
  public:
     typedef LinkT ElemT;
     typedef typename LinkT::Ptr ElemPtr;
+
+    friend Stack<ElemT>;
 
     // Default constructor... create an empty queue.
     Queue() : _head(nullptr), _tail(nullptr), _count(0) { }
@@ -48,7 +53,7 @@ class Queue : protected Linker<LinkT> {
     // Move all elements from the other queue to the back of this queue.
     void add(Queue<ElemT>* other);
     void add(Queue<ElemT>& other) { this->add(&other); }
-    void add(Queue<ElemT>&& other) { this->add(&other); }    
+    void add(Queue<ElemT>&& other) { this->add(&other); }
 
     // Pull the next element from the queue, or nullptr.
     ElemPtr next();
@@ -87,7 +92,7 @@ inline void Queue<ElemT>::add(typename ElemT::Ptr elem) {
         this->link(_head, elem);
         _head = elem;
         _count++;
-    } 
+    }
     else {
         // The queue is empty, so the new element is both the head and tail.
         _head = _tail = elem;

@@ -35,7 +35,8 @@ Worker2::~Worker2() {
 void Worker2::SetupLoop() {
   Boss2::SetCurrentWorker(this);
 
-  pthread_sigmask
+// TODO: finish
+//  pthread_sigmask
 }
 
 void Worker2::RunLoop() {

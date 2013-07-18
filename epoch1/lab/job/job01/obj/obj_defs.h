@@ -30,7 +30,7 @@
 //          against the PoolID).  Filtered jobs would be stashed on the side in
 //          a JobChain; as soon as the filter is turned off, they would be
 //          inserted at the front of the queue.  Workers could use a separate
-//          run-loop function for this, since it would require overhead for 
+//          run-loop function for this, since it would require overhead for
 //          each dequeued job... when switching between modes, the worker would
 //          - exit the current run-loop (interrupt-processing sets a flag)
 //          - check a status flag, and find that slower "defrag run-loop"
@@ -70,12 +70,12 @@ enum ObjSizeCode { k64Bytes = 0, k128Bytes, k256Bytes, k512Bytes };
 //        fit too many 8-byte pointers to other objects in a cacheline-sized
 //        (i.e. 64 byte) object with a 16-byte header (8 for the pointer to the
 //        virtual function table, and 8 for an intrusive link pointer).
-#pragma pack(push, 1) 
+#pragma pack(push, 1)
 template <typename ObjT>
 class ObjRef {
     friend class ObjMaker;
 
- public: 
+ public:
     // The only public constructors make a null-ref...
     // only ObjMaker can create valid references to an Obj.
     ObjRef() : _array(0), _obj(kNull) { }
@@ -87,7 +87,7 @@ class ObjRef {
     const ObjT* ptr() const;
     // ... or do the same things with operator->
     // NOTE: I'd rather use ptr() explicitly, but there are some
-    //       places, such as core::Queue, which are designed to 
+    //       places, such as core::Queue, which are designed to
     //       use both raw pointers, and pointer-like refs.
     ObjT* operator->() { return ptr(); }
     const ObjT* operator->() const { return ptr(); }
@@ -115,13 +115,14 @@ class ObjRef {
     uint8_t  _array;  // Index of memory-block the object resides in.
     uint16_t _obj;    // Index of object within the memory block.
     // Called by ObjMaker
-    ObjRef(uint8_t ar, uint16_t obj) : _array(ar), _obj(obj) { }    
+    ObjRef(uint8_t ar, uint16_t obj) : _array(ar), _obj(obj) { }
 
     enum { kNull = std::numeric_limits<uint16_t>::max() };
 };
-#pragma pack(pop) 
+#pragma pack(pop)
 
 
+#pragma pack(push, 1)
 // Base class for objects which:
 // - have an intrusive ref to link to other objects
 // - TODO: more to follow
@@ -145,13 +146,14 @@ class Obj : public core::Link<ObjT, ObjRef<ObjT>> {
 
  private:
     typedef core::Link<ObjT, Ptr> LinkT;
-    Obj(ObjSizeCode code, Status status, Ptr next) 
+    Obj(ObjSizeCode code, Status status, Ptr next)
         : LinkT(next), _status(status), _size_code(code) { }
 
     ObjSizeCode    _size_code  : 2;
     Status         _status     : 2;
     unsigned       _reserved   : 4;
 };
+#pragma pack(pop)
 
 
 // TODO: put into namespace impl?  Or do we want to make an
@@ -175,7 +177,7 @@ typedef ObjRef<Unborn> UnbornRef;
 // core::Queue constructor which takes head/tail/count args.
 // TODO: perhaps make this constructor public in core::Queue.
 class UnbornQueue : public core::Queue<Unborn> {
- public:    
+ public:
     UnbornQueue() : core::Queue<Unborn>() { }
 
     UnbornQueue(UnbornRef head, UnbornRef tail, int count)
@@ -191,7 +193,7 @@ class UnbornQueue : public core::Queue<Unborn> {
 // ObjMaker is therefore not intended to be instantiated directly, but it is
 // permitted to have instantiable subclasses.
 //
-// ObjMaker's public interface is thread-safe. 
+// ObjMaker's public interface is thread-safe.
 class ObjMaker {
  public:
     // Obtain raw pointer (const or non-const) to the referenced object.
@@ -220,13 +222,13 @@ class ObjMaker {
 
     // Return a chain of *unconstructed* objects of the specified type...
     // the caller needs to use placement-new to construct them before use.
-    // 
+    //
     // If there are not enough unborn objects of the correct size, allocate
     // more raw memory to create new ones.
     //
     // NOTE: This function is protected since it has the power to
     //       create any kind of objects... we don't want to give
-    //       this power to everyone.  Instead, subclasses can 
+    //       this power to everyone.  Instead, subclasses can
     //       provide more limited access to this functionality.
     template <typename ObjT, ObjSizeCode size_code>
     static core::Queue<ObjT> MakeObjects(int desiredCount);
@@ -441,7 +443,7 @@ core::Queue<ObjT> ObjMaker::MakeObjects(int desiredCount) {
         ref = unborn.next();
         // Dereference it to obtain a raw pointer.
         Unborn* ptr = ref.ptr();
-        // Destroy the Unborn.  
+        // Destroy the Unborn.
         ptr->~Unborn();
         // The reference now points to an (unconstructed) ObjT instead of an
         // Unborn, but it doesn't know that.  Coerce it to the correct type,

@@ -8,6 +8,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "job01/worker.h"
+#include "job01/core/stack.h"
+
+#include <iostream>
 
 typedef std::lock_guard<std::mutex> lock_guard;
 
@@ -40,7 +43,7 @@ void Worker::run() {
     while (true) {
         switch (_state) {
             case kProcessing:
-                processJobs();
+                ProcessJobs();
                 break;
             case kStopped:
                 return;
@@ -48,24 +51,31 @@ void Worker::run() {
     }
 }
 
+void Worker::ProcessJobs() {
+    std::cerr << "Worker::ProcessJobs() not yet implemented" << std::endl;
+}
+
 // TODO: work-in-progress, probably broken
 void Worker::Loop() {
     while (true) {
-        base::Stack<JobRequest> requests;
+        core::Stack<JobRequest> requests;
 
         if (_interrupted) {
             lock_guard lock(_mutex);
             _interrupted = false;
 
-            requests.Add(_queue->HandleInterrupt());
+// TODO: implement
+//            requests.add(_queue->HandleInterrupt());
 
             // Receive
-            ReceiveMessages();
+// TODO: implement
+//            ReceiveMessages();
             if (!_running)
                 return;
         }
         auto job = _queue->NextJob();
-        ProcessMessages();
+// TODO: implement
+//        ProcessMessages();
         if (job) {
             job->Run();
         } else {
@@ -74,8 +84,5 @@ void Worker::Loop() {
     }
 }
 
-void Worker::ReceiveMessages() {
-
-}
 
 }}  // schwa::job01 ===========================================================

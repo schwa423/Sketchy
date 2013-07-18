@@ -60,26 +60,29 @@ class__cache_align Worker {
     std::thread   _thread;
 
 
-    class JobRequest {
-        JobRequest* _next_request;
-        Worker*     _request_worker;
-        JobQueue*   _request_queue;
-        int         _request_count;
+    struct JobRequest : public core::Link<JobRequest> {
+//        JobRequest* next_request;
+        Worker*     request_worker;
+        JobQueue*   request_queue;
+        int         request_count;
     };
 
+/*
     class JobRequestList {
      public:
         JobRequestList() : _first(nullptr) { }
         JobRequest* _first;
         void Add(JobRequest* req) {
             if (req != nullptr) {
-                req->_next_request = _first;
+                req->next_request = _first;
                 _first = req;
             }
         }
     };
+*/
     JobRequest*   _incoming;
 
+    void ProcessJobs();
 };
 
 }}  // schwa::job01 ===========================================================
