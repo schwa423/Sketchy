@@ -25,7 +25,7 @@ namespace schwa { namespace job01 { namespace thread {
 typedef std::mutex              Mutex;
 typedef std::lock_guard<Mutex>  Lock;
 typedef std::unique_lock<Mutex> UniqueLock;
-typedef std::condition_variable CondVar;
+typedef std::condition_variable Condition;
 typedef std::thread             Thread;
 
 }}}  // schwa::job01::thread ==================================================

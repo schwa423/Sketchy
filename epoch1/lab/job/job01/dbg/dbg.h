@@ -9,16 +9,13 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-
 #ifndef __schwa__job01__dbg__dbg__
 #define __schwa__job01__dbg__dbg__
 
 #include "job01/time/time_util.h"
 
-
 // schwa::job01::dbg ==========================================================
 namespace schwa { namespace job01 { namespace dbg {
-
 
 // Convenient ways to print an expression and what it evaluates to.
 #define SCHWA_OSTREAM(x) #x << " == " << x
@@ -29,7 +26,7 @@ namespace schwa { namespace job01 { namespace dbg {
 // with the elapsed time when it is destroyed.
 class ScopeTimer {
  public:
- 	ScopeTimer(std::function<void(time::msecs)>&& callback) 
+ 	ScopeTimer(std::function<void(time::msecs)>&& callback)
  	: _callback(callback), _start(time::clock::now()) { }
 
  	~ScopeTimer() {
@@ -42,8 +39,6 @@ class ScopeTimer {
  	time::moment                     _start;
 };
 
-
 }}}  // schwa::job01::dbg =====================================================
-
 
 #endif  // #ifndef __schwa__job01__dbg__dbg__

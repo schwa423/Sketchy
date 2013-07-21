@@ -95,6 +95,31 @@
     },
 
 
+    # schwa::job01::thread ====================================================
+
+    # TARGET test_job01_thread__turntaker.exe
+    {
+      'target_name': 'test_job01_thread__turntaker.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/thread/tests/test_turntaker.cc',
+        'job01/thread/turntaker.cc',
+      ],
+    },
+    # TARGET test_job01_thread__threadloop.exe
+    {
+      'target_name': 'test_job01_thread__threadloop.exe',
+      'type': 'executable',
+      'defines': [ '<@(COMMON_DEFINES)', ],
+      'sources': [
+        'job01/thread/tests/test_threadloop.cc',
+        'job01/thread/threadloop.cc',
+        'job01/thread/turntaker.cc',
+      ],
+    },
+
+
     # schwa::job01::impl ======================================================
 
     # TARGET test_job01_impl__jobpool.exe

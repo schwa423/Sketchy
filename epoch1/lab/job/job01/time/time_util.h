@@ -9,19 +9,17 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-
 #ifndef __schwa__job01__time__util__
 #define __schwa__job01__time__util__
 
 #include <iostream>
 #include <chrono>
 
-
 // schwa::job01::time =========================================================
 namespace schwa { namespace job01 { namespace time {
 
 	typedef std::chrono::high_resolution_clock clock;
-	typedef clock::time_point moment;	
+	typedef clock::time_point moment;
 	typedef std::chrono::milliseconds msecs;
 
 	// This might seem scary, but the argument-type is what you
@@ -44,7 +42,6 @@ inline std::ostream& operator<< (std::ostream &out, time::msecs& millis) {
 		out << millis.count() << "ms";
 		return out;
 }
-
 
 }}  // schwa::job01 ===========================================================
 

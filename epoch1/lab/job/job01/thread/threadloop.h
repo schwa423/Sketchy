@@ -5,6 +5,8 @@
 //    Copyright (c) 2013 Schwaftwarez
 //    Licence: Apache v2.0
 //
+//    TODO: TLS
+//
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef __schwa__job01__thread__threadloop__
@@ -23,6 +25,8 @@ namespace schwa { namespace job01 { namespace thread {
 /// loops.
 class ThreadLoop {
  public:
+  virtual ~ThreadLoop();
+
   // Start the loop, if it isn't already running.
   // DO NOT call Start() from within a subclass constructor.
   void Start();
@@ -38,7 +42,6 @@ class ThreadLoop {
 
  protected:
   ThreadLoop();
-  virtual ~ThreadLoop();
 
   // ThreadLoop does nothing on its own.  Subclasses implement their behavior
   // by overriding these functions, which are executed in the worker thread:
@@ -53,9 +56,13 @@ class ThreadLoop {
   //     and return immediately if it is not.
   //   - do not call Run() in the constructor
   // TODO: better place for the comment above?
-  virtual void SetupLoop() {}
+  virtual void OnLoopCreate() {}
+  virtual void OnLoopStart() {}
   virtual void RunLoop() {}
-  virtual void TeardownLoop() {}
+  virtual void OnLoopStop() {}
+  virtual void OnLoopUnstop() {}
+  virtual void OnLoopDestroy() {}
+  // TODO: no good reason for OnLoopUnstop() except for testing.
 
  private:
   enum State { kStop, kRun, kDead };
@@ -68,7 +75,7 @@ class ThreadLoop {
   State   state_;
   Thread  thread_;
   Mutex   mutex_;
-  CondVar cond_;
+  Condition cond_;
 };
 
 }}}  // schwa::job01::thread ==================================================

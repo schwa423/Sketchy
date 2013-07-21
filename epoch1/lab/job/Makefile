@@ -24,7 +24,9 @@ job01_mem_tests:
 
 job01_obj_tests: test_job01_obj__obj.exe
 
-job01: job01_tests job01_impl_tests job01_core_tests job01_mem_tests job01_obj_tests
+job01_thread_tests: test_job01_thread__turntaker.exe 	test_job01_thread__threadloop.exe
+
+job01: job01_tests job01_impl_tests job01_core_tests job01_mem_tests job01_obj_tests job01_thread_tests
 
 run_job01_tests: job01
 	./build/${BUILDCONFIG}/test_job01__boss.exe
@@ -41,9 +43,8 @@ run_job01_tests: job01
 run_tests: run_job01_tests
 
 # Run the thing we're currently developing.
-dev_test: example_job01__threadloop_signalhandler.exe
-	./build/${BUILDCONFIG}/example_job01__threadloop_signalhandler.exe
-
+dev_test: test_job01_thread__threadloop.exe
+	./build/${BUILDCONFIG}/test_job01_thread__threadloop.exe
 
 job.xcodeproj: job.gyp
 	gyp --depth=. -f xcode
