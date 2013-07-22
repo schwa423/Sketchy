@@ -9,35 +9,49 @@
 
 #include "job01/thread/threadloop.h"
 
-// TODO: remove this
-#include <iostream>
-using std::cerr;
-using std::endl;
+#include "job01/core/schwassert.h"
 
 // schwa::job01::thread =======================================================
 namespace schwa { namespace job01 { namespace thread {
 
-ThreadLoop::ThreadLoop() : state_(kStop),
-                           thread_(&ThreadLoop::ThreadFunc, this) {}
+ThreadLoop::ThreadLoop() : state_(kNew),
+                           thread_(&ThreadLoop::StateMachine, this) {}
 
 ThreadLoop::~ThreadLoop() {
   if (!IsDead()) {
-    // Freak out!  Need to call Kill() before destruction, since
-    // calling it during would happen after the subclass destructor
-    // has been run, and therefore after the subclass's virtual function
-    // table has been replaced by the superclass's.
-    //
-    // Note that Kill() is idempotent, so subclasses can call it in their
-    // destructor, as can their subclasses.
-    // TODO: make this a DCHECK().
-    cerr << "WARNING!!!  ThreadLoop destroyed without calling Kill()" << endl;
+    // Kill() must be called before this point, since all subclass destructors
+    // have already run, and therefore the object's vtable pointer is the one
+    // defined by ThreadLoop.  As a result, we will not call any functions that
+    // the subclass overrode, such as OnLoopDestroy().
+    SCHWASSERT(IsDead(), "Kill() must be called before ~ThreadLoop().");
+    // Better than nothing.
     Kill();
+  } else if (thread_.joinable()) {
+    SCHWASSERT(false, "Kill(false) was called, but not Kill().");
+    // This is also not good... it means that the user called Kill(false),
+    // but did not later call Kill().  Similar to the case above, the wrong
+    // virtual functions may have been called.
+    thread_.join();
   }
-  thread_.join();
+}
+
+ThreadLoop& ThreadLoop::Init() {
+  UniqueLock lock(mutex_);
+
+  // Init() was already called.
+  if (kNew != state_)
+    return *this;
+
+  // Wait until state changes, which means that OnLoopInit() has run.
+  state_ = kInit;
+  cond_.wait(lock, [this]{ return kInit != state_; });
+
+  return *this;
 }
 
 void ThreadLoop::Start() {
   Lock lock(mutex_);
+  AssertInitWasCalled();
   // Only run if we're stopped, not dead.
   if (kStop == state_) {
     state_ = kRun;
@@ -47,57 +61,67 @@ void ThreadLoop::Start() {
 
 void ThreadLoop::Stop() {
   Lock lock(mutex_);
+  AssertInitWasCalled();
+  // Only stop if we're currently running.
   if (kRun == state_)
     state_ = kStop;
-
 }
 
-void ThreadLoop::Kill() {
-  { Lock lock(mutex_);
-    if (kDead == state_)
+void ThreadLoop::Kill(bool join_thread) {
+  { Lock l(mutex_);
+    // No-op if not already initialized.
+    if (!AssertInitWasCalled())
       return;
-    state_ = kDead;
-    // LoopUntilDead() might be waiting for condition.
+
+    // Kill if not already dead.
+    if (kDead != state_) {
+      state_ = kDead;
+      cond_.notify_one();
+    }
+  }
+  // Either block and wait for thread to complete, or don't.
+  if (join_thread && thread_.joinable())
+    thread_.join();
+}
+
+void ThreadLoop::StateMachine() {
+  // Perform initial loop initialization.  See Init() comment.
+  {
+    // Wait until someone calls Init().
+    while(true) {
+      { Lock l(mutex_);
+        if (kInit == state_)
+          break;
+      }
+      std::this_thread::yield();
+    }
+    // Do initialization, then notify Init() that we've finished
+    // via the condition-variable.
+    OnLoopInit();
+    state_ = kStop;
     cond_.notify_one();
   }
-}
 
-// TODO: is there a race condition in the state-management code?
-//       how difficult to fix?  consequences?
-//       I think yes, and here's how to fix it... first thing, grab
-//       the mutex and signal the cond-var.
-void ThreadLoop::ThreadFunc() {
-
-  // Tricky start-up logic to ensure that the loop is not initialized
-  // until the ThreadLoop subclass is completely constructed.  This is
-  // crucial... otherwise the subclass-overridable virtual functions
-  // might be looked up in the wrong virtual function table!
-  bool was_setup = false;
+  // Record whether the most recent state was kRun.  This is used below to
+  // decide whether to call OnLoopStop() and OnLoopStart().
   bool is_running = false;
 
-  // Loop until dead.  At each loop iteration, either pass control to
-  // the subclass RunLoop() function, or wait on a condition-variable
-  // for the state to change from kStop.
+  // Loop until dead.
   while (true) {
     UniqueLock lock(mutex_);
-
-    State state = state_;
-    switch (state) {
+    switch (state_) {
       case kRun:
-        if (!was_setup) {
-          // Lazily setup thread after the first time Start() was called.
-          was_setup = true;
-          OnLoopCreate();
-        }
         if (!is_running) {
-          // I wasn't running, but I am now.
+          // I wasn't running before, but I am now.
           is_running = true;
           OnLoopStart();
         }
-        // Release the lock before running the loop.
-        // This allows me to be stopped/killed.
+        // Release the lock before running the loop, so that Start/Stop/Kill()
+        // can be called without blocking... otherwise, since the typical usage
+        // of Run() is to keep looping until IsRunning() returns false, we
+        // would have a deadlock, and the thread would never stop.
         lock.unlock();
-        RunLoop();
+        Run();
         break;
 
       case kStop:
@@ -106,25 +130,37 @@ void ThreadLoop::ThreadFunc() {
           is_running = false;
           OnLoopStop();
         }
-        // I'll be awoken when either Start() or Kill() is called.
+        // Sleep until woken by either Start() or Kill().
         cond_.wait(lock, [&]{ return kStop != state_; });
-        // Unlock the lock before invoking OnLoopUnstop() to support
-        // testing via TurnTaker... otherwise deadlock will occur.
+        // Unlock before invoking OnLoopUnstop() to support testing
+        // via TurnTaker... otherwise deadlock will occur.
         lock.unlock();
         OnLoopUnstop();
         break;
 
       case kDead:
+        // Ensure that there is always a matching OnLoopStop() invocation
+        // for each call to OnLoopStart().
         if (is_running)
           OnLoopStop();
-        if (was_setup)
-          OnLoopDestroy();
-
+        // Perform any final teardown that must occure within the thread.
+        OnLoopDestroy();
         // The thread is dead, baby.
         return;
+
+      case kNew:
+      case kInit:
+        SCHWASSERT(false, "state should not be kNew or kInit here.");
+        state_ = kStop;
+        break;
     }
-    std::this_thread::yield();
   }
+}
+
+bool ThreadLoop::AssertInitWasCalled() const {
+  SCHWASSERT(kNew != state_,
+             "Must call Init() before any other ThreadLoop function");
+  return kNew != state_;
 }
 
 }}}  // schwa::job01::thread ==================================================
