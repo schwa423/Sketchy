@@ -7,10 +7,10 @@ using namespace std;
 #include <assert.h>
 
 
-unsigned test_align(unsigned num, size_t alignment) {
+uint64_t test_align(uint64_t num, size_t alignment) {
     char* ptr = reinterpret_cast<char*>(num);
     ptr = mem00::align(ptr, alignment);
-    return reinterpret_cast<unsigned>(ptr);
+    return reinterpret_cast<uint64_t>(ptr);
 }
 
 
@@ -20,7 +20,7 @@ int main(void) {
     }
     assert(32 == test_align(16, 32));
 
-    for (unsigned ptr = 17; ptr <= 32; ptr++) {
+    for (uint64_t ptr = 17; ptr <= 32; ptr++) {
         assert(32 == test_align(ptr,16));
     }
 

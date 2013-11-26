@@ -18,7 +18,7 @@ using namespace std;
 struct CACHE_ALIGNED Foo {
 
 	int a;
-	int alignas(16) b;
+	int b alignas(16);
 };
 
 struct FooHolder {
@@ -51,14 +51,14 @@ int main(void) {
 
 	assert(sizeof(Foo) > sizeof(int) + sizeof(int));
 
-	FooHolder CACHE_ALIGNED holder;
+	FooHolder holder CACHE_ALIGNED;
 
 	assert(reinterpret_cast<uint64_t>(&holder) % CACHE_LINE_SIZE == 0);
 	assert(reinterpret_cast<uint64_t>(&(holder.foo1)) % CACHE_LINE_SIZE == 0);
 	assert(reinterpret_cast<uint64_t>(&(holder.foo2)) % CACHE_LINE_SIZE == 0);
 
 
-	FooHolderHolder CACHE_ALIGNED holderHolder;
+	FooHolderHolder holderHolder CACHE_ALIGNED;
 	assert(CACHE_LINE_SIZE == reinterpret_cast<uint64_t>(&(holderHolder.holder)) - reinterpret_cast<uint64_t>(&holderHolder));
 	assert(reinterpret_cast<uint64_t>(&(holderHolder.holder)) % CACHE_LINE_SIZE == 0);
 	assert(reinterpret_cast<uint64_t>(&(holderHolder.holder.foo1)) % CACHE_LINE_SIZE == 0);
