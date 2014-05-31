@@ -9,7 +9,7 @@
 //
 
 #include "framebuffer_ios.h"
-#include "renderbuffer_ios.h"
+#include "port/ios/renderbuffer_ios.h"
 
 // namespace schwa::grfx
 namespace schwa {namespace grfx {
@@ -33,8 +33,8 @@ shared_ptr<MultisampleFramebuffer> MultisampleFramebuffer::New(const shared_ptr<
                                                                bool useStencil) {
     auto fb = Framebuffer::New(renderer, color);
     return shared_ptr<MultisampleFramebuffer>(new MultisampleFramebuffer_iOS(renderer,
-                                                                             fb,
-                                                                             useDepth,
+                                              fb,
+                                              useDepth,
                                                                              useStencil));
 }
 #endif
@@ -45,7 +45,7 @@ shared_ptr<Framebuffer> MultisampleFramebuffer_iOS::NewFromLayer(const shared_pt
                                                                  CAEAGLLayer* layer,
                                                                  bool useDepth,
                                                                  bool useStencil) {
-    auto renderbuffer = Renderbuffer_iOS::NewFromLayer(renderer, context, layer);
+    auto renderbuffer = NewRenderbufferFromLayer(renderer, context, layer);
     auto framebuffer = Framebuffer::New(renderer, renderbuffer);
     return shared_ptr<Framebuffer>(new MultisampleFramebuffer_iOS(renderer,
                                                                   framebuffer,
@@ -68,10 +68,11 @@ void MultisampleFramebuffer_iOS::resolve() {
     _resolve->bind(GL_DRAW_FRAMEBUFFER_APPLE);
     _multi->bind(GL_READ_FRAMEBUFFER_APPLE);
     glResolveMultisampleFramebufferAPPLE();
-
+    
     // For efficiency, discard rendererbuffers now that we're done with them.
 	GLenum attachments[2] = { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT };
 	glDiscardFramebufferEXT(GL_READ_FRAMEBUFFER_APPLE, 2, attachments);
+    CHECK_GL("failed to resolve MultisampleFramebuffer_iOS");
 }
 
 

@@ -10,7 +10,7 @@
 
 #include "renderer_ios.h"
 #include "framebuffer_ios.h"
-#include "renderbuffer_ios.h"
+#include "port/ios/renderbuffer_ios.h"
 #include "presenter_ios.h"
 #include "view.h"
 
@@ -141,12 +141,12 @@ shared_ptr<Renderer_iOS> Renderer_iOS::New() {
 Renderer_iOS::Renderer_iOS() {
 
     // TODO: verify success of context creations.
-    _renderContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    _renderContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
     _loaderContext = [[EAGLContext alloc]
-                      initWithAPI:kEAGLRenderingAPIOpenGLES2
+                      initWithAPI:kEAGLRenderingAPIOpenGLES3
                       sharegroup:[_renderContext sharegroup]];
     _defaultContext = [[EAGLContext alloc]
-                      initWithAPI:kEAGLRenderingAPIOpenGLES2
+                      initWithAPI:kEAGLRenderingAPIOpenGLES3
                       sharegroup:[_renderContext sharegroup]];
 
     if (_renderContext == nil || _loaderContext == nil || _defaultContext == nil) {
@@ -220,7 +220,7 @@ shared_ptr<Framebuffer> Renderer_iOS::NewFramebuffer(CAEAGLLayer* layer, bool mu
                                                                layer,
                                                                true);
     } else {
-        auto color_renderbuffer = Renderbuffer_iOS::NewFromLayer(me, _defaultContext, layer);
+        auto color_renderbuffer = NewRenderbufferFromLayer(me, _defaultContext, layer);
         auto depth_renderbuffer = Renderbuffer::NewDepth(me, width, height, 1);
         framebuffer = Framebuffer::New(me, color_renderbuffer, depth_renderbuffer);
     }

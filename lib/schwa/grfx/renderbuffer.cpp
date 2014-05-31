@@ -18,9 +18,9 @@ using std::endl;
 namespace schwa {namespace grfx {
 
 
-static const int RENDERBUFFER_COLOR_FORMAT = GL_RGBA8_OES;
+static const int RENDERBUFFER_COLOR_FORMAT = GL_RGBA8;
 static const int RENDERBUFFER_DEPTH_FORMAT = GL_DEPTH_COMPONENT16;
-static const int RENDERBUFFER_STENCIL_FORMAT = GL_DEPTH24_STENCIL8_OES;
+static const int RENDERBUFFER_STENCIL_FORMAT = GL_DEPTH24_STENCIL8;
 
 
 shared_ptr<Renderbuffer> Renderbuffer::NewColor(shared_ptr<Renderer> renderer,
@@ -47,7 +47,7 @@ shared_ptr<Renderbuffer> Renderbuffer::NewStencil(shared_ptr<Renderer> renderer,
                                                 uint width, uint height,
                                                 int samples) {
     auto rb =  Renderbuffer::New(renderer, width, height, samples, RENDERBUFFER_STENCIL_FORMAT);
-    CHECK_GL("failed to instantiate stencil renderbuffer");
+    CHECK_GL("failed to instantiate stencil renderbuffer")  ;
     return rb;
 }
 
@@ -63,10 +63,10 @@ shared_ptr<Renderbuffer> Renderbuffer::New(shared_ptr<Renderer> renderer,
         glRenderbufferStorage(GL_RENDERBUFFER, format, width, height);
     } else {
 #if defined(__APPLE__)
-        glRenderbufferStorageMultisampleAPPLE(GL_RENDERBUFFER,
-                                              samples,
-                                              format,
-                                              width, height);
+        glRenderbufferStorageMultisample(GL_RENDERBUFFER,
+                                         samples,
+                                         format,
+                                         width, height);
 #else
 #error multisample renderbuffers currently only supported on iOS.
 #endif
@@ -114,7 +114,9 @@ bool Renderbuffer::isStencil() const {
 
 
 void Renderbuffer::bind() const {
+    CHECK_GL("problem before renderbuffer bind()");
     glBindRenderbuffer(GL_RENDERBUFFER, _handle);
+    CHECK_GL("problem after renderbuffer bind()");
 }
 
 

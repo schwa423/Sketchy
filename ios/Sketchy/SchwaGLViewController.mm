@@ -80,7 +80,7 @@ using namespace schwa::app;
     [super viewDidUnload];
 }
 
-- (NSInteger)supportedInterfaceOrientations
+- (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait
          & UIInterfaceOrientationMaskLandscapeLeft

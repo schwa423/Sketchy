@@ -12,8 +12,8 @@
 #define __schwa__grfx__platform_gl__
 
 #if defined(__APPLE__)
-#include <OpenGLES/ES2/gl.h>
-#include <OpenGLES/ES2/glext.h>
+#include <OpenGLES/ES3/gl.h>
+#include <OpenGLES/ES3/glext.h>
 #else
 #error UNKNOWN PLATFORM
 #endif

@@ -68,7 +68,7 @@ using std::endl;
 	glayer.opaque = TRUE;
 	glayer.drawableProperties = 
 		[NSDictionary dictionaryWithObjectsAndKeys:
-		 [NSNumber numberWithBool: FALSE], kEAGLDrawablePropertyRetainedBacking,
+		 [NSNumber numberWithBool: FALSE],  kEAGLDrawablePropertyRetainedBacking,
 		 kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat,
 		 nil];
 	self.contentScaleFactor = [[UIScreen mainScreen] scale];

@@ -33,7 +33,7 @@ void StrokeMesh::draw(Renderer_ptr renderer) {
     glDrawElements(GL_TRIANGLES, _triangleCount * 3 / 2, GL_UNSIGNED_INT, 0);
 
     // TODO: necessary?
-    glBindVertexArrayOES(0);
+    glBindVertexArray(0);
 }
 
 
@@ -60,7 +60,7 @@ static inline GLsizeiptr BYTE_OFFSET(const T1& base, const T2& offset) {
 void StrokeMesh::bindVAO(Renderer_ptr& renderer) {
     // If we have a valid VAO, simply bind it.  Done.
     if (_vaoValid) {
-        glBindVertexArrayOES(_vao);
+        glBindVertexArray(_vao);
         return;
     }
 
@@ -68,7 +68,7 @@ void StrokeMesh::bindVAO(Renderer_ptr& renderer) {
 
     // If we don't have a VAO, generate one.
     if (!_vao) {
-        glGenVertexArraysOES(1, &_vao);
+        glGenVertexArrays(1, &_vao);
         if (!_vao) {
             cerr << "WARNING: glGenVertexArraysOES() failed in StrokeMesh::bindVAO" << endl;
             return;
@@ -76,7 +76,7 @@ void StrokeMesh::bindVAO(Renderer_ptr& renderer) {
     }
 
     // Bind vertex attributes.
-    glBindVertexArrayOES(_vao);
+    glBindVertexArray(_vao);
     Stroke::Vertex v;  // for offset/stride calculations.
     GLuint attrib = StrokeShader::POS_AND_NORM;
     _vertices->bindVertexAttrib(attrib, 4, GL_FLOAT, sizeof(v), 0);

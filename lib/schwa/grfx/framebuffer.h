@@ -46,7 +46,7 @@ class Framebuffer {
     // No-op... only meaningful for multisample framebuffers,
     // but providing it here in the base class simplifies client code.
     virtual void resolve() { }
-
+    
  protected:
     // Use static Framebuffer::New().
     Framebuffer() { }
@@ -122,7 +122,7 @@ class MultisampleFramebuffer : public Framebuffer {
 
     // Resolving multisample framebuffer target is a platform-specific operation.
     virtual void resolve() = 0;
-
+    
  protected:
     // Use static MultisampleFramebuffer::New().
     MultisampleFramebuffer(const shared_ptr<Renderer>& renderer,

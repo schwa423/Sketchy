@@ -35,7 +35,6 @@
 		0356A38B1605574A006C43C1 /* view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0356A38916055749006C43C1 /* view.cpp */; };
 		0356A3931605DDD1006C43C1 /* pageview.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0356A3911605DDD1006C43C1 /* pageview.cpp */; };
 		0357AB80160F9ED50044DA75 /* renderbuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0357AB7E160F9ED50044DA75 /* renderbuffer.cpp */; };
-		0357AB84160F9EF10044DA75 /* renderbuffer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0357AB82160F9EF10044DA75 /* renderbuffer_ios.mm */; };
 		03594B731544383A00C090AD /* Flow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03594B721544383A00C090AD /* Flow.cpp */; };
 		03594B741544383A00C090AD /* Flow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03594B721544383A00C090AD /* Flow.cpp */; };
 		0370A01E15F9BFE7003C0164 /* TouchHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0370A01D15F9BFE7003C0164 /* TouchHandler.cpp */; };
@@ -58,6 +57,7 @@
 		03DC93CD149E9F4F00F2A602 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03DC93CB149E9F4E00F2A602 /* MainStoryboard.storyboard */; };
 		03DC93D0149E9F4F00F2A602 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03DC93CF149E9F4F00F2A602 /* ViewController.mm */; };
 		03DE89C5163CECCA0023B7D3 /* stroke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03DE89C3163CECCA0023B7D3 /* stroke.cpp */; };
+		03E2E17918B1AB98005D5A70 /* renderbuffer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E2E17818B1AB98005D5A70 /* renderbuffer_ios.mm */; };
 		03E2E7AD14ADBEA10019D869 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */; };
 		03E2E7B414AEC6B10019D869 /* SchwaGLViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03E2E7B214AEC6B10019D869 /* SchwaGLViewController.xib */; };
 		03ED3912168DA7EE00682AC6 /* seven_ravens_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 03ED3911168DA7ED00682AC6 /* seven_ravens_icon.png */; };
@@ -145,8 +145,6 @@
 		0356A3921605DDD1006C43C1 /* pageview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pageview.h; path = ../app/sketchy/pageview.h; sourceTree = "<group>"; };
 		0357AB7E160F9ED50044DA75 /* renderbuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = renderbuffer.cpp; path = ../lib/schwa/grfx/renderbuffer.cpp; sourceTree = "<group>"; };
 		0357AB7F160F9ED50044DA75 /* renderbuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = renderbuffer.h; path = ../lib/schwa/grfx/renderbuffer.h; sourceTree = "<group>"; };
-		0357AB82160F9EF10044DA75 /* renderbuffer_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = renderbuffer_ios.mm; path = ../lib/schwa/grfx/renderbuffer_ios.mm; sourceTree = "<group>"; };
-		0357AB83160F9EF10044DA75 /* renderbuffer_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = renderbuffer_ios.h; path = ../lib/schwa/grfx/renderbuffer_ios.h; sourceTree = "<group>"; };
 		03594B721544383A00C090AD /* Flow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; name = Flow.cpp; path = props/Flow.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		03594B751544388100C090AD /* Flow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = Flow.h; path = include/props/Flow.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0359DEA0168F6DC300F5182F /* Gists_BenchmarkOldJobOverhead.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Gists_BenchmarkOldJobOverhead.h; path = include/gists/Gists_BenchmarkOldJobOverhead.h; sourceTree = "<group>"; };
@@ -188,6 +186,8 @@
 		03DC93CF149E9F4F00F2A602 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		03DE89C3163CECCA0023B7D3 /* stroke.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stroke.cpp; path = ../app/sketchy/stroke.cpp; sourceTree = "<group>"; };
 		03DE89C4163CECCA0023B7D3 /* stroke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stroke.h; path = ../app/sketchy/stroke.h; sourceTree = "<group>"; };
+		03E2E17518B1A97C005D5A70 /* renderbuffer_ios.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = renderbuffer_ios.h; path = ../lib/schwa/grfx/port/ios/renderbuffer_ios.h; sourceTree = "<group>"; };
+		03E2E17818B1AB98005D5A70 /* renderbuffer_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = renderbuffer_ios.mm; path = ../lib/schwa/grfx/port/ios/renderbuffer_ios.mm; sourceTree = "<group>"; };
 		03E2E7AC14ADBEA10019D869 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		03E2E7B014AEC6B10019D869 /* SchwaGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchwaGLViewController.h; sourceTree = "<group>"; };
 		03E2E7B214AEC6B10019D869 /* SchwaGLViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SchwaGLViewController.xib; sourceTree = "<group>"; };
@@ -456,6 +456,7 @@
 		0370A02215FBE97C003C0164 /* grfx */ = {
 			isa = PBXGroup;
 			children = (
+				03E2E17618B1A99B005D5A70 /* port */,
 				0370A02615FC0F03003C0164 /* framebuffer.cpp */,
 				0370A02715FC0F03003C0164 /* framebuffer.h */,
 				0356A38315FF32AB006C43C1 /* framebuffer_ios.mm */,
@@ -463,8 +464,6 @@
 				0356A38115FF27D7006C43C1 /* platform_gl.h */,
 				0357AB7E160F9ED50044DA75 /* renderbuffer.cpp */,
 				0357AB7F160F9ED50044DA75 /* renderbuffer.h */,
-				0357AB82160F9EF10044DA75 /* renderbuffer_ios.mm */,
-				0357AB83160F9EF10044DA75 /* renderbuffer_ios.h */,
 				0370A02315FBEA0F003C0164 /* renderer.cpp */,
 				0370A02415FBEA0F003C0164 /* renderer.h */,
 				030366D615FD5C4A003D6F91 /* renderer_ios.mm */,
@@ -548,6 +547,23 @@
 				03DC93C7149E9F4E00F2A602 /* SketchyUnitTests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		03E2E17618B1A99B005D5A70 /* port */ = {
+			isa = PBXGroup;
+			children = (
+				03E2E17718B1A9A3005D5A70 /* ios */,
+			);
+			name = port;
+			sourceTree = "<group>";
+		};
+		03E2E17718B1A9A3005D5A70 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				03E2E17518B1A97C005D5A70 /* renderbuffer_ios.h */,
+				03E2E17818B1AB98005D5A70 /* renderbuffer_ios.mm */,
+			);
+			name = ios;
 			sourceTree = "<group>";
 		};
 		03F1E96A15CEE59900E6E1DA /* geom */ = {
@@ -740,6 +756,7 @@
 				033E75EC146E65EC008896D5 /* main.m in Sources */,
 				033E75F0146E65EC008896D5 /* AppDelegate.m in Sources */,
 				033E75F6146E65EC008896D5 /* FirstViewController.m in Sources */,
+				03E2E17918B1AB98005D5A70 /* renderbuffer_ios.mm in Sources */,
 				033E75FD146E65EC008896D5 /* SecondViewController.mm in Sources */,
 				039192A814A1CC6300F1D4C7 /* ThreadOwner.cpp in Sources */,
 				0343BF9414A6A75500C6ED4F /* SchwaGLView.mm in Sources */,
@@ -757,7 +774,6 @@
 				0356A38B1605574A006C43C1 /* view.cpp in Sources */,
 				0356A3931605DDD1006C43C1 /* pageview.cpp in Sources */,
 				0357AB80160F9ED50044DA75 /* renderbuffer.cpp in Sources */,
-				0357AB84160F9EF10044DA75 /* renderbuffer_ios.mm in Sources */,
 				039EC9551618DE39009FDA4D /* presenter.cpp in Sources */,
 				039EC958161C2377009FDA4D /* presenter_ios.mm in Sources */,
 				038E2D59162B3678008E4645 /* mesh.cpp in Sources */,

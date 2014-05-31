@@ -17,6 +17,9 @@
 
 // namespace schwa::grfx
 namespace schwa {namespace grfx {
+    
+class Renderbuffer;
+typedef shared_ptr<Renderbuffer> RenderbufferPtr;
 
 class Renderbuffer : public Renderer::Resource, public Framebuffer::Attachment {
     friend class Framebuffer;
