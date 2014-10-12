@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:io/libom_io.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:base/libom_base.xcodeproj">
    </FileRef>
 </Workspace>
