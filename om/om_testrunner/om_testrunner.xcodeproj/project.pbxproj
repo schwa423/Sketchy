@@ -13,19 +13,8 @@
 		0348A08119EA239800AE9E51 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0348A07F19EA239800AE9E51 /* Main.storyboard */; };
 		0348A08319EA239800AE9E51 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0348A08219EA239800AE9E51 /* Images.xcassets */; };
 		0348A08619EA239800AE9E51 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0348A08419EA239800AE9E51 /* LaunchScreen.xib */; };
-		0348A09219EA239800AE9E51 /* om_testrunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0348A09119EA239800AE9E51 /* om_testrunnerTests.swift */; };
 		03FCFA2F19EA296700596EB1 /* TestRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03FCFA2E19EA296700596EB1 /* TestRunner.mm */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		0348A08C19EA239800AE9E51 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0348A06C19EA239800AE9E51 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0348A07319EA239800AE9E51;
-			remoteInfo = om_testrunner;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0348A07419EA239800AE9E51 /* om_testrunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = om_testrunner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -36,9 +25,6 @@
 		0348A08019EA239800AE9E51 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0348A08219EA239800AE9E51 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		0348A08519EA239800AE9E51 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		0348A08B19EA239800AE9E51 /* om_testrunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = om_testrunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0348A09019EA239800AE9E51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0348A09119EA239800AE9E51 /* om_testrunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = om_testrunnerTests.swift; sourceTree = "<group>"; };
 		03FCFA2C19EA293400596EB1 /* om_testrunner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "om_testrunner-Bridging-Header.h"; sourceTree = "<group>"; };
 		03FCFA2D19EA293400596EB1 /* TestRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestRunner.h; sourceTree = "<group>"; };
 		03FCFA2E19EA296700596EB1 /* TestRunner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TestRunner.mm; sourceTree = "<group>"; };
@@ -52,13 +38,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0348A08819EA239800AE9E51 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -66,7 +45,6 @@
 			isa = PBXGroup;
 			children = (
 				0348A07619EA239800AE9E51 /* om_testrunner */,
-				0348A08E19EA239800AE9E51 /* om_testrunnerTests */,
 				0348A07519EA239800AE9E51 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -75,7 +53,6 @@
 			isa = PBXGroup;
 			children = (
 				0348A07419EA239800AE9E51 /* om_testrunner.app */,
-				0348A08B19EA239800AE9E51 /* om_testrunnerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -105,23 +82,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		0348A08E19EA239800AE9E51 /* om_testrunnerTests */ = {
-			isa = PBXGroup;
-			children = (
-				0348A09119EA239800AE9E51 /* om_testrunnerTests.swift */,
-				0348A08F19EA239800AE9E51 /* Supporting Files */,
-			);
-			path = om_testrunnerTests;
-			sourceTree = "<group>";
-		};
-		0348A08F19EA239800AE9E51 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				0348A09019EA239800AE9E51 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -142,24 +102,6 @@
 			productReference = 0348A07419EA239800AE9E51 /* om_testrunner.app */;
 			productType = "com.apple.product-type.application";
 		};
-		0348A08A19EA239800AE9E51 /* om_testrunnerTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0348A09819EA239800AE9E51 /* Build configuration list for PBXNativeTarget "om_testrunnerTests" */;
-			buildPhases = (
-				0348A08719EA239800AE9E51 /* Sources */,
-				0348A08819EA239800AE9E51 /* Frameworks */,
-				0348A08919EA239800AE9E51 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0348A08D19EA239800AE9E51 /* PBXTargetDependency */,
-			);
-			name = om_testrunnerTests;
-			productName = om_testrunnerTests;
-			productReference = 0348A08B19EA239800AE9E51 /* om_testrunnerTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -171,10 +113,6 @@
 				TargetAttributes = {
 					0348A07319EA239800AE9E51 = {
 						CreatedOnToolsVersion = 6.0.1;
-					};
-					0348A08A19EA239800AE9E51 = {
-						CreatedOnToolsVersion = 6.0.1;
-						TestTargetID = 0348A07319EA239800AE9E51;
 					};
 				};
 			};
@@ -192,7 +130,6 @@
 			projectRoot = "";
 			targets = (
 				0348A07319EA239800AE9E51 /* om_testrunner */,
-				0348A08A19EA239800AE9E51 /* om_testrunnerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -205,13 +142,6 @@
 				0348A08119EA239800AE9E51 /* Main.storyboard in Resources */,
 				0348A08619EA239800AE9E51 /* LaunchScreen.xib in Resources */,
 				0348A08319EA239800AE9E51 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0348A08919EA239800AE9E51 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,23 +159,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0348A08719EA239800AE9E51 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0348A09219EA239800AE9E51 /* om_testrunnerTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		0348A08D19EA239800AE9E51 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0348A07319EA239800AE9E51 /* om_testrunner */;
-			targetProxy = 0348A08C19EA239800AE9E51 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		0348A07F19EA239800AE9E51 /* Main.storyboard */ = {
@@ -371,40 +285,6 @@
 			};
 			name = Release;
 		};
-		0348A09919EA239800AE9E51 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = om_testrunnerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/om_testrunner.app/om_testrunner";
-			};
-			name = Debug;
-		};
-		0348A09A19EA239800AE9E51 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = om_testrunnerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/om_testrunner.app/om_testrunner";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -422,15 +302,6 @@
 			buildConfigurations = (
 				0348A09619EA239800AE9E51 /* Debug */,
 				0348A09719EA239800AE9E51 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0348A09819EA239800AE9E51 /* Build configuration list for PBXNativeTarget "om_testrunnerTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0348A09919EA239800AE9E51 /* Debug */,
-				0348A09A19EA239800AE9E51 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
