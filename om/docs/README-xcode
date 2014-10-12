@@ -1,0 +1,6 @@
+For now, the XCode projects for each Om library are set up manually, which is
+a tiny bit painful.  Here are the steps to create a new library, let's say
+"libfoo.a":
+
+
+

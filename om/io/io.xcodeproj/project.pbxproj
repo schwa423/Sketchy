@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0348A04319EA098600AE9E51 /* libom_io.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0348A04219EA098600AE9E51 /* libom_io.h */; };
-		0348A04519EA098600AE9E51 /* libom_io.m in Sources */ = {isa = PBXBuildFile; fileRef = 0348A04419EA098600AE9E51 /* libom_io.m */; };
+		0348A05819EA0C0500AE9E51 /* net.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0348A05619EA0C0500AE9E51 /* net.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,29 +17,19 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				0348A04319EA098600AE9E51 /* libom_io.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0348A03F19EA098600AE9E51 /* liblibom_io.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibom_io.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		0348A04219EA098600AE9E51 /* libom_io.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libom_io.h; sourceTree = "<group>"; };
-		0348A04419EA098600AE9E51 /* libom_io.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = libom_io.m; sourceTree = "<group>"; };
-		0348A04A19EA098600AE9E51 /* libom_ioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = libom_ioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		0348A04D19EA098600AE9E51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0348A03F19EA098600AE9E51 /* libio.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libio.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0348A05619EA0C0500AE9E51 /* net.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = net.cc; sourceTree = "<group>"; };
+		0348A05719EA0C0500AE9E51 /* net.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = net.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		0348A03C19EA098600AE9E51 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0348A04719EA098600AE9E51 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -54,7 +43,6 @@
 			isa = PBXGroup;
 			children = (
 				0348A04119EA098600AE9E51 /* src */,
-				0348A04B19EA098600AE9E51 /* libom_ioTests */,
 				0348A04019EA098600AE9E51 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -62,8 +50,7 @@
 		0348A04019EA098600AE9E51 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0348A03F19EA098600AE9E51 /* liblibom_io.a */,
-				0348A04A19EA098600AE9E51 /* libom_ioTests.xctest */,
+				0348A03F19EA098600AE9E51 /* libio.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -71,34 +58,18 @@
 		0348A04119EA098600AE9E51 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				0348A04219EA098600AE9E51 /* libom_io.h */,
-				0348A04419EA098600AE9E51 /* libom_io.m */,
+				0348A05619EA0C0500AE9E51 /* net.cc */,
+				0348A05719EA0C0500AE9E51 /* net.h */,
 			);
 			name = src;
 			sourceTree = SOURCE_ROOT;
 		};
-		0348A04B19EA098600AE9E51 /* libom_ioTests */ = {
-			isa = PBXGroup;
-			children = (
-				0348A04C19EA098600AE9E51 /* Supporting Files */,
-			);
-			path = libom_ioTests;
-			sourceTree = "<group>";
-		};
-		0348A04C19EA098600AE9E51 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				0348A04D19EA098600AE9E51 /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		0348A03E19EA098600AE9E51 /* libom_io */ = {
+		0348A03E19EA098600AE9E51 /* io */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 0348A05019EA098600AE9E51 /* Build configuration list for PBXNativeTarget "libom_io" */;
+			buildConfigurationList = 0348A05019EA098600AE9E51 /* Build configuration list for PBXNativeTarget "io" */;
 			buildPhases = (
 				0348A03B19EA098600AE9E51 /* Sources */,
 				0348A03C19EA098600AE9E51 /* Frameworks */,
@@ -108,27 +79,10 @@
 			);
 			dependencies = (
 			);
-			name = libom_io;
+			name = io;
 			productName = libom_io;
-			productReference = 0348A03F19EA098600AE9E51 /* liblibom_io.a */;
+			productReference = 0348A03F19EA098600AE9E51 /* libio.a */;
 			productType = "com.apple.product-type.library.static";
-		};
-		0348A04919EA098600AE9E51 /* libom_ioTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0348A05319EA098600AE9E51 /* Build configuration list for PBXNativeTarget "libom_ioTests" */;
-			buildPhases = (
-				0348A04619EA098600AE9E51 /* Sources */,
-				0348A04719EA098600AE9E51 /* Frameworks */,
-				0348A04819EA098600AE9E51 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = libom_ioTests;
-			productName = libom_ioTests;
-			productReference = 0348A04A19EA098600AE9E51 /* libom_ioTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -142,12 +96,9 @@
 					0348A03E19EA098600AE9E51 = {
 						CreatedOnToolsVersion = 6.0.1;
 					};
-					0348A04919EA098600AE9E51 = {
-						CreatedOnToolsVersion = 6.0.1;
-					};
 				};
 			};
-			buildConfigurationList = 0348A03A19EA098600AE9E51 /* Build configuration list for PBXProject "libom_io" */;
+			buildConfigurationList = 0348A03A19EA098600AE9E51 /* Build configuration list for PBXProject "io" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -159,35 +110,17 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				0348A03E19EA098600AE9E51 /* libom_io */,
-				0348A04919EA098600AE9E51 /* libom_ioTests */,
+				0348A03E19EA098600AE9E51 /* io */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		0348A04819EA098600AE9E51 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0348A03B19EA098600AE9E51 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0348A04519EA098600AE9E51 /* libom_io.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0348A04619EA098600AE9E51 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				0348A05819EA0C0500AE9E51 /* net.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,6 +160,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(PROJECT_DIR)/../..",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -261,6 +199,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(PROJECT_DIR)/../..",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
@@ -272,7 +215,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = io;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -281,45 +224,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = io;
 				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		0348A05419EA098600AE9E51 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = libom_ioTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		0348A05519EA098600AE9E51 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = libom_ioTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0348A03A19EA098600AE9E51 /* Build configuration list for PBXProject "libom_io" */ = {
+		0348A03A19EA098600AE9E51 /* Build configuration list for PBXProject "io" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0348A04E19EA098600AE9E51 /* Debug */,
@@ -328,20 +241,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		0348A05019EA098600AE9E51 /* Build configuration list for PBXNativeTarget "libom_io" */ = {
+		0348A05019EA098600AE9E51 /* Build configuration list for PBXNativeTarget "io" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				0348A05119EA098600AE9E51 /* Debug */,
 				0348A05219EA098600AE9E51 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0348A05319EA098600AE9E51 /* Build configuration list for PBXNativeTarget "libom_ioTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0348A05419EA098600AE9E51 /* Debug */,
-				0348A05519EA098600AE9E51 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

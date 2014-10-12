@@ -25,21 +25,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		03B3A3EB19E9FEC700951E9B /* liblibom_base.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibom_base.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		03B3A3EB19E9FEC700951E9B /* libbase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libbase.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		03B3A3EE19E9FEC700951E9B /* libom_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libom_base.h; sourceTree = "<group>"; };
 		03B3A3F019E9FEC700951E9B /* libom_base.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = libom_base.cc; sourceTree = "<group>"; };
-		03B3A3F619E9FEC700951E9B /* libom_baseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = libom_baseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		03B3A3E819E9FEC700951E9B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		03B3A3F319E9FEC700951E9B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -60,8 +52,7 @@
 		03B3A3EC19E9FEC700951E9B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				03B3A3EB19E9FEC700951E9B /* liblibom_base.a */,
-				03B3A3F619E9FEC700951E9B /* libom_baseTests.xctest */,
+				03B3A3EB19E9FEC700951E9B /* libbase.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -78,9 +69,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		03B3A3EA19E9FEC700951E9B /* libom_base */ = {
+		03B3A3EA19E9FEC700951E9B /* base */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 03B3A3FC19E9FEC700951E9B /* Build configuration list for PBXNativeTarget "libom_base" */;
+			buildConfigurationList = 03B3A3FC19E9FEC700951E9B /* Build configuration list for PBXNativeTarget "base" */;
 			buildPhases = (
 				03B3A3E719E9FEC700951E9B /* Sources */,
 				03B3A3E819E9FEC700951E9B /* Frameworks */,
@@ -90,27 +81,10 @@
 			);
 			dependencies = (
 			);
-			name = libom_base;
+			name = base;
 			productName = libom_base;
-			productReference = 03B3A3EB19E9FEC700951E9B /* liblibom_base.a */;
+			productReference = 03B3A3EB19E9FEC700951E9B /* libbase.a */;
 			productType = "com.apple.product-type.library.static";
-		};
-		03B3A3F519E9FEC700951E9B /* libom_baseTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 03B3A3FF19E9FEC700951E9B /* Build configuration list for PBXNativeTarget "libom_baseTests" */;
-			buildPhases = (
-				03B3A3F219E9FEC700951E9B /* Sources */,
-				03B3A3F319E9FEC700951E9B /* Frameworks */,
-				03B3A3F419E9FEC700951E9B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = libom_baseTests;
-			productName = libom_baseTests;
-			productReference = 03B3A3F619E9FEC700951E9B /* libom_baseTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -124,12 +98,9 @@
 					03B3A3EA19E9FEC700951E9B = {
 						CreatedOnToolsVersion = 6.0.1;
 					};
-					03B3A3F519E9FEC700951E9B = {
-						CreatedOnToolsVersion = 6.0.1;
-					};
 				};
 			};
-			buildConfigurationList = 03B3A3E619E9FEC700951E9B /* Build configuration list for PBXProject "libom_base" */;
+			buildConfigurationList = 03B3A3E619E9FEC700951E9B /* Build configuration list for PBXProject "base" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -141,21 +112,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				03B3A3EA19E9FEC700951E9B /* libom_base */,
-				03B3A3F519E9FEC700951E9B /* libom_baseTests */,
+				03B3A3EA19E9FEC700951E9B /* base */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		03B3A3F419E9FEC700951E9B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		03B3A3E719E9FEC700951E9B /* Sources */ = {
@@ -163,13 +123,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				03B3A3F119E9FEC700951E9B /* libom_base.cc in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		03B3A3F219E9FEC700951E9B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,7 +217,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = base;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -273,45 +226,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = base;
 				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		03B3A40019E9FEC700951E9B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = libom_baseTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		03B3A40119E9FEC700951E9B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = libom_baseTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		03B3A3E619E9FEC700951E9B /* Build configuration list for PBXProject "libom_base" */ = {
+		03B3A3E619E9FEC700951E9B /* Build configuration list for PBXProject "base" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				03B3A3FA19E9FEC700951E9B /* Debug */,
@@ -320,20 +243,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		03B3A3FC19E9FEC700951E9B /* Build configuration list for PBXNativeTarget "libom_base" */ = {
+		03B3A3FC19E9FEC700951E9B /* Build configuration list for PBXNativeTarget "base" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				03B3A3FD19E9FEC700951E9B /* Debug */,
 				03B3A3FE19E9FEC700951E9B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		03B3A3FF19E9FEC700951E9B /* Build configuration list for PBXNativeTarget "libom_baseTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				03B3A40019E9FEC700951E9B /* Debug */,
-				03B3A40119E9FEC700951E9B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
