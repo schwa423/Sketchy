@@ -1,0 +1,2 @@
+The gtest used in test runner is version 1.7.0 that I compiled myself (hacking the
+included .xcodeproj to build an arm-64 iOS library), and copied the header files from.
