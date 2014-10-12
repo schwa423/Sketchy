@@ -1,2 +1,4 @@
 # XCode build directories for each library.
 base/build/
+io/build/
+tests/testrunner/build/

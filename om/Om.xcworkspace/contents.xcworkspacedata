@@ -13,9 +13,9 @@
    </Group>
    <Group
       location = "container:"
-      name = "test">
+      name = "tests">
       <FileRef
-         location = "group:om_testrunner/om_testrunner.xcodeproj">
+         location = "group:tests/testrunner/testrunner.xcodeproj">
       </FileRef>
    </Group>
    <Group

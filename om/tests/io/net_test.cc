@@ -6,4 +6,11 @@
 //  Copyright (c) 2014 schwaftwarez. All rights reserved.
 //
 
-#include <stdio.h>
+
+#include <gtest/gtest.h>
+
+TEST(Net, DummyTest1) {
+    EXPECT_EQ(1, 1);
+    EXPECT_NE(2, 1);
+}
+
