@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03E114061A18305300F3EB87 /* base_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E114041A18305300F3EB87 /* base_test.cc */; };
+		03E114121A18338E00F3EB87 /* libio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E114111A18338E00F3EB87 /* libio.a */; };
+		03E114141A18342300F3EB87 /* libbase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03E114131A18342300F3EB87 /* libbase.a */; };
 		03FCFA4519EA4EDC00596EB1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FCFA4419EA4EDC00596EB1 /* AppDelegate.swift */; };
 		03FCFA4719EA4EDC00596EB1 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FCFA4619EA4EDC00596EB1 /* FirstViewController.swift */; };
 		03FCFA4919EA4EDC00596EB1 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FCFA4819EA4EDC00596EB1 /* SecondViewController.swift */; };
@@ -19,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		03E114041A18305300F3EB87 /* base_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = base_test.cc; path = ../base/base_test.cc; sourceTree = "<group>"; };
+		03E114111A18338E00F3EB87 /* libio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libio.a; path = "../../io/build/Debug-iphoneos/libio.a"; sourceTree = "<group>"; };
+		03E114131A18342300F3EB87 /* libbase.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbase.a; path = "../../base/build/Debug-iphoneos/libbase.a"; sourceTree = "<group>"; };
 		03FCFA3F19EA4EDC00596EB1 /* testrunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = testrunner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03FCFA4319EA4EDC00596EB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03FCFA4419EA4EDC00596EB1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +65,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03E114141A18342300F3EB87 /* libbase.a in Frameworks */,
+				03E114121A18338E00F3EB87 /* libio.a in Frameworks */,
 				03FCFAFC19EA6ADB00596EB1 /* libgtest.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -66,9 +74,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		03E113CC1A1050B000F3EB87 /* base */ = {
+			isa = PBXGroup;
+			children = (
+				03E114041A18305300F3EB87 /* base_test.cc */,
+			);
+			name = base;
+			sourceTree = "<group>";
+		};
+		03E1140F1A18333800F3EB87 /* dependencies */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = dependencies;
+			sourceTree = "<group>";
+		};
 		03FCFA3619EA4EDC00596EB1 = {
 			isa = PBXGroup;
 			children = (
+				03E114131A18342300F3EB87 /* libbase.a */,
+				03E114111A18338E00F3EB87 /* libio.a */,
+				03E1140F1A18333800F3EB87 /* dependencies */,
 				03FCFAFA19EA6AAE00596EB1 /* gtest */,
 				03FCFA6619EA4F0800596EB1 /* src */,
 				03FCFA4119EA4EDC00596EB1 /* testrunner */,
@@ -112,6 +138,7 @@
 		03FCFA6619EA4F0800596EB1 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				03E113CC1A1050B000F3EB87 /* base */,
 				03FCFA7219EA5A9A00596EB1 /* io */,
 			);
 			name = src;
@@ -236,6 +263,7 @@
 				03FCFA4919EA4EDC00596EB1 /* SecondViewController.swift in Sources */,
 				03FCFA4519EA4EDC00596EB1 /* AppDelegate.swift in Sources */,
 				03FCFA4719EA4EDC00596EB1 /* FirstViewController.swift in Sources */,
+				03E114061A18305300F3EB87 /* base_test.cc in Sources */,
 				03FCFA6B19EA522100596EB1 /* TestRunnerObjC.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,12 +382,15 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/../../..",
 				);
 				INFOPLIST_FILE = testrunner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/gtest",
+					"/Users/josh/hacking/mine/ios/Sketchy/om/io/build/Debug-iphoneos",
+					"/Users/josh/hacking/mine/ios/Sketchy/om/base/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "testrunner/testrunner-Bridging-Header.h";
@@ -380,12 +411,15 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/../../..",
 				);
 				INFOPLIST_FILE = testrunner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/gtest",
+					"/Users/josh/hacking/mine/ios/Sketchy/om/io/build/Debug-iphoneos",
+					"/Users/josh/hacking/mine/ios/Sketchy/om/base/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "testrunner/testrunner-Bridging-Header.h";

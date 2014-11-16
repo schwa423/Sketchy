@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		03B3A3EF19E9FEC700951E9B /* libom_base.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03B3A3EE19E9FEC700951E9B /* libom_base.h */; };
 		03B3A3F119E9FEC700951E9B /* libom_base.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03B3A3F019E9FEC700951E9B /* libom_base.cc */; };
+		03E113CF1A10514200F3EB87 /* list.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E113CD1A10514200F3EB87 /* list.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,8 @@
 		03B3A3EB19E9FEC700951E9B /* libbase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libbase.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		03B3A3EE19E9FEC700951E9B /* libom_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libom_base.h; sourceTree = "<group>"; };
 		03B3A3F019E9FEC700951E9B /* libom_base.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = libom_base.cc; sourceTree = "<group>"; };
+		03E113CD1A10514200F3EB87 /* list.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = list.cc; sourceTree = "<group>"; };
+		03E113CE1A10514200F3EB87 /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +65,8 @@
 			children = (
 				03B3A3EE19E9FEC700951E9B /* libom_base.h */,
 				03B3A3F019E9FEC700951E9B /* libom_base.cc */,
+				03E113CD1A10514200F3EB87 /* list.cc */,
+				03E113CE1A10514200F3EB87 /* list.h */,
 			);
 			name = src;
 			sourceTree = SOURCE_ROOT;
@@ -123,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03B3A3F119E9FEC700951E9B /* libom_base.cc in Sources */,
+				03E113CF1A10514200F3EB87 /* list.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
