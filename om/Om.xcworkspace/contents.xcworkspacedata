@@ -21,5 +21,8 @@
    <Group
       location = "container:"
       name = "apps">
+      <FileRef
+         location = "group:apps/Sketchy/Sketchy.xcodeproj">
+      </FileRef>
    </Group>
 </Workspace>

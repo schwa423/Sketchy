@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		034F5C601A25A513009E9954 /* job.cc in Sources */ = {isa = PBXBuildFile; fileRef = 034F5C5E1A25A513009E9954 /* job.cc */; };
+		034F5C641A25A650009E9954 /* jobqueue.cc in Sources */ = {isa = PBXBuildFile; fileRef = 034F5C621A25A650009E9954 /* jobqueue.cc */; };
+		038925B11A290B2D002264F4 /* jobrunner.cc in Sources */ = {isa = PBXBuildFile; fileRef = 038925AF1A290B2D002264F4 /* jobrunner.cc */; };
+		038925B81A2C3698002264F4 /* jobthreadpool.cc in Sources */ = {isa = PBXBuildFile; fileRef = 038925B61A2C3698002264F4 /* jobthreadpool.cc */; };
 		03B3A3EF19E9FEC700951E9B /* libom_base.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 03B3A3EE19E9FEC700951E9B /* libom_base.h */; };
 		03B3A3F119E9FEC700951E9B /* libom_base.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03B3A3F019E9FEC700951E9B /* libom_base.cc */; };
 		03E113CF1A10514200F3EB87 /* list.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E113CD1A10514200F3EB87 /* list.cc */; };
@@ -26,6 +30,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		034F5C5E1A25A513009E9954 /* job.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = job.cc; path = job/job.cc; sourceTree = "<group>"; };
+		034F5C5F1A25A513009E9954 /* job.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = job.h; path = job/job.h; sourceTree = "<group>"; };
+		034F5C621A25A650009E9954 /* jobqueue.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jobqueue.cc; path = job/jobqueue.cc; sourceTree = "<group>"; };
+		034F5C631A25A650009E9954 /* jobqueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jobqueue.h; path = job/jobqueue.h; sourceTree = "<group>"; };
+		038925AF1A290B2D002264F4 /* jobrunner.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jobrunner.cc; path = job/jobrunner.cc; sourceTree = "<group>"; };
+		038925B01A290B2D002264F4 /* jobrunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jobrunner.h; path = job/jobrunner.h; sourceTree = "<group>"; };
+		038925B31A290BF7002264F4 /* mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mutex.h; path = thread/mutex.h; sourceTree = "<group>"; };
+		038925B51A29D215002264F4 /* dcheck.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = dcheck.h; path = util/dcheck.h; sourceTree = "<group>"; };
+		038925B61A2C3698002264F4 /* jobthreadpool.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jobthreadpool.cc; path = job/jobthreadpool.cc; sourceTree = "<group>"; };
+		038925B71A2C3698002264F4 /* jobthreadpool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jobthreadpool.h; path = job/jobthreadpool.h; sourceTree = "<group>"; };
 		03B3A3EB19E9FEC700951E9B /* libbase.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libbase.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		03B3A3EE19E9FEC700951E9B /* libom_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = libom_base.h; sourceTree = "<group>"; };
 		03B3A3F019E9FEC700951E9B /* libom_base.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = libom_base.cc; sourceTree = "<group>"; };
@@ -44,6 +58,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		034F5C611A25A638009E9954 /* job */ = {
+			isa = PBXGroup;
+			children = (
+				038925AF1A290B2D002264F4 /* jobrunner.cc */,
+				038925B01A290B2D002264F4 /* jobrunner.h */,
+				034F5C5E1A25A513009E9954 /* job.cc */,
+				034F5C5F1A25A513009E9954 /* job.h */,
+				034F5C621A25A650009E9954 /* jobqueue.cc */,
+				034F5C631A25A650009E9954 /* jobqueue.h */,
+				038925B61A2C3698002264F4 /* jobthreadpool.cc */,
+				038925B71A2C3698002264F4 /* jobthreadpool.h */,
+			);
+			name = job;
+			sourceTree = "<group>";
+		};
+		038925B21A290BD2002264F4 /* thread */ = {
+			isa = PBXGroup;
+			children = (
+				038925B31A290BF7002264F4 /* mutex.h */,
+			);
+			name = thread;
+			sourceTree = "<group>";
+		};
+		038925B41A29D1DB002264F4 /* util */ = {
+			isa = PBXGroup;
+			children = (
+				038925B51A29D215002264F4 /* dcheck.h */,
+			);
+			name = util;
+			sourceTree = "<group>";
+		};
 		03B3A3E219E9FEC700951E9B = {
 			isa = PBXGroup;
 			children = (
@@ -63,10 +108,13 @@
 		03B3A3ED19E9FEC700951E9B /* src */ = {
 			isa = PBXGroup;
 			children = (
+				038925B41A29D1DB002264F4 /* util */,
+				038925B21A290BD2002264F4 /* thread */,
 				03B3A3EE19E9FEC700951E9B /* libom_base.h */,
 				03B3A3F019E9FEC700951E9B /* libom_base.cc */,
 				03E113CD1A10514200F3EB87 /* list.cc */,
 				03E113CE1A10514200F3EB87 /* list.h */,
+				034F5C611A25A638009E9954 /* job */,
 			);
 			name = src;
 			sourceTree = SOURCE_ROOT;
@@ -128,7 +176,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				03B3A3F119E9FEC700951E9B /* libom_base.cc in Sources */,
+				038925B11A290B2D002264F4 /* jobrunner.cc in Sources */,
 				03E113CF1A10514200F3EB87 /* list.cc in Sources */,
+				034F5C601A25A513009E9954 /* job.cc in Sources */,
+				034F5C641A25A650009E9954 /* jobqueue.cc in Sources */,
+				038925B81A2C3698002264F4 /* jobthreadpool.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
