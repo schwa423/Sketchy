@@ -15,32 +15,32 @@ let ConstantBufferSize = 1024*1024
 
 let vertexData:[Float] =
 [
-    -1.0, -1.0, 0.0, 1.0,
-    -1.0,  1.0, 0.0, 1.0,
-    1.0, -1.0, 0.0, 1.0,
+    -1.0, -1.0, 0.5, 1.0,
+    -1.0,  1.0, 0.5, 1.0,
+    1.0, -1.0, 0.5, 1.0,
     
-    1.0, -1.0, 0.0, 1.0,
-    -1.0,  1.0, 0.0, 1.0,
-    1.0,  1.0, 0.0, 1.0,
+    1.0, -1.0, 0.5, 1.0,
+    -1.0,  1.0, 0.5, 1.0,
+    1.0,  1.0, 0.5, 1.0,
     
     -0.0, 0.25, 0.0, 1.0,
     -0.25, -0.25, 0.0, 1.0,
     0.25, -0.25, 0.0, 1.0
 ]
 
-let vertexColorData:[Float] =
+let vertexColorData:[UInt8] =
 [
-    0.0, 0.0, 1.0, 1.0,
-    0.0, 0.0, 1.0, 1.0,
-    0.0, 0.0, 1.0, 1.0,
+    0, 1, 0, 1,
+    0, 1, 0, 1,
+    0, 1, 0, 1,
     
-    0.0, 0.0, 1.0, 1.0,
-    0.0, 0.0, 1.0, 1.0,
-    0.0, 0.0, 1.0, 1.0,
+    0, 0, 1, 1,
+    0, 0, 1, 1,
+    0, 0, 1, 1,
     
-    0.0, 0.0, 1.0, 1.0,
-    0.0, 1.0, 0.0, 1.0,
-    1.0, 0.0, 0.0, 1.0
+    0, 0, 1, 1,
+    0, 1, 0, 1,
+    1, 0, 0, 1
 ]
 
 class GameViewController: UIViewController {
@@ -79,7 +79,13 @@ class GameViewController: UIViewController {
         commandQueue = device.newCommandQueue()
         commandQueue.label = "main command queue"
         
-        let defaultLibrary = device.newDefaultLibrary()
+        setUpPipeline(device.newDefaultLibrary())
+        
+        timer = CADisplayLink(target: self, selector: Selector("renderLoop"))
+        timer.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+    }
+    
+    func setUpPipeline(defaultLibrary: MTLLibrary?) {
         let fragmentProgram = defaultLibrary?.newFunctionWithName("passThroughFragment")
         let vertexProgram = defaultLibrary?.newFunctionWithName("passThroughVertex")
         
@@ -101,9 +107,6 @@ class GameViewController: UIViewController {
         let vertexColorSize = vertexData.count * sizeofValue(vertexColorData[0])
         vertexColorBuffer = device.newBufferWithBytes(vertexColorData, length: vertexColorSize, options: nil)
         vertexColorBuffer.label = "colors"
-        
-        timer = CADisplayLink(target: self, selector: Selector("renderLoop"))
-        timer.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
     }
     
     override func viewDidLayoutSubviews() {
@@ -161,13 +164,8 @@ class GameViewController: UIViewController {
         let renderEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor)!
         renderEncoder.label = "render encoder"
         
-        renderEncoder.pushDebugGroup("draw morphing triangle")
-        renderEncoder.setRenderPipelineState(pipelineState)
-        renderEncoder.setVertexBuffer(vertexBuffer, offset: 256*bufferIndex, atIndex: 0)
-        renderEncoder.setVertexBuffer(vertexColorBuffer, offset:0 , atIndex: 1)
-        renderEncoder.drawPrimitives(.Triangle, vertexStart: 0, vertexCount: 9, instanceCount: 1)
+        encodeDrawCalls(renderEncoder);
         
-        renderEncoder.popDebugGroup()
         renderEncoder.endEncoding()
         
         // use completion handler to signal the semaphore when this frame is completed allowing the encoding of the next frame to proceed
@@ -184,6 +182,16 @@ class GameViewController: UIViewController {
         
         commandBuffer.presentDrawable(drawable)
         commandBuffer.commit()
+    }
+    
+    func encodeDrawCalls(renderEncoder: MTLRenderCommandEncoder) {
+        renderEncoder.pushDebugGroup("draw morphing triangle")
+        renderEncoder.setRenderPipelineState(pipelineState)
+        renderEncoder.setVertexBuffer(vertexBuffer, offset: 256*bufferIndex, atIndex: 0)
+        renderEncoder.setVertexBuffer(vertexColorBuffer, offset:0 , atIndex: 1)
+        renderEncoder.drawPrimitives(.Triangle, vertexStart: 0, vertexCount: 9, instanceCount: 1)
+        
+        renderEncoder.popDebugGroup()
     }
     
     func update() {
