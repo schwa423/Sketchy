@@ -1,0 +1,51 @@
+Here are some snippets about what the world-creation API for schwa::croquet might look like:
+
+// Code snippets exploring how to build schwa::croquet on top of schwa::job.
+namespace croquet {
+
+    // - can add other policies if desired... eg: memory pool (good for memory tracking!)
+    template <class WorldT>
+    WorldT::ref spawn(job::queue& q, WorldT::args&& args) {
+        WorldT::ref spawned_world = new WorldT(std::move(args));
+        auto job = q.spawn(spawned_world->job_description());
+        spawned_world->init(std::move(job));
+        return spawned_world;
+    }
+
+    template <class WorldT>
+    class World {
+        // Or, should we make spawn a static member of a World class?
+        // I think I prefer a global croquet::spawn() function.
+        static WorldT::ref spawn(job::queue& q, WorldT::args&& args) {
+            // much the same as the global croquet::spawn() function
+        }
+
+        // Can we do this?  Or must we explicitly do something like
+        // this in each concrete subclass?  (see below...)
+        friend WorldT::ref spawn(job::queue& q, WorldT::args&& args);
+    };
+};
+
+// Then, sketchy code might look like:
+namespace sketchy {
+    class Page : public croquet::World<Page> {
+      public:
+        typedef sketchy::protobuf::Page args;
+
+        // Needed?  Or can we push this up into croquet::World<PageT>? (see above...)
+        friend Page::ref spawn(job::queue& q, Page::args&& args);
+
+      protected:
+        void init(job::job& j) { }
+        // etc...
+    };
+}
+
+// And a meta-app incorporating Sketchy might have code like:
+#include "job.h"
+#include "croquet.h"
+#include "sketchy/page.h"
+
+sketchy::Page::ref LoadSketchyPage(job::queue& q, const char* bytes, int sz) {
+    Page::ref page = croquet::spawn(q, sketchy::protobuf::Page(bytes, sz));
+}

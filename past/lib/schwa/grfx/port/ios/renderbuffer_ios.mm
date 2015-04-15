@@ -46,7 +46,7 @@ RenderbufferPtr NewRenderbufferFromLayer(const RendererPtr& renderer,
     return RenderbufferPtr(new Renderbuffer_iOS(renderer,
                                                 handle,
                                                 width, height,
-                                                1, GL_RGBA8_OES));
+                                                1, GL_RGBA8));
 }
 
 }}  // namespace schwa::grfx

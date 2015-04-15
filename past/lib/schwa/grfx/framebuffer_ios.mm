@@ -11,6 +11,8 @@
 #include "framebuffer_ios.h"
 #include "port/ios/renderbuffer_ios.h"
 
+#import <OpenGLES/ES3/glext.h>
+
 // namespace schwa::grfx
 namespace schwa {namespace grfx {
 
@@ -65,13 +67,13 @@ MultisampleFramebuffer_iOS::MultisampleFramebuffer_iOS(const shared_ptr<Renderer
 
 
 void MultisampleFramebuffer_iOS::resolve() {
-    _resolve->bind(GL_DRAW_FRAMEBUFFER_APPLE);
-    _multi->bind(GL_READ_FRAMEBUFFER_APPLE);
-    glResolveMultisampleFramebufferAPPLE();
+    _resolve->bind(GL_DRAW_FRAMEBUFFER);
+    _multi->bind(GL_READ_FRAMEBUFFER);
+    glBlitFramebuffer(0, 0, _multi->width(), _multi->height(), 0, 0, _resolve->width(), _resolve->height(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
     
     // For efficiency, discard rendererbuffers now that we're done with them.
 	GLenum attachments[2] = { GL_COLOR_ATTACHMENT0, GL_DEPTH_ATTACHMENT };
-	glDiscardFramebufferEXT(GL_READ_FRAMEBUFFER_APPLE, 2, attachments);
+	glInvalidateFramebuffer(GL_READ_FRAMEBUFFER, 2, attachments);
     CHECK_GL("failed to resolve MultisampleFramebuffer_iOS");
 }
 
