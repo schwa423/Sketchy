@@ -7,6 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		032D32C01AF56E0500F473D4 /* Algorithm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32841AF56E0500F473D4 /* Algorithm.cpp */; };
+		032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32871AF56E0500F473D4 /* Arc.cpp */; };
+		032D32C21AF56E0500F473D4 /* Bezier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32891AF56E0500F473D4 /* Bezier.cpp */; };
+		032D32C31AF56E0500F473D4 /* Clothoid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D328B1AF56E0500F473D4 /* Clothoid.cpp */; };
+		032D32C41AF56E0500F473D4 /* ClothoidProjector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D328D1AF56E0500F473D4 /* ClothoidProjector.cpp */; };
+		032D32C51AF56E0500F473D4 /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = 032D328E1AF56E0500F473D4 /* CMakeLists.txt */; };
+		032D32C61AF56E0500F473D4 /* Combiner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D328F1AF56E0500F473D4 /* Combiner.cpp */; };
+		032D32C71AF56E0500F473D4 /* CornerDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32911AF56E0500F473D4 /* CornerDetector.cpp */; };
+		032D32C81AF56E0500F473D4 /* CurvePrimitive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32951AF56E0500F473D4 /* CurvePrimitive.cpp */; };
+		032D32C91AF56E0500F473D4 /* Debugging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32971AF56E0500F473D4 /* Debugging.cpp */; };
+		032D32CA1AF56E0500F473D4 /* ErrorComputer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D329A1AF56E0500F473D4 /* ErrorComputer.cpp */; };
+		032D32CB1AF56E0500F473D4 /* Fitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D329C1AF56E0500F473D4 /* Fitter.cpp */; };
+		032D32CC1AF56E0500F473D4 /* Fresnel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D329E1AF56E0500F473D4 /* Fresnel.cpp */; };
+		032D32CD1AF56E0500F473D4 /* GraphConstructor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32A01AF56E0500F473D4 /* GraphConstructor.cpp */; };
+		032D32CE1AF56E0500F473D4 /* Line.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32A21AF56E0500F473D4 /* Line.cpp */; };
+		032D32CF1AF56E0500F473D4 /* Oversketcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32A41AF56E0500F473D4 /* Oversketcher.cpp */; };
+		032D32D01AF56E0500F473D4 /* Parameters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32A61AF56E0500F473D4 /* Parameters.cpp */; };
+		032D32D11AF56E0500F473D4 /* PathFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32A81AF56E0500F473D4 /* PathFinder.cpp */; };
+		032D32D21AF56E0500F473D4 /* PiecewiseLinearUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32AA1AF56E0500F473D4 /* PiecewiseLinearUtils.cpp */; };
+		032D32D31AF56E0500F473D4 /* Polyline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32AC1AF56E0500F473D4 /* Polyline.cpp */; };
+		032D32D41AF56E0500F473D4 /* Preprocessing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32AE1AF56E0500F473D4 /* Preprocessing.cpp */; };
+		032D32D51AF56E0500F473D4 /* PrimitiveFitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32B01AF56E0500F473D4 /* PrimitiveFitter.cpp */; };
+		032D32D61AF56E0500F473D4 /* PrimitiveFitUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32B21AF56E0500F473D4 /* PrimitiveFitUtils.cpp */; };
+		032D32D71AF56E0500F473D4 /* PrimitiveSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32B41AF56E0500F473D4 /* PrimitiveSequence.cpp */; };
+		032D32D81AF56E0500F473D4 /* Resampler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32B61AF56E0500F473D4 /* Resampler.cpp */; };
+		032D32D91AF56E0500F473D4 /* SimpleAPI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32B81AF56E0500F473D4 /* SimpleAPI.cpp */; };
+		032D32DA1AF56E0500F473D4 /* Solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32BB1AF56E0500F473D4 /* Solver.cpp */; };
+		032D32DB1AF56E0500F473D4 /* TwoCurveCombine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32BD1AF56E0500F473D4 /* TwoCurveCombine.cpp */; };
 		03474FE31AD7F66B001240DD /* QiController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE21AD7F66B001240DD /* QiController.swift */; };
 		03474FE51AD8036C001240DD /* Arc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE41AD8036C001240DD /* Arc.swift */; };
 		034F06A01ADA0148005A439A /* Arc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE41AD8036C001240DD /* Arc.swift */; };
@@ -31,6 +59,66 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		032D32841AF56E0500F473D4 /* Algorithm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Algorithm.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.cpp"; sourceTree = "<group>"; };
+		032D32851AF56E0500F473D4 /* Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Algorithm.h; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.h"; sourceTree = "<group>"; };
+		032D32861AF56E0500F473D4 /* AngleUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AngleUtils.h; path = "../third-party/cornucopia-lib/Cornucopia/AngleUtils.h"; sourceTree = "<group>"; };
+		032D32871AF56E0500F473D4 /* Arc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Arc.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Arc.cpp"; sourceTree = "<group>"; };
+		032D32881AF56E0500F473D4 /* Arc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Arc.h; path = "../third-party/cornucopia-lib/Cornucopia/Arc.h"; sourceTree = "<group>"; };
+		032D32891AF56E0500F473D4 /* Bezier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Bezier.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Bezier.cpp"; sourceTree = "<group>"; };
+		032D328A1AF56E0500F473D4 /* Bezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bezier.h; path = "../third-party/cornucopia-lib/Cornucopia/Bezier.h"; sourceTree = "<group>"; };
+		032D328B1AF56E0500F473D4 /* Clothoid.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Clothoid.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Clothoid.cpp"; sourceTree = "<group>"; };
+		032D328C1AF56E0500F473D4 /* Clothoid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Clothoid.h; path = "../third-party/cornucopia-lib/Cornucopia/Clothoid.h"; sourceTree = "<group>"; };
+		032D328D1AF56E0500F473D4 /* ClothoidProjector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClothoidProjector.cpp; path = "../third-party/cornucopia-lib/Cornucopia/ClothoidProjector.cpp"; sourceTree = "<group>"; };
+		032D328E1AF56E0500F473D4 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CMakeLists.txt; path = "../third-party/cornucopia-lib/Cornucopia/CMakeLists.txt"; sourceTree = "<group>"; };
+		032D328F1AF56E0500F473D4 /* Combiner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Combiner.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Combiner.cpp"; sourceTree = "<group>"; };
+		032D32901AF56E0500F473D4 /* Combiner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Combiner.h; path = "../third-party/cornucopia-lib/Cornucopia/Combiner.h"; sourceTree = "<group>"; };
+		032D32911AF56E0500F473D4 /* CornerDetector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CornerDetector.cpp; path = "../third-party/cornucopia-lib/Cornucopia/CornerDetector.cpp"; sourceTree = "<group>"; };
+		032D32921AF56E0500F473D4 /* CornerDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CornerDetector.h; path = "../third-party/cornucopia-lib/Cornucopia/CornerDetector.h"; sourceTree = "<group>"; };
+		032D32931AF56E0500F473D4 /* Cornucopia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Cornucopia.h; path = "../third-party/cornucopia-lib/Cornucopia/Cornucopia.h"; sourceTree = "<group>"; };
+		032D32941AF56E0500F473D4 /* Curve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Curve.h; path = "../third-party/cornucopia-lib/Cornucopia/Curve.h"; sourceTree = "<group>"; };
+		032D32951AF56E0500F473D4 /* CurvePrimitive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CurvePrimitive.cpp; path = "../third-party/cornucopia-lib/Cornucopia/CurvePrimitive.cpp"; sourceTree = "<group>"; };
+		032D32961AF56E0500F473D4 /* CurvePrimitive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurvePrimitive.h; path = "../third-party/cornucopia-lib/Cornucopia/CurvePrimitive.h"; sourceTree = "<group>"; };
+		032D32971AF56E0500F473D4 /* Debugging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Debugging.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Debugging.cpp"; sourceTree = "<group>"; };
+		032D32981AF56E0500F473D4 /* Debugging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debugging.h; path = "../third-party/cornucopia-lib/Cornucopia/Debugging.h"; sourceTree = "<group>"; };
+		032D32991AF56E0500F473D4 /* defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = defs.h; path = "../third-party/cornucopia-lib/Cornucopia/defs.h"; sourceTree = "<group>"; };
+		032D329A1AF56E0500F473D4 /* ErrorComputer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ErrorComputer.cpp; path = "../third-party/cornucopia-lib/Cornucopia/ErrorComputer.cpp"; sourceTree = "<group>"; };
+		032D329B1AF56E0500F473D4 /* ErrorComputer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ErrorComputer.h; path = "../third-party/cornucopia-lib/Cornucopia/ErrorComputer.h"; sourceTree = "<group>"; };
+		032D329C1AF56E0500F473D4 /* Fitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Fitter.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Fitter.cpp"; sourceTree = "<group>"; };
+		032D329D1AF56E0500F473D4 /* Fitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Fitter.h; path = "../third-party/cornucopia-lib/Cornucopia/Fitter.h"; sourceTree = "<group>"; };
+		032D329E1AF56E0500F473D4 /* Fresnel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Fresnel.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Fresnel.cpp"; sourceTree = "<group>"; };
+		032D329F1AF56E0500F473D4 /* Fresnel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Fresnel.h; path = "../third-party/cornucopia-lib/Cornucopia/Fresnel.h"; sourceTree = "<group>"; };
+		032D32A01AF56E0500F473D4 /* GraphConstructor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GraphConstructor.cpp; path = "../third-party/cornucopia-lib/Cornucopia/GraphConstructor.cpp"; sourceTree = "<group>"; };
+		032D32A11AF56E0500F473D4 /* GraphConstructor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GraphConstructor.h; path = "../third-party/cornucopia-lib/Cornucopia/GraphConstructor.h"; sourceTree = "<group>"; };
+		032D32A21AF56E0500F473D4 /* Line.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Line.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Line.cpp"; sourceTree = "<group>"; };
+		032D32A31AF56E0500F473D4 /* Line.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Line.h; path = "../third-party/cornucopia-lib/Cornucopia/Line.h"; sourceTree = "<group>"; };
+		032D32A41AF56E0500F473D4 /* Oversketcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Oversketcher.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Oversketcher.cpp"; sourceTree = "<group>"; };
+		032D32A51AF56E0500F473D4 /* Oversketcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Oversketcher.h; path = "../third-party/cornucopia-lib/Cornucopia/Oversketcher.h"; sourceTree = "<group>"; };
+		032D32A61AF56E0500F473D4 /* Parameters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Parameters.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Parameters.cpp"; sourceTree = "<group>"; };
+		032D32A71AF56E0500F473D4 /* Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Parameters.h; path = "../third-party/cornucopia-lib/Cornucopia/Parameters.h"; sourceTree = "<group>"; };
+		032D32A81AF56E0500F473D4 /* PathFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PathFinder.cpp; path = "../third-party/cornucopia-lib/Cornucopia/PathFinder.cpp"; sourceTree = "<group>"; };
+		032D32A91AF56E0500F473D4 /* PathFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PathFinder.h; path = "../third-party/cornucopia-lib/Cornucopia/PathFinder.h"; sourceTree = "<group>"; };
+		032D32AA1AF56E0500F473D4 /* PiecewiseLinearUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PiecewiseLinearUtils.cpp; path = "../third-party/cornucopia-lib/Cornucopia/PiecewiseLinearUtils.cpp"; sourceTree = "<group>"; };
+		032D32AB1AF56E0500F473D4 /* PiecewiseLinearUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PiecewiseLinearUtils.h; path = "../third-party/cornucopia-lib/Cornucopia/PiecewiseLinearUtils.h"; sourceTree = "<group>"; };
+		032D32AC1AF56E0500F473D4 /* Polyline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Polyline.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Polyline.cpp"; sourceTree = "<group>"; };
+		032D32AD1AF56E0500F473D4 /* Polyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Polyline.h; path = "../third-party/cornucopia-lib/Cornucopia/Polyline.h"; sourceTree = "<group>"; };
+		032D32AE1AF56E0500F473D4 /* Preprocessing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Preprocessing.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Preprocessing.cpp"; sourceTree = "<group>"; };
+		032D32AF1AF56E0500F473D4 /* Preprocessing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Preprocessing.h; path = "../third-party/cornucopia-lib/Cornucopia/Preprocessing.h"; sourceTree = "<group>"; };
+		032D32B01AF56E0500F473D4 /* PrimitiveFitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrimitiveFitter.cpp; path = "../third-party/cornucopia-lib/Cornucopia/PrimitiveFitter.cpp"; sourceTree = "<group>"; };
+		032D32B11AF56E0500F473D4 /* PrimitiveFitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrimitiveFitter.h; path = "../third-party/cornucopia-lib/Cornucopia/PrimitiveFitter.h"; sourceTree = "<group>"; };
+		032D32B21AF56E0500F473D4 /* PrimitiveFitUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrimitiveFitUtils.cpp; path = "../third-party/cornucopia-lib/Cornucopia/PrimitiveFitUtils.cpp"; sourceTree = "<group>"; };
+		032D32B31AF56E0500F473D4 /* PrimitiveFitUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrimitiveFitUtils.h; path = "../third-party/cornucopia-lib/Cornucopia/PrimitiveFitUtils.h"; sourceTree = "<group>"; };
+		032D32B41AF56E0500F473D4 /* PrimitiveSequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PrimitiveSequence.cpp; path = "../third-party/cornucopia-lib/Cornucopia/PrimitiveSequence.cpp"; sourceTree = "<group>"; };
+		032D32B51AF56E0500F473D4 /* PrimitiveSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrimitiveSequence.h; path = "../third-party/cornucopia-lib/Cornucopia/PrimitiveSequence.h"; sourceTree = "<group>"; };
+		032D32B61AF56E0500F473D4 /* Resampler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Resampler.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Resampler.cpp"; sourceTree = "<group>"; };
+		032D32B71AF56E0500F473D4 /* Resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Resampler.h; path = "../third-party/cornucopia-lib/Cornucopia/Resampler.h"; sourceTree = "<group>"; };
+		032D32B81AF56E0500F473D4 /* SimpleAPI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SimpleAPI.cpp; path = "../third-party/cornucopia-lib/Cornucopia/SimpleAPI.cpp"; sourceTree = "<group>"; };
+		032D32B91AF56E0500F473D4 /* SimpleAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleAPI.h; path = "../third-party/cornucopia-lib/Cornucopia/SimpleAPI.h"; sourceTree = "<group>"; };
+		032D32BA1AF56E0500F473D4 /* smart_ptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = smart_ptr.h; path = "../third-party/cornucopia-lib/Cornucopia/smart_ptr.h"; sourceTree = "<group>"; };
+		032D32BB1AF56E0500F473D4 /* Solver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Solver.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Solver.cpp"; sourceTree = "<group>"; };
+		032D32BC1AF56E0500F473D4 /* Solver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Solver.h; path = "../third-party/cornucopia-lib/Cornucopia/Solver.h"; sourceTree = "<group>"; };
+		032D32BD1AF56E0500F473D4 /* TwoCurveCombine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwoCurveCombine.cpp; path = "../third-party/cornucopia-lib/Cornucopia/TwoCurveCombine.cpp"; sourceTree = "<group>"; };
+		032D32BE1AF56E0500F473D4 /* TwoCurveCombine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwoCurveCombine.h; path = "../third-party/cornucopia-lib/Cornucopia/TwoCurveCombine.h"; sourceTree = "<group>"; };
+		032D32BF1AF56E0500F473D4 /* VectorC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VectorC.h; path = "../third-party/cornucopia-lib/Cornucopia/VectorC.h"; sourceTree = "<group>"; };
 		03474FE21AD7F66B001240DD /* QiController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiController.swift; sourceTree = "<group>"; };
 		03474FE41AD8036C001240DD /* Arc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Arc.swift; path = skeqi/Arc.swift; sourceTree = "<group>"; };
 		034F06A21ADA2103005A439A /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = playgrounds/MyPlayground.playground; sourceTree = "<group>"; };
@@ -66,6 +154,81 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		032D32821AF56D9500F473D4 /* third-party */ = {
+			isa = PBXGroup;
+			children = (
+				032D32831AF56D9F00F473D4 /* cornucopia-lib */,
+			);
+			name = "third-party";
+			sourceTree = "<group>";
+		};
+		032D32831AF56D9F00F473D4 /* cornucopia-lib */ = {
+			isa = PBXGroup;
+			children = (
+				032D32841AF56E0500F473D4 /* Algorithm.cpp */,
+				032D32851AF56E0500F473D4 /* Algorithm.h */,
+				032D32861AF56E0500F473D4 /* AngleUtils.h */,
+				032D32871AF56E0500F473D4 /* Arc.cpp */,
+				032D32881AF56E0500F473D4 /* Arc.h */,
+				032D32891AF56E0500F473D4 /* Bezier.cpp */,
+				032D328A1AF56E0500F473D4 /* Bezier.h */,
+				032D328B1AF56E0500F473D4 /* Clothoid.cpp */,
+				032D328C1AF56E0500F473D4 /* Clothoid.h */,
+				032D328D1AF56E0500F473D4 /* ClothoidProjector.cpp */,
+				032D328E1AF56E0500F473D4 /* CMakeLists.txt */,
+				032D328F1AF56E0500F473D4 /* Combiner.cpp */,
+				032D32901AF56E0500F473D4 /* Combiner.h */,
+				032D32911AF56E0500F473D4 /* CornerDetector.cpp */,
+				032D32921AF56E0500F473D4 /* CornerDetector.h */,
+				032D32931AF56E0500F473D4 /* Cornucopia.h */,
+				032D32941AF56E0500F473D4 /* Curve.h */,
+				032D32951AF56E0500F473D4 /* CurvePrimitive.cpp */,
+				032D32961AF56E0500F473D4 /* CurvePrimitive.h */,
+				032D32971AF56E0500F473D4 /* Debugging.cpp */,
+				032D32981AF56E0500F473D4 /* Debugging.h */,
+				032D32991AF56E0500F473D4 /* defs.h */,
+				032D329A1AF56E0500F473D4 /* ErrorComputer.cpp */,
+				032D329B1AF56E0500F473D4 /* ErrorComputer.h */,
+				032D329C1AF56E0500F473D4 /* Fitter.cpp */,
+				032D329D1AF56E0500F473D4 /* Fitter.h */,
+				032D329E1AF56E0500F473D4 /* Fresnel.cpp */,
+				032D329F1AF56E0500F473D4 /* Fresnel.h */,
+				032D32A01AF56E0500F473D4 /* GraphConstructor.cpp */,
+				032D32A11AF56E0500F473D4 /* GraphConstructor.h */,
+				032D32A21AF56E0500F473D4 /* Line.cpp */,
+				032D32A31AF56E0500F473D4 /* Line.h */,
+				032D32A41AF56E0500F473D4 /* Oversketcher.cpp */,
+				032D32A51AF56E0500F473D4 /* Oversketcher.h */,
+				032D32A61AF56E0500F473D4 /* Parameters.cpp */,
+				032D32A71AF56E0500F473D4 /* Parameters.h */,
+				032D32A81AF56E0500F473D4 /* PathFinder.cpp */,
+				032D32A91AF56E0500F473D4 /* PathFinder.h */,
+				032D32AA1AF56E0500F473D4 /* PiecewiseLinearUtils.cpp */,
+				032D32AB1AF56E0500F473D4 /* PiecewiseLinearUtils.h */,
+				032D32AC1AF56E0500F473D4 /* Polyline.cpp */,
+				032D32AD1AF56E0500F473D4 /* Polyline.h */,
+				032D32AE1AF56E0500F473D4 /* Preprocessing.cpp */,
+				032D32AF1AF56E0500F473D4 /* Preprocessing.h */,
+				032D32B01AF56E0500F473D4 /* PrimitiveFitter.cpp */,
+				032D32B11AF56E0500F473D4 /* PrimitiveFitter.h */,
+				032D32B21AF56E0500F473D4 /* PrimitiveFitUtils.cpp */,
+				032D32B31AF56E0500F473D4 /* PrimitiveFitUtils.h */,
+				032D32B41AF56E0500F473D4 /* PrimitiveSequence.cpp */,
+				032D32B51AF56E0500F473D4 /* PrimitiveSequence.h */,
+				032D32B61AF56E0500F473D4 /* Resampler.cpp */,
+				032D32B71AF56E0500F473D4 /* Resampler.h */,
+				032D32B81AF56E0500F473D4 /* SimpleAPI.cpp */,
+				032D32B91AF56E0500F473D4 /* SimpleAPI.h */,
+				032D32BA1AF56E0500F473D4 /* smart_ptr.h */,
+				032D32BB1AF56E0500F473D4 /* Solver.cpp */,
+				032D32BC1AF56E0500F473D4 /* Solver.h */,
+				032D32BD1AF56E0500F473D4 /* TwoCurveCombine.cpp */,
+				032D32BE1AF56E0500F473D4 /* TwoCurveCombine.h */,
+				032D32BF1AF56E0500F473D4 /* VectorC.h */,
+			);
+			name = "cornucopia-lib";
+			sourceTree = "<group>";
+		};
 		034F06A11ADA20AE005A439A /* playgrounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -77,6 +240,7 @@
 		03FA75F91AD7EA2500A56C06 = {
 			isa = PBXGroup;
 			children = (
+				032D32821AF56D9500F473D4 /* third-party */,
 				034F06A31ADA6951005A439A /* Stroke.swift */,
 				03474FE41AD8036C001240DD /* Arc.swift */,
 				03FA76041AD7EA2500A56C06 /* skeqi */,
@@ -215,6 +379,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				032D32C51AF56E0500F473D4 /* CMakeLists.txt in Resources */,
 				03FA760F1AD7EA2500A56C06 /* Main.storyboard in Resources */,
 				03FA76141AD7EA2500A56C06 /* LaunchScreen.xib in Resources */,
 				03FA76111AD7EA2500A56C06 /* Images.xcassets in Resources */,
@@ -235,11 +400,38 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				032D32C61AF56E0500F473D4 /* Combiner.cpp in Sources */,
+				032D32C21AF56E0500F473D4 /* Bezier.cpp in Sources */,
 				03FA760C1AD7EA2500A56C06 /* Shaders.metal in Sources */,
+				032D32D21AF56E0500F473D4 /* PiecewiseLinearUtils.cpp in Sources */,
+				032D32D01AF56E0500F473D4 /* Parameters.cpp in Sources */,
+				032D32D31AF56E0500F473D4 /* Polyline.cpp in Sources */,
+				032D32CC1AF56E0500F473D4 /* Fresnel.cpp in Sources */,
+				032D32C91AF56E0500F473D4 /* Debugging.cpp in Sources */,
+				032D32C01AF56E0500F473D4 /* Algorithm.cpp in Sources */,
 				034F06A41ADA6951005A439A /* Stroke.swift in Sources */,
 				03474FE31AD7F66B001240DD /* QiController.swift in Sources */,
+				032D32D61AF56E0500F473D4 /* PrimitiveFitUtils.cpp in Sources */,
+				032D32C41AF56E0500F473D4 /* ClothoidProjector.cpp in Sources */,
+				032D32D81AF56E0500F473D4 /* Resampler.cpp in Sources */,
+				032D32D71AF56E0500F473D4 /* PrimitiveSequence.cpp in Sources */,
+				032D32D91AF56E0500F473D4 /* SimpleAPI.cpp in Sources */,
+				032D32CE1AF56E0500F473D4 /* Line.cpp in Sources */,
+				032D32DB1AF56E0500F473D4 /* TwoCurveCombine.cpp in Sources */,
+				032D32C31AF56E0500F473D4 /* Clothoid.cpp in Sources */,
+				032D32CB1AF56E0500F473D4 /* Fitter.cpp in Sources */,
 				03474FE51AD8036C001240DD /* Arc.swift in Sources */,
+				032D32D41AF56E0500F473D4 /* Preprocessing.cpp in Sources */,
+				032D32CD1AF56E0500F473D4 /* GraphConstructor.cpp in Sources */,
+				032D32DA1AF56E0500F473D4 /* Solver.cpp in Sources */,
+				032D32D11AF56E0500F473D4 /* PathFinder.cpp in Sources */,
+				032D32C71AF56E0500F473D4 /* CornerDetector.cpp in Sources */,
+				032D32CA1AF56E0500F473D4 /* ErrorComputer.cpp in Sources */,
+				032D32CF1AF56E0500F473D4 /* Oversketcher.cpp in Sources */,
 				03FA760A1AD7EA2500A56C06 /* GameViewController.swift in Sources */,
+				032D32C81AF56E0500F473D4 /* CurvePrimitive.cpp in Sources */,
+				032D32D51AF56E0500F473D4 /* PrimitiveFitter.cpp in Sources */,
+				032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */,
 				03FA76081AD7EA2500A56C06 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,6 +495,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EIGEN_DIR = "$(PROJECT_DIR)/../third-party/cornucopia-lib/DemoUI-iOS/Eigen-3.2.4";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -319,12 +512,18 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(EIGEN_DIR)",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -348,6 +547,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EIGEN_DIR = "$(PROJECT_DIR)/../third-party/cornucopia-lib/DemoUI-iOS/Eigen-3.2.4";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -358,10 +558,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(EIGEN_DIR)",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
