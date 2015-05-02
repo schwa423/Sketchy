@@ -1,0 +1,3 @@
+[submodule "qi/third-party/cornucopia-lib"]
+	path = qi/third-party/cornucopia-lib
+	url = https://github.com/schwa423/cornucopia-lib.git
