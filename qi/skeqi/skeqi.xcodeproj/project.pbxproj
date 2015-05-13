@@ -35,6 +35,8 @@
 		032D32D91AF56E0500F473D4 /* SimpleAPI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32B81AF56E0500F473D4 /* SimpleAPI.cpp */; };
 		032D32DA1AF56E0500F473D4 /* Solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32BB1AF56E0500F473D4 /* Solver.cpp */; };
 		032D32DB1AF56E0500F473D4 /* TwoCurveCombine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32BD1AF56E0500F473D4 /* TwoCurveCombine.cpp */; };
+		032D36E31AFF4D9D00F473D4 /* BezierFitter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032D36E21AFF4D9D00F473D4 /* BezierFitter.mm */; };
+		032D36E41AFF4D9D00F473D4 /* BezierFitter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032D36E21AFF4D9D00F473D4 /* BezierFitter.mm */; };
 		03474FE31AD7F66B001240DD /* QiController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE21AD7F66B001240DD /* QiController.swift */; };
 		03474FE51AD8036C001240DD /* Arc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE41AD8036C001240DD /* Arc.swift */; };
 		034F06A01ADA0148005A439A /* Arc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE41AD8036C001240DD /* Arc.swift */; };
@@ -119,6 +121,9 @@
 		032D32BD1AF56E0500F473D4 /* TwoCurveCombine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwoCurveCombine.cpp; path = "../third-party/cornucopia-lib/Cornucopia/TwoCurveCombine.cpp"; sourceTree = "<group>"; };
 		032D32BE1AF56E0500F473D4 /* TwoCurveCombine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwoCurveCombine.h; path = "../third-party/cornucopia-lib/Cornucopia/TwoCurveCombine.h"; sourceTree = "<group>"; };
 		032D32BF1AF56E0500F473D4 /* VectorC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VectorC.h; path = "../third-party/cornucopia-lib/Cornucopia/VectorC.h"; sourceTree = "<group>"; };
+		032D36E01AFF4D9C00F473D4 /* skeqi-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "skeqi-Bridging-Header.h"; sourceTree = "<group>"; };
+		032D36E11AFF4D9D00F473D4 /* BezierFitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BezierFitter.h; path = skeqi/BezierFitter.h; sourceTree = "<group>"; };
+		032D36E21AFF4D9D00F473D4 /* BezierFitter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BezierFitter.mm; path = skeqi/BezierFitter.mm; sourceTree = "<group>"; };
 		03474FE21AD7F66B001240DD /* QiController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiController.swift; sourceTree = "<group>"; };
 		03474FE41AD8036C001240DD /* Arc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Arc.swift; path = skeqi/Arc.swift; sourceTree = "<group>"; };
 		034F06A21ADA2103005A439A /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = playgrounds/MyPlayground.playground; sourceTree = "<group>"; };
@@ -229,6 +234,17 @@
 			name = "cornucopia-lib";
 			sourceTree = "<group>";
 		};
+		032D36E51AFF4DC200F473D4 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				032D36E11AFF4D9D00F473D4 /* BezierFitter.h */,
+				032D36E21AFF4D9D00F473D4 /* BezierFitter.mm */,
+				034F06A31ADA6951005A439A /* Stroke.swift */,
+				03474FE41AD8036C001240DD /* Arc.swift */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
 		034F06A11ADA20AE005A439A /* playgrounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -240,12 +256,12 @@
 		03FA75F91AD7EA2500A56C06 = {
 			isa = PBXGroup;
 			children = (
+				032D36E51AFF4DC200F473D4 /* src */,
 				032D32821AF56D9500F473D4 /* third-party */,
-				034F06A31ADA6951005A439A /* Stroke.swift */,
-				03474FE41AD8036C001240DD /* Arc.swift */,
 				03FA76041AD7EA2500A56C06 /* skeqi */,
 				03FA761C1AD7EA2500A56C06 /* skeqiTests */,
 				03FA76031AD7EA2500A56C06 /* Products */,
+				032D36E01AFF4D9C00F473D4 /* skeqi-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -407,6 +423,7 @@
 				032D32D01AF56E0500F473D4 /* Parameters.cpp in Sources */,
 				032D32D31AF56E0500F473D4 /* Polyline.cpp in Sources */,
 				032D32CC1AF56E0500F473D4 /* Fresnel.cpp in Sources */,
+				032D36E31AFF4D9D00F473D4 /* BezierFitter.mm in Sources */,
 				032D32C91AF56E0500F473D4 /* Debugging.cpp in Sources */,
 				032D32C01AF56E0500F473D4 /* Algorithm.cpp in Sources */,
 				034F06A41ADA6951005A439A /* Stroke.swift in Sources */,
@@ -442,6 +459,7 @@
 			files = (
 				034F06A01ADA0148005A439A /* Arc.swift in Sources */,
 				03FA76201AD7EA2500A56C06 /* skeqiTests.swift in Sources */,
+				032D36E41AFF4D9D00F473D4 /* BezierFitter.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +539,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "skeqi-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -566,6 +585,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "skeqi-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				VALIDATE_PRODUCT = YES;
@@ -590,6 +610,10 @@
 				INFOPLIST_FILE = skeqi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-ffast-math",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -598,6 +622,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -609,6 +634,8 @@
 				INFOPLIST_FILE = skeqiTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/skeqi.app/skeqi";
 			};
 			name = Debug;
@@ -617,6 +644,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -624,6 +652,7 @@
 				INFOPLIST_FILE = skeqiTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/skeqi.app/skeqi";
 			};
 			name = Release;
