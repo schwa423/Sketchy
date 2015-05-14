@@ -8,6 +8,10 @@
 
 #import "BezierFitter.h"
 
+#import <Metal/Metal.h>
+#import <UIKit/UIKit.h>
+#import "skeqi-Swift.h"
+
 #include <chrono>
 #include <iostream>
 #include <vector>
@@ -25,18 +29,39 @@ namespace qi {
     typedef Eigen::Array<float, 1, 4> Arr4f;
     typedef Eigen::Array<float, 1, 8> Arr8f;
 
+    // Compute distance between two points.
+    float dist(Pt2f a, Pt2f b) {
+      Pt2f diff = b - a;
+      return sqrt(diff.dot(diff));
+    }
+
     struct CubicBezier2f {
         Pt2f pts[4];
 
         Pt2f Evaluate(float t) {
-            Pt2f temp[3];
+            Pt2f tmp3[3];
+            Pt2f tmp2[2];
+            return Evaluate(t, tmp3, tmp2);
+        }
+
+        Pt2f Evaluate(float t, Pt2f* tmp3, Pt2f* tmp2) {
             float one_minus_t = 1.0 - t;
-            temp[0] = pts[0] * one_minus_t + pts[1] * t;
-            temp[1] = pts[1] * one_minus_t + pts[2] * t;
-            temp[2] = pts[2] * one_minus_t + pts[3] * t;
-            temp[0] = temp[0] * one_minus_t + temp[1] * t;
-            temp[1] = temp[1] * one_minus_t + temp[2] * t;
-            return temp[0] * one_minus_t + temp[1] * t;
+            tmp3[0] = pts[0] * one_minus_t + pts[1] * t;
+            tmp3[1] = pts[1] * one_minus_t + pts[2] * t;
+            tmp3[2] = pts[2] * one_minus_t + pts[3] * t;
+            tmp2[0] = tmp3[0] * one_minus_t + tmp3[1] * t;
+            tmp2[1] = tmp3[1] * one_minus_t + tmp3[2] * t;
+            return tmp2[0] * one_minus_t + tmp2[1] * t;
+        }
+
+        std::pair<Pt2f, Pt2f> EvaluatePointAndNormal(float t) {
+            Pt2f tmp3[3];
+            Pt2f tmp2[2];
+            Pt2f pt = Evaluate(t, tmp3, tmp2);
+            Pt2f tangent = (tmp2[1] - tmp2[0]);
+            tangent.normalize();
+            // Rotate tangent clockwise by 90 degrees before returning.
+            return std::make_pair(pt, Pt2f{-tangent[1], tangent[0]});
         }
 
         void Print() {
@@ -50,16 +75,10 @@ namespace qi {
                                  std::vector<float>& parameterization,
                                  Pt2f endpoint_tangent_0,
                                  Pt2f endpoint_tangent_1) {
-          CubicBezier2f fit;
-          fit.pts[0] = Pt2f::Zero();
-          fit.pts[1] = Pt2f::Zero();
-          fit.pts[2] = Pt2f::Zero();
-          fit.pts[3] << 0.11, 0.22;
-
           Mat2f c = Mat2f::Zero();
           Pt2f x = Pt2f::Zero();
 
-#define VECTORIZE 1
+#define VECTORIZE 0
 #if !VECTORIZE
           for (int i = 0; i < pts.size(); ++i) {
             float t = parameterization[i];
@@ -157,67 +176,180 @@ namespace qi {
           float alpha_l = det_x_c1 / det_c0_c1;
           float alpha_r = det_c0_x / det_c0_c1;
           if (alpha_l < 0.0 || alpha_r < 0.0) {
-            // Alpha was nagative, so use Wu/Barsky heuristic to place points.
-            Pt2f diff = pts.front() - pts.back();
-            float dist = sqrt(diff.dot(diff));
+            // Alpha was negative, so use Wu/Barsky heuristic to place points.
             // TODO: if only one alpha value is negative, should only that one be adjusted?
-            alpha_l = alpha_r = dist;
+            alpha_l = alpha_r = dist(pts.front(), pts.back());
           }
 
           // Set all 4 control points and return the curve.
+          CubicBezier2f fit;
           fit.pts[0] = pts.front();
           fit.pts[1] = pts.front() + endpoint_tangent_0 * alpha_l;
           fit.pts[2] = pts.back() + endpoint_tangent_1 * alpha_r;
           fit.pts[3] = pts.back();
           return fit;
         }
+    };  // class CubicBezier2f
+
+    struct StrokeVertex {
+      float px, py, pz, pw;
+      float nx, ny, length;
+      unsigned char cb, cg, cr, ca;
     };
 
 }  // namespace qi
 
+using namespace qi;
 
 @implementation BezierFitter
+{
+  std::vector<Pt2f> pts_;
+  id<PageProtocol> page_;
+}
 
 - (id)init {
     self = [super init];
     if (self) {
-        qi::CubicBezier2f bez;
-        bez.pts[0][0] = -1.0;
-        bez.pts[0][1] = -1.0;
-        bez.pts[1][0] = -0.5;
-        bez.pts[1][1] = 0.0;
-        bez.pts[2][0] = 0.5;
-        bez.pts[2][1] = 0.0;
-        bez.pts[3][0] = 1.0;
-        bez.pts[3][1] = 1.0;
-
-        std::cerr << "Initial Bezier: ";
-        bez.Print();
-
-        std::vector<qi::Pt2f> pts;
-        std::vector<float> parameterization;
-        for (float i = 0.0; i <= 1.0; i += 0.0005) {
-          pts.push_back(bez.Evaluate(i));
-          parameterization.push_back(i);
-
-        }
-
-        std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
-        start = std::chrono::high_resolution_clock::now();
-
-        qi::CubicBezier2f fit;
-        for (int i = 0; i < 1000; ++i) {
-          fit = qi::CubicBezier2f::Fit(
-              pts, parameterization, bez.pts[1] - bez.pts[0], bez.pts[3] - bez.pts[2]);
-        }
-
-        end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> elapsed_seconds = end - start;
-
-        std::cerr << "Fit Bezier in " << elapsed_seconds.count() << " seconds:  ";
-        fit.Print();
+      page_ = Nil;
     }
     return self;
+}
+
+- (void)reset:(Page*) page {
+  // TODO DCHECK(page_ == Nil);
+  page_ = page;
+}
+
+- (void)add:(CGPoint)point {
+  pts_.push_back({point.x, point.y});
+}
+
+- (void)finish {
+  // TODO DCHECK(page_ != Nil);
+
+  int num_pts = pts_.size();
+  if (num_pts < 5) {
+    std::cerr << "Not enough input points.";
+    return;
+  }
+
+  // Compute chord-length parameterization for input points.
+  std::vector<float> param;
+  param.reserve(num_pts);
+  Pt2f last_pt = pts_[0];
+  float last_dist = 0.0;
+  for (Pt2f pt : pts_) {
+    last_dist = last_dist + dist(pt, last_pt);
+    last_pt = pt;
+    param.push_back(last_dist);
+  }
+  // Normalize cumulative length between 0.0 and 1.0.
+  float param_scale = 1.0 / last_dist;
+  float* param_floats = &(param[0]);
+#pragma clang loop vectorize(enable) interleave(enable)
+  for (int i = 0; i < num_pts; ++i) {
+    param_floats[i] *= param_scale;
+  }
+
+  CubicBezier2f bez = CubicBezier2f::Fit(
+      pts_, param, pts_[1] - pts_[0], pts_[pts_.size() - 2] - pts_[pts_.size() - 1]);
+  bez.Print();
+
+  // Tesselate 1000 vertices.
+  // TODO compute appropriate #verts
+  const static int kVertexCount = 1000;
+
+  // TODO DCHECK(sizeof(StrokeVertex) == page->vertexSize)
+  id<MTLDevice> device = page_.metalLibrary.device;
+  size_t bufferLength = kVertexCount * page_.vertexSize;
+  id<MTLBuffer> buffer = [device newBufferWithLength: bufferLength options: 0];
+  auto verts = reinterpret_cast<StrokeVertex*>([buffer contents]);
+
+  float incr = 1.0 / (kVertexCount - 2);
+  for (int i = 0; i < kVertexCount; i += 2) {
+    // We increment index by 2 each loop iteration, so the last iteration will have
+    // "index == kVertexCount - 2", and therefore a parameter value of "i * incr == 1.0".
+    std::pair<Pt2f, Pt2f> pt = bez.EvaluatePointAndNormal(i * incr);
+      float px = pt.first[0];
+      float py = pt.first[1];
+      float nx = pt.second[0];
+      float ny = pt.second[1];
+    verts[i].px = verts[i+1].px = pt.first[0];
+    verts[i].py = verts[i+1].py = pt.first[1];
+    verts[i].pz = verts[i+1].pz = 0.0;
+    verts[i].pw = verts[i+1].pw = 1.0;
+    verts[i].nx = -pt.second[0];
+    verts[i].ny = -pt.second[1];
+    verts[i+1].nx = pt.second[0];
+    verts[i+1].ny = pt.second[1];
+
+    // TODO this is a hack since our vertex shader doesn't actually use the specified normals.
+    float kWidth = 0.02;
+    verts[i].px += nx * kWidth;
+    verts[i].py += ny * kWidth;
+    verts[i+1].px -= nx * kWidth;
+    verts[i+1].py -= ny * kWidth;
+
+    // TODO length
+    verts[i].length = verts[i+1].length = 0.0;
+    verts[i].cb = verts[i+1].cb = 0;
+    verts[i].cg = verts[i+1].cg = 0;
+    verts[i].cr = verts[i+1].cr = 1;
+    verts[i].ca = verts[i+1].ca = 1;
+  }
+
+  auto stroke = [[Stroke2 alloc] init];
+  stroke.buffer = buffer;
+  stroke.vertexCount = kVertexCount;
+
+  [page_ addStroke: stroke];
+  pts_.clear();
+}
+
++ (void)benchmark {
+  BezierFitter* fitter = [[BezierFitter alloc] init];
+  if (!fitter) {
+    std::cerr << "BezierFitter::benchmark() Could not instantiate fitter";
+    return;
+  }
+
+  CubicBezier2f bez;
+  bez.pts[0][0] = -1.0;
+  bez.pts[0][1] = -1.0;
+  bez.pts[1][0] = -0.5;
+  bez.pts[1][1] = 0.0;
+  bez.pts[2][0] = 0.5;
+  bez.pts[2][1] = 0.0;
+  bez.pts[3][0] = 1.0;
+  bez.pts[3][1] = 1.0;
+
+  std::cerr << "Initial Bezier: ";
+  bez.Print();
+
+  std::vector<Pt2f> pts;
+  std::vector<float> parameterization;
+  for (float i = 0.0; i <= 1.0; i += 0.0005) {
+    pts.push_back(bez.Evaluate(i));
+    parameterization.push_back(i);
+  }
+  std::cerr << "Created uniform parameterization for " << pts.size() << " sample-points";
+
+  std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
+  start = std::chrono::high_resolution_clock::now();
+
+  CubicBezier2f fit;
+  static const int kBenchmarkIterations = 1000;
+  for (int i = 0; i < kBenchmarkIterations; ++i) {
+    fit = CubicBezier2f::Fit(
+        pts, parameterization, bez.pts[1] - bez.pts[0], bez.pts[3] - bez.pts[2]);
+  }
+
+  end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> elapsed_seconds = end - start;
+
+  std::cerr << "Fit Bezier " << kBenchmarkIterations << " times in "
+            << elapsed_seconds.count() << " seconds.";
+  fit.Print();
 }
 
 @end

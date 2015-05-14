@@ -7,8 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreGraphics/CoreGraphics.h>
+
+@class Page;
 
 @interface BezierFitter : NSObject
 
+- (void)reset:(Page*) page;
+- (void)add:(CGPoint) point;
+- (void)finish;
+
++ (void)benchmark;
 
 @end
