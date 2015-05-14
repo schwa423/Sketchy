@@ -358,8 +358,7 @@ std::cerr << "*********** " << pts_.front().x << "," << pts_.front().y << "     
   float incr = 1.0 / (seg_vert_count - 2);
   for (int h = 0; h < kSegs; ++h) {
     CubicBezier2f bez = beziers_[h];
-    unsigned char rgb = 0;
-    if (h == 1) rgb = 0;
+    unsigned char rgb = (255.0 * h) / kSegs;
     for (int i = 0; i < seg_vert_count; i += 2) {
       // We increment index by 2 each loop iteration, so the last iteration will have
       // "index == kVertexCount - 2", and therefore a parameter value of "i * incr == 1.0".

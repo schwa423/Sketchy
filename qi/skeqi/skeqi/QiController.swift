@@ -59,7 +59,7 @@ class RenderableStroke: Stroke {
 @objc protocol QiPage : QiDrawable {
     var vertexSize : Int { get }
     var metalLibrary : MTLLibrary? { get }
-    
+
     func addStroke(stroke: Stroke2);
 }
 
@@ -96,13 +96,13 @@ class RenderableStroke: Stroke {
         vertexDescriptor.attributes[0].format = MTLVertexFormat.Float4
         vertexDescriptor.attributes[0].bufferIndex = 0;
         vertexDescriptor.attributes[0].offset = 0;
-        vertexDescriptor.attributes[1].format = MTLVertexFormat.UChar4
-        vertexDescriptor.attributes[1].bufferIndex = 0;
+        vertexDescriptor.attributes[1].format = MTLVertexFormat.UChar4Normalized
+        vertexDescriptor.attributes[1].bufferIndex = 1;
         vertexDescriptor.attributes[1].offset = 0;
         vertexDescriptor.layouts[0].stride = 32;
         vertexDescriptor.layouts[0].stepFunction = MTLVertexStepFunction.PerVertex;
-        //        vertexDescriptor.layouts[1].stride = 32;
-        //        vertexDescriptor.layouts[1].stepFunction = MTLVertexStepFunction.PerVertex;
+        vertexDescriptor.layouts[1].stride = 32;
+        vertexDescriptor.layouts[1].stepFunction = MTLVertexStepFunction.PerVertex;
 
         let pipelineStateDescriptor = MTLRenderPipelineDescriptor()
         pipelineStateDescriptor.vertexFunction = vertexProgram

@@ -19,7 +19,7 @@ struct VertexInOut
 struct StrokeVertexIn
 {
     float4 position [[ attribute(0) ]];
-    uchar4 color    [[ attribute(1) ]];
+    float4 color    [[ attribute(1) ]];
 };
 
 vertex VertexInOut passThroughVertex(uint vid [[ vertex_id ]],
@@ -39,7 +39,7 @@ vertex VertexInOut passThroughVertex2(StrokeVertexIn vert [[ stage_in ]])
     VertexInOut outVertex;
 
     outVertex.position = vert.position;
-    outVertex.color    = float4(vert.color); // float4(0.3, 0.3, 0.3, 1);
+    outVertex.color    = vert.color; // float4(0.3, 0.3, 0.3, 1);
 
     return outVertex;
 };
