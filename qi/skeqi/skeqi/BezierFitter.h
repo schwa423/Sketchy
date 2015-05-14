@@ -11,11 +11,17 @@
 
 @class Page;
 
-@interface BezierFitter : NSObject
+@protocol QiStrokeFitter<NSObject>
+- (void)startStroke;
+- (void)addSamplePoint:(CGPoint)point;
+- (void)finishStroke;
+@end
 
-- (void)reset:(Page*) page;
-- (void)add:(CGPoint) point;
-- (void)finish;
+@interface BezierFitter : NSObject<QiStrokeFitter>
+- (id)initWithPage:(Page*) page;
+- (void)startStroke;
+- (void)addSamplePoint:(CGPoint)point;
+- (void)finishStroke;
 
 + (void)benchmark;
 

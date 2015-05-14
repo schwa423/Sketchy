@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0320CB0F1B04864F002BC448 /* QiProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320CB0E1B04864F002BC448 /* QiProtocols.swift */; };
+		0320CB101B04864F002BC448 /* QiProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320CB0E1B04864F002BC448 /* QiProtocols.swift */; };
 		032D32C01AF56E0500F473D4 /* Algorithm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32841AF56E0500F473D4 /* Algorithm.cpp */; };
 		032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32871AF56E0500F473D4 /* Arc.cpp */; };
 		032D32C21AF56E0500F473D4 /* Bezier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32891AF56E0500F473D4 /* Bezier.cpp */; };
@@ -61,6 +63,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0320CB0E1B04864F002BC448 /* QiProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiProtocols.swift; sourceTree = "<group>"; };
 		032D32841AF56E0500F473D4 /* Algorithm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Algorithm.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.cpp"; sourceTree = "<group>"; };
 		032D32851AF56E0500F473D4 /* Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Algorithm.h; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.h"; sourceTree = "<group>"; };
 		032D32861AF56E0500F473D4 /* AngleUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AngleUtils.h; path = "../third-party/cornucopia-lib/Cornucopia/AngleUtils.h"; sourceTree = "<group>"; };
@@ -286,6 +289,7 @@
 				03FA76101AD7EA2500A56C06 /* Images.xcassets */,
 				03FA76121AD7EA2500A56C06 /* LaunchScreen.xib */,
 				03FA76051AD7EA2500A56C06 /* Supporting Files */,
+				0320CB0E1B04864F002BC448 /* QiProtocols.swift */,
 			);
 			path = skeqi;
 			sourceTree = "<group>";
@@ -446,6 +450,7 @@
 				032D32CA1AF56E0500F473D4 /* ErrorComputer.cpp in Sources */,
 				032D32CF1AF56E0500F473D4 /* Oversketcher.cpp in Sources */,
 				03FA760A1AD7EA2500A56C06 /* GameViewController.swift in Sources */,
+				0320CB0F1B04864F002BC448 /* QiProtocols.swift in Sources */,
 				032D32C81AF56E0500F473D4 /* CurvePrimitive.cpp in Sources */,
 				032D32D51AF56E0500F473D4 /* PrimitiveFitter.cpp in Sources */,
 				032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */,
@@ -460,6 +465,7 @@
 				034F06A01ADA0148005A439A /* Arc.swift in Sources */,
 				03FA76201AD7EA2500A56C06 /* skeqiTests.swift in Sources */,
 				032D36E41AFF4D9D00F473D4 /* BezierFitter.mm in Sources */,
+				0320CB101B04864F002BC448 /* QiProtocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,7 +541,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(EIGEN_DIR)",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -583,7 +589,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(EIGEN_DIR)",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "skeqi-Bridging-Header.h";

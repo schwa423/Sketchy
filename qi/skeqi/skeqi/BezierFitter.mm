@@ -204,27 +204,25 @@ using namespace qi;
 @implementation BezierFitter
 {
   std::vector<Pt2f> pts_;
-  id<PageProtocol> page_;
+  id<QiPage> page_;
+  id<MTLBuffer> buffer_;
 }
 
-- (id)init {
+- (id)initWithPage:(Page*)page {
     self = [super init];
     if (self) {
-      page_ = Nil;
+      // TODO DCHECK(page_ != Nil)
+      page_ = page;
     }
     return self;
 }
 
-- (void)reset:(Page*) page {
-  // TODO DCHECK(page_ == Nil);
-  page_ = page;
-}
-
-- (void)add:(CGPoint)point {
+- (void)startStroke {}
+- (void)addSamplePoint:(CGPoint) point {
   pts_.push_back({point.x, point.y});
 }
 
-- (void)finish {
+- (void)finishStroke {
   // TODO DCHECK(page_ != Nil);
 
   int num_pts = pts_.size();

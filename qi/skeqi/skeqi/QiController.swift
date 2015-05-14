@@ -33,7 +33,8 @@ class RenderableStroke: Stroke {
     }
 }
 
-// TODO: inherits from NSObject so we can alloc it from BezierFitter.  Kinda kludgy.
+// TODO: inherits from NSObject so we can alloc it from Objective-C implementations
+// of QiStrokeFitter.  Kinda kludgy.
 @objc class Stroke2 : NSObject {
     var vertexCount : Int
     var buffer: MTLBuffer!
@@ -54,15 +55,17 @@ class RenderableStroke: Stroke {
 
 }
 
-@objc protocol PageProtocol {
+
+@objc protocol QiPage : QiDrawable {
     var vertexSize : Int { get }
     var metalLibrary : MTLLibrary? { get }
-
+    
     func addStroke(stroke: Stroke2);
 }
 
-// TODO: inherits from NSObject so maybe we can use Id<Page> from BezierFitter.  Kinda kludgy.
-@objc class Page : NSObject, PageProtocol {
+// TODO: inherits from NSObject so maybe we can use Id<Page> from Objective-C
+// implementations of QiStrokeFitter.  Kinda kludgy.
+@objc class Page : NSObject, QiPage {
     var strokes = [Stroke2]()
     let vertexSize : Int = 32
 
@@ -123,9 +126,9 @@ protocol QiTouchHandler {
 }
 
 class StrokeTouchHandler : QiTouchHandler {
-    var activeFitters = [UITouch : BezierFitter]()
-    var freeFitters = Set<BezierFitter>()
-    var page : Page?
+    var activeFitters = [UITouch : QiStrokeFitter]()
+    var freeFitters = [QiStrokeFitter]()
+    var page : Page
 
     init(page mypage: Page) {
         page = mypage
@@ -134,23 +137,32 @@ class StrokeTouchHandler : QiTouchHandler {
         for touch in touches {
             let fitter = obtainFitter()
             activeFitters.updateValue(fitter, forKey:touch)
-            fitter.reset(page!)
-            fitter.add(getTouchPosition(touch))
+            fitter.startStroke()
+            fitter.addSamplePoint(getTouchPosition(touch))
         }
     }
     func touchesCancelled(touches: Set<UITouch>!, withEvent event: UIEvent!) {
-        assert(false, "touchesCancelled: not implemented")
+        assert(false, "touchesCancelled(): not implemented")
     }
     func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
-        for touch in touches { activeFitters[touch]!.add(getTouchPosition(touch)) }
+        for touch in touches {
+            if let fitter = activeFitters[touch] {
+                fitter.addSamplePoint(getTouchPosition(touch))
+            } else {
+                assert(false, "touchesMoved(): could not find fitter");
+            }
+        }
     }
     func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent) {
         for touch in touches {
-            let fitter = activeFitters[touch]!
-            activeFitters[touch] = nil
-            fitter.add(getTouchPosition(touch))
-            fitter.finish()
-            freeFitters.insert(fitter)
+            if let fitter = activeFitters[touch] {
+                fitter.addSamplePoint(getTouchPosition(touch))
+                fitter.finishStroke()
+                activeFitters[touch] = nil
+                freeFitters.append(fitter)
+            } else {
+                assert(false, "touchesEnded(): could not find fitter");
+            }
         }
     }
     func getTouchPosition(touch : UITouch) -> CGPoint {
@@ -160,8 +172,12 @@ class StrokeTouchHandler : QiTouchHandler {
         return pt;
     }
 
-    func obtainFitter() -> BezierFitter {
-        return freeFitters.count > 0 ? freeFitters.removeFirst() : BezierFitter()
+    func obtainFitter() -> QiStrokeFitter {
+        if freeFitters.count > 0 {
+            return freeFitters.removeLast()
+        } else {
+            return BezierFitter(page: page)
+        }
     }
 }
 
