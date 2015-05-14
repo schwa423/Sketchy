@@ -100,8 +100,10 @@ namespace qi {
                     << "p3(" << pts[3].x << "," << pts[3].y << ")" << std::endl;
         }
 
-        static CubicBezier2f Fit(std::vector<Pt2f>& pts,
-                                 std::vector<float>& parameterization,
+        static CubicBezier2f Fit(Pt2f* pts,
+                                 int count,
+                                 float* params,
+                                 float param_shift,
                                  float param_scale,
                                  Pt2f endpoint_tangent_0,
                                  Pt2f endpoint_tangent_1) {
@@ -110,22 +112,21 @@ namespace qi {
 
 #if 1
           // Non-vectorized version
-          for (int i = 0; i < pts.size(); ++i) {
-            float t = parameterization[i] * param_scale;
+          for (int i = 0; i < count; ++i) {
+            float t = (params[i] + param_shift) * param_scale;
             float omt = 1.0 - t;
             float b0 = omt * omt * omt;
             float b1 = 3.0 * t * omt * omt;
             float b2 = 3.0 * t * t * omt;
             float b3 = t * t * t;
             Pt2f a0 = endpoint_tangent_0 * b1;
-
             Pt2f a1 = endpoint_tangent_1 * b2;
             c(0,0) += a0.dot(a0);
             c(0,1) += a0.dot(a1);
             // c(1,0) == a1.dot(a0) == c(0,1), so don't compute here,
             // but instead set it just after the loop.
             c(1,1) += a1.dot(a1);
-            Pt2f tmp = pts[i] - (pts.front() * (b0 + b1) + pts.back() * (b2 + b3));
+            Pt2f tmp = pts[i] - (pts[0] * (b0 + b1) + pts[count - 1] * (b2 + b3));
             x[0] += a0.dot(tmp);
             x[1] += a1.dot(tmp);
           }
@@ -134,13 +135,10 @@ namespace qi {
           // Requires -ffast-math.  TODO: experiment with fp_contract pragma (maybe globally
           // enabling -ffast-math isn't necessary).
 
-          int end_index = static_cast<int>(pts.size()) - 1;
-          float* params = &(parameterization[0]);
-          float* raw_pts = reinterpret_cast<float*>(&(pts[0]));
-          float first_valx = pts.front()[0];
-          float first_valy = pts.front()[1];
-          float last_valx = pts.back()[0];
-          float last_valy = pts.back()[1];
+          float first_valx = pts[0].x;
+          float first_valy = pts[0].y;
+          float last_valx = pts[count-1].x;
+          float last_valy = pts[count-1].y;
 
           float et0x = endpoint_tangent_0[0];
           float et0y = endpoint_tangent_0[1];
@@ -154,8 +152,8 @@ namespace qi {
           float x1[2000];
 
 #pragma clang loop vectorize(enable) interleave(enable)
-          for (int i = 0; i <= end_index; i++) {
-            float t = params[i] * param_scale;
+          for (int i = 0; i < count; i++) {
+            float t = (params[i] + param_shift) * param_scale;
             float omt = 1.0 - t;
             float b0 = omt * omt * omt;
             float b1 = 3.0 * t * omt * omt;
@@ -172,15 +170,15 @@ namespace qi {
             c00[i] = a0x * a0x + a0y * a0y;  // a0.dot(a0);
             c01[i] = a0x * a1x + a0y * a1y;  // a0.dot(a1);
             c11[i] = a1x * a1x + a1y * a1y;  // a1.dot(a1);
-            float tmpx = raw_pts[i*2] - first_valx * b0b1 - last_valx * b2b3;
-            float tmpy = raw_pts[i*2+1] - first_valy * b0b1 - last_valy * b2b3;
+            float tmpx = pts[i*2] - first_valx * b0b1 - last_valx * b2b3;
+            float tmpy = pts[i*2+1] - first_valy * b0b1 - last_valy * b2b3;
             x0[i] = a0x * tmpx + a0y * tmpy;  // a0.dot(tmp);
             x1[i] = a1x * tmpx + a1y * tmpy;  // a1.dot(tmp);
           }
 
           // Accumulate sums.  If we try to do this in the loop above, the vectorizer fails.
 #pragma clang loop vectorize(enable) interleave(enable)
-          for (int i = 0; i <= end_index; i++) {
+          for (int i = 0; i < count; i++) {
             c(0,0) += c00[i];
             c(0,1) += c01[i];
             c(1,1) += c11[i];
@@ -206,15 +204,15 @@ namespace qi {
           if (alpha_l < 0.0 || alpha_r < 0.0) {
             // Alpha was negative, so use Wu/Barsky heuristic to place points.
             // TODO: if only one alpha value is negative, should only that one be adjusted?
-            alpha_l = alpha_r = dist(pts.front(), pts.back());
+            alpha_l = alpha_r = dist(pts[0], pts[count-1]);
           }
 
           // Set all 4 control points and return the curve.
           CubicBezier2f fit;
-          fit.pts[0] = pts.front();
-          fit.pts[1] = pts.front() + endpoint_tangent_0 * alpha_l;
-          fit.pts[2] = pts.back() + endpoint_tangent_1 * alpha_r;
-          fit.pts[3] = pts.back();
+          fit.pts[0] = pts[0];
+          fit.pts[1] = pts[0] + endpoint_tangent_0 * alpha_l;
+          fit.pts[2] = pts[count-1] + endpoint_tangent_1 * alpha_r;
+          fit.pts[3] = pts[count-1];
           return fit;
         }
     };  // class CubicBezier2f
@@ -290,7 +288,6 @@ using namespace qi;
     pts_.push_back(pt);
     params_.push_back(params_.back() + distance);
   }
-  [self fit];
   [self tesselate];
 }
 
@@ -304,15 +301,11 @@ using namespace qi;
   stroke_ = nil;
 }
 
-- (void)fit {
-
-}
-
 - (void)tesselate {
   // TODO DCHECK(page_ != Nil);
 
   int num_pts = pts_.size();
-  if (num_pts < 5) {
+  if (num_pts < 20) {
     std::cerr << "Not enough input points.";
     return;
   } else if (stroke_ == nil) {
@@ -327,41 +320,74 @@ using namespace qi;
     [page_ addStroke: stroke_];
   }
 
-  // Normalize cumulative length between 0.0 and 1.0.
-  float param_scale = 1.0 / params_.back();;
+  // TODO keep some around.
+  beziers_.clear();
 
-  CubicBezier2f bez = CubicBezier2f::Fit(
-      pts_, params_, param_scale, pts_[1] - pts_[0], pts_[pts_.size() - 2] - pts_[pts_.size() - 1]);
+  static const int kSegs = 4;
+
+std::cerr << "*********** " << pts_.front().x << "," << pts_.front().y << "      " << pts_.back().x << "," << pts_.back().y << std::endl;
+
+  int range = num_pts / kSegs;
+  int start_index = 0;
+  for (int i = 1; i <= kSegs; i++) {
+    int end_index = num_pts - (kSegs - i) * range - 1;
+
+    std::cerr << "   start/end index:   " << start_index << "  " << end_index << std::endl;
+    std::cerr << "   start/end pos:   " << pts_[start_index].x << "," << pts_[start_index].y << "      " << pts_[end_index].x << "," << pts_[end_index].y << std::endl;
+
+    // Normalize cumulative length between 0.0 and 1.0.
+    float param_shift = -params_[start_index];
+    float param_scale = 1.0 / (params_[end_index] + param_shift);
+
+    std::cerr << "   param shift/scale: " << param_shift << "  " << param_scale << std::endl;
+
+    CubicBezier2f bez = CubicBezier2f::Fit(
+        &(pts_[start_index]), end_index - start_index + 1,
+        &(params_[start_index]), param_shift, param_scale,
+        pts_[start_index+1] - pts_[start_index], pts_[end_index-1] - pts_[end_index]);
+    beziers_.push_back(bez);
+
+    bez.Print();
+
+    start_index = end_index + 1;
+  }
 
   auto verts = reinterpret_cast<StrokeVertex*>([buffer_ contents]);
+  int seg_vert_count = vertex_count_ / kSegs;
+  // TODO DCHECK vertex_count_ == (seg_vert_count / 2) * kSegs * 2
+  float incr = 1.0 / (seg_vert_count - 2);
+  for (int h = 0; h < kSegs; ++h) {
+    CubicBezier2f bez = beziers_[h];
+    unsigned char rgb = 0;
+    if (h == 1) rgb = 0;
+    for (int i = 0; i < seg_vert_count; i += 2) {
+      // We increment index by 2 each loop iteration, so the last iteration will have
+      // "index == kVertexCount - 2", and therefore a parameter value of "i * incr == 1.0".
+      std::pair<Pt2f, Pt2f> pt = bez.EvaluatePointAndNormal(i * incr);
+      verts[i].px = verts[i+1].px = pt.first.x;
+      verts[i].py = verts[i+1].py = pt.first.y;
+      verts[i].pz = verts[i+1].pz = 0.0;
+      verts[i].pw = verts[i+1].pw = 1.0;
+      verts[i].nx = pt.second.x;
+      verts[i].ny = pt.second.y;
+      verts[i+1].nx = -pt.second.x;
+      verts[i+1].ny = -pt.second.y;
 
-  float incr = 1.0 / (vertex_count_ - 2);
-  for (int i = 0; i < vertex_count_; i += 2) {
-    // We increment index by 2 each loop iteration, so the last iteration will have
-    // "index == kVertexCount - 2", and therefore a parameter value of "i * incr == 1.0".
-    std::pair<Pt2f, Pt2f> pt = bez.EvaluatePointAndNormal(i * incr);
-    verts[i].px = verts[i+1].px = pt.first.x;
-    verts[i].py = verts[i+1].py = pt.first.y;
-    verts[i].pz = verts[i+1].pz = 0.0;
-    verts[i].pw = verts[i+1].pw = 1.0;
-    verts[i].nx = pt.second.x;
-    verts[i].ny = pt.second.y;
-    verts[i+1].nx = -pt.second.x;
-    verts[i+1].ny = -pt.second.y;
+      // TODO this is a hack since our vertex shader doesn't actually use the specified normals.
+      float kWidth = 0.02;
+      verts[i].px += verts[i].nx * kWidth;
+      verts[i].py += verts[i].ny * kWidth;
+      verts[i+1].px += verts[i+1].nx * kWidth;
+      verts[i+1].py += verts[i+1].ny * kWidth;
 
-    // TODO this is a hack since our vertex shader doesn't actually use the specified normals.
-    float kWidth = 0.02;
-    verts[i].px += verts[i].nx * kWidth;
-    verts[i].py += verts[i].ny * kWidth;
-    verts[i+1].px += verts[i+1].nx * kWidth;
-    verts[i+1].py += verts[i+1].ny * kWidth;
-
-    // TODO length
-    verts[i].length = verts[i+1].length = 0.0;
-    verts[i].cb = verts[i+1].cb = 0;
-    verts[i].cg = verts[i+1].cg = 0;
-    verts[i].cr = verts[i+1].cr = 1;
-    verts[i].ca = verts[i+1].ca = 1;
+      // TODO length
+      verts[i].length = verts[i+1].length = 0.0;
+      verts[i].cb = verts[i+1].cb = rgb;
+      verts[i].cg = verts[i+1].cg = rgb;
+      verts[i].cr = verts[i+1].cr = rgb;
+      verts[i].ca = verts[i+1].ca = 1;
+    }
+    verts = &(verts[seg_vert_count]);
   }
 }
 
@@ -400,7 +426,7 @@ using namespace qi;
   static const int kBenchmarkIterations = 1000;
   for (int i = 0; i < kBenchmarkIterations; ++i) {
     fit = CubicBezier2f::Fit(
-        pts, parameterization, 1.0, bez.pts[1] - bez.pts[0], bez.pts[3] - bez.pts[2]);
+      &(pts[0]), pts.size(), &(parameterization[0]), 0.0, 1.0, bez.pts[1] - bez.pts[0], bez.pts[3] - bez.pts[2]);
   }
 
   end = std::chrono::high_resolution_clock::now();

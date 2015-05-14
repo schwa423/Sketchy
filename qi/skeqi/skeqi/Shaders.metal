@@ -27,20 +27,20 @@ vertex VertexInOut passThroughVertex(uint vid [[ vertex_id ]],
                                      constant packed_uchar4* color    [[ buffer(1) ]])
 {
     VertexInOut outVertex;
-    
+
     outVertex.position = position[vid];
     outVertex.color    = static_cast<float4>(uchar4(color[vid]));
-    
+
     return outVertex;
 };
 
 vertex VertexInOut passThroughVertex2(StrokeVertexIn vert [[ stage_in ]])
 {
     VertexInOut outVertex;
-    
+
     outVertex.position = vert.position;
-    outVertex.color    = float4(0.3, 0.3, 0.3, 1);
-    
+    outVertex.color    = float4(vert.color); // float4(0.3, 0.3, 0.3, 1);
+
     return outVertex;
 };
 

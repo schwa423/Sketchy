@@ -135,6 +135,10 @@ class StrokeTouchHandler : QiTouchHandler {
     }
     func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
         for touch in touches {
+            if page.strokes.count > 10 {
+                page.strokes.removeAll()
+                println("CLEARING ALL STROKES");
+            }
             let fitter = obtainFitter()
             activeFitters.updateValue(fitter, forKey:touch)
             fitter.startStroke()
