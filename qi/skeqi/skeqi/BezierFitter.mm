@@ -22,8 +22,37 @@
 namespace qi {
 
     typedef Eigen::Vector2d Pt2d;  // typedef Matrix< double, 2, 1 >  (column vector)
-    typedef Eigen::Vector2f Pt2f;
+
     typedef Eigen::Matrix2f Mat2f;
+
+//    typedef Eigen::Vector2f Pt2f;
+    struct Pt2f {
+      float x;
+      float y;
+      Pt2f() {}  // uninitialized  // TODO use NaN in debug mode.
+      Pt2f(float xx, float yy) { x = xx; y = yy; }
+      Pt2f(const CGPoint& pt) { x = pt.x; y = pt.y; }
+      Pt2f(const Eigen::Vector2f pt) { x = pt[0]; y = pt[1]; }
+      operator Eigen::Vector2f&() {
+        return *reinterpret_cast<Eigen::Vector2f*>(this);
+      }
+      operator const Eigen::Vector2f&() const {
+        return *reinterpret_cast<const Eigen::Vector2f*>(this);
+      }
+      Pt2f operator+(const Pt2f& other) const { return Pt2f(x + other.x, y + other.y); }
+      Pt2f operator-(const Pt2f& other) const { return Pt2f(x - other.x, y - other.y); }
+      Pt2f operator*(float scale) const { return Pt2f(x * scale, y * scale); }
+      float& operator[](int index) { return (&(this->x))[index]; }
+      float dot(const Pt2f& other) const { return x * other.x + y * other.y; }
+      float dist(const Pt2f& other) const { Pt2f vec = other - *this; return sqrt(vec.dot(vec)); }
+      void normalize() {
+          float inverse_length = 1.0f / sqrt(this->dot(*this));
+          x *= inverse_length;
+          y *= inverse_length;
+      }
+
+      static Pt2f Zero() { return Pt2f(0.0f, 0.0f); }
+    };
 
     typedef Eigen::Vector4f Vec4f;
     typedef Eigen::Array<float, 1, 4> Arr4f;
@@ -61,27 +90,28 @@ namespace qi {
             Pt2f tangent = (tmp2[1] - tmp2[0]);
             tangent.normalize();
             // Rotate tangent clockwise by 90 degrees before returning.
-            return std::make_pair(pt, Pt2f{-tangent[1], tangent[0]});
+            return std::make_pair(pt, Pt2f{-tangent.y, tangent.x});
         }
 
         void Print() {
-          std::cerr << "p0(" << pts[0][0] << "," << pts[0][1] << "), "
-                    << "p1(" << pts[1][0] << "," << pts[1][1] << "), "
-                    << "p2(" << pts[2][0] << "," << pts[2][1] << "), "
-                    << "p3(" << pts[3][0] << "," << pts[3][1] << ")" << std::endl;
+          std::cerr << "p0(" << pts[0].x << "," << pts[0].y << "), "
+                    << "p1(" << pts[1].x << "," << pts[1].y << "), "
+                    << "p2(" << pts[2].x << "," << pts[2].y << "), "
+                    << "p3(" << pts[3].x << "," << pts[3].y << ")" << std::endl;
         }
 
         static CubicBezier2f Fit(std::vector<Pt2f>& pts,
                                  std::vector<float>& parameterization,
+                                 float param_scale,
                                  Pt2f endpoint_tangent_0,
                                  Pt2f endpoint_tangent_1) {
           Mat2f c = Mat2f::Zero();
           Pt2f x = Pt2f::Zero();
 
-#define VECTORIZE 0
-#if !VECTORIZE
+#if 1
+          // Non-vectorized version
           for (int i = 0; i < pts.size(); ++i) {
-            float t = parameterization[i];
+            float t = parameterization[i] * param_scale;
             float omt = 1.0 - t;
             float b0 = omt * omt * omt;
             float b1 = 3.0 * t * omt * omt;
@@ -125,7 +155,7 @@ namespace qi {
 
 #pragma clang loop vectorize(enable) interleave(enable)
           for (int i = 0; i <= end_index; i++) {
-            float t = params[i];
+            float t = params[i] * param_scale;
             float omt = 1.0 - t;
             float b0 = omt * omt * omt;
             float b1 = 3.0 * t * omt * omt;
@@ -159,16 +189,14 @@ namespace qi {
           }
 #endif  // VECTORIZE
 
-
           c(1,0) = c(0,1);
 
-          float det_c0_c1 = c(0,0) * c(1,1) - c(1,0) * c(0,1);
-          float det_c0_x = c(0,0)   * x[1] - c(0,1)   * x[0];
-          float det_x_c1 = x[0]     * c(1,1) - x[1]   * c(0,1);
+          float det_c0_c1 = c(0,0) * c(1,1)  -  c(1,0) * c(0,1);
+          float det_c0_x =  c(0,0) * x[1]    -  c(0,1) * x[0];
+          float det_x_c1 =  x[0]   * c(1,1)  -  x[1]   * c(0,1);
 
           if (det_c0_c1 == 0.0)
             det_c0_c1 = c(0,0) * c(1,1) * 10e-12;
-
 
           // Compute alpha values used to determine the distance along the left/right tangent
           // vectors to place the middle two control points.  If either alpha value is negative,
@@ -204,8 +232,28 @@ using namespace qi;
 @implementation BezierFitter
 {
   std::vector<Pt2f> pts_;
+  std::vector<float> params_;
+  std::vector<CubicBezier2f> beziers_;
+
   id<QiPage> page_;
   id<MTLBuffer> buffer_;
+  Stroke2* stroke_;
+  size_t vertex_count_;
+  size_t vertex_capacity_;
+}
+
+// TODO DCHECK(sizeof(StrokeVertex) == page->vertexSize)
+- (id) newBufferWithVertexCapacity:(int)capacity {
+  assert(capacity > vertex_capacity_);
+  vertex_capacity_ = capacity;
+  size_t buffer_size_ = capacity * page_.vertexSize;
+  id<MTLBuffer> buffer = [page_.metalLibrary.device newBufferWithLength: buffer_size_ options: 0];
+  // TODO error-checking
+  if (vertex_count_ > 0) {
+    // Copy existing vertices into the new buffer.
+    memcpy([buffer contents], [buffer_ contents], vertex_count_ * page_.vertexSize);
+  }
+  return buffer;
 }
 
 - (id)initWithPage:(Page*)page {
@@ -213,80 +261,100 @@ using namespace qi;
     if (self) {
       // TODO DCHECK(page_ != Nil)
       page_ = page;
+      stroke_ = nil;
+      vertex_count_ = 0;
+      vertex_capacity_ = 0;
+
+      // TODO error-checking
+      // buffer_ = [self newBufferWithVertexCapacity:1000];
+      buffer_ = nil;
     }
     return self;
 }
 
-- (void)startStroke {}
+- (void)startStroke {
+  // TODO ultimately we will want to have a more-than-large-enough buffer in the fitter,
+  // then copy the data into a correct-sized buffer when finishing the stroke.
+  vertex_capacity_ = 0;
+  buffer_ = [self newBufferWithVertexCapacity:1000];
+}
+
 - (void)addSamplePoint:(CGPoint) point {
-  pts_.push_back({point.x, point.y});
+  Pt2f pt = point;
+  if (pts_.empty()) {
+    // TODO: avoid "if" by providing initial point to "startStroke".
+    pts_.push_back(pt);
+    params_.push_back(0.0);
+  } else {
+    float distance = pts_.back().dist(pt);
+    pts_.push_back(pt);
+    params_.push_back(params_.back() + distance);
+  }
+  [self fit];
+  [self tesselate];
 }
 
 - (void)finishStroke {
+  pts_.clear();
+  beziers_.clear();
+  params_.clear();
+  vertex_count_ = 0;
+  vertex_capacity_ = 0;
+  buffer_ = nil;
+  stroke_ = nil;
+}
+
+- (void)fit {
+
+}
+
+- (void)tesselate {
   // TODO DCHECK(page_ != Nil);
 
   int num_pts = pts_.size();
   if (num_pts < 5) {
     std::cerr << "Not enough input points.";
     return;
+  } else if (stroke_ == nil) {
+    stroke_ = [[Stroke2 alloc] init];
+    stroke_.buffer = buffer_;
+
+    // Tesselate 1000 vertices.
+    // TODO compute appropriate #verts
+    const static int kVertexCount = 1000;
+    vertex_count_ = kVertexCount;
+    stroke_.vertexCount = kVertexCount;
+    [page_ addStroke: stroke_];
   }
 
-  // Compute chord-length parameterization for input points.
-  std::vector<float> param;
-  param.reserve(num_pts);
-  Pt2f last_pt = pts_[0];
-  float last_dist = 0.0;
-  for (Pt2f pt : pts_) {
-    last_dist = last_dist + dist(pt, last_pt);
-    last_pt = pt;
-    param.push_back(last_dist);
-  }
   // Normalize cumulative length between 0.0 and 1.0.
-  float param_scale = 1.0 / last_dist;
-  float* param_floats = &(param[0]);
-#pragma clang loop vectorize(enable) interleave(enable)
-  for (int i = 0; i < num_pts; ++i) {
-    param_floats[i] *= param_scale;
-  }
+  float param_scale = 1.0 / params_.back();;
 
   CubicBezier2f bez = CubicBezier2f::Fit(
-      pts_, param, pts_[1] - pts_[0], pts_[pts_.size() - 2] - pts_[pts_.size() - 1]);
-  bez.Print();
+      pts_, params_, param_scale, pts_[1] - pts_[0], pts_[pts_.size() - 2] - pts_[pts_.size() - 1]);
 
-  // Tesselate 1000 vertices.
-  // TODO compute appropriate #verts
-  const static int kVertexCount = 1000;
+  auto verts = reinterpret_cast<StrokeVertex*>([buffer_ contents]);
 
-  // TODO DCHECK(sizeof(StrokeVertex) == page->vertexSize)
-  id<MTLDevice> device = page_.metalLibrary.device;
-  size_t bufferLength = kVertexCount * page_.vertexSize;
-  id<MTLBuffer> buffer = [device newBufferWithLength: bufferLength options: 0];
-  auto verts = reinterpret_cast<StrokeVertex*>([buffer contents]);
-
-  float incr = 1.0 / (kVertexCount - 2);
-  for (int i = 0; i < kVertexCount; i += 2) {
+  float incr = 1.0 / (vertex_count_ - 2);
+  for (int i = 0; i < vertex_count_; i += 2) {
     // We increment index by 2 each loop iteration, so the last iteration will have
     // "index == kVertexCount - 2", and therefore a parameter value of "i * incr == 1.0".
     std::pair<Pt2f, Pt2f> pt = bez.EvaluatePointAndNormal(i * incr);
-      float px = pt.first[0];
-      float py = pt.first[1];
-      float nx = pt.second[0];
-      float ny = pt.second[1];
-    verts[i].px = verts[i+1].px = pt.first[0];
-    verts[i].py = verts[i+1].py = pt.first[1];
+    verts[i].px = verts[i+1].px = pt.first.x;
+    verts[i].py = verts[i+1].py = pt.first.y;
     verts[i].pz = verts[i+1].pz = 0.0;
     verts[i].pw = verts[i+1].pw = 1.0;
-    verts[i].nx = -pt.second[0];
-    verts[i].ny = -pt.second[1];
-    verts[i+1].nx = pt.second[0];
-    verts[i+1].ny = pt.second[1];
+    verts[i].nx = pt.second.x;
+    verts[i].ny = pt.second.y;
+    verts[i+1].nx = -pt.second.x;
+    verts[i+1].ny = -pt.second.y;
 
     // TODO this is a hack since our vertex shader doesn't actually use the specified normals.
     float kWidth = 0.02;
-    verts[i].px += nx * kWidth;
-    verts[i].py += ny * kWidth;
-    verts[i+1].px -= nx * kWidth;
-    verts[i+1].py -= ny * kWidth;
+    verts[i].px += verts[i].nx * kWidth;
+    verts[i].py += verts[i].ny * kWidth;
+    verts[i+1].px += verts[i+1].nx * kWidth;
+    verts[i+1].py += verts[i+1].ny * kWidth;
 
     // TODO length
     verts[i].length = verts[i+1].length = 0.0;
@@ -295,13 +363,6 @@ using namespace qi;
     verts[i].cr = verts[i+1].cr = 1;
     verts[i].ca = verts[i+1].ca = 1;
   }
-
-  auto stroke = [[Stroke2 alloc] init];
-  stroke.buffer = buffer;
-  stroke.vertexCount = kVertexCount;
-
-  [page_ addStroke: stroke];
-  pts_.clear();
 }
 
 + (void)benchmark {
@@ -339,7 +400,7 @@ using namespace qi;
   static const int kBenchmarkIterations = 1000;
   for (int i = 0; i < kBenchmarkIterations; ++i) {
     fit = CubicBezier2f::Fit(
-        pts, parameterization, bez.pts[1] - bez.pts[0], bez.pts[3] - bez.pts[2]);
+        pts, parameterization, 1.0, bez.pts[1] - bez.pts[0], bez.pts[3] - bez.pts[2]);
   }
 
   end = std::chrono::high_resolution_clock::now();
