@@ -43,6 +43,10 @@
 		03474FE51AD8036C001240DD /* Arc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE41AD8036C001240DD /* Arc.swift */; };
 		034F06A01ADA0148005A439A /* Arc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE41AD8036C001240DD /* Arc.swift */; };
 		034F06A41ADA6951005A439A /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034F06A31ADA6951005A439A /* Stroke.swift */; };
+		0367BDFB1B05EF330080DAC5 /* buffer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BDF81B05EF330080DAC5 /* buffer_ios.mm */; };
+		0367BDFC1B05EF330080DAC5 /* buffer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BDF81B05EF330080DAC5 /* buffer_ios.mm */; };
+		0367BDFD1B05EF330080DAC5 /* device_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BDFA1B05EF330080DAC5 /* device_ios.mm */; };
+		0367BDFE1B05EF330080DAC5 /* device_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BDFA1B05EF330080DAC5 /* device_ios.mm */; };
 		03FA76081AD7EA2500A56C06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA76071AD7EA2500A56C06 /* AppDelegate.swift */; };
 		03FA760A1AD7EA2500A56C06 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA76091AD7EA2500A56C06 /* GameViewController.swift */; };
 		03FA760C1AD7EA2500A56C06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 03FA760B1AD7EA2500A56C06 /* Shaders.metal */; };
@@ -131,6 +135,13 @@
 		03474FE41AD8036C001240DD /* Arc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Arc.swift; path = skeqi/Arc.swift; sourceTree = "<group>"; };
 		034F06A21ADA2103005A439A /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = playgrounds/MyPlayground.playground; sourceTree = "<group>"; };
 		034F06A31ADA6951005A439A /* Stroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
+		0367BDF41B05EF070080DAC5 /* qi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = qi.h; path = ../qi.h; sourceTree = "<group>"; };
+		0367BDF51B05EF250080DAC5 /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = buffer.h; path = ../gfx/buffer.h; sourceTree = "<group>"; };
+		0367BDF61B05EF250080DAC5 /* device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = device.h; path = ../gfx/device.h; sourceTree = "<group>"; };
+		0367BDF71B05EF330080DAC5 /* buffer_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = buffer_ios.h; path = ../gfx/port_ios/buffer_ios.h; sourceTree = "<group>"; };
+		0367BDF81B05EF330080DAC5 /* buffer_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = buffer_ios.mm; path = ../gfx/port_ios/buffer_ios.mm; sourceTree = "<group>"; };
+		0367BDF91B05EF330080DAC5 /* device_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = device_ios.h; path = ../gfx/port_ios/device_ios.h; sourceTree = "<group>"; };
+		0367BDFA1B05EF330080DAC5 /* device_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = device_ios.mm; path = ../gfx/port_ios/device_ios.mm; sourceTree = "<group>"; };
 		03FA76021AD7EA2500A56C06 /* skeqi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = skeqi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03FA76061AD7EA2500A56C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03FA76071AD7EA2500A56C06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -256,9 +267,32 @@
 			name = playgrounds;
 			sourceTree = "<group>";
 		};
+		0367BDF21B05EED90080DAC5 /* qi */ = {
+			isa = PBXGroup;
+			children = (
+				0367BDF41B05EF070080DAC5 /* qi.h */,
+				0367BDF31B05EEE70080DAC5 /* gfx */,
+			);
+			name = qi;
+			sourceTree = "<group>";
+		};
+		0367BDF31B05EEE70080DAC5 /* gfx */ = {
+			isa = PBXGroup;
+			children = (
+				0367BDF51B05EF250080DAC5 /* buffer.h */,
+				0367BDF61B05EF250080DAC5 /* device.h */,
+				0367BDF71B05EF330080DAC5 /* buffer_ios.h */,
+				0367BDF81B05EF330080DAC5 /* buffer_ios.mm */,
+				0367BDF91B05EF330080DAC5 /* device_ios.h */,
+				0367BDFA1B05EF330080DAC5 /* device_ios.mm */,
+			);
+			name = gfx;
+			sourceTree = "<group>";
+		};
 		03FA75F91AD7EA2500A56C06 = {
 			isa = PBXGroup;
 			children = (
+				0367BDF21B05EED90080DAC5 /* qi */,
 				032D36E51AFF4DC200F473D4 /* src */,
 				032D32821AF56D9500F473D4 /* third-party */,
 				03FA76041AD7EA2500A56C06 /* skeqi */,
@@ -425,11 +459,13 @@
 				03FA760C1AD7EA2500A56C06 /* Shaders.metal in Sources */,
 				032D32D21AF56E0500F473D4 /* PiecewiseLinearUtils.cpp in Sources */,
 				032D32D01AF56E0500F473D4 /* Parameters.cpp in Sources */,
+				0367BDFB1B05EF330080DAC5 /* buffer_ios.mm in Sources */,
 				032D32D31AF56E0500F473D4 /* Polyline.cpp in Sources */,
 				032D32CC1AF56E0500F473D4 /* Fresnel.cpp in Sources */,
 				032D36E31AFF4D9D00F473D4 /* BezierFitter.mm in Sources */,
 				032D32C91AF56E0500F473D4 /* Debugging.cpp in Sources */,
 				032D32C01AF56E0500F473D4 /* Algorithm.cpp in Sources */,
+				0367BDFD1B05EF330080DAC5 /* device_ios.mm in Sources */,
 				034F06A41ADA6951005A439A /* Stroke.swift in Sources */,
 				03474FE31AD7F66B001240DD /* QiController.swift in Sources */,
 				032D32D61AF56E0500F473D4 /* PrimitiveFitUtils.cpp in Sources */,
@@ -464,6 +500,8 @@
 			files = (
 				034F06A01ADA0148005A439A /* Arc.swift in Sources */,
 				03FA76201AD7EA2500A56C06 /* skeqiTests.swift in Sources */,
+				0367BDFC1B05EF330080DAC5 /* buffer_ios.mm in Sources */,
+				0367BDFE1B05EF330080DAC5 /* device_ios.mm in Sources */,
 				032D36E41AFF4D9D00F473D4 /* BezierFitter.mm in Sources */,
 				0320CB101B04864F002BC448 /* QiProtocols.swift in Sources */,
 			);
@@ -540,6 +578,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(EIGEN_DIR)",
+					$PROJECT_DIR/../..,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -588,6 +627,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(EIGEN_DIR)",
+					$PROJECT_DIR/../..,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
