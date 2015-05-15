@@ -187,7 +187,6 @@ class StrokeTouchHandler : QiTouchHandler {
 
 
 class QiController: GameViewController {
-
     var stroke : RenderableStroke?
     var strokePipelineState : MTLRenderPipelineState?
 

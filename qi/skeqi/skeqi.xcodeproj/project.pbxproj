@@ -47,6 +47,8 @@
 		0367BDFC1B05EF330080DAC5 /* buffer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BDF81B05EF330080DAC5 /* buffer_ios.mm */; };
 		0367BDFD1B05EF330080DAC5 /* device_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BDFA1B05EF330080DAC5 /* device_ios.mm */; };
 		0367BDFE1B05EF330080DAC5 /* device_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BDFA1B05EF330080DAC5 /* device_ios.mm */; };
+		0367BE011B0661AD0080DAC5 /* Skeqi_iOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */; };
+		0367BE021B0661AD0080DAC5 /* Skeqi_iOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */; };
 		03FA76081AD7EA2500A56C06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA76071AD7EA2500A56C06 /* AppDelegate.swift */; };
 		03FA760A1AD7EA2500A56C06 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA76091AD7EA2500A56C06 /* GameViewController.swift */; };
 		03FA760C1AD7EA2500A56C06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 03FA760B1AD7EA2500A56C06 /* Shaders.metal */; };
@@ -142,6 +144,9 @@
 		0367BDF81B05EF330080DAC5 /* buffer_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = buffer_ios.mm; path = ../gfx/port_ios/buffer_ios.mm; sourceTree = "<group>"; };
 		0367BDF91B05EF330080DAC5 /* device_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = device_ios.h; path = ../gfx/port_ios/device_ios.h; sourceTree = "<group>"; };
 		0367BDFA1B05EF330080DAC5 /* device_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = device_ios.mm; path = ../gfx/port_ios/device_ios.mm; sourceTree = "<group>"; };
+		0367BDFF1B065FF60080DAC5 /* Skeqi_iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skeqi_iOS.h; sourceTree = "<group>"; };
+		0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Skeqi_iOS.mm; sourceTree = "<group>"; };
+		0367BE031B0671900080DAC5 /* skeqi-Swift-Wrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "skeqi-Swift-Wrapper.h"; sourceTree = "<group>"; };
 		03FA76021AD7EA2500A56C06 /* skeqi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = skeqi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03FA76061AD7EA2500A56C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03FA76071AD7EA2500A56C06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -324,6 +329,9 @@
 				03FA76121AD7EA2500A56C06 /* LaunchScreen.xib */,
 				03FA76051AD7EA2500A56C06 /* Supporting Files */,
 				0320CB0E1B04864F002BC448 /* QiProtocols.swift */,
+				0367BDFF1B065FF60080DAC5 /* Skeqi_iOS.h */,
+				0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */,
+				0367BE031B0671900080DAC5 /* skeqi-Swift-Wrapper.h */,
 			);
 			path = skeqi;
 			sourceTree = "<group>";
@@ -479,6 +487,7 @@
 				032D32CB1AF56E0500F473D4 /* Fitter.cpp in Sources */,
 				03474FE51AD8036C001240DD /* Arc.swift in Sources */,
 				032D32D41AF56E0500F473D4 /* Preprocessing.cpp in Sources */,
+				0367BE011B0661AD0080DAC5 /* Skeqi_iOS.mm in Sources */,
 				032D32CD1AF56E0500F473D4 /* GraphConstructor.cpp in Sources */,
 				032D32DA1AF56E0500F473D4 /* Solver.cpp in Sources */,
 				032D32D11AF56E0500F473D4 /* PathFinder.cpp in Sources */,
@@ -498,6 +507,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0367BE021B0661AD0080DAC5 /* Skeqi_iOS.mm in Sources */,
 				034F06A01ADA0148005A439A /* Arc.swift in Sources */,
 				03FA76201AD7EA2500A56C06 /* skeqiTests.swift in Sources */,
 				0367BDFC1B05EF330080DAC5 /* buffer_ios.mm in Sources */,

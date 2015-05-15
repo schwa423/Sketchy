@@ -9,8 +9,7 @@
 #import "BezierFitter.h"
 
 #import <Metal/Metal.h>
-#import <UIKit/UIKit.h>
-#import "skeqi-Swift.h"
+#import "skeqi-Swift-Wrapper.h"
 
 #include <chrono>
 #include <iostream>
