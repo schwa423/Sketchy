@@ -6,16 +6,12 @@
 //  Copyright (c) 2015 Schwaftwarez. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <Metal/Metal.h>
+#ifndef skeqi_Skeqi_iOS_h
+#define skeqi_Skeqi_iOS_h
 
-@protocol QiControllerDelegate<NSObject>
-// TODO remove
-- (void)ping;
+#import "QiControllerDelegate.h"
+
+@interface Skeqi_iOS : QiControllerDelegate
 @end
 
-@interface Skeqi_iOS : NSObject<QiControllerDelegate>
-- (void)ping;
-@property (readonly) id<MTLDevice> metalDevice;
-@property (readonly) id<MTLLibrary> metalLibrary;
-@end
+#endif

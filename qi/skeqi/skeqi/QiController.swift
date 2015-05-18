@@ -187,80 +187,88 @@ class StrokeTouchHandler : QiTouchHandler {
 
 
 class QiController: GameViewController {
-    var stroke : RenderableStroke?
-    var strokePipelineState : MTLRenderPipelineState?
+  var stroke : RenderableStroke?
+  var strokePipelineState : MTLRenderPipelineState?
 
-    let page = Page()
-    var touchHandler : QiTouchHandler
+  let page = Page()
+  var touchHandler : QiTouchHandler
 
-    required init(coder aDecoder: NSCoder) {
-        touchHandler = StrokeTouchHandler(page: page)
-        super.init(coder: aDecoder)
+  var delegate : QiControllerDelegate
 
-        let π = Float(M_PI)
-        //        let startRadians : Float = π*7/6
-        let startPoint = Point2d(0.5, 0.0);
-        //        let radiusList : [Float] = [0.3, 0.18, 0.06, 0.09, 0.12, 0.18, 0.24]
-        //        let radiansChangeList : [Float] = [π/2, π/2, -π/4, -π/4, -π/4, -π/4, -π*3/2]
-        let startRadians : Float = 0.0
-        //        let startPoint = Point2d(0.5, 0.0);
-        let radiusList : [Float] = [0.5, 0.4, 0.32, 0.256, 0.2, 0.164, 0.131, 0.105, 0.084, 0.067]
-        let radiansChangeList : [Float] = [π/2, π/2, π/2, π/2, π/2, π/2, π/2, π/2, π/2, π/2]
-        //        let radiusList : [Float] = [1.0, 1.0,]
-        //        let radiansChangeList : [Float] = [π/2, π/2]
-        //        let radiusList : [Float] = [0.5]
-        //        let radiansChangeList : [Float] = [π/2]
+  required init(coder aDecoder: NSCoder) {
+    touchHandler = StrokeTouchHandler(page: page)
+    delegate = Skeqi_iOS()
 
-        stroke = RenderableStroke(ArcList(startPoint: startPoint, startRadians: startRadians, radiusList: radiusList, radiansChangeList: radiansChangeList))
+    super.init(coder: aDecoder)
+
+    let π = Float(M_PI)
+    //        let startRadians : Float = π*7/6
+    let startPoint = Point2d(0.5, 0.0);
+    //        let radiusList : [Float] = [0.3, 0.18, 0.06, 0.09, 0.12, 0.18, 0.24]
+    //        let radiansChangeList : [Float] = [π/2, π/2, -π/4, -π/4, -π/4, -π/4, -π*3/2]
+    let startRadians : Float = 0.0
+    //        let startPoint = Point2d(0.5, 0.0);
+    let radiusList : [Float] = [0.5, 0.4, 0.32, 0.256, 0.2, 0.164, 0.131, 0.105, 0.084, 0.067]
+    let radiansChangeList : [Float] = [π/2, π/2, π/2, π/2, π/2, π/2, π/2, π/2, π/2, π/2]
+    //        let radiusList : [Float] = [1.0, 1.0,]
+    //        let radiansChangeList : [Float] = [π/2, π/2]
+    //        let radiusList : [Float] = [0.5]
+    //        let radiansChangeList : [Float] = [π/2]
+
+    stroke = RenderableStroke(ArcList(startPoint: startPoint, startRadians: startRadians, radiusList: radiusList, radiansChangeList: radiansChangeList))
+  }
+
+  override func setUpPipeline(library: MTLLibrary?) {
+    super.setUpPipeline(library)
+    page.setUpPipeline(library)
+  }
+
+  override func encodeDrawCalls(renderEncoder: MTLRenderCommandEncoder) {
+    super.encodeDrawCalls(renderEncoder)
+
+    if (true) {
+      renderEncoder.pushDebugGroup("draw all strokes")
+      renderEncoder.setRenderPipelineState(page.strokePipelineState!)
+      stroke!.encodeDrawCalls(renderEncoder)
+      renderEncoder.popDebugGroup()
     }
 
-    override func setUpPipeline(library: MTLLibrary?) {
-        super.setUpPipeline(library)
-        page.setUpPipeline(library)
+    page.encodeDrawCalls(renderEncoder)
+  }
+
+  func printShaderFunctions(library: MTLLibrary?) {
+    if let functionNames = library?.functionNames as? [NSString] {
+      for name in functionNames {
+        println("found shader function: \(name)")
+      }
+    } else {
+      println("no library provided")
     }
+  }
 
-    override func encodeDrawCalls(renderEncoder: MTLRenderCommandEncoder) {
-        super.encodeDrawCalls(renderEncoder)
+  func transformTouchSet(touches: Set<NSObject>) -> Set<UITouch> {
+    var set = Set<UITouch>()
+    for touch in touches { set.insert(touch as! UITouch) }
+    return set
+  }
 
-        if (true) {
-            renderEncoder.pushDebugGroup("draw all strokes")
-            renderEncoder.setRenderPipelineState(page.strokePipelineState!)
-            stroke!.encodeDrawCalls(renderEncoder)
-            renderEncoder.popDebugGroup()
-        }
+  override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    touchHandler.touchesBegan(transformTouchSet(touches), withEvent: event)
+    delegate.touchesBegan(touches, withEvent: event)
+  }
 
-        page.encodeDrawCalls(renderEncoder)
-    }
+  override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+    touchHandler.touchesCancelled(transformTouchSet(touches), withEvent: event)
+    delegate.touchesCancelled(touches, withEvent: event)
+  }
 
-    func printShaderFunctions(library: MTLLibrary?) {
-        if let functionNames = library?.functionNames as? [NSString] {
-            for name in functionNames {
-                println("found shader function: \(name)")
-            }
-        } else {
-            println("no library provided")
-        }
-    }
+  override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
+    touchHandler.touchesMoved(transformTouchSet(touches), withEvent: event)
+    delegate.touchesMoved(touches, withEvent: event)
+  }
 
-    func transformTouchSet(touches: Set<NSObject>) -> Set<UITouch> {
-        var set = Set<UITouch>()
-        for touch in touches { set.insert(touch as! UITouch) }
-        return set
-    }
-
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        touchHandler.touchesBegan(transformTouchSet(touches), withEvent: event)
-    }
-
-    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
-        touchHandler.touchesCancelled(transformTouchSet(touches), withEvent: event)
-    }
-
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
-        touchHandler.touchesMoved(transformTouchSet(touches), withEvent: event)
-    }
-
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
-        touchHandler.touchesEnded(transformTouchSet(touches), withEvent: event)
-    }
+  override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+    touchHandler.touchesEnded(transformTouchSet(touches), withEvent: event)
+    delegate.touchesEnded(touches, withEvent: event)
+  }
 }
