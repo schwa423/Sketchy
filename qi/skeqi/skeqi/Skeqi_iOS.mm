@@ -56,7 +56,11 @@ void RenderCommandEncoder_iOS::DrawTriangleStrip(
 
 }  // namespace port
 
+#if defined(QI_PLATFORM_IOS)
 typedef port::RenderCommandEncoder_iOS RenderCommandEncoder;
+#else
+#error
+#endif
 
 }  // namespace gfx
 }  // namespace qi
@@ -107,9 +111,9 @@ class Page {
  public:
   Page(shared_ptr<gfx::Device> device, id<MTLLibrary> library);
 
-  shared_ptr<pen::Stroke> NewStroke() {
+  shared_ptr<Stroke> NewStroke() {
     // TODO: can't use make_shared because constructor is private... what is best idiom?
-    shared_ptr<pen::Stroke> stroke(new pen::Stroke(this));
+    shared_ptr<Stroke> stroke(new Stroke(this));
     strokes_.push_back(stroke);
     return stroke;
   }
@@ -121,14 +125,14 @@ class Page {
   void EncodeDrawCalls(id<MTLRenderCommandEncoder> encoder);
 
   // TODO: perhaps put all strokes into one shared Buffer.
-  void FinalizeStroke(pen::Stroke* stroke) {}
+  void FinalizeStroke(Stroke* stroke) {}
 
   shared_ptr<gfx::Buffer> NewBuffer(size_t length) { return device_->NewBuffer(length); }
 
  private:
   shared_ptr<gfx::Device> device_;
   id<MTLRenderPipelineState> pipeline_;
-  std::vector<shared_ptr<pen::Stroke>> strokes_;
+  std::vector<shared_ptr<Stroke>> strokes_;
 };
 
 
@@ -277,7 +281,7 @@ void Page::EncodeDrawCalls(id<MTLRenderCommandEncoder> mtl_encoder) {
 
 class SkeqiStrokeFitter {
  public:
-  SkeqiStrokeFitter(std::shared_ptr<qi::pen::Page> page)
+  SkeqiStrokeFitter(std::shared_ptr<Page> page)
       : fitter_id(s_next_fitter_id++), page_(page) {}
   ~SkeqiStrokeFitter() {}
 
@@ -310,8 +314,8 @@ class SkeqiStrokeFitter {
  private:
   Stroke::Path FitPathToSamplePoints();
 
-  shared_ptr<pen::Page> page_;
-  shared_ptr<pen::Stroke> stroke_;
+  shared_ptr<Page> page_;
+  shared_ptr<Stroke> stroke_;
 
   std::vector<Pt2f> points_;
   std::vector<float> params_;
@@ -355,7 +359,7 @@ Stroke::Path SkeqiStrokeFitter::FitPathToSamplePoints() {
 
 class SkeqiTouchHandler : public ui::TouchHandler {
  public:
-  SkeqiTouchHandler(shared_ptr<pen::Page> page) : page_(page) {}
+  SkeqiTouchHandler(shared_ptr<Page> page) : page_(page) {}
 
   void TouchesBegan(const std::vector<ui::Touch>* touches) override {
     for (auto touch : *touches) {
@@ -392,7 +396,7 @@ class SkeqiTouchHandler : public ui::TouchHandler {
     return Pt2f{static_cast<float>(touch.x),static_cast<float>(touch.y)};
   }
 
-  shared_ptr<pen::Page> page_;
+  shared_ptr<Page> page_;
   std::map<ui::Touch, unique_ptr<SkeqiStrokeFitter>> fitters_;
 };
 
