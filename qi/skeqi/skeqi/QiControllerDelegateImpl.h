@@ -8,6 +8,7 @@
 
 #import "QiControllerDelegate.h"
 
+#import "qi/gfx/port_ios/device_ios.h"
 #import "qi/ui/touchhandler.h"
 
 // Private extension of QiControllerDelegate.  Uses C++, therefore must not be
@@ -15,4 +16,6 @@
 // TODO: rename file to QiControllerDelegateNonSwift?
 @interface QiControllerDelegate ()
 - (void)setTouchHandler:(std::unique_ptr<qi::ui::TouchHandler>)touchHandler;
+
+@property (readonly) std::shared_ptr<qi::gfx::port::Device_iOS> device;
 @end

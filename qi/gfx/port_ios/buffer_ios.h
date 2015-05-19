@@ -11,11 +11,13 @@ namespace port {
 
 class Buffer_iOS : public Buffer {
  public:
-  explicit Buffer_iOS(shared_ptr<Device> device, id<MTLBuffer> buffer);
+  Buffer_iOS() : buffer_(nil) {}
+  Buffer_iOS(shared_ptr<Device> device, id<MTLBuffer> buffer);
   virtual ~Buffer_iOS() {}
 
   size_t GetLength() override;
   void* GetContents() override;
+  id<MTLBuffer> GetBuffer() { return buffer_; }
 
  private:
   id<MTLBuffer> buffer_;

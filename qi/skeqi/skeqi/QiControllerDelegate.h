@@ -12,11 +12,14 @@
 #import <Metal/Metal.h>
 #import <UIKit/UIKit.h>
 
+// TODO: document
 @interface QiControllerDelegate : UIResponder
--(void) touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event;
--(void) touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)event;
--(void) touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event;
--(void) touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event;
+- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event;
+- (void)touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)event;
+- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event;
+- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event;
+
+- (void)encodeDrawCalls:(id<MTLRenderCommandEncoder>)encoder;
 
 @property (readonly) id<MTLDevice> metalDevice;
 @property (readonly) id<MTLLibrary> metalLibrary;

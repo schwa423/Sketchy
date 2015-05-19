@@ -9,6 +9,7 @@
 import UIKit
 import Metal
 
+// TODO: port any desired Arc-processing stuff to qi::pen
 class RenderableStroke: Stroke {
     var vertexCount : Int
     var buffer: MTLBuffer! = nil
@@ -33,170 +34,11 @@ class RenderableStroke: Stroke {
     }
 }
 
-// TODO: inherits from NSObject so we can alloc it from Objective-C implementations
-// of QiStrokeFitter.  Kinda kludgy.
-@objc class Stroke2 : NSObject {
-    var vertexCount : Int
-    var buffer: MTLBuffer!
-
-    override init() {
-        vertexCount = 0
-    }
-
-    func encodeDrawCalls(renderEncoder: MTLRenderCommandEncoder) {
-        if (vertexCount > 0) {
-            renderEncoder.pushDebugGroup("draw stroke")
-            renderEncoder.setVertexBuffer(buffer, offset: 0, atIndex: 0)
-            renderEncoder.setVertexBuffer(buffer, offset: 28, atIndex: 1)
-            renderEncoder.drawPrimitives(.TriangleStrip, vertexStart: 0, vertexCount: vertexCount, instanceCount: 1)
-            renderEncoder.popDebugGroup()
-        }
-    }
-
-}
-
-
-@objc protocol QiPage : QiDrawable {
-    var vertexSize : Int { get }
-    var metalLibrary : MTLLibrary? { get }
-
-    func addStroke(stroke: Stroke2);
-}
-
-// TODO: inherits from NSObject so maybe we can use Id<Page> from Objective-C
-// implementations of QiStrokeFitter.  Kinda kludgy.
-@objc class Page : NSObject, QiPage {
-    var strokes = [Stroke2]()
-    let vertexSize : Int = 32
-
-    var strokePipelineState : MTLRenderPipelineState?
-    var metalLibrary : MTLLibrary?
-
-    func encodeDrawCalls(renderEncoder: MTLRenderCommandEncoder) {
-        for stroke in strokes { stroke.encodeDrawCalls(renderEncoder) }
-    }
-
-    func addStroke(stroke: Stroke2) {
-        strokes.append(stroke)
-    }
-
-    func setUpPipeline(library: MTLLibrary?) {
-        if (metalLibrary != nil) {
-            if (metalLibrary !== library) {
-                println("Attempting to initialize Page with a different MTLLibrary");
-            }
-            return;
-        }
-        metalLibrary = library;
-
-        let fragmentProgram = library?.newFunctionWithName("passThroughFragment")
-        let vertexProgram = library?.newFunctionWithName("passThroughVertex2")
-
-        let vertexDescriptor = MTLVertexDescriptor()
-        vertexDescriptor.attributes[0].format = MTLVertexFormat.Float4
-        vertexDescriptor.attributes[0].bufferIndex = 0;
-        vertexDescriptor.attributes[0].offset = 0;
-        vertexDescriptor.attributes[1].format = MTLVertexFormat.UChar4Normalized
-        vertexDescriptor.attributes[1].bufferIndex = 1;
-        vertexDescriptor.attributes[1].offset = 0;
-        vertexDescriptor.layouts[0].stride = 32;
-        vertexDescriptor.layouts[0].stepFunction = MTLVertexStepFunction.PerVertex;
-        vertexDescriptor.layouts[1].stride = 32;
-        vertexDescriptor.layouts[1].stepFunction = MTLVertexStepFunction.PerVertex;
-
-        let pipelineStateDescriptor = MTLRenderPipelineDescriptor()
-        pipelineStateDescriptor.vertexFunction = vertexProgram
-        pipelineStateDescriptor.fragmentFunction = fragmentProgram
-        pipelineStateDescriptor.vertexDescriptor = vertexDescriptor
-        pipelineStateDescriptor.colorAttachments[0].pixelFormat = .BGRA8Unorm  // TODO: needed if set elsewhere earlier?
-
-        var pipelineError : NSError?
-        strokePipelineState = library?.device.newRenderPipelineStateWithDescriptor(pipelineStateDescriptor, error: &pipelineError)
-        if (strokePipelineState == nil) {
-            println("Failed to create pipeline state, error \(pipelineError)")
-        }
-    }
-}
-
-protocol QiTouchHandler {
-    func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent);
-    func touchesCancelled(touches: Set<UITouch>!, withEvent event: UIEvent!);
-    func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent);
-    func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent);
-}
-
-class StrokeTouchHandler : QiTouchHandler {
-    var activeFitters = [UITouch : QiStrokeFitter]()
-    var freeFitters = [QiStrokeFitter]()
-    var page : Page
-
-    init(page mypage: Page) {
-        page = mypage
-    }
-    func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent) {
-        for touch in touches {
-            if page.strokes.count > 10 {
-                page.strokes.removeAll()
-                println("CLEARING ALL STROKES");
-            }
-            let fitter = obtainFitter()
-            activeFitters.updateValue(fitter, forKey:touch)
-            fitter.startStroke()
-            fitter.addSamplePoint(getTouchPosition(touch))
-        }
-    }
-    func touchesCancelled(touches: Set<UITouch>!, withEvent event: UIEvent!) {
-        assert(false, "touchesCancelled(): not implemented")
-    }
-    func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent) {
-        for touch in touches {
-            if let fitter = activeFitters[touch] {
-                fitter.addSamplePoint(getTouchPosition(touch))
-            } else {
-                assert(false, "touchesMoved(): could not find fitter");
-            }
-        }
-    }
-    func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent) {
-        for touch in touches {
-            if let fitter = activeFitters[touch] {
-                fitter.addSamplePoint(getTouchPosition(touch))
-                fitter.finishStroke()
-                activeFitters[touch] = nil
-                freeFitters.append(fitter)
-            } else {
-                assert(false, "touchesEnded(): could not find fitter");
-            }
-        }
-    }
-    func getTouchPosition(touch : UITouch) -> CGPoint {
-        var pt = touch.locationInView(touch.view);
-        pt.x = (pt.x / touch.view.bounds.width * 2.0) - 1.0;
-        pt.y = (pt.y / touch.view.bounds.height * -2.0) + 1.0;
-        return pt;
-    }
-
-    func obtainFitter() -> QiStrokeFitter {
-        if freeFitters.count > 0 {
-            return freeFitters.removeLast()
-        } else {
-            return BezierFitter(page: page)
-        }
-    }
-}
-
-
 class QiController: GameViewController {
-  var stroke : RenderableStroke?
-  var strokePipelineState : MTLRenderPipelineState?
-
-  let page = Page()
-  var touchHandler : QiTouchHandler
-
   var delegate : QiControllerDelegate
+  var stroke : RenderableStroke?
 
   required init(coder aDecoder: NSCoder) {
-    touchHandler = StrokeTouchHandler(page: page)
     delegate = Skeqi_iOS()
 
     super.init(coder: aDecoder)
@@ -218,22 +60,9 @@ class QiController: GameViewController {
     stroke = RenderableStroke(ArcList(startPoint: startPoint, startRadians: startRadians, radiusList: radiusList, radiansChangeList: radiansChangeList))
   }
 
-  override func setUpPipeline(library: MTLLibrary?) {
-    super.setUpPipeline(library)
-    page.setUpPipeline(library)
-  }
-
   override func encodeDrawCalls(renderEncoder: MTLRenderCommandEncoder) {
     super.encodeDrawCalls(renderEncoder)
-
-    if (true) {
-      renderEncoder.pushDebugGroup("draw all strokes")
-      renderEncoder.setRenderPipelineState(page.strokePipelineState!)
-      stroke!.encodeDrawCalls(renderEncoder)
-      renderEncoder.popDebugGroup()
-    }
-
-    page.encodeDrawCalls(renderEncoder)
+    delegate.encodeDrawCalls(renderEncoder)
   }
 
   func printShaderFunctions(library: MTLLibrary?) {
@@ -246,29 +75,19 @@ class QiController: GameViewController {
     }
   }
 
-  func transformTouchSet(touches: Set<NSObject>) -> Set<UITouch> {
-    var set = Set<UITouch>()
-    for touch in touches { set.insert(touch as! UITouch) }
-    return set
-  }
-
   override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-    touchHandler.touchesBegan(transformTouchSet(touches), withEvent: event)
     delegate.touchesBegan(touches, withEvent: event)
   }
 
   override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
-    touchHandler.touchesCancelled(transformTouchSet(touches), withEvent: event)
     delegate.touchesCancelled(touches, withEvent: event)
   }
 
   override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
-    touchHandler.touchesMoved(transformTouchSet(touches), withEvent: event)
     delegate.touchesMoved(touches, withEvent: event)
   }
 
   override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
-    touchHandler.touchesEnded(transformTouchSet(touches), withEvent: event)
     delegate.touchesEnded(touches, withEvent: event)
   }
 }

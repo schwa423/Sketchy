@@ -12,11 +12,11 @@ Buffer_iOS::Buffer_iOS(shared_ptr<Device> device, id<MTLBuffer> buffer)
 }
 
 auto Buffer_iOS::GetLength() -> size_t {
-  return buffer_.length;
+  return buffer_ == nil ? 0 : buffer_.length;
 }
 
 auto Buffer_iOS::GetContents() -> void* {
-  return [buffer_ contents];
+  return buffer_ == nil ? nullptr : [buffer_ contents];
 }
 
 }  // namespace port

@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0320CB0F1B04864F002BC448 /* QiProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320CB0E1B04864F002BC448 /* QiProtocols.swift */; };
-		0320CB101B04864F002BC448 /* QiProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0320CB0E1B04864F002BC448 /* QiProtocols.swift */; };
 		032D32C01AF56E0500F473D4 /* Algorithm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32841AF56E0500F473D4 /* Algorithm.cpp */; };
 		032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32871AF56E0500F473D4 /* Arc.cpp */; };
 		032D32C21AF56E0500F473D4 /* Bezier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32891AF56E0500F473D4 /* Bezier.cpp */; };
@@ -37,8 +35,6 @@
 		032D32D91AF56E0500F473D4 /* SimpleAPI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32B81AF56E0500F473D4 /* SimpleAPI.cpp */; };
 		032D32DA1AF56E0500F473D4 /* Solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32BB1AF56E0500F473D4 /* Solver.cpp */; };
 		032D32DB1AF56E0500F473D4 /* TwoCurveCombine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32BD1AF56E0500F473D4 /* TwoCurveCombine.cpp */; };
-		032D36E31AFF4D9D00F473D4 /* BezierFitter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032D36E21AFF4D9D00F473D4 /* BezierFitter.mm */; };
-		032D36E41AFF4D9D00F473D4 /* BezierFitter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 032D36E21AFF4D9D00F473D4 /* BezierFitter.mm */; };
 		03474FE31AD7F66B001240DD /* QiController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE21AD7F66B001240DD /* QiController.swift */; };
 		03474FE51AD8036C001240DD /* Arc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE41AD8036C001240DD /* Arc.swift */; };
 		034F06A01ADA0148005A439A /* Arc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE41AD8036C001240DD /* Arc.swift */; };
@@ -51,6 +47,8 @@
 		0367BE021B0661AD0080DAC5 /* Skeqi_iOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */; };
 		0367BE061B0927000080DAC5 /* QiControllerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE051B0927000080DAC5 /* QiControllerDelegate.mm */; };
 		0367BE071B0927000080DAC5 /* QiControllerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE051B0927000080DAC5 /* QiControllerDelegate.mm */; };
+		0367BE111B0B2ABD0080DAC5 /* cubicbezier.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE0F1B0B2ABD0080DAC5 /* cubicbezier.cc */; };
+		0367BE121B0B2ABD0080DAC5 /* cubicbezier.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE0F1B0B2ABD0080DAC5 /* cubicbezier.cc */; };
 		03FA76081AD7EA2500A56C06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA76071AD7EA2500A56C06 /* AppDelegate.swift */; };
 		03FA760A1AD7EA2500A56C06 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA76091AD7EA2500A56C06 /* GameViewController.swift */; };
 		03FA760C1AD7EA2500A56C06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 03FA760B1AD7EA2500A56C06 /* Shaders.metal */; };
@@ -71,7 +69,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0320CB0E1B04864F002BC448 /* QiProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiProtocols.swift; sourceTree = "<group>"; };
 		032D32841AF56E0500F473D4 /* Algorithm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Algorithm.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.cpp"; sourceTree = "<group>"; };
 		032D32851AF56E0500F473D4 /* Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Algorithm.h; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.h"; sourceTree = "<group>"; };
 		032D32861AF56E0500F473D4 /* AngleUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AngleUtils.h; path = "../third-party/cornucopia-lib/Cornucopia/AngleUtils.h"; sourceTree = "<group>"; };
@@ -133,8 +130,6 @@
 		032D32BE1AF56E0500F473D4 /* TwoCurveCombine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwoCurveCombine.h; path = "../third-party/cornucopia-lib/Cornucopia/TwoCurveCombine.h"; sourceTree = "<group>"; };
 		032D32BF1AF56E0500F473D4 /* VectorC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VectorC.h; path = "../third-party/cornucopia-lib/Cornucopia/VectorC.h"; sourceTree = "<group>"; };
 		032D36E01AFF4D9C00F473D4 /* skeqi-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "skeqi-Bridging-Header.h"; sourceTree = "<group>"; };
-		032D36E11AFF4D9D00F473D4 /* BezierFitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BezierFitter.h; path = skeqi/BezierFitter.h; sourceTree = "<group>"; };
-		032D36E21AFF4D9D00F473D4 /* BezierFitter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = BezierFitter.mm; path = skeqi/BezierFitter.mm; sourceTree = "<group>"; };
 		03474FE21AD7F66B001240DD /* QiController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiController.swift; sourceTree = "<group>"; };
 		03474FE41AD8036C001240DD /* Arc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Arc.swift; path = skeqi/Arc.swift; sourceTree = "<group>"; };
 		034F06A21ADA2103005A439A /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = playgrounds/MyPlayground.playground; sourceTree = "<group>"; };
@@ -153,6 +148,8 @@
 		0367BE051B0927000080DAC5 /* QiControllerDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = QiControllerDelegate.mm; sourceTree = "<group>"; };
 		0367BE081B0934FC0080DAC5 /* touchhandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = touchhandler.h; path = ../ui/touchhandler.h; sourceTree = "<group>"; };
 		0367BE0D1B098A520080DAC5 /* QiControllerDelegateImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QiControllerDelegateImpl.h; sourceTree = "<group>"; };
+		0367BE0F1B0B2ABD0080DAC5 /* cubicbezier.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cubicbezier.cc; path = ../pen/cubicbezier.cc; sourceTree = "<group>"; };
+		0367BE101B0B2ABD0080DAC5 /* cubicbezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cubicbezier.h; path = ../pen/cubicbezier.h; sourceTree = "<group>"; };
 		03FA76021AD7EA2500A56C06 /* skeqi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = skeqi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03FA76061AD7EA2500A56C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03FA76071AD7EA2500A56C06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -262,8 +259,6 @@
 		032D36E51AFF4DC200F473D4 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				032D36E11AFF4D9D00F473D4 /* BezierFitter.h */,
-				032D36E21AFF4D9D00F473D4 /* BezierFitter.mm */,
 				034F06A31ADA6951005A439A /* Stroke.swift */,
 				03474FE41AD8036C001240DD /* Arc.swift */,
 			);
@@ -283,6 +278,7 @@
 			children = (
 				0367BDF41B05EF070080DAC5 /* qi.h */,
 				0367BDF31B05EEE70080DAC5 /* gfx */,
+				0367BE0E1B0B2AA00080DAC5 /* pen */,
 				0367BE091B0935080080DAC5 /* ui */,
 			);
 			name = qi;
@@ -307,6 +303,15 @@
 				0367BE081B0934FC0080DAC5 /* touchhandler.h */,
 			);
 			name = ui;
+			sourceTree = "<group>";
+		};
+		0367BE0E1B0B2AA00080DAC5 /* pen */ = {
+			isa = PBXGroup;
+			children = (
+				0367BE0F1B0B2ABD0080DAC5 /* cubicbezier.cc */,
+				0367BE101B0B2ABD0080DAC5 /* cubicbezier.h */,
+			);
+			name = pen;
 			sourceTree = "<group>";
 		};
 		03FA75F91AD7EA2500A56C06 = {
@@ -346,7 +351,6 @@
 				03FA76101AD7EA2500A56C06 /* Images.xcassets */,
 				03FA76121AD7EA2500A56C06 /* LaunchScreen.xib */,
 				03FA76051AD7EA2500A56C06 /* Supporting Files */,
-				0320CB0E1B04864F002BC448 /* QiProtocols.swift */,
 				0367BDFF1B065FF60080DAC5 /* Skeqi_iOS.h */,
 				0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */,
 				0367BE031B0671900080DAC5 /* skeqi-Swift-Wrapper.h */,
@@ -481,6 +485,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				032D32C61AF56E0500F473D4 /* Combiner.cpp in Sources */,
+				0367BE111B0B2ABD0080DAC5 /* cubicbezier.cc in Sources */,
 				032D32C21AF56E0500F473D4 /* Bezier.cpp in Sources */,
 				03FA760C1AD7EA2500A56C06 /* Shaders.metal in Sources */,
 				032D32D21AF56E0500F473D4 /* PiecewiseLinearUtils.cpp in Sources */,
@@ -488,7 +493,6 @@
 				0367BDFB1B05EF330080DAC5 /* buffer_ios.mm in Sources */,
 				032D32D31AF56E0500F473D4 /* Polyline.cpp in Sources */,
 				032D32CC1AF56E0500F473D4 /* Fresnel.cpp in Sources */,
-				032D36E31AFF4D9D00F473D4 /* BezierFitter.mm in Sources */,
 				032D32C91AF56E0500F473D4 /* Debugging.cpp in Sources */,
 				032D32C01AF56E0500F473D4 /* Algorithm.cpp in Sources */,
 				0367BDFD1B05EF330080DAC5 /* device_ios.mm in Sources */,
@@ -514,7 +518,6 @@
 				032D32CA1AF56E0500F473D4 /* ErrorComputer.cpp in Sources */,
 				032D32CF1AF56E0500F473D4 /* Oversketcher.cpp in Sources */,
 				03FA760A1AD7EA2500A56C06 /* GameViewController.swift in Sources */,
-				0320CB0F1B04864F002BC448 /* QiProtocols.swift in Sources */,
 				032D32C81AF56E0500F473D4 /* CurvePrimitive.cpp in Sources */,
 				032D32D51AF56E0500F473D4 /* PrimitiveFitter.cpp in Sources */,
 				032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */,
@@ -532,8 +535,7 @@
 				03FA76201AD7EA2500A56C06 /* skeqiTests.swift in Sources */,
 				0367BDFC1B05EF330080DAC5 /* buffer_ios.mm in Sources */,
 				0367BDFE1B05EF330080DAC5 /* device_ios.mm in Sources */,
-				032D36E41AFF4D9D00F473D4 /* BezierFitter.mm in Sources */,
-				0320CB101B04864F002BC448 /* QiProtocols.swift in Sources */,
+				0367BE121B0B2ABD0080DAC5 /* cubicbezier.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

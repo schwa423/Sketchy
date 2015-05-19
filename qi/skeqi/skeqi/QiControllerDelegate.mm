@@ -11,8 +11,6 @@
 #import <vector>
 #import <map>
 
-#import "qi/gfx/port_ios/device_ios.h"
-
 @implementation QiControllerDelegate
 {
   @protected
@@ -38,7 +36,7 @@
     if (self) {
         self->_metalDevice = MTLCreateSystemDefaultDevice();
         self->_metalLibrary = [self.metalDevice newDefaultLibrary];
-        device_ = std::make_shared<qi::gfx::port::Device_iOS>(self.metalDevice);
+        self->_device = std::make_shared<qi::gfx::port::Device_iOS>(self.metalDevice);
 
         // Default handler ignores touch events.
         touch_handler_ = std::make_unique<qi::ui::TouchHandler>();
@@ -100,9 +98,18 @@
   ASSERT(touches_.empty());
   for (UITouch* touch in touches) {
     CGPoint pt = [touch locationInView: touch.view];
+    if (touch_handler_->WantsNormalizedTouchPositions()) {
+      pt.x = (pt.x / CGRectGetWidth(touch.view.bounds) * 2.0) - 1.0;
+      pt.y = (pt.y / CGRectGetHeight(touch.view.bounds) * -2.0) + 1.0;
+    }
     ASSERT(touch_map_.find(touch) != touch_map_.end());
     touches_.push_back(qi::ui::Touch{pt.x, pt.y, touch_map_[touch]});
   }
+}
+
+// No-op.  Subclasses should override if they have something to draw.
+- (void)encodeDrawCalls:(id<MTLRenderCommandEncoder>)encoder {
+
 }
 
 @end

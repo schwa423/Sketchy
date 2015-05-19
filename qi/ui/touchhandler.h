@@ -45,6 +45,10 @@ class TouchHandler {
   virtual void TouchesCancelled(const std::vector<Touch>* touches) {}
   virtual void TouchesMoved(const std::vector<Touch>* touches) {}
   virtual void TouchesEnded(const std::vector<Touch>* touches) {}
+
+  // Return true if TouchHandler prefers touch-positions to be normalized
+  // to the range [-1,-1],[1,1], and false if it wants raw device coordinates.
+  virtual bool WantsNormalizedTouchPositions() { return true; }
 };
 
 }  // namespace ui

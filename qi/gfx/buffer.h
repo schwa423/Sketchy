@@ -14,7 +14,7 @@ class Buffer {
   virtual void* GetContents() = 0;
 
  protected:
-  explicit Buffer(shared_ptr<Device> device) : device_(device) {}
+  explicit Buffer(shared_ptr<Device> device = nullptr) : device_(device) {}
   virtual ~Buffer() {}
 
   shared_ptr<Device> device_;
