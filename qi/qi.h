@@ -4,6 +4,8 @@
 #include <memory>
 #include <mutex>
 
+#define QI_DEBUG 1
+
 #ifdef QI_DEBUG
 #define ASSERT(pred) assert(pred)
 #else

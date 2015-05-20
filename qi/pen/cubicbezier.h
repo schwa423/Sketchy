@@ -32,6 +32,7 @@ struct Pt2f {
   Pt2f operator-(const Pt2f& other) const { return Pt2f(x - other.x, y - other.y); }
   Pt2f operator*(float scale) const { return Pt2f(x * scale, y * scale); }
   float& operator[](int index) { return (&(this->x))[index]; }
+  bool operator==(const Pt2f& other) const { return x == other.x && y == other.y; }
   float dot(const Pt2f& other) const { return x * other.x + y * other.y; }
   float dist(const Pt2f& other) const { Pt2f vec = other - *this; return sqrt(vec.dot(vec)); }
   void normalize() {

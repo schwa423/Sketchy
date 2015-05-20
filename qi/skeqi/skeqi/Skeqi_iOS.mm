@@ -43,7 +43,7 @@ class RenderCommandEncoder_iOS {
 
 void RenderCommandEncoder_iOS::SetVertexBuffer(
     Buffer* buffer, int offset, int index) {
-  ASSERT(dynamic_cast<Buffer_iOS>(buffer));
+  ASSERT(dynamic_cast<Buffer_iOS*>(buffer));
   id<MTLBuffer> mtl_buffer = static_cast<Buffer_iOS*>(buffer)->GetBuffer();
   [encoder_ setVertexBuffer:mtl_buffer offset:offset atIndex:index];
 }
@@ -75,10 +75,6 @@ class Page;
 class Stroke {
  public:
   typedef std::vector<CubicBezier2f> Path;
-
-  int vertex_count;
-  int offset;
-  gfx::port::Buffer_iOS buffer;
 
   void Finalize();
   void SetPath(Path&& path);
@@ -112,6 +108,11 @@ class Page {
   Page(shared_ptr<gfx::Device> device, id<MTLLibrary> library);
 
   shared_ptr<Stroke> NewStroke() {
+    // TODO: need better way to clear strokes.
+    if (strokes_.size() > 20) {
+      strokes_.clear();
+    }
+
     // TODO: can't use make_shared because constructor is private... what is best idiom?
     shared_ptr<Stroke> stroke(new Stroke(this));
     strokes_.push_back(stroke);
@@ -165,7 +166,7 @@ void Stroke::Tesselate() {
   std::vector<size_t> vertex_counts = page_->ComputeVertexCounts(path_);
   size_t total_vertex_count = 0;
   for (size_t count : vertex_counts) {
-    ASSERT(count == (count % 2 * 2));
+    ASSERT(count == (count / 2) * 2);
     total_vertex_count += count;
   }
 
@@ -277,13 +278,11 @@ void Page::EncodeDrawCalls(id<MTLRenderCommandEncoder> mtl_encoder) {
   [mtl_encoder popDebugGroup];
 }
 
-
-
 class SkeqiStrokeFitter {
  public:
+  // TODO: revisit error_threshold_
   SkeqiStrokeFitter(std::shared_ptr<Page> page)
-      : fitter_id(s_next_fitter_id++), page_(page) {}
-  ~SkeqiStrokeFitter() {}
+      : fitter_id(s_next_fitter_id++), page_(page), error_threshold_(0.0004) {}
 
   void StartStroke(Pt2f pt) {
     stroke_ = page_->NewStroke();
@@ -291,15 +290,18 @@ class SkeqiStrokeFitter {
     params_.push_back(0.0);
   }
   void AddSamplePoint(Pt2f pt) {
+    if (pt == points_.back())
+      return;
+
     float distance = points_.back().dist(pt);
     points_.push_back(pt);
     params_.push_back(params_.back() + distance);
 
-    // TODO: need to start drawing immediately, not after 4 samples.
-    if (points_.size() > 4) {
-      // TODO: don't recompute stable path segments near the beginning of the stroke.
-      stroke_->SetPath(FitPathToSamplePoints());
-    }
+    // TODO: don't recompute stable path segments near the beginning of the stroke.
+    path_.clear();
+    FitSampleRange(0, points_.size() - 1);
+    ASSERT(!path_.empty());
+    stroke_->SetPath(std::move(path_));
   }
   void FinishStroke() {
     stroke_->Finalize();
@@ -312,13 +314,15 @@ class SkeqiStrokeFitter {
   const int64 fitter_id;
 
  private:
-  Stroke::Path FitPathToSamplePoints();
+  void FitSampleRange(int start_index, int end_index);
 
   shared_ptr<Page> page_;
   shared_ptr<Stroke> stroke_;
 
   std::vector<Pt2f> points_;
   std::vector<float> params_;
+  float error_threshold_;
+  Stroke::Path path_;
 
   static int64 s_next_fitter_id;
 };
@@ -326,34 +330,59 @@ class SkeqiStrokeFitter {
 int64 SkeqiStrokeFitter::s_next_fitter_id = 1;
 
 
-Stroke::Path SkeqiStrokeFitter::FitPathToSamplePoints() {
-  int num_pts = points_.size();
+// TODO: investigate reparameterization
+void SkeqiStrokeFitter::FitSampleRange(int start_index, int end_index) {
+  ASSERT(end_index > start_index);
 
-  Stroke::Path path;
+  // TODO: left/right tangent should be passed into the function, and
+  // computed at the split-point if we recurse.
+  // TODO: normalize?  If so, revisit the two-point heuristic below.
+  Pt2f left_tangent = points_[start_index+1] - points_[start_index];
+  Pt2f right_tangent = points_[end_index-1] - points_[end_index];
 
-  static const int kSegs = 4;
-
-  int range = num_pts / kSegs;
-  int start_index = 0;
-  for (int i = 1; i <= kSegs; i++) {
-    int end_index = num_pts - (kSegs - i) * range - 1;
-
-    // Normalize cumulative length between 0.0 and 1.0.
-    float param_shift = -params_[start_index];
-    float param_scale = 1.0 / (params_[end_index] + param_shift);
-
-    CubicBezier2f bez = CubicBezier2f::Fit(
-        &(points_[start_index]), end_index - start_index + 1,
-        &(params_[start_index]), param_shift, param_scale,
-        points_[start_index+1] - points_[start_index], points_[end_index-1] - points_[end_index]);
-    path.push_back(bez);
-
-    bez.Print();
-
-    start_index = end_index + 1;
+  if (end_index - start_index == 1) {
+    // Only two points... use a heuristic.
+    // TODO: double-check this heuristic.
+    CubicBezier2f line;
+    line.pts[0] = points_[start_index];
+    line.pts[1] = line.pts[0] + (left_tangent * 0.25);
+    line.pts[2] = line.pts[3] + (right_tangent * 0.25);
+    line.pts[3] = points_[end_index];
+    path_.push_back(line);
+    return;
   }
 
-  return path;
+  // Normalize cumulative length between 0.0 and 1.0.
+  float param_shift = -params_[start_index];
+  float param_scale = 1.0 / (params_[end_index] + param_shift);
+
+  CubicBezier2f bez = CubicBezier2f::Fit(
+      &(points_[start_index]), end_index - start_index + 1,
+      &(params_[start_index]), param_shift, param_scale,
+      left_tangent, right_tangent);
+
+  int split_index = (end_index + start_index + 1) / 2;
+  float max_error = 0.0;
+  for (int i = start_index; i <= end_index; ++i) {
+    float t = (params_[i] + param_shift) * param_scale;
+    Pt2f diff = points_[i] - bez.Evaluate(t);
+    float error = diff.dot(diff);
+    if (error > max_error) {
+      max_error = error;
+      split_index = i;
+    }
+  }
+
+  // The current fit is good enough... add it to the path and stop recursion.
+  if (max_error < error_threshold_) {
+    path_.push_back(bez);
+    return;
+  }
+
+  // Error is too large... split into two ranges and fit each.
+  ASSERT(split_index > start_index && split_index < end_index);
+  FitSampleRange(start_index, split_index);
+  FitSampleRange(split_index, end_index);
 }
 
 
