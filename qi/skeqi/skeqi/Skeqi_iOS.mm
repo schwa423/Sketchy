@@ -131,6 +131,8 @@ class Page {
   shared_ptr<gfx::Buffer> NewBuffer(size_t length) { return device_->NewBuffer(length); }
 
  private:
+  void SetupPipeline(id<MTLLibrary> library);
+
   shared_ptr<gfx::Device> device_;
   id<MTLRenderPipelineState> pipeline_;
   std::vector<shared_ptr<Stroke>> strokes_;
@@ -155,7 +157,6 @@ void Stroke::SetPath(Path&& path) {
 void Stroke::EncodeDrawCalls(gfx::RenderCommandEncoder* encoder) {
   if (vertex_count_ > 0) {
     encoder->SetVertexBuffer(buffer_.get(), offset_, 0);
-    encoder->SetVertexBuffer(buffer_.get(), offset_ + 28, 1);
     encoder->DrawTriangleStrip(0, vertex_count_);
   }
 }
@@ -207,13 +208,6 @@ void Stroke::Tesselate() {
       verts[i+1].nx = -pt.second.x;
       verts[i+1].ny = -pt.second.y;
 
-      // TODO this is a hack since our vertex shader doesn't actually use the specified normals.
-      float kWidth = 0.02;
-      verts[i].px += verts[i].nx * kWidth;
-      verts[i].py += verts[i].ny * kWidth;
-      verts[i+1].px += verts[i+1].nx * kWidth;
-      verts[i+1].py += verts[i+1].ny * kWidth;
-
       // TODO length
       verts[i].length = verts[i+1].length = 0.0;
       verts[i].cb = verts[i+1].cb = rgb;
@@ -230,23 +224,14 @@ void Stroke::Tesselate() {
 // Page method implementations ////////////////////////////////////////////////
 
 Page::Page(shared_ptr<gfx::Device> device, id<MTLLibrary> library) : device_(device) {
-  auto vert_func = [library newFunctionWithName:@"strokeVertexPassThrough"];
+  SetupPipeline(library);
+}
+
+void Page::SetupPipeline(id<MTLLibrary> library) {
+  auto vert_func = [library newFunctionWithName:@"strokeVertex"];
   auto frag_func = [library newFunctionWithName:@"strokeFragmentPassThrough"];
 
-  auto vert_desc = [[MTLVertexDescriptor alloc] init];
-  vert_desc.attributes[0].format = MTLVertexFormatFloat4;
-  vert_desc.attributes[0].bufferIndex = 0;
-  vert_desc.attributes[0].offset = 0;
-  vert_desc.attributes[1].format = MTLVertexFormatUChar4Normalized;
-  vert_desc.attributes[1].bufferIndex = 1;
-  vert_desc.attributes[1].offset = 0;
-  vert_desc.layouts[0].stride = sizeof(Stroke::Vertex);
-  vert_desc.layouts[0].stepFunction = MTLVertexStepFunctionPerVertex;
-  vert_desc.layouts[1].stride = sizeof(Stroke::Vertex);
-  vert_desc.layouts[1].stepFunction = MTLVertexStepFunctionPerVertex;
-
   auto pipeline_desc = [[MTLRenderPipelineDescriptor alloc] init];
-  pipeline_desc.vertexDescriptor = vert_desc;
   pipeline_desc.vertexFunction = vert_func;
   pipeline_desc.fragmentFunction = frag_func;
   // TODO: needed if set elsewhere earlier?
