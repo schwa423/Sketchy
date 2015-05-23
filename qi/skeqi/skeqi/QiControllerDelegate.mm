@@ -71,6 +71,7 @@
 }
 
 // Implement UIResponder method.
+// TODO: are there additional positions that we can pull from "event"?
 - (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event {
   [self extractTouches: touches];
   touch_handler_->TouchesMoved(&touches_);

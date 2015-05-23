@@ -230,8 +230,8 @@ void Stroke::Tesselate() {
 // Page method implementations ////////////////////////////////////////////////
 
 Page::Page(shared_ptr<gfx::Device> device, id<MTLLibrary> library) : device_(device) {
-  auto vert_func = [library newFunctionWithName:@"passThroughVertex2"];
-  auto frag_func = [library newFunctionWithName:@"passThroughFragment"];
+  auto vert_func = [library newFunctionWithName:@"strokeVertexPassThrough"];
+  auto frag_func = [library newFunctionWithName:@"strokeFragmentPassThrough"];
 
   auto vert_desc = [[MTLVertexDescriptor alloc] init];
   vert_desc.attributes[0].format = MTLVertexFormatFloat4;
@@ -298,8 +298,10 @@ class SkeqiStrokeFitter {
     params_.push_back(params_.back() + distance);
 
     // TODO: don't recompute stable path segments near the beginning of the stroke.
-    path_.clear();
-    FitSampleRange(0, points_.size() - 1);
+    size_t end_index = points_.size() - 1;
+    Pt2f left_tangent = points_[1] - points_[0];
+    Pt2f right_tangent = points_[end_index-1] - points_[end_index];
+    FitSampleRange(0, end_index, left_tangent, right_tangent);
     ASSERT(!path_.empty());
     stroke_->SetPath(std::move(path_));
   }
@@ -314,7 +316,8 @@ class SkeqiStrokeFitter {
   const int64 fitter_id;
 
  private:
-  void FitSampleRange(int start_index, int end_index);
+  void FitSampleRange(
+      int start_index, int end_index, Pt2f left_tangent, Pt2f right_tangent);
 
   shared_ptr<Page> page_;
   shared_ptr<Stroke> stroke_;
@@ -331,14 +334,9 @@ int64 SkeqiStrokeFitter::s_next_fitter_id = 1;
 
 
 // TODO: investigate reparameterization
-void SkeqiStrokeFitter::FitSampleRange(int start_index, int end_index) {
+void SkeqiStrokeFitter::FitSampleRange(
+    int start_index, int end_index, Pt2f left_tangent, Pt2f right_tangent) {
   ASSERT(end_index > start_index);
-
-  // TODO: left/right tangent should be passed into the function, and
-  // computed at the split-point if we recurse.
-  // TODO: normalize?  If so, revisit the two-point heuristic below.
-  Pt2f left_tangent = points_[start_index+1] - points_[start_index];
-  Pt2f right_tangent = points_[end_index-1] - points_[end_index];
 
   if (end_index - start_index == 1) {
     // Only two points... use a heuristic.
@@ -381,8 +379,9 @@ void SkeqiStrokeFitter::FitSampleRange(int start_index, int end_index) {
 
   // Error is too large... split into two ranges and fit each.
   ASSERT(split_index > start_index && split_index < end_index);
-  FitSampleRange(start_index, split_index);
-  FitSampleRange(split_index, end_index);
+  Pt2f middle_tangent = points_[split_index + 1] - points_[split_index - 1];
+  FitSampleRange(start_index, split_index, left_tangent, middle_tangent * -1.0);
+  FitSampleRange(split_index, end_index, middle_tangent, right_tangent);
 }
 
 
