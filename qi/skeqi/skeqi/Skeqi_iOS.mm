@@ -36,6 +36,8 @@ class RenderCommandEncoder_iOS {
 
   void SetVertexBuffer(Buffer* buffer, int offset, int index);
   void DrawTriangleStrip(int vertex_start, int vertex_count);
+  void DrawLineStrip(int vertex_start, int vertex_count);
+  void DrawPoints(int vertex_start, int vertex_count);
 
  private:
   id<MTLRenderCommandEncoder> encoder_;
@@ -51,7 +53,19 @@ void RenderCommandEncoder_iOS::SetVertexBuffer(
 void RenderCommandEncoder_iOS::DrawTriangleStrip(
     int vertex_start, int vertex_count) {
   [encoder_ drawPrimitives:MTLPrimitiveTypeTriangleStrip
-           vertexStart:0 vertexCount:vertex_count];
+            vertexStart:vertex_start vertexCount:vertex_count];
+}
+
+void RenderCommandEncoder_iOS::DrawLineStrip(
+    int vertex_start, int vertex_count) {
+  [encoder_ drawPrimitives:MTLPrimitiveTypeLineStrip
+            vertexStart:vertex_start vertexCount:vertex_count];
+}
+
+void RenderCommandEncoder_iOS::DrawPoints(
+    int vertex_start, int vertex_count) {
+  [encoder_ drawPrimitives:MTLPrimitiveTypePoint
+            vertexStart:vertex_start vertexCount:vertex_count];
 }
 
 }  // namespace port
@@ -78,6 +92,7 @@ class Stroke {
 
   void Finalize();
   void SetPath(Path&& path);
+  void SetSamplePoints(const std::vector<Pt2f>& points);
 
  private:
   Stroke(Page* page)
@@ -89,7 +104,7 @@ class Stroke {
   struct Vertex {
     float px, py, pz, pw;
     float nx, ny, length;
-    unsigned char cb, cg, cr, ca;
+    unsigned char cr, cg, cb, ca;
   };
 
   Path path_;
@@ -154,10 +169,37 @@ void Stroke::SetPath(Path&& path) {
   Tesselate();
 }
 
+void Stroke::SetSamplePoints(const std::vector<Pt2f>& points) {
+  ASSERT(!finalized_);
+  path_.clear();
+  size_t buffer_size = points.size() * sizeof(Vertex);
+  if (!buffer_ || buffer_->GetLength() < buffer_size) {
+    buffer_ = page_->NewBuffer(buffer_size * 1.2 + 200);
+  }
+  auto verts = reinterpret_cast<Stroke::Vertex*>(buffer_->GetContents());
+  for (int i = 0; i < points.size(); i++) {
+    verts[i].px = points[i].x;
+    verts[i].py = points[i].y;
+    verts[i].pz = 0.0;
+    verts[i].pw = 1.0;
+    verts[i].nx = 0.0f;
+    verts[i].ny = 0.0f;
+    verts[i].cr = 255;
+    verts[i].cb = 0;
+    verts[i].cg = 0;
+    verts[i].ca = 255;
+  }
+  vertex_count_ = points.size();
+}
+
 void Stroke::EncodeDrawCalls(gfx::RenderCommandEncoder* encoder) {
   if (vertex_count_ > 0) {
     encoder->SetVertexBuffer(buffer_.get(), offset_, 0);
-    encoder->DrawTriangleStrip(0, vertex_count_);
+    if (path_.empty()) {
+      encoder->DrawPoints(0, vertex_count_);
+    } else {
+      encoder->DrawTriangleStrip(0, vertex_count_);
+    }
   }
 }
 
@@ -198,7 +240,7 @@ void Stroke::Tesselate() {
     for (int i = 0; i < seg_vert_count; i += 2) {
       // We increment index by 2 each loop iteration, so the last iteration will have
       // "index == kVertexCount - 2", and therefore a parameter value of "i * incr == 1.0".
-      std::pair<Pt2f, Pt2f> pt = bez.EvaluatePointAndNormal(i * param_incr);
+      std::pair<Pt2f, Pt2f> pt = EvaluatePointAndNormal(bez, i * param_incr);
       verts[i].px = verts[i+1].px = pt.first.x;
       verts[i].py = verts[i+1].py = pt.first.y;
       verts[i].pz = verts[i+1].pz = 0.0;
@@ -213,7 +255,7 @@ void Stroke::Tesselate() {
       verts[i].cb = verts[i+1].cb = rgb;
       verts[i].cg = verts[i+1].cg = rgb;
       verts[i].cr = verts[i+1].cr = rgb;
-      verts[i].ca = verts[i+1].ca = 1;
+      verts[i].ca = verts[i+1].ca = 255;
     }
     // Bump Stroke::Vertex pointer to tesselate the next segment.
     verts += seg_vert_count;
@@ -267,32 +309,60 @@ class SkeqiStrokeFitter {
  public:
   // TODO: revisit error_threshold_
   SkeqiStrokeFitter(std::shared_ptr<Page> page)
-      : fitter_id(s_next_fitter_id++), page_(page), error_threshold_(0.0004) {}
+      : fitter_id(s_next_fitter_id++), page_(page), error_threshold_(0.0002) {}
 
   void StartStroke(Pt2f pt) {
     stroke_ = page_->NewStroke();
+    stroke2_ = page_->NewStroke();
     points_.push_back(pt);
     params_.push_back(0.0);
   }
   void AddSamplePoint(Pt2f pt) {
-    if (pt == points_.back())
-      return;
-
-    float distance = points_.back().dist(pt);
+    float dist = distance(pt, points_.back());
     points_.push_back(pt);
-    params_.push_back(params_.back() + distance);
+    params_.push_back(params_.back() + dist);
 
+    // Recursively compute a list of cubic Bezier segments.
     // TODO: don't recompute stable path segments near the beginning of the stroke.
     size_t end_index = points_.size() - 1;
     Pt2f left_tangent = points_[1] - points_[0];
     Pt2f right_tangent = points_[end_index-1] - points_[end_index];
     FitSampleRange(0, end_index, left_tangent, right_tangent);
+
+    // Compute length of each cubic Bezier segment,
+    // TODO: unfinished
+//    std::vector<CubicBezier2f>
+    for (auto bez : path_) {
+
+//      std::deque
+
+    }
+
+    // TODO: remove... this is just basic sanity-check for Split() given that
+    // I don't have unit tests running.
+    Stroke::Path split_path;
+    for (auto bez : path_) {
+      auto split = bez.Split(0.5);
+      split_path.push_back(split.first);
+      split_path.push_back(split.second);
+    }
+    path_ = std::move(split_path);
+
+    // For each of the segments computed above, compute the total segment length
+    // and a arc-length parameterization.  This parameterization is a 1-D cubic
+    // Bezier such that an input parameter t in the range [0,1] results in a
+    // new parameter t' (also in [0,1]) such that evaluating the original
+    // curve-segment at t' returns the point on the segment where the cumulative
+    // arc-length to that point is t * total_segment_length.
     ASSERT(!path_.empty());
     stroke_->SetPath(std::move(path_));
+    stroke2_->SetSamplePoints(points_);
   }
   void FinishStroke() {
     stroke_->Finalize();
+    stroke2_->Finalize();
     stroke_.reset();
+    stroke2_.reset();
     points_.clear();
     params_.clear();
   }
@@ -306,6 +376,7 @@ class SkeqiStrokeFitter {
 
   shared_ptr<Page> page_;
   shared_ptr<Stroke> stroke_;
+  shared_ptr<Stroke> stroke2_;
 
   std::vector<Pt2f> points_;
   std::vector<float> params_;
@@ -328,8 +399,8 @@ void SkeqiStrokeFitter::FitSampleRange(
     // TODO: double-check this heuristic.
     CubicBezier2f line;
     line.pts[0] = points_[start_index];
-    line.pts[1] = line.pts[0] + (left_tangent * 0.25);
-    line.pts[2] = line.pts[3] + (right_tangent * 0.25);
+    line.pts[1] = line.pts[0] + (left_tangent * 0.25f);
+    line.pts[2] = line.pts[3] + (right_tangent * 0.25f);
     line.pts[3] = points_[end_index];
     path_.push_back(line);
     return;
@@ -339,7 +410,7 @@ void SkeqiStrokeFitter::FitSampleRange(
   float param_shift = -params_[start_index];
   float param_scale = 1.0 / (params_[end_index] + param_shift);
 
-  CubicBezier2f bez = CubicBezier2f::Fit(
+  CubicBezier2f bez = FitCubicBezier2f(
       &(points_[start_index]), end_index - start_index + 1,
       &(params_[start_index]), param_shift, param_scale,
       left_tangent, right_tangent);
@@ -349,7 +420,7 @@ void SkeqiStrokeFitter::FitSampleRange(
   for (int i = start_index; i <= end_index; ++i) {
     float t = (params_[i] + param_shift) * param_scale;
     Pt2f diff = points_[i] - bez.Evaluate(t);
-    float error = diff.dot(diff);
+    float error = dot(diff, diff);
     if (error > max_error) {
       max_error = error;
       split_index = i;
@@ -365,7 +436,7 @@ void SkeqiStrokeFitter::FitSampleRange(
   // Error is too large... split into two ranges and fit each.
   ASSERT(split_index > start_index && split_index < end_index);
   Pt2f middle_tangent = points_[split_index + 1] - points_[split_index - 1];
-  FitSampleRange(start_index, split_index, left_tangent, middle_tangent * -1.0);
+  FitSampleRange(start_index, split_index, left_tangent, middle_tangent * -1.0f);
   FitSampleRange(split_index, end_index, middle_tangent, right_tangent);
 }
 

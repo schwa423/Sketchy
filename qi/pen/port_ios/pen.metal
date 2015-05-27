@@ -5,6 +5,7 @@ using namespace metal;
 struct StrokeVertexOut {
     float4  position [[position]];
     float4  color;
+    float sz [[point_size]];
 };
 
 struct StrokeVertexIn {
@@ -15,7 +16,7 @@ struct StrokeVertexIn {
 };
 
 vertex StrokeVertexOut strokeVertex(uint vid [[ vertex_id ]],
-                                constant StrokeVertexIn* vertices [[ buffer(0) ]])
+                                    constant StrokeVertexIn* vertices [[ buffer(0) ]])
 {
   StrokeVertexIn in = vertices[vid];
   StrokeVertexOut out;
@@ -26,6 +27,8 @@ vertex StrokeVertexOut strokeVertex(uint vid [[ vertex_id ]],
   out.position = in.pos;
   out.position.xy += in.norm * width;
   out.color = static_cast<float4>(uchar4(in.color)) * normalizeColor;
+
+  out.sz = 4.0f;
 
   return out;
 };

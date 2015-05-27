@@ -6,71 +6,73 @@
 #import <CoreGraphics/CoreGraphics.h>
 
 #include <Eigen/Core>
+#include <utility>
+
+#include <glm/glm.hpp>
 
 namespace qi {
 namespace pen {
 
-typedef Eigen::Vector2d Pt2d;  // typedef Matrix< double, 2, 1 >  (column vector)
+using glm::length;
+using glm::normalize;
+using glm::dot;
 
-typedef Eigen::Matrix2f Mat2f;
-
-//    typedef Eigen::Vector2f Pt2f;
-struct Pt2f {
-  float x;
-  float y;
-  Pt2f() {}  // uninitialized  // TODO use NaN in debug mode.
-  Pt2f(float xx, float yy) { x = xx; y = yy; }
-  Pt2f(const CGPoint& pt) { x = pt.x; y = pt.y; }
-  Pt2f(const Eigen::Vector2f pt) { x = pt[0]; y = pt[1]; }
-  operator Eigen::Vector2f&() {
-    return *reinterpret_cast<Eigen::Vector2f*>(this);
-  }
-  operator const Eigen::Vector2f&() const {
-    return *reinterpret_cast<const Eigen::Vector2f*>(this);
-  }
-  Pt2f operator+(const Pt2f& other) const { return Pt2f(x + other.x, y + other.y); }
-  Pt2f operator-(const Pt2f& other) const { return Pt2f(x - other.x, y - other.y); }
-  Pt2f operator*(float scale) const { return Pt2f(x * scale, y * scale); }
-  float& operator[](int index) { return (&(this->x))[index]; }
-  bool operator==(const Pt2f& other) const { return x == other.x && y == other.y; }
-  float dot(const Pt2f& other) const { return x * other.x + y * other.y; }
-  float dist(const Pt2f& other) const { Pt2f vec = other - *this; return sqrt(vec.dot(vec)); }
-  void normalize() {
-      float inverse_length = 1.0f / sqrt(this->dot(*this));
-      x *= inverse_length;
-      y *= inverse_length;
-  }
-
-  static Pt2f Zero() { return Pt2f(0.0f, 0.0f); }
-};
-
-typedef Eigen::Vector4f Vec4f;
-typedef Eigen::Array<float, 1, 4> Arr4f;
-typedef Eigen::Array<float, 1, 8> Arr8f;
+typedef glm::tvec2<float> Pt2f;
 
 // Compute distance between two points.
-inline float dist(Pt2f a, Pt2f b) {
-  Pt2f diff = b - a;
-  return sqrt(diff.dot(diff));
-}
+inline float distance(Pt2f a, Pt2f b) { return length(b - a); }
 
-struct CubicBezier2f {
-  Pt2f pts[4];
+template <typename T>
+struct CubicBezier {
+  T pts[4];
 
-  Pt2f Evaluate(float t);
-  Pt2f Evaluate(float t, Pt2f* tmp3, Pt2f* tmp2);
-  std::pair<Pt2f, Pt2f> EvaluatePointAndNormal(float t);
-  void Print();
-  static CubicBezier2f Fit(Pt2f* pts,
-                           int count,
-                           float* params,
-                           float param_shift,
-                           float param_scale,
-                           Pt2f endpoint_tangent_0,
-                           Pt2f endpoint_tangent_1);
+  T Evaluate(float t) const;
+  T Evaluate(float t, T* tmp3, T* tmp2) const;
+
+  // Split into two curves at the specified parameter.
+  std::pair<CubicBezier<T>, CubicBezier<T>> Split(float t) const;
 };
 
+typedef CubicBezier<float> CubicBezier1f;
+typedef CubicBezier<Pt2f> CubicBezier2f;
+
+template <typename T>
+CubicBezier<T> FitCubicBezier(T* pts, int count,
+                              float* params,
+                              float param_shift,
+                              float param_scale,
+                              T endpoint_tangent_0,
+                              T endpoint_tangent_1);
+
+CubicBezier1f FitCubicBezier1f(float* pts, int count,
+                               float* params,
+                               float param_shift,
+                               float param_scale);
+
+CubicBezier2f FitCubicBezier2f(Pt2f* pts, int count,
+                               float* params,
+                               float param_shift,
+                               float param_scale,
+                               Pt2f endpoint_tangent_0,
+                               Pt2f endpoint_tangent_1);
+
+std::pair<Pt2f, Pt2f> EvaluatePointAndNormal(const CubicBezier<Pt2f>& bez, float t);
+
 }  // namespace pen
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const pen::Pt2f& pt) {
+  return os << "(" << pt.x << "," << pt.y << ")";
+}
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, const pen::CubicBezier<T>& bez) {
+  return os << "p0=" << bez.pts[0] << ", "
+            << "p1=" << bez.pts[1] << ", "
+            << "p2=" << bez.pts[2] << ", "
+            << "p3=" << bez.pts[3];
+}
+
 }  // namespace qi
 
 #endif  // _QI_GFX_PEN_CubicBezier_h_
