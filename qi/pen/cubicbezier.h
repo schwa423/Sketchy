@@ -60,8 +60,7 @@ std::pair<Pt2f, Pt2f> EvaluatePointAndNormal(const CubicBezier<Pt2f>& bez, float
 
 }  // namespace pen
 
-template <typename T>
-std::ostream& operator<<(std::ostream& os, const pen::Pt2f& pt) {
+inline std::ostream& operator<<(std::ostream& os, const pen::Pt2f& pt) {
   return os << "(" << pt.x << "," << pt.y << ")";
 }
 

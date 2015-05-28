@@ -21,6 +21,7 @@
 // TODO: remove <iostream>
 #import <iostream>
 #import <map>
+#import <unordered_set>
 
 #import <Metal/Metal.h>
 
@@ -99,7 +100,10 @@ class Stroke {
       : page_(page), vertex_count_(0), offset_(0), finalized_(false) {}
 
   void EncodeDrawCalls(gfx::RenderCommandEncoder* encoder);
-  void Tesselate();
+
+  // If |encoder| is not nil, tesselate the stroke using a compute shader.
+  // Otherwise, do it on the CPU.
+  void Tesselate(id<MTLComputeCommandEncoder>encoder);
 
   struct Vertex {
     float px, py, pz, pw;
@@ -126,6 +130,7 @@ class Page {
     // TODO: need better way to clear strokes.
     if (strokes_.size() > 20) {
       strokes_.clear();
+      dirty_strokes_.clear();
     }
 
     // TODO: can't use make_shared because constructor is private... what is best idiom?
@@ -145,12 +150,20 @@ class Page {
 
   shared_ptr<gfx::Buffer> NewBuffer(size_t length) { return device_->NewBuffer(length); }
 
+  // Pre-render update.
+  void Update(id<MTLCommandQueue>queue);
+
  private:
-  void SetupPipeline(id<MTLLibrary> library);
+  void SetupRenderPipeline(id<MTLLibrary> library);
+  void SetupComputePipeline(id<MTLLibrary> library);
 
   shared_ptr<gfx::Device> device_;
-  id<MTLRenderPipelineState> pipeline_;
+  id<MTLRenderPipelineState> render_pipeline_;
+  id<MTLComputePipelineState> compute_pipeline_;
   std::vector<shared_ptr<Stroke>> strokes_;
+  std::unordered_set<Stroke*> dirty_strokes_;
+
+  friend class Stroke;
 };
 
 
@@ -160,13 +173,20 @@ void Stroke::Finalize() {
   bool was_finalized = finalized_.exchange(true);
   if (!was_finalized) {
     page_->FinalizeStroke(this);
+
+    if (!path_.empty()) {
+      std::cerr << "STROKE (" << path_.size() << " segments):" << std::endl;
+      for (int i = 0; i < path_.size(); ++i) {
+        std::cerr << "       " << path_[i] << std::endl;
+      }
+    }
   }
 }
 
 void Stroke::SetPath(Path&& path) {
   ASSERT(!finalized_);
   path_ = std::move(path);
-  Tesselate();
+  page_->dirty_strokes_.insert(this);
 }
 
 void Stroke::SetSamplePoints(const std::vector<Pt2f>& points) {
@@ -203,7 +223,7 @@ void Stroke::EncodeDrawCalls(gfx::RenderCommandEncoder* encoder) {
   }
 }
 
-void Stroke::Tesselate() {
+void Stroke::Tesselate(id<MTLComputeCommandEncoder>encoder) {
   if (path_.empty()) return;
 
   std::vector<size_t> vertex_counts = page_->ComputeVertexCounts(path_);
@@ -222,7 +242,27 @@ void Stroke::Tesselate() {
   }
   vertex_count_ = total_vertex_count;
 
-  // Generate vertices for each Path segment.
+  if (encoder != nil) {
+    // Tesselate stroke on GPU using compute shader.
+    int offset = 0;
+    for (int i = 0; i < path_.size(); ++i) {
+      auto bez = path_[i];
+      [encoder setBytes:&bez length:sizeof(bez) atIndex:0];
+      // TODO: avoid static_cast<>
+      auto buf = static_cast<gfx::port::Buffer_iOS*>(buffer_.get());
+      [encoder setBuffer:buf->GetBuffer() offset:offset atIndex:1];
+
+      MTLSize threadgroup_size = MTLSizeMake(vertex_counts[i] / 2, 1, 1);
+      MTLSize threadgroups = MTLSizeMake(1, 1, 1);
+      [encoder dispatchThreadgroups:threadgroups
+               threadsPerThreadgroup: threadgroup_size];
+
+      offset += vertex_counts[i] * sizeof(Stroke::Vertex);
+    }
+    return;
+  }
+
+  // Use CPU to generate vertices for each Path segment.
   auto verts = reinterpret_cast<Stroke::Vertex*>(buffer_->GetContents());
   for (int i = 0; i < path_.size(); ++i) {
     CubicBezier2f bez = path_[i];
@@ -266,10 +306,11 @@ void Stroke::Tesselate() {
 // Page method implementations ////////////////////////////////////////////////
 
 Page::Page(shared_ptr<gfx::Device> device, id<MTLLibrary> library) : device_(device) {
-  SetupPipeline(library);
+  SetupRenderPipeline(library);
+  SetupComputePipeline(library);
 }
 
-void Page::SetupPipeline(id<MTLLibrary> library) {
+void Page::SetupRenderPipeline(id<MTLLibrary> library) {
   auto vert_func = [library newFunctionWithName:@"strokeVertex"];
   auto frag_func = [library newFunctionWithName:@"strokeFragmentPassThrough"];
 
@@ -280,8 +321,15 @@ void Page::SetupPipeline(id<MTLLibrary> library) {
   pipeline_desc.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
 
   NSError *errors = nil;
-  pipeline_ = [library.device newRenderPipelineStateWithDescriptor:pipeline_desc error:&errors];
-  ASSERT(pipeline_ && !errors);
+  render_pipeline_ = [library.device newRenderPipelineStateWithDescriptor:pipeline_desc error:&errors];
+  ASSERT(render_pipeline_ && !errors);
+}
+
+void Page::SetupComputePipeline(id<MTLLibrary> library) {
+  auto kernel_func = [library newFunctionWithName:@"strokeBezierTesselate"];
+  NSError *errors = nil;
+  compute_pipeline_ =[library.device newComputePipelineStateWithFunction:kernel_func error:&errors];
+  ASSERT(compute_pipeline_ && !errors);
 }
 
 std::vector<size_t> Page::ComputeVertexCounts(Stroke::Path& path) {
@@ -289,7 +337,7 @@ std::vector<size_t> Page::ComputeVertexCounts(Stroke::Path& path) {
   counts.reserve(path.size());
   for (CubicBezier2f bez : path) {
     // TODO: compute a number based on the length of each path segment.
-    static const size_t kVertexCount = 200;
+    static const size_t kVertexCount = 128;
     counts.push_back(kVertexCount);
   }
   return counts;
@@ -297,12 +345,31 @@ std::vector<size_t> Page::ComputeVertexCounts(Stroke::Path& path) {
 
 void Page::EncodeDrawCalls(id<MTLRenderCommandEncoder> mtl_encoder) {
   [mtl_encoder pushDebugGroup:@"Render Page Strokes"];
-  [mtl_encoder setRenderPipelineState:pipeline_];
+  [mtl_encoder setRenderPipelineState:render_pipeline_];
   gfx::port::RenderCommandEncoder_iOS encoder(mtl_encoder);
   for (auto& stroke : strokes_) {
     stroke->EncodeDrawCalls(&encoder);
   }
   [mtl_encoder popDebugGroup];
+}
+
+void Page::Update(id<MTLCommandQueue>queue) {
+  if (dirty_strokes_.empty()) return;
+
+  id<MTLCommandBuffer> cmd_buffer = [queue commandBuffer];
+  id<MTLComputeCommandEncoder> cmd_encoder = [cmd_buffer computeCommandEncoder];
+  [cmd_encoder pushDebugGroup:@"Tesselate Bezier Strokes"];
+  [cmd_encoder setComputePipelineState:compute_pipeline_];
+
+  for (auto stroke : dirty_strokes_) {
+    stroke->Tesselate(cmd_encoder);
+//    stroke->Tesselate(nil);
+  }
+  dirty_strokes_.clear();
+
+  [cmd_encoder popDebugGroup];
+  [cmd_encoder endEncoding];
+  [cmd_buffer commit];
 }
 
 class SkeqiStrokeFitter {
@@ -501,6 +568,10 @@ class SkeqiTouchHandler : public ui::TouchHandler {
     [self setTouchHandler: std::move(touch_handler)];
   }
   return self;
+}
+
+- (void)update {
+  page_->Update(self.metalQueue);
 }
 
 - (void)encodeDrawCalls:(id<MTLRenderCommandEncoder>)encoder {

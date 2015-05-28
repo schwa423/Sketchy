@@ -19,10 +19,12 @@
 - (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event;
 - (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event;
 
+- (void)update;
 - (void)encodeDrawCalls:(id<MTLRenderCommandEncoder>)encoder;
 
 @property (readonly) id<MTLDevice> metalDevice;
 @property (readonly) id<MTLLibrary> metalLibrary;
+@property id<MTLCommandQueue> metalQueue;
 @end
 
 #endif

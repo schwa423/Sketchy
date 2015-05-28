@@ -60,6 +60,18 @@ class QiController: GameViewController {
     stroke = RenderableStroke(ArcList(startPoint: startPoint, startRadians: startRadians, radiusList: radiusList, radiansChangeList: radiansChangeList))
   }
 
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    // TODO: clear queue when viewDidUnload().
+    delegate.metalQueue = commandQueue;
+  }
+
+  override func update() {
+    super.update();
+    delegate.update();
+  }
+
   override func encodeDrawCalls(renderEncoder: MTLRenderCommandEncoder) {
     super.encodeDrawCalls(renderEncoder)
     delegate.encodeDrawCalls(renderEncoder)

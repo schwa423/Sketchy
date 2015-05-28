@@ -108,6 +108,11 @@
   }
 }
 
+// No-op.  Subclasses should override if they have work to do before rendering.
+- (void)update {
+  
+}
+
 // No-op.  Subclasses should override if they have something to draw.
 - (void)encodeDrawCalls:(id<MTLRenderCommandEncoder>)encoder {
 
