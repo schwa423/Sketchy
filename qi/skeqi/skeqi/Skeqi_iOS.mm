@@ -556,8 +556,23 @@ class SkeqiTouchHandler : public ui::TouchHandler {
 }  // namespace qi
 
 
+#import "CocoaHTTPServer/HTTPServer.h"
+#import "CocoaHTTPServer/HTTPConnection.h"
+#import "CocoaHTTPServer/HTTPLogging.h"
+#import "CocoaLumberjack/DDLog.h"
+#import "CocoaLumberjack/DDTTYLogger.h"
+
+// Log levels: off, error, warn, info, verbose
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+
+// Log levels: off, error, warn, info, verbose
+// Other flags: trace
+static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
+
+
 @implementation Skeqi_iOS {
   std::shared_ptr<qi::pen::Page> page_;
+  HTTPServer *httpServer;
 }
 
 - (id)init {
@@ -566,6 +581,43 @@ class SkeqiTouchHandler : public ui::TouchHandler {
     page_ = std::make_shared<qi::pen::Page>(self.device, self.metalLibrary);
     auto touch_handler = std::make_unique<qi::pen::SkeqiTouchHandler>(page_);
     [self setTouchHandler: std::move(touch_handler)];
+
+
+    // Configure our logging framework.
+    // To keep things simple and fast, we're just going to log to the Xcode console.
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+
+    // Initalize our http server
+    httpServer = [[HTTPServer alloc] init];
+
+    // Tell the server to broadcast its presence via Bonjour.
+    // This allows browsers such as Safari to automatically discover our service.
+    //  [httpServer setType:@"_http._tcp."];
+
+    // Note: Clicking the bonjour service in Safari won't work because Safari will use http and not https.
+    // Just change the url to https for proper access.
+
+    // Normally there's no need to run our server on any specific port.
+    // Technologies like Bonjour allow clients to dynamically discover the server's port at runtime.
+    // However, for easy testing you may want force a certain port so you can just hit the refresh button.
+    [httpServer setPort:12345];
+
+    // We're going to extend the base HTTPConnection class with our MyHTTPConnection class.
+    // This allows us to customize the server for things such as SSL and password-protection.
+    [httpServer setConnectionClass:[HTTPConnection class]];
+
+    // Serve files from the standard Sites folder
+    NSString *docRoot = [[NSBundle mainBundle] pathForResource:@"skeqi-dbg" ofType:@"bundle"];
+//    DDLogInfo(@"Setting document root: %@", docRoot);
+
+    [httpServer setDocumentRoot:docRoot];
+
+    NSError *error = nil;
+    if(![httpServer start:&error])
+    {
+//      DDLogError(@"Error starting HTTP Server: %@", error);
+    }
+
   }
   return self;
 }

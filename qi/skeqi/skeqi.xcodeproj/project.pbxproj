@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		030D02221B19B0C100116C90 /* skeqi-dbg.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 030D02211B19B0C100116C90 /* skeqi-dbg.bundle */; };
 		032D32C01AF56E0500F473D4 /* Algorithm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32841AF56E0500F473D4 /* Algorithm.cpp */; };
 		032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32871AF56E0500F473D4 /* Arc.cpp */; };
 		032D32C21AF56E0500F473D4 /* Bezier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32891AF56E0500F473D4 /* Bezier.cpp */; };
@@ -58,6 +59,7 @@
 		03FA76111AD7EA2500A56C06 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03FA76101AD7EA2500A56C06 /* Images.xcassets */; };
 		03FA76141AD7EA2500A56C06 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FA76121AD7EA2500A56C06 /* LaunchScreen.xib */; };
 		03FA76201AD7EA2500A56C06 /* skeqiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA761F1AD7EA2500A56C06 /* skeqiTests.swift */; };
+		D4DBD7A196B4BC3E6F2C77E5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0EB575F00F118449C05BB9 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +73,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		030D02211B19B0C100116C90 /* skeqi-dbg.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "skeqi-dbg.bundle"; sourceTree = "<group>"; };
 		032D32841AF56E0500F473D4 /* Algorithm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Algorithm.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.cpp"; sourceTree = "<group>"; };
 		032D32851AF56E0500F473D4 /* Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Algorithm.h; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.h"; sourceTree = "<group>"; };
 		032D32861AF56E0500F473D4 /* AngleUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AngleUtils.h; path = "../third-party/cornucopia-lib/Cornucopia/AngleUtils.h"; sourceTree = "<group>"; };
@@ -164,6 +167,9 @@
 		03FA76191AD7EA2500A56C06 /* skeqiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = skeqiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03FA761E1AD7EA2500A56C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03FA761F1AD7EA2500A56C06 /* skeqiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = skeqiTests.swift; sourceTree = "<group>"; };
+		3F2A24E6DD4F5D1E07DB369E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		CD0EB575F00F118449C05BB9 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD8B2D02168A4CA2409FD535 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +177,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4DBD7A196B4BC3E6F2C77E5 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,6 +335,8 @@
 				03FA761C1AD7EA2500A56C06 /* skeqiTests */,
 				03FA76031AD7EA2500A56C06 /* Products */,
 				032D36E01AFF4D9C00F473D4 /* skeqi-Bridging-Header.h */,
+				68209B19EF7D4083D3AEE41B /* Pods */,
+				1841EBDF86A12D5652FF24FD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -343,6 +352,7 @@
 		03FA76041AD7EA2500A56C06 /* skeqi */ = {
 			isa = PBXGroup;
 			children = (
+				030D02211B19B0C100116C90 /* skeqi-dbg.bundle */,
 				034F06A11ADA20AE005A439A /* playgrounds */,
 				03FA76071AD7EA2500A56C06 /* AppDelegate.swift */,
 				03FA76091AD7EA2500A56C06 /* GameViewController.swift */,
@@ -387,6 +397,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		1841EBDF86A12D5652FF24FD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CD0EB575F00F118449C05BB9 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		68209B19EF7D4083D3AEE41B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3F2A24E6DD4F5D1E07DB369E /* Pods.debug.xcconfig */,
+				CD8B2D02168A4CA2409FD535 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -394,9 +421,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 03FA76231AD7EA2500A56C06 /* Build configuration list for PBXNativeTarget "skeqi" */;
 			buildPhases = (
+				544757B9B6F55ACCF9169A7F /* Check Pods Manifest.lock */,
 				03FA75FE1AD7EA2500A56C06 /* Sources */,
 				03FA75FF1AD7EA2500A56C06 /* Frameworks */,
 				03FA76001AD7EA2500A56C06 /* Resources */,
+				50AC7077D17854300573DAA3 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -468,6 +497,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				032D32C51AF56E0500F473D4 /* CMakeLists.txt in Resources */,
+				030D02221B19B0C100116C90 /* skeqi-dbg.bundle in Resources */,
 				03FA760F1AD7EA2500A56C06 /* Main.storyboard in Resources */,
 				03FA76141AD7EA2500A56C06 /* LaunchScreen.xib in Resources */,
 				03FA76111AD7EA2500A56C06 /* Images.xcassets in Resources */,
@@ -482,6 +512,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		50AC7077D17854300573DAA3 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		544757B9B6F55ACCF9169A7F /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		03FA75FE1AD7EA2500A56C06 /* Sources */ = {
@@ -619,6 +682,8 @@
 					"$(EIGEN_DIR)",
 					"$(GLM_DIR)",
 					$PROJECT_DIR/../..,
+					$PROJECT_DIR/Pods/Headers/Public,
+					$PROJECT_DIR/Pods/Headers/Public/CocoaLumberjack,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -672,6 +737,8 @@
 					"$(EIGEN_DIR)",
 					"$(GLM_DIR)",
 					$PROJECT_DIR/../..,
+					$PROJECT_DIR/Pods/Headers/Public,
+					$PROJECT_DIR/Pods/Headers/Public/CocoaLumberjack,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -688,17 +755,20 @@
 		};
 		03FA76241AD7EA2500A56C06 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3F2A24E6DD4F5D1E07DB369E /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = skeqi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
 		03FA76251AD7EA2500A56C06 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CD8B2D02168A4CA2409FD535 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = skeqi/Info.plist;
