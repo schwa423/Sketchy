@@ -7,17 +7,21 @@
 #define QI_DEBUG 1
 
 #ifdef QI_DEBUG
+#include <assert.h>
 #define ASSERT(pred) assert(pred)
 #else
 #define ASSERT(pred)
 #endif
 
+namespace qi {
+
 typedef int64_t int64;
 typedef uint64_t uint64;
 
-namespace qi {
-
-class Qi {};
+class Qi {
+ public:
+  static void Init();
+};
 
 using std::shared_ptr;
 using std::unique_ptr;
