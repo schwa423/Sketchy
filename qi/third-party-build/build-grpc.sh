@@ -8,6 +8,14 @@ echo "#     https://gist.github.com/BennettSmith/9487468ae3375d0db0cc)"
 echo "###################################################################"
 echo "$(tput sgr0)"
 
+# This script is super-broken.  For example, there is no ./configure, so
+# all of the target-specific flags are dropped on the floor.  Blech.
+# I was tempted to mess with autoconf, but then I noticed that gflags
+# is built with CMake, so I'd be dealing with multiple build systems,
+# and I've unsuccessfully fought with CMake on iOS before.
+echo -n "This script is BROKEN!!!!"
+exit 1
+
 # The results will be stored relative to the location
 # where you stored this script, **not** relative to
 # the location of the protobuf git repo.
@@ -20,7 +28,7 @@ mkdir -p "${PREFIX}/platform"
 
 # A "YES" value will build the latest code from GitHub on the master branch.
 # A "NO" value will use the 2.6.0 tarball downloaded from googlecode.com.
-USE_GIT_MASTER=NO
+USE_GIT_MASTER=YES
 
 GRPC_GIT_URL=https://github.com/grpc/grpc.git
 GRPC_GIT_DIRNAME=grpc
@@ -116,7 +124,8 @@ echo "$(tput sgr0)"
 (
     if [ -d ${GRPC_SRC_DIR} ]
     then
-        rm -rf ${GRPC_SRC_DIR}
+        echo "... removing existing sources (not!)"
+#        rm -rf ${GRPC_SRC_DIR}
     fi
 
     cd `dirname ${GRPC_SRC_DIR}`
@@ -125,8 +134,11 @@ echo "$(tput sgr0)"
     then
         git clone ${GRPC_GIT_URL}
         # Update submodules to get third_party/ dependencies:
-        # Protobuf, OpenSSL w/ APSN suppot, etc.
-        git submodule update --init
+        # Protobuf, OpenSSL w/ APSN support, etc.
+        (
+          cd grpc
+          git submodule update --init
+        )
     else
         if [ -d ${GRPC_RELEASE_DIRNAME} ]
         then
@@ -200,7 +212,7 @@ if [ "${BUILD_MACOSX_X86_64}" == "YES" ]
 then
     (
         cd ${GRPC_SRC_DIR}
-        make distclean
+        make clean
         ./configure --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/x86_64-mac "CC=${CC}" "CFLAGS=${CFLAGS} -arch x86_64" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch x86_64" "LDFLAGS=${LDFLAGS}" "LIBS=${LIBS}"
         make
         make check
@@ -225,7 +237,7 @@ if [ "${BUILD_I386_IOSSIM}" == "YES" ]
 then
     (
         cd ${GRPC_SRC_DIR}
-        make distclean
+        make clean
         ./configure --build=x86_64-apple-${DARWIN} --host=i386-apple-${DARWIN} --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/i386-sim "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch i386 -isysroot ${IPHONESIMULATOR_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch i386 -isysroot ${IPHONESIMULATOR_SYSROOT}" LDFLAGS="-arch i386 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
         make
         make install
@@ -242,7 +254,7 @@ if [ "${BUILD_X86_64_IOSSIM}" == "YES" ]
 then
     (
         cd ${GRPC_SRC_DIR}
-        make distclean
+        make clean
         ./configure --build=x86_64-apple-${DARWIN} --host=x86_64-apple-${DARWIN} --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/x86_64-sim "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch x86_64 -isysroot ${IPHONESIMULATOR_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch x86_64 -isysroot ${IPHONESIMULATOR_SYSROOT}" LDFLAGS="-arch x86_64 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
         make
         make install
@@ -259,7 +271,7 @@ if [ "${BUILD_IOS_ARMV7}" == "YES" ]
 then
     (
         cd ${GRPC_SRC_DIR}
-        make distclean
+        make clean
         ./configure --build=x86_64-apple-${DARWIN} --host=armv7-apple-${DARWIN} --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/armv7-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch armv7 -isysroot ${IPHONEOS_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch armv7 -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch armv7 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
         make
         make install
@@ -276,7 +288,7 @@ if [ "${BUILD_IOS_ARMV7S}" == "YES" ]
 then
     (
         cd ${GRPC_SRC_DIR}
-        make distclean
+        make clean
         ./configure --build=x86_64-apple-${DARWIN} --host=armv7s-apple-${DARWIN} --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/armv7s-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch armv7s -isysroot ${IPHONEOS_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch armv7s -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch armv7s -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
         make
         make install
@@ -293,7 +305,7 @@ if [ "${BUILD_IOS_ARM64}" == "YES" ]
 then
     (
         cd ${GRPC_SRC_DIR}
-        make distclean
+        make clean
         ./configure --build=x86_64-apple-${DARWIN} --host=arm --with-protoc=${PROTOC} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/arm64-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch arm64 -isysroot ${IPHONEOS_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch arm64 -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch arm64 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
         make
         make install
