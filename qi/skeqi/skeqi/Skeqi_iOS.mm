@@ -180,6 +180,9 @@ void Stroke::Finalize() {
         std::cerr << "       " << path_[i] << std::endl;
       }
     }
+
+    // TODO(jjosh):
+    qi::pen::DoProtoTest();
   }
 }
 
@@ -555,7 +558,7 @@ class SkeqiTouchHandler : public ui::TouchHandler {
 }  // namespace pen
 }  // namespace qi
 
-
+/*
 #import "CocoaHTTPServer/HTTPServer.h"
 #import "CocoaHTTPServer/HTTPConnection.h"
 #import "CocoaHTTPServer/HTTPLogging.h"
@@ -568,11 +571,11 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 // Log levels: off, error, warn, info, verbose
 // Other flags: trace
 static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
-
+*/
 
 @implementation Skeqi_iOS {
   std::shared_ptr<qi::pen::Page> page_;
-  HTTPServer *httpServer;
+// TODO(jjosh):  HTTPServer *httpServer;
 }
 
 - (id)init {
@@ -582,7 +585,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
     auto touch_handler = std::make_unique<qi::pen::SkeqiTouchHandler>(page_);
     [self setTouchHandler: std::move(touch_handler)];
 
-
+/*
     // Configure our logging framework.
     // To keep things simple and fast, we're just going to log to the Xcode console.
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
@@ -617,7 +620,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
     {
 //      DDLogError(@"Error starting HTTP Server: %@", error);
     }
-
+*/
   }
   return self;
 }

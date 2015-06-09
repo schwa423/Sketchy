@@ -29,6 +29,13 @@ struct CubicBezier {
   T Evaluate(float t) const;
   T Evaluate(float t, T* tmp3, T* tmp2) const;
 
+  bool operator==(const CubicBezier<T>& other) {
+    return pts[0] == other.pts[0] &&
+           pts[1] == other.pts[1] &&
+           pts[2] == other.pts[2] &&
+           pts[3] == other.pts[3];
+  }
+
   // Split into two curves at the specified parameter.
   std::pair<CubicBezier<T>, CubicBezier<T>> Split(float t) const;
 };
@@ -57,6 +64,9 @@ CubicBezier2f FitCubicBezier2f(Pt2f* pts, int count,
                                Pt2f endpoint_tangent_1);
 
 std::pair<Pt2f, Pt2f> EvaluatePointAndNormal(const CubicBezier<Pt2f>& bez, float t);
+
+// TODO(jjosh)
+void DoProtoTest();
 
 }  // namespace pen
 

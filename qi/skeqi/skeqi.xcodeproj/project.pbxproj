@@ -41,23 +41,16 @@
 		034F06A01ADA0148005A439A /* Arc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE41AD8036C001240DD /* Arc.swift */; };
 		034F06A41ADA6951005A439A /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034F06A31ADA6951005A439A /* Stroke.swift */; };
 		0367BDFB1B05EF330080DAC5 /* buffer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BDF81B05EF330080DAC5 /* buffer_ios.mm */; };
-		0367BDFC1B05EF330080DAC5 /* buffer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BDF81B05EF330080DAC5 /* buffer_ios.mm */; };
 		0367BDFD1B05EF330080DAC5 /* device_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BDFA1B05EF330080DAC5 /* device_ios.mm */; };
-		0367BDFE1B05EF330080DAC5 /* device_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BDFA1B05EF330080DAC5 /* device_ios.mm */; };
 		0367BE011B0661AD0080DAC5 /* Skeqi_iOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */; };
-		0367BE021B0661AD0080DAC5 /* Skeqi_iOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */; };
 		0367BE061B0927000080DAC5 /* QiControllerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE051B0927000080DAC5 /* QiControllerDelegate.mm */; };
-		0367BE071B0927000080DAC5 /* QiControllerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE051B0927000080DAC5 /* QiControllerDelegate.mm */; };
 		0367BE111B0B2ABD0080DAC5 /* cubicbezier.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE0F1B0B2ABD0080DAC5 /* cubicbezier.cc */; };
-		0367BE121B0B2ABD0080DAC5 /* cubicbezier.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE0F1B0B2ABD0080DAC5 /* cubicbezier.cc */; };
 		0367BE141B110E870080DAC5 /* pen.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE131B110E870080DAC5 /* pen.metal */; };
-		0367BE151B110E870080DAC5 /* pen.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE131B110E870080DAC5 /* pen.metal */; };
+		038CAA521B259A6200CBA22D /* GoogleProtobufV3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 038CAA511B259A6200CBA22D /* GoogleProtobufV3.framework */; };
+		038CAA541B259A9D00CBA22D /* page.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = 038CAA531B259A9D00CBA22D /* page.pb.cc */; };
 		03E6D38D1B2387C9007A38B3 /* qi.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D38C1B2387C9007A38B3 /* qi.cc */; };
-		03E6D38E1B2387C9007A38B3 /* qi.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D38C1B2387C9007A38B3 /* qi.cc */; };
 		03E6D3961B238C47007A38B3 /* server.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D3941B238C47007A38B3 /* server.cc */; };
-		03E6D3971B238C47007A38B3 /* server.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D3941B238C47007A38B3 /* server.cc */; };
 		03E6D39A1B238C51007A38B3 /* server_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D3991B238C51007A38B3 /* server_ios.mm */; };
-		03E6D39B1B238C51007A38B3 /* server_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D3991B238C51007A38B3 /* server_ios.mm */; };
 		03FA76081AD7EA2500A56C06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA76071AD7EA2500A56C06 /* AppDelegate.swift */; };
 		03FA760A1AD7EA2500A56C06 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA76091AD7EA2500A56C06 /* GameViewController.swift */; };
 		03FA760C1AD7EA2500A56C06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 03FA760B1AD7EA2500A56C06 /* Shaders.metal */; };
@@ -65,7 +58,7 @@
 		03FA76111AD7EA2500A56C06 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03FA76101AD7EA2500A56C06 /* Images.xcassets */; };
 		03FA76141AD7EA2500A56C06 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FA76121AD7EA2500A56C06 /* LaunchScreen.xib */; };
 		03FA76201AD7EA2500A56C06 /* skeqiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA761F1AD7EA2500A56C06 /* skeqiTests.swift */; };
-		D4DBD7A196B4BC3E6F2C77E5 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD0EB575F00F118449C05BB9 /* libPods.a */; };
+		DBACBEB71A108F522CB4C1AD /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB87E520CC206B7E0872CEA4 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -162,6 +155,8 @@
 		0367BE0F1B0B2ABD0080DAC5 /* cubicbezier.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cubicbezier.cc; path = ../pen/cubicbezier.cc; sourceTree = "<group>"; };
 		0367BE101B0B2ABD0080DAC5 /* cubicbezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cubicbezier.h; path = ../pen/cubicbezier.h; sourceTree = "<group>"; };
 		0367BE131B110E870080DAC5 /* pen.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = pen.metal; path = ../pen/port_ios/pen.metal; sourceTree = "<group>"; };
+		038CAA511B259A6200CBA22D /* GoogleProtobufV3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleProtobufV3.framework; path = "Pods/../build/Debug-iphoneos/Pods/GoogleProtobufV3.framework"; sourceTree = "<group>"; };
+		038CAA531B259A9D00CBA22D /* page.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = page.pb.cc; path = protos/page.pb.cc; sourceTree = "<group>"; };
 		03E6D38C1B2387C9007A38B3 /* qi.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = qi.cc; path = ../qi.cc; sourceTree = "<group>"; };
 		03E6D3941B238C47007A38B3 /* server.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = server.cc; sourceTree = "<group>"; };
 		03E6D3951B238C47007A38B3 /* server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server.h; sourceTree = "<group>"; };
@@ -179,7 +174,7 @@
 		03FA761E1AD7EA2500A56C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03FA761F1AD7EA2500A56C06 /* skeqiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = skeqiTests.swift; sourceTree = "<group>"; };
 		3F2A24E6DD4F5D1E07DB369E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		CD0EB575F00F118449C05BB9 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB87E520CC206B7E0872CEA4 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD8B2D02168A4CA2409FD535 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -188,7 +183,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4DBD7A196B4BC3E6F2C77E5 /* libPods.a in Frameworks */,
+				DBACBEB71A108F522CB4C1AD /* Pods.framework in Frameworks */,
+				038CAA521B259A6200CBA22D /* GoogleProtobufV3.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +331,7 @@
 				0367BE0F1B0B2ABD0080DAC5 /* cubicbezier.cc */,
 				0367BE101B0B2ABD0080DAC5 /* cubicbezier.h */,
 				0367BE131B110E870080DAC5 /* pen.metal */,
+				038CAA531B259A9D00CBA22D /* page.pb.cc */,
 			);
 			name = pen;
 			path = ../pen;
@@ -427,7 +424,8 @@
 		1841EBDF86A12D5652FF24FD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CD0EB575F00F118449C05BB9 /* libPods.a */,
+				038CAA511B259A6200CBA22D /* GoogleProtobufV3.framework */,
+				BB87E520CC206B7E0872CEA4 /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -453,6 +451,7 @@
 				03FA75FF1AD7EA2500A56C06 /* Frameworks */,
 				03FA76001AD7EA2500A56C06 /* Resources */,
 				50AC7077D17854300573DAA3 /* Copy Pods Resources */,
+				9A29CA2DF35B89DE672022C7 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -571,6 +570,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		9A29CA2DF35B89DE672022C7 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -611,6 +625,7 @@
 				0367BE011B0661AD0080DAC5 /* Skeqi_iOS.mm in Sources */,
 				032D32CD1AF56E0500F473D4 /* GraphConstructor.cpp in Sources */,
 				032D32DA1AF56E0500F473D4 /* Solver.cpp in Sources */,
+				038CAA541B259A9D00CBA22D /* page.pb.cc in Sources */,
 				032D32D11AF56E0500F473D4 /* PathFinder.cpp in Sources */,
 				032D32C71AF56E0500F473D4 /* CornerDetector.cpp in Sources */,
 				032D32CA1AF56E0500F473D4 /* ErrorComputer.cpp in Sources */,
@@ -627,17 +642,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				03E6D38E1B2387C9007A38B3 /* qi.cc in Sources */,
-				0367BE021B0661AD0080DAC5 /* Skeqi_iOS.mm in Sources */,
 				034F06A01ADA0148005A439A /* Arc.swift in Sources */,
-				0367BE071B0927000080DAC5 /* QiControllerDelegate.mm in Sources */,
-				03E6D39B1B238C51007A38B3 /* server_ios.mm in Sources */,
-				03E6D3971B238C47007A38B3 /* server.cc in Sources */,
 				03FA76201AD7EA2500A56C06 /* skeqiTests.swift in Sources */,
-				0367BDFC1B05EF330080DAC5 /* buffer_ios.mm in Sources */,
-				0367BE151B110E870080DAC5 /* pen.metal in Sources */,
-				0367BDFE1B05EF330080DAC5 /* device_ios.mm in Sources */,
-				0367BE121B0B2ABD0080DAC5 /* cubicbezier.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -710,13 +716,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GLM_DIR = /Users/josh/hacking/homebrew/include;
 				HEADER_SEARCH_PATHS = (
+					$PROJECT_DIR/Pods/Headers/Public/GoogleProtobufV3,
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(EIGEN_DIR)",
 					"$(GLM_DIR)",
 					$PROJECT_DIR/../..,
-					$PROJECT_DIR/Pods/Headers/Public,
 					$PROJECT_DIR/Pods/Headers/Public/CocoaLumberjack,
+					$PROJECT_DIR/Pods/Headers/Public,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -765,13 +772,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GLM_DIR = /Users/josh/hacking/homebrew/include;
 				HEADER_SEARCH_PATHS = (
+					$PROJECT_DIR/Pods/Headers/Public/GoogleProtobufV3,
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(EIGEN_DIR)",
 					"$(GLM_DIR)",
 					$PROJECT_DIR/../..,
-					$PROJECT_DIR/Pods/Headers/Public,
 					$PROJECT_DIR/Pods/Headers/Public/CocoaLumberjack,
+					$PROJECT_DIR/Pods/Headers/Public,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -791,6 +799,24 @@
 			baseConfigurationReference = 3F2A24E6DD4F5D1E07DB369E /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/Pods",
+				);
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3\"",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaAsyncSocket\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaHTTPServer\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3/google/protobuf\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3/google/protobuf/io\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3/google/protobuf/stubs\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3/google/protobuf/testing\"",
+					"$(inherited)",
+					"\"$(SDKROOT)/usr/include/libxml2\"",
+				);
 				INFOPLIST_FILE = skeqi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -804,6 +830,24 @@
 			baseConfigurationReference = CD8B2D02168A4CA2409FD535 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/Pods",
+				);
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3\"",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaAsyncSocket\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaHTTPServer\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3/google/protobuf\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3/google/protobuf/io\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3/google/protobuf/stubs\"",
+					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3/google/protobuf/testing\"",
+					"$(inherited)",
+					"\"$(SDKROOT)/usr/include/libxml2\"",
+				);
 				INFOPLIST_FILE = skeqi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

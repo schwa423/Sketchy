@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package qi.pen.proto;
+
+message CubicBezier2d {
+  double x0 = 1;
+  double x1 = 2;
+  double x2 = 3;
+  double x3 = 4;
+  double y0 = 5;
+  double y1 = 6;
+  double y2 = 7;
+  double y3 = 8;
+}
+
+message Stroke {
+  repeated CubicBezier2d segments = 1;
+}
+
+message Page {
+  repeated Stroke strokes = 1;
+}
+

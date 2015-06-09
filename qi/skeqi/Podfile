@@ -1,5 +1,8 @@
 source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/schwa423/Specs.git'
 platform :ios, '8.3'
-pod 'CocoaHTTPServer'
-
+#pod 'CocoaHTTPServer'
+pod 'GoogleProtobufV3', '3.0.0-alpha-3'
+#pod 'gRPC-cpp'
+use_frameworks!
 link_with 'skeqi'
