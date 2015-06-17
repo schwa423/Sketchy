@@ -180,9 +180,6 @@ void Stroke::Finalize() {
         std::cerr << "       " << path_[i] << std::endl;
       }
     }
-
-    // TODO(jjosh):
-    qi::pen::DoProtoTest();
   }
 }
 
