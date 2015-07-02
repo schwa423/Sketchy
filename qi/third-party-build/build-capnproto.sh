@@ -149,9 +149,7 @@ echo "$(tput sgr0)"
 # XX    fi
     fi
 
-    echo "SCHWA: entering Cap'n Proto C++ directory"
     cd ${CAPNPROTO_SRC_DIR}/c++
-    echo "SCHWA: ${PWD}"
     autoreconf -i
 )
 
@@ -192,11 +190,12 @@ echo "$(tput sgr0)"
 #  XX    rm -rf autom4te.cache config.h.in~
 #  XX )
 
+
 ###################################################################
 # This section contains the build commands to create the native
 # Cap'n Proto library for Mac OS X.  This is done first so we have
-# a copy of the protoc compiler.  It will be used in all of the
-# susequent iOS builds.
+# a copy of the 'capnp' compiler,  which will be used in all of the
+# subsequent iOS builds.
 ###################################################################
 
 echo "$(tput setaf 2)"
@@ -213,8 +212,21 @@ then
         ./configure --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/x86_64-mac "CC=${CC}" "CFLAGS=${CFLAGS} -arch x86_64" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch x86_64" "LDFLAGS=${LDFLAGS}" "LIBS=${LIBS}"
         make
         make install
+
+        # Move binaries to their final locations.  See comment below about setting the $CAPNP env var.
+        cd ${PREFIX}
+        mkdir bin
+        cp platform/x86_64-mac/bin/* bin/
     )
+
+    # If it isn't already, set $CAPNP so that the 'capnp' executable is accessible from later build stages.
+    # Although each stage builds its own version of 'capnp', that binary is not usable because it targets
+    # the wrong platform/architecture (i.e. not the Mac that this script is running on).
+    if [ -z "$CAPNP" ]; then
+       export CAPNP=${PREFIX}/bin/capnp
+    fi
 fi
+
 
 ###################################################################
 # This section contains the build commands for each of the
@@ -324,7 +336,6 @@ echo "$(tput sgr0)"
 
 (
     cd ${PREFIX}
-    mkdir bin
     mkdir lib
     # TODO(josh): do this earlier so that it can be used for --with-external-capnp if
     # Cap'n Proto isn't already installed on this machine.
