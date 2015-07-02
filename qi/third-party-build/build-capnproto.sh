@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# This script is useful for building "fat" Cap'n Proto libraries on OS X.
+# It builds Cap'n Proto libraries for all specified platforms using the
+# standard './configure; make' procedure, and using the 'lipo' tool to
+# merge the resulting single-platform versions of each library into a
+# single "fat" one.
+
 echo "$(tput setaf 2)"
 echo "###################################################################"
 echo "# Preparing to build Cap'n Proto"
@@ -39,7 +45,7 @@ BUILD_IOS_ARM64=YES
 
 CAPNPROTO_SRC_DIR=/tmp/capnproto
 
-# JOSH: perhaps concatenate 'uname -s' and 'uname -r'
+# TODO(josh): perhaps concatenate 'uname -s' and 'uname -r'
 DARWIN=darwin14.3.0
 
 XCODEDIR=`xcode-select --print-path`
@@ -206,10 +212,7 @@ then
         make clean
         ./configure --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/x86_64-mac "CC=${CC}" "CFLAGS=${CFLAGS} -arch x86_64" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch x86_64" "LDFLAGS=${LDFLAGS}" "LIBS=${LIBS}"
         make
-        mkdir -p ${PREFIX}/platform/x86_64-mac
-        cp .libs/*.a ${PREFIX}/platform/x86_64-mac
-# XX    make check
-# XX    make install
+        make install
     )
 fi
 
@@ -231,7 +234,7 @@ then
         make clean
         ./configure --with-external-capnp --build=x86_64-apple-${DARWIN} --host=i386-apple-${DARWIN} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/i386-sim "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch i386 -isysroot ${IPHONESIMULATOR_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch i386 -isysroot ${IPHONESIMULATOR_SYSROOT}" LDFLAGS="-arch i386 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
         make
-# XX    make install
+        make install
     )
 fi
 
@@ -248,7 +251,7 @@ then
         make clean
         ./configure --with-external-capnp --build=x86_64-apple-${DARWIN} --host=x86_64-apple-${DARWIN} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/x86_64-sim "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch x86_64 -isysroot ${IPHONESIMULATOR_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch x86_64 -isysroot ${IPHONESIMULATOR_SYSROOT}" LDFLAGS="-arch x86_64 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
         make
-# XX    make install
+        make install
     )
 fi
 
@@ -265,7 +268,7 @@ then
         make clean
         ./configure --with-external-capnp --build=x86_64-apple-${DARWIN} --host=armv7-apple-${DARWIN} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/armv7-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch armv7 -isysroot ${IPHONEOS_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch armv7 -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch armv7 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
         make
-# XX    make install
+        make install
     )
 fi
 
@@ -282,7 +285,7 @@ then
         make clean
         ./configure --with-external-capnp --build=x86_64-apple-${DARWIN} --host=armv7s-apple-${DARWIN} --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/armv7s-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch armv7s -isysroot ${IPHONEOS_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch armv7s -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch armv7s -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
         make
-# XX    make install
+        make install
     )
 fi
 
@@ -299,9 +302,7 @@ then
         make clean
         ./configure --with-external-capnp --build=x86_64-apple-${DARWIN} --host=arm --disable-shared --prefix=${PREFIX} --exec-prefix=${PREFIX}/platform/arm64-ios "CC=${CC}" "CFLAGS=${CFLAGS} -miphoneos-version-min=${MIN_SDK_VERSION} -arch arm64 -isysroot ${IPHONEOS_SYSROOT}" "CXX=${CXX}" "CXXFLAGS=${CXXFLAGS} -arch arm64 -isysroot ${IPHONEOS_SYSROOT}" LDFLAGS="-arch arm64 -miphoneos-version-min=${MIN_SDK_VERSION} ${LDFLAGS}" "LIBS=${LIBS}"
         make
-        mkdir -p ${PREFIX}/platform/arm64-ios
-        cp .libs/*.a ${PREFIX}/platform/arm64-ios
-# XX    make install
+        make install
     )
 fi
 
@@ -313,12 +314,12 @@ echo "$(tput sgr0)"
 
 (
     cd ${PREFIX}/platform
-    mkdir universal
-    lipo ./*/libcapnp.a -create -output universal/libcapnp.a
-    lipo ./*/libcapnp-rpc.a -create -output universal/libcapnp-rpc.a
-    lipo ./*/libcapnpc.a -create -output universal/libcapnpc.a
-    lipo ./*/libkj.a -create -output universal/libkj.a
-    lipo ./*/libkj-async.a -create -output universal/libkj-async.a
+    mkdir -p universal/lib/
+    lipo ./*/lib/libcapnp.a -create -output universal/lib/libcapnp.a
+    lipo ./*/lib/libcapnp-rpc.a -create -output universal/lib/libcapnp-rpc.a
+    lipo ./*/lib/libcapnpc.a -create -output universal/lib/libcapnpc.a
+    lipo ./*/lib/libkj.a -create -output universal/lib/libkj.a
+    lipo ./*/lib/libkj-async.a -create -output universal/lib/libkj-async.a
 )
 
 (
@@ -327,10 +328,9 @@ echo "$(tput sgr0)"
     mkdir lib
     # TODO(josh): do this earlier so that it can be used for --with-external-capnp if
     # Cap'n Proto isn't already installed on this machine.
-    cp -r platform/x86_64-mac/bin/protoc bin
-    cp -r platform/x86_64-mac/lib/* lib
-    cp -r platform/universal/* lib
-# XXrm -rf platform
+    cp platform/x86_64-mac/bin/* bin/
+    cp -r platform/universal/lib/*.a lib/
+    rm -rf platform
     lipo -info lib/libcapnp.a
     lipo -info lib/libcapnp-rpc.a
     lipo -info lib/libcapnpc.a
