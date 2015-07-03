@@ -25,6 +25,12 @@
 
 #import <Metal/Metal.h>
 
+// TODO: remember to move this when Page serialization moves.
+#include "page.capnp.h"
+#include <capnp/message.h>
+#include <capnp/serialize-packed.h>
+#include <iostream>
+
 // TODO: move to its own file, and document
 namespace qi {
 namespace gfx {
@@ -180,6 +186,54 @@ void Stroke::Finalize() {
         std::cerr << "       " << path_[i] << std::endl;
       }
     }
+
+    // Verify that we can serialize/deserialize Cap'n Proto messages.
+    // TODO: Super hacky!
+    typedef pen::proto::Page PageCapnp;
+    typedef pen::proto::Stroke StrokeCapnp;
+    typedef pen::proto::CubicBezier2d BezCapnp;
+
+    capnp::MallocMessageBuilder message;
+    StrokeCapnp::Builder stroke = message.initRoot<StrokeCapnp>();
+
+    ::capnp::List<BezCapnp>::Builder segments =
+        stroke.initSegments(static_cast<unsigned int>(path_.size()));
+    for (int i = 0; i < path_.size(); ++i) {
+      BezCapnp::Builder seg = segments[i];
+      seg.setX0(path_[i].pts[0].x);
+      seg.setX1(path_[i].pts[1].x);
+      seg.setX2(path_[i].pts[2].x);
+      seg.setX3(path_[i].pts[3].x);
+      seg.setY0(path_[i].pts[0].y);
+      seg.setY1(path_[i].pts[1].y);
+      seg.setY2(path_[i].pts[2].y);
+      seg.setY3(path_[i].pts[3].y);
+    }
+
+    int fildes[2];
+    int status = pipe(fildes);
+    ASSERT(status != -1);
+
+    capnp::writePackedMessageToFd(fildes[1], message);
+
+    ::capnp::PackedFdMessageReader message2(fildes[0]);
+
+    StrokeCapnp::Reader stroke2 = message2.getRoot<StrokeCapnp>();
+    ASSERT(stroke2.getSegments().size() == path_.size());
+    for (int i = 0; i < path_.size(); ++i) {
+      BezCapnp::Reader bez = stroke2.getSegments()[i];
+      ASSERT(bez.getX0() == path_[i].pts[0].x);
+      ASSERT(bez.getX1() == path_[i].pts[1].x);
+      ASSERT(bez.getX2() == path_[i].pts[2].x);
+      ASSERT(bez.getX3() == path_[i].pts[3].x);
+      ASSERT(bez.getY0() == path_[i].pts[0].y);
+      ASSERT(bez.getY1() == path_[i].pts[1].y);
+      ASSERT(bez.getY2() == path_[i].pts[2].y);
+      ASSERT(bez.getY3() == path_[i].pts[3].y);
+    }
+
+    close(fildes[0]);
+    close(fildes[1]);
   }
 }
 

@@ -1,7 +1,5 @@
 #include "qi/pen/cubicbezier.h"
 
-#include <iostream>
-
 #include "qi.h"
 
 namespace qi {
