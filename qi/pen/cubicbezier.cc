@@ -3,7 +3,7 @@
 #include "qi.h"
 
 namespace qi {
-namespace pen {
+namespace page {
 
 template <typename T>
 T CubicBezier<T>::Evaluate(float t) const {
@@ -229,5 +229,5 @@ std::pair<Pt2f, Pt2f> EvaluatePointAndNormal(
 template class CubicBezier<float>;
 template class CubicBezier<Pt2f>;
 
-}  // namespace pen
+}  // namespace page
 }  // namespace qi

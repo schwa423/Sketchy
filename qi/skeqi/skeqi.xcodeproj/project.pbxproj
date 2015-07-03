@@ -55,6 +55,7 @@
 		03C5E23F1B47144D00C41423 /* libcapnpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E23A1B47144D00C41423 /* libcapnpc.a */; };
 		03C5E2401B47144D00C41423 /* libkj-async.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E23B1B47144D00C41423 /* libkj-async.a */; };
 		03C5E2411B47144D00C41423 /* libkj.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E23C1B47144D00C41423 /* libkj.a */; };
+		03C5E2441B47402000C41423 /* page.capnp in Sources */ = {isa = PBXBuildFile; fileRef = 0346C9DD1B46F9CB00FD978D /* page.capnp */; };
 		03E6D38D1B2387C9007A38B3 /* qi.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D38C1B2387C9007A38B3 /* qi.cc */; };
 		03E6D3961B238C47007A38B3 /* server.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D3941B238C47007A38B3 /* server.cc */; };
 		03E6D39A1B238C51007A38B3 /* server_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D3991B238C51007A38B3 /* server_ios.mm */; };
@@ -79,7 +80,7 @@
 				"$(DERIVED_FILE_DIR)/${INPUT_FILE_BASE}.capnp.cc",
 				"$(DERIVED_FILE_DIR)/${INPUT_FILE_BASE}.capnp.h",
 			);
-			script = "cd ${INPUT_FILE_DIR}\n# Not sure why it's necessary to pass the full path to -o.\n# It wasn't at first... '-oc++:${DERIVED_FILE_DIR}' originally worked fine.\n${CAPNP} compile -o${CAPNP_DIR}/bin/capnpc-c++:${DERIVED_FILE_DIR} ${INPUT_FILE_BASE}.capnp\nmv ${DERIVED_FILE_DIR}/${INPUT_FILE_BASE}.capnp.c++ ${DERIVED_FILE_DIR}/${INPUT_FILE_BASE}.capnp.cc";
+			script = "cd ${INPUT_FILE_DIR}\n# Not sure why it's necessary to pass the full path to -o.\n# It wasn't at first... '-oc++:${DERIVED_FILE_DIR}' originally worked fine.\n\n${CAPNP} compile -o${CAPNP_DIR}/bin/capnpc-c++:${DERIVED_FILE_DIR} ${INPUT_FILE_BASE}.capnp\nmv ${DERIVED_FILE_DIR}/${INPUT_FILE_BASE}.capnp.c++ ${DERIVED_FILE_DIR}/${INPUT_FILE_BASE}.capnp.cc";
 		};
 /* End PBXBuildRule section */
 
@@ -633,6 +634,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03C5E2441B47402000C41423 /* page.capnp in Sources */,
 				03E6D39A1B238C51007A38B3 /* server_ios.mm in Sources */,
 				032D32C61AF56E0500F473D4 /* Combiner.cpp in Sources */,
 				0367BE111B0B2ABD0080DAC5 /* cubicbezier.cc in Sources */,

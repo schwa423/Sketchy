@@ -89,7 +89,7 @@ typedef port::RenderCommandEncoder_iOS RenderCommandEncoder;
 
 
 namespace qi {
-namespace pen {
+namespace page {
 
 class Page;
 
@@ -187,11 +187,12 @@ void Stroke::Finalize() {
       }
     }
 
+/*
     // Verify that we can serialize/deserialize Cap'n Proto messages.
     // TODO: Super hacky!
-    typedef pen::proto::Page PageCapnp;
-    typedef pen::proto::Stroke StrokeCapnp;
-    typedef pen::proto::CubicBezier2d BezCapnp;
+    typedef page::proto::Page PageCapnp;
+    typedef page::proto::Stroke StrokeCapnp;
+    typedef page::proto::CubicBezier2d BezCapnp;
 
     capnp::MallocMessageBuilder message;
     StrokeCapnp::Builder stroke = message.initRoot<StrokeCapnp>();
@@ -234,6 +235,7 @@ void Stroke::Finalize() {
 
     close(fildes[0]);
     close(fildes[1]);
+*/
   }
 }
 
@@ -606,7 +608,7 @@ class SkeqiTouchHandler : public ui::TouchHandler {
 };
 
 
-}  // namespace pen
+}  // namespace page
 }  // namespace qi
 
 /*
@@ -625,15 +627,15 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 */
 
 @implementation Skeqi_iOS {
-  std::shared_ptr<qi::pen::Page> page_;
+  std::shared_ptr<qi::page::Page> page_;
 // TODO(jjosh):  HTTPServer *httpServer;
 }
 
 - (id)init {
   self = [super init];
   if (self) {
-    page_ = std::make_shared<qi::pen::Page>(self.device, self.metalLibrary);
-    auto touch_handler = std::make_unique<qi::pen::SkeqiTouchHandler>(page_);
+    page_ = std::make_shared<qi::page::Page>(self.device, self.metalLibrary);
+    auto touch_handler = std::make_unique<qi::page::SkeqiTouchHandler>(page_);
     [self setTouchHandler: std::move(touch_handler)];
 
 /*

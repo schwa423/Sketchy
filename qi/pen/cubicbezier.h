@@ -1,7 +1,9 @@
-#ifndef _QI_GFX_PEN_CubicBezier_h_
-#define _QI_GFX_PEN_CubicBezier_h_
+#ifndef _QI_GFX_PAGE_CubicBezier_h_
+#define _QI_GFX_PAGE_CubicBezier_h_
 
 // TODO: serious cleanup
+
+// TODO: move to qi/page/
 
 #import <CoreGraphics/CoreGraphics.h>
 
@@ -11,7 +13,7 @@
 #include <glm/glm.hpp>
 
 namespace qi {
-namespace pen {
+namespace page {
 
 using glm::length;
 using glm::normalize;
@@ -68,14 +70,14 @@ std::pair<Pt2f, Pt2f> EvaluatePointAndNormal(const CubicBezier<Pt2f>& bez, float
 // TODO(jjosh)
 void DoProtoTest();
 
-}  // namespace pen
+}  // namespace page
 
-inline std::ostream& operator<<(std::ostream& os, const pen::Pt2f& pt) {
+inline std::ostream& operator<<(std::ostream& os, const page::Pt2f& pt) {
   return os << "(" << pt.x << "," << pt.y << ")";
 }
 
 template <typename T>
-std::ostream& operator<<(std::ostream& os, const pen::CubicBezier<T>& bez) {
+std::ostream& operator<<(std::ostream& os, const page::CubicBezier<T>& bez) {
   return os << "p0=" << bez.pts[0] << ", "
             << "p1=" << bez.pts[1] << ", "
             << "p2=" << bez.pts[2] << ", "
@@ -84,4 +86,4 @@ std::ostream& operator<<(std::ostream& os, const pen::CubicBezier<T>& bez) {
 
 }  // namespace qi
 
-#endif  // _QI_GFX_PEN_CubicBezier_h_
+#endif  // _QI_GFX_PAGE_CubicBezier_h_
