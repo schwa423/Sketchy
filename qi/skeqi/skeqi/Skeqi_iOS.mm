@@ -134,7 +134,7 @@ class Page {
 
   shared_ptr<Stroke> NewStroke() {
     // TODO: need better way to clear strokes.
-    if (strokes_.size() > 20) {
+    if (strokes_.size() >= 20) {
       strokes_.clear();
       dirty_strokes_.clear();
     }
