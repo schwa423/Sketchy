@@ -26,10 +26,17 @@
 #import <Metal/Metal.h>
 
 // TODO: remember to move this when Page serialization moves.
-#include "page.capnp.h"
+//#include "page.capnp.h"
 #include <capnp/message.h>
 #include <capnp/serialize-packed.h>
 #include <iostream>
+
+// TODO: remember to remove this when there is no "Look! Lua works!" code in this file.
+extern "C" {
+#include "lua.h"
+#include "lauxlib.h"
+#include "lualib.h"
+}
 
 // TODO: move to its own file, and document
 namespace qi {
@@ -566,7 +573,23 @@ void SkeqiStrokeFitter::FitSampleRange(
 
 class SkeqiTouchHandler : public ui::TouchHandler {
  public:
-  SkeqiTouchHandler(shared_ptr<Page> page) : page_(page) {}
+  SkeqiTouchHandler(shared_ptr<Page> page) : page_(page) {
+    lua_State* lua = luaL_newstate();
+    luaL_openlibs(lua);
+
+    int error = luaL_loadstring(lua,
+        "days = {'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'}  \n"
+        "for k,v in pairs(days) do                                                  \n"
+        "  print ('The next day is: ' .. v)                                         \n"
+        "end                                                                        \n"
+    ) || lua_pcall(lua, 0, 0, 0);
+
+    if (error) {
+      std::cerr << "************** LUA ERROR: " << lua_tostring(lua, -1);
+    }
+
+    lua_close(lua);
+  }
 
   void TouchesBegan(const std::vector<ui::Touch>* touches) override {
     for (auto touch : *touches) {

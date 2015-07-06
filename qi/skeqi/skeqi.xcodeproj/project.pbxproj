@@ -50,6 +50,7 @@
 		0367BE061B0927000080DAC5 /* QiControllerDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE051B0927000080DAC5 /* QiControllerDelegate.mm */; };
 		0367BE111B0B2ABD0080DAC5 /* cubicbezier.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE0F1B0B2ABD0080DAC5 /* cubicbezier.cc */; };
 		0367BE141B110E870080DAC5 /* pen.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE131B110E870080DAC5 /* pen.metal */; };
+		036997211B4A270E008D58D3 /* libluajit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 036997201B4A270E008D58D3 /* libluajit.a */; };
 		03C5E23D1B47144D00C41423 /* libcapnp-rpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E2381B47144D00C41423 /* libcapnp-rpc.a */; };
 		03C5E23E1B47144D00C41423 /* libcapnp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E2391B47144D00C41423 /* libcapnp.a */; };
 		03C5E23F1B47144D00C41423 /* libcapnpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E23A1B47144D00C41423 /* libcapnpc.a */; };
@@ -180,6 +181,7 @@
 		0367BE0F1B0B2ABD0080DAC5 /* cubicbezier.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cubicbezier.cc; path = ../pen/cubicbezier.cc; sourceTree = "<group>"; };
 		0367BE101B0B2ABD0080DAC5 /* cubicbezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cubicbezier.h; path = ../pen/cubicbezier.h; sourceTree = "<group>"; };
 		0367BE131B110E870080DAC5 /* pen.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = pen.metal; path = ../pen/port_ios/pen.metal; sourceTree = "<group>"; };
+		036997201B4A270E008D58D3 /* libluajit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libluajit.a; path = "../third-party-build/luajit/lib/libluajit.a"; sourceTree = "<group>"; };
 		03C5E2381B47144D00C41423 /* libcapnp-rpc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcapnp-rpc.a"; path = "../third-party-build/capnproto/lib/libcapnp-rpc.a"; sourceTree = "<group>"; };
 		03C5E2391B47144D00C41423 /* libcapnp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcapnp.a; path = "../third-party-build/capnproto/lib/libcapnp.a"; sourceTree = "<group>"; };
 		03C5E23A1B47144D00C41423 /* libcapnpc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcapnpc.a; path = "../third-party-build/capnproto/lib/libcapnpc.a"; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				03C5E23E1B47144D00C41423 /* libcapnp.a in Frameworks */,
 				03C5E23F1B47144D00C41423 /* libcapnpc.a in Frameworks */,
 				83AEDF7B7E11DBF38137B1D6 /* libPods.a in Frameworks */,
+				036997211B4A270E008D58D3 /* libluajit.a in Frameworks */,
 				03C5E2401B47144D00C41423 /* libkj-async.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -378,6 +381,14 @@
 			path = ../pen;
 			sourceTree = SOURCE_ROOT;
 		};
+		0369971F1B4A26E8008D58D3 /* luajit */ = {
+			isa = PBXGroup;
+			children = (
+				036997201B4A270E008D58D3 /* libluajit.a */,
+			);
+			name = luajit;
+			sourceTree = "<group>";
+		};
 		03C5E2421B47145600C41423 /* capnproto */ = {
 			isa = PBXGroup;
 			children = (
@@ -477,6 +488,7 @@
 		1841EBDF86A12D5652FF24FD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0369971F1B4A26E8008D58D3 /* luajit */,
 				03C5E2421B47145600C41423 /* capnproto */,
 				B0A1D26E5B75F8A3B13AE5EE /* libPods.a */,
 			);
@@ -723,6 +735,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				A_THIRD_PARTY_DIR = "$(PROJECT_DIR)/../third-party-build";
 				CAPNP = "$(PROJECT_DIR)/../third-party-build/capnproto/bin/capnp";
 				CAPNP_DIR = "$(PROJECT_DIR)/../third-party-build/capnproto";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
@@ -761,7 +774,8 @@
 				GLM_DIR = /Users/josh/hacking/homebrew/include;
 				HEADER_SEARCH_PATHS = (
 					$PROJECT_DIR/Pods/Headers/Public/GoogleProtobufV3,
-					"$(CAPNP_DIR)/include",
+					"$(A_THIRD_PARTY_DIR)/capnproto/include",
+					"$(A_THIRD_PARTY_DIR)/luajit/include",
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(EIGEN_DIR)",
@@ -771,7 +785,10 @@
 					$PROJECT_DIR/Pods/Headers/Public,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LIBRARY_SEARCH_PATHS = "${CAPNP_DIR}/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"${A_THIRD_PARTY_DIR}/capnproto/lib",
+					"${A_THIRD_PARTY_DIR}/luajit/lib",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DQI_PLATFORM_IOS=1";
@@ -790,6 +807,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				A_THIRD_PARTY_DIR = "$(PROJECT_DIR)/../third-party-build";
 				CAPNP = "$(PROJECT_DIR)/../third-party-build/capnproto/bin/capnp";
 				CAPNP_DIR = "$(PROJECT_DIR)/../third-party-build/capnproto";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
@@ -822,7 +840,8 @@
 				GLM_DIR = /Users/josh/hacking/homebrew/include;
 				HEADER_SEARCH_PATHS = (
 					$PROJECT_DIR/Pods/Headers/Public/GoogleProtobufV3,
-					"$(CAPNP_DIR)/include",
+					"$(A_THIRD_PARTY_DIR)/capnproto/include",
+					"$(A_THIRD_PARTY_DIR)/luajit/include",
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(EIGEN_DIR)",
@@ -832,7 +851,10 @@
 					$PROJECT_DIR/Pods/Headers/Public,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
-				LIBRARY_SEARCH_PATHS = "${CAPNP_DIR}/lib";
+				LIBRARY_SEARCH_PATHS = (
+					"${A_THIRD_PARTY_DIR}/capnproto/lib",
+					"${A_THIRD_PARTY_DIR}/luajit/lib",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "-DQI_PLATFORM_IOS=1";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
@@ -874,6 +896,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/josh/hacking/mine/ios/Sketchy/qi/third-party-build/capnproto/lib",
+					"/Users/josh/hacking/mine/ios/Sketchy/qi/third-party-build/luajit/lib",
 				);
 				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -909,6 +932,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/josh/hacking/mine/ios/Sketchy/qi/third-party-build/capnproto/lib",
+					"/Users/josh/hacking/mine/ios/Sketchy/qi/third-party-build/luajit/lib",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
