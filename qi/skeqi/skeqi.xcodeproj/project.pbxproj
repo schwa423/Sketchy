@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		030D02221B19B0C100116C90 /* skeqi-dbg.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 030D02211B19B0C100116C90 /* skeqi-dbg.bundle */; };
+		031D89A01B4C46D0003DFB0E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 031D899F1B4C46D0003DFB0E /* main.m */; };
+		031D89A21B4C4746003DFB0E /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 031D89A11B4C4746003DFB0E /* AppDelegate.mm */; };
 		032D32C01AF56E0500F473D4 /* Algorithm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32841AF56E0500F473D4 /* Algorithm.cpp */; };
 		032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32871AF56E0500F473D4 /* Arc.cpp */; };
 		032D32C21AF56E0500F473D4 /* Bezier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32891AF56E0500F473D4 /* Bezier.cpp */; };
@@ -60,7 +62,6 @@
 		03E6D38D1B2387C9007A38B3 /* qi.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D38C1B2387C9007A38B3 /* qi.cc */; };
 		03E6D3961B238C47007A38B3 /* server.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D3941B238C47007A38B3 /* server.cc */; };
 		03E6D39A1B238C51007A38B3 /* server_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D3991B238C51007A38B3 /* server_ios.mm */; };
-		03FA76081AD7EA2500A56C06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA76071AD7EA2500A56C06 /* AppDelegate.swift */; };
 		03FA760A1AD7EA2500A56C06 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA76091AD7EA2500A56C06 /* GameViewController.swift */; };
 		03FA760C1AD7EA2500A56C06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 03FA760B1AD7EA2500A56C06 /* Shaders.metal */; };
 		03FA760F1AD7EA2500A56C06 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03FA760D1AD7EA2500A56C06 /* Main.storyboard */; };
@@ -97,6 +98,9 @@
 
 /* Begin PBXFileReference section */
 		030D02211B19B0C100116C90 /* skeqi-dbg.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "skeqi-dbg.bundle"; sourceTree = "<group>"; };
+		031D899F1B4C46D0003DFB0E /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		031D89A11B4C4746003DFB0E /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		031D89A31B4C4767003DFB0E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		032D32841AF56E0500F473D4 /* Algorithm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Algorithm.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.cpp"; sourceTree = "<group>"; };
 		032D32851AF56E0500F473D4 /* Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Algorithm.h; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.h"; sourceTree = "<group>"; };
 		032D32861AF56E0500F473D4 /* AngleUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AngleUtils.h; path = "../third-party/cornucopia-lib/Cornucopia/AngleUtils.h"; sourceTree = "<group>"; };
@@ -194,7 +198,6 @@
 		03E6D3991B238C51007A38B3 /* server_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = server_ios.mm; path = port_ios/server_ios.mm; sourceTree = "<group>"; };
 		03FA76021AD7EA2500A56C06 /* skeqi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = skeqi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03FA76061AD7EA2500A56C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		03FA76071AD7EA2500A56C06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		03FA76091AD7EA2500A56C06 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		03FA760B1AD7EA2500A56C06 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		03FA760E1AD7EA2500A56C06 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -442,7 +445,6 @@
 			children = (
 				030D02211B19B0C100116C90 /* skeqi-dbg.bundle */,
 				034F06A11ADA20AE005A439A /* playgrounds */,
-				03FA76071AD7EA2500A56C06 /* AppDelegate.swift */,
 				03FA76091AD7EA2500A56C06 /* GameViewController.swift */,
 				03474FE21AD7F66B001240DD /* QiController.swift */,
 				0367BE041B09266B0080DAC5 /* QiControllerDelegate.h */,
@@ -456,6 +458,9 @@
 				0367BDFF1B065FF60080DAC5 /* Skeqi_iOS.h */,
 				0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */,
 				0367BE031B0671900080DAC5 /* skeqi-Swift-Wrapper.h */,
+				031D899F1B4C46D0003DFB0E /* main.m */,
+				031D89A11B4C4746003DFB0E /* AppDelegate.mm */,
+				031D89A31B4C4767003DFB0E /* AppDelegate.h */,
 			);
 			path = skeqi;
 			sourceTree = "<group>";
@@ -675,6 +680,7 @@
 				032D32CB1AF56E0500F473D4 /* Fitter.cpp in Sources */,
 				03474FE51AD8036C001240DD /* Arc.swift in Sources */,
 				032D32D41AF56E0500F473D4 /* Preprocessing.cpp in Sources */,
+				031D89A21B4C4746003DFB0E /* AppDelegate.mm in Sources */,
 				0367BE141B110E870080DAC5 /* pen.metal in Sources */,
 				03E6D38D1B2387C9007A38B3 /* qi.cc in Sources */,
 				0367BE011B0661AD0080DAC5 /* Skeqi_iOS.mm in Sources */,
@@ -688,7 +694,7 @@
 				032D32C81AF56E0500F473D4 /* CurvePrimitive.cpp in Sources */,
 				032D32D51AF56E0500F473D4 /* PrimitiveFitter.cpp in Sources */,
 				032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */,
-				03FA76081AD7EA2500A56C06 /* AppDelegate.swift in Sources */,
+				031D89A01B4C46D0003DFB0E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
