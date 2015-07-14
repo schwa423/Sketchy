@@ -30,11 +30,11 @@ PROTOBUF_RELEASE_DIRNAME=protobuf-${PROTOBUF_VERSION}
 
 BUILD_MACOSX_X86_64=YES
 
-BUILD_I386_IOSSIM=YES
-BUILD_X86_64_IOSSIM=YES
+BUILD_I386_IOSSIM=NO
+BUILD_X86_64_IOSSIM=NO
 
-BUILD_IOS_ARMV7=YES
-BUILD_IOS_ARMV7S=YES
+BUILD_IOS_ARMV7=NO
+BUILD_IOS_ARMV7S=NO
 BUILD_IOS_ARM64=YES
 
 PROTOBUF_SRC_DIR=/tmp/protobuf
@@ -306,8 +306,11 @@ echo "$(tput sgr0)"
 (
     cd ${PREFIX}/platform
     mkdir universal
-    lipo x86_64-sim/lib/libprotobuf.a i386-sim/lib/libprotobuf.a arm64-ios/lib/libprotobuf.a armv7s-ios/lib/libprotobuf.a armv7-ios/lib/libprotobuf.a -create -output universal/libprotobuf.a
-    lipo x86_64-sim/lib/libprotobuf-lite.a i386-sim/lib/libprotobuf-lite.a arm64-ios/lib/libprotobuf-lite.a armv7s-ios/lib/libprotobuf-lite.a armv7-ios/lib/libprotobuf-lite.a -create -output universal/libprotobuf-lite.a
+    # Don't bother building a Universal library because the resulting files are too big for GitHub.
+#    lipo x86_64-sim/lib/libprotobuf.a i386-sim/lib/libprotobuf.a arm64-ios/lib/libprotobuf.a armv7s-ios/lib/libprotobuf.a armv7-ios/lib/libprotobuf.a -create -output universal/libprotobuf.a
+#    lipo x86_64-sim/lib/libprotobuf-lite.a i386-sim/lib/libprotobuf-lite.a arm64-ios/lib/libprotobuf-lite.a armv7s-ios/lib/libprotobuf-lite.a armv7-ios/lib/libprotobuf-lite.a -create -output universal/libprotobuf-lite.a
+    cp arm64-ios/lib/libprotobuf.a universal/
+    cp arm64-ios/lib/libprotobuf-lite.a universal/
 )
 
 (
@@ -315,7 +318,8 @@ echo "$(tput sgr0)"
     mkdir bin
     mkdir lib
     cp -r platform/x86_64-mac/bin/protoc bin
-    cp -r platform/x86_64-mac/lib/* lib
+    # Too big for GitHub.
+    # cp -r platform/x86_64-mac/lib/* lib
     cp -r platform/universal/* lib
     rm -rf platform
     lipo -info lib/libprotobuf.a
