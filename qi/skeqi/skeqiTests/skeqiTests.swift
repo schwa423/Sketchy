@@ -25,9 +25,9 @@ class skeqiTests: XCTestCase {
         let π = Float(M_PI)
         var arc : Arc
         arc = Arc(startingAt: Point2d(100.0, 999.0), radius: 100, startRadians: 0, endRadians: 2*π)
-        XCTAssertEqualWithAccuracy(2*π*arc.radius, arc.length, 0.0001);
+        XCTAssertEqualWithAccuracy(2*π*arc.radius, arc.length, accuracy: 0.0001);
         arc = Arc(startingAt: Point2d(100.0, 999.0), radius: 100, startRadians: 1, endRadians: 1 + 2*π)
-        XCTAssertEqualWithAccuracy(2*π*arc.radius, arc.length, 0.0001);
+        XCTAssertEqualWithAccuracy(2*π*arc.radius, arc.length, accuracy: 0.0001);
         arc = Arc(startingAt: Point2d(100.0, 999.0), radius: 100, startRadians: 1, endRadians: 1 - 2*π)
         ;
     }
@@ -81,14 +81,14 @@ class skeqiTests: XCTestCase {
     
     func testCircularArcList() {
         let π = Float(M_PI)
-        var list = ArcList(startPoint: Point2d(1.0, 0.0),
+        let list = ArcList(startPoint: Point2d(1.0, 0.0),
                            startRadians: 0,
                            radiusList:[1.0, 1.0, 1.0, 1.0],
                            radiansChangeList: [π/2, π/2, π/2, π/2])
         for i in 0...3 {
             let pointDifference = list.arcs[i].endPoint - list.arcs[(i+1) % 4].startPoint
-            XCTAssertEqualWithAccuracy(0.0, pointDifference.x, 0.00001);
-            XCTAssertEqualWithAccuracy(0.0, pointDifference.y, 0.00001);
+            XCTAssertEqualWithAccuracy(0.0, pointDifference.x, accuracy: 0.00001);
+            XCTAssertEqualWithAccuracy(0.0, pointDifference.y, accuracy: 0.00001);
         }
     }
     

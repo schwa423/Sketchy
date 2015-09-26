@@ -12,23 +12,28 @@ import Metal
 // TODO: port any desired Arc-processing stuff to qi::pen
 class RenderableStroke: Stroke {
     var vertexCount : Int
-    var buffer: MTLBuffer! = nil
+    var buffer: MTLBuffer?
 
     override init(_ arcs : ArcList) {
         vertexCount = 300
         super.init(arcs)
     }
-    func encodeDrawCalls(renderEncoder: MTLRenderCommandEncoder) {
-        if (buffer == nil) {
-            // buffer = renderEncoder(vertexCount * vertexSize, options: MTLResourceOptions.OptionCPUCacheModeWriteCombined)
-            buffer = renderEncoder.device.newBufferWithLength(vertexCount * vertexSize, options: nil)
-            buffer.label = "stroke verts"
-            self.tesselate_(UnsafeMutablePointer<UInt8>(buffer.contents()), totalVertexCount: vertexCount, lengthOffset: 0.0)
-        }
 
+    private func getBuffer(device: MTLDevice) -> MTLBuffer {
+      if (buffer != nil) { return buffer! }
+      let buf = device.newBufferWithLength(vertexCount * vertexSize,
+                                           options: .CPUCacheModeDefaultCache);
+      buf.label = "stroke verts"
+      self.tesselate_(UnsafeMutablePointer<UInt8>(buf.contents()), totalVertexCount: vertexCount, lengthOffset: 0.0)
+      buffer = buf
+      return buf
+    }
+
+    func encodeDrawCalls(renderEncoder: MTLRenderCommandEncoder) {
+        let buf = getBuffer(renderEncoder.device)
         renderEncoder.pushDebugGroup("draw stroke")
-        renderEncoder.setVertexBuffer(buffer, offset: 0, atIndex: 0)
-        renderEncoder.setVertexBuffer(buffer, offset: 28, atIndex: 1)
+        renderEncoder.setVertexBuffer(buf, offset: 0, atIndex: 0)
+        renderEncoder.setVertexBuffer(buf, offset: 28, atIndex: 1)
         renderEncoder.drawPrimitives(.TriangleStrip, vertexStart: 0, vertexCount: vertexCount, instanceCount: 1)
         renderEncoder.popDebugGroup()
     }
@@ -38,7 +43,7 @@ class QiController: GameViewController {
   var delegate : QiControllerDelegate
   var stroke : RenderableStroke?
 
-  required init(coder aDecoder: NSCoder) {
+  required init?(coder aDecoder: NSCoder) {
     delegate = Skeqi_iOS()
 
     super.init(coder: aDecoder)
@@ -58,6 +63,7 @@ class QiController: GameViewController {
     //        let radiansChangeList : [Float] = [π/2]
 
     stroke = RenderableStroke(ArcList(startPoint: startPoint, startRadians: startRadians, radiusList: radiusList, radiansChangeList: radiansChangeList))
+
   }
 
   override func viewDidLoad() {
@@ -78,28 +84,28 @@ class QiController: GameViewController {
   }
 
   func printShaderFunctions(library: MTLLibrary?) {
-    if let functionNames = library?.functionNames as? [NSString] {
+    if let functionNames = library?.functionNames {
       for name in functionNames {
-        println("found shader function: \(name)")
+        print("found shader function: \(name)")
       }
     } else {
-      println("no library provided")
+      print("no library provided")
     }
   }
 
-  override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+  override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     delegate.touchesBegan(touches, withEvent: event)
   }
 
-  override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+  override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
     delegate.touchesCancelled(touches, withEvent: event)
   }
 
-  override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
+  override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
     delegate.touchesMoved(touches, withEvent: event)
   }
 
-  override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+  override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
     delegate.touchesEnded(touches, withEvent: event)
   }
 }

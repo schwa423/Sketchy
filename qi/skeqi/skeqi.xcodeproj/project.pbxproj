@@ -556,6 +556,8 @@
 		03FA75FA1AD7EA2500A56C06 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Schwaftwarez;
 				TargetAttributes = {
@@ -761,6 +763,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				EIGEN_DIR = "$(PROJECT_DIR)/../third-party/cornucopia-lib/DemoUI-iOS/Eigen-3.2.4";
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -833,6 +836,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				EIGEN_DIR = "$(PROJECT_DIR)/../third-party/cornucopia-lib/DemoUI-iOS/Eigen-3.2.4";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;

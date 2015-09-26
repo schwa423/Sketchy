@@ -84,8 +84,8 @@ public class ArcList {
         assert(radiusList.count >= 1 && radiusList.count == radiansChangeList.count);
         
         for i in 0 ..< radiusList.count {
-            var endRadians = startRadians + radiansChangeList[i]
-            var arc = Arc(startingAt: startPoint, radius: radiusList[i], startRadians: startRadians, endRadians: endRadians)
+            let endRadians = startRadians + radiansChangeList[i]
+            let arc = Arc(startingAt: startPoint, radius: radiusList[i], startRadians: startRadians, endRadians: endRadians)
             append(arc)
             startRadians = endRadians
             startPoint = arc.endPoint

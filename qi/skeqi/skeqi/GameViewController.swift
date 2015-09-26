@@ -45,7 +45,7 @@ let vertexColorData:[UInt8] =
 
 class GameViewController: UIViewController {
     
-    let device = { MTLCreateSystemDefaultDevice() }()
+    let device = { MTLCreateSystemDefaultDevice()! }()
     let metalLayer = { CAMetalLayer() }()
     
     var commandQueue: MTLCommandQueue! = nil
@@ -86,27 +86,26 @@ class GameViewController: UIViewController {
     }
     
     func setUpPipeline(defaultLibrary: MTLLibrary?) {
-        let fragmentProgram = defaultLibrary?.newFunctionWithName("passThroughFragment")
-        let vertexProgram = defaultLibrary?.newFunctionWithName("passThroughVertex")
+      let fragmentProgram = defaultLibrary?.newFunctionWithName("passThroughFragment")
+      let vertexProgram = defaultLibrary?.newFunctionWithName("passThroughVertex")
         
-        let pipelineStateDescriptor = MTLRenderPipelineDescriptor()
-        pipelineStateDescriptor.vertexFunction = vertexProgram
-        pipelineStateDescriptor.fragmentFunction = fragmentProgram
-        pipelineStateDescriptor.colorAttachments[0].pixelFormat = .BGRA8Unorm
+      let pipelineStateDescriptor = MTLRenderPipelineDescriptor()
+      pipelineStateDescriptor.vertexFunction = vertexProgram
+      pipelineStateDescriptor.fragmentFunction = fragmentProgram
+      pipelineStateDescriptor.colorAttachments[0].pixelFormat = .BGRA8Unorm
+      do {
+        pipelineState = try device.newRenderPipelineStateWithDescriptor(pipelineStateDescriptor)
+      } catch {
+        print("Failed to create pipeline state, error \(error)")
+      }
         
-        var pipelineError : NSError?
-        pipelineState = device.newRenderPipelineStateWithDescriptor(pipelineStateDescriptor, error: &pipelineError)
-        if (pipelineState == nil) {
-            println("Failed to create pipeline state, error \(pipelineError)")
-        }
+      // generate a large enough buffer to allow streaming vertices for 3 semaphore controlled frames
+      vertexBuffer = device.newBufferWithLength(ConstantBufferSize, options: .CPUCacheModeDefaultCache)
+      vertexBuffer.label = "vertices"
         
-        // generate a large enough buffer to allow streaming vertices for 3 semaphore controlled frames
-        vertexBuffer = device.newBufferWithLength(ConstantBufferSize, options: nil)
-        vertexBuffer.label = "vertices"
-        
-        let vertexColorSize = vertexData.count * sizeofValue(vertexColorData[0])
-        vertexColorBuffer = device.newBufferWithBytes(vertexColorData, length: vertexColorSize, options: nil)
-        vertexColorBuffer.label = "colors"
+      let vertexColorSize = vertexData.count * sizeofValue(vertexColorData[0])
+      vertexColorBuffer = device.newBufferWithBytes(vertexColorData, length: vertexColorSize, options: .CPUCacheModeDefaultCache)
+      vertexColorBuffer.label = "colors"
     }
     
     override func viewDidLayoutSubviews() {
@@ -154,14 +153,14 @@ class GameViewController: UIViewController {
         let commandBuffer = commandQueue.commandBuffer()
         commandBuffer.label = "Frame command buffer"
         
-        let drawable = metalLayer.nextDrawable()
+        let drawable = metalLayer.nextDrawable()!
         let renderPassDescriptor = MTLRenderPassDescriptor()
         renderPassDescriptor.colorAttachments[0].texture = drawable.texture
         renderPassDescriptor.colorAttachments[0].loadAction = .Clear
         renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0.65, green: 0.65, blue: 0.65, alpha: 1.0)
         renderPassDescriptor.colorAttachments[0].storeAction = .Store
         
-        let renderEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor)!
+        let renderEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor)
         renderEncoder.label = "render encoder"
         
         encodeDrawCalls(renderEncoder);

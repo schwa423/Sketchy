@@ -80,12 +80,12 @@ public class ArcList {
         arcs_.append(arc)
     }
     
-    public init(var startPoint: Point2d, var startRadians: Float, var radiusList: [Float], var radiansChangeList: [Float]) {
+    public init(startPoint: Point2d, startRadians: Float, var radiusList: [Float], var radiansChangeList: [Float]) {
         assert(radiusList.count >= 1 && radiusList.count == radiansChangeList.count);
         
         for i in 0 ..< radiusList.count {
-            var endRadians = startRadians + radiansChangeList[i]
-            var arc = Arc(startingAt: startPoint, radius: radiusList[i], startRadians: startRadians, endRadians: endRadians)
+            let endRadians = startRadians + radiansChangeList[i]
+            let arc = Arc(startingAt: startPoint, radius: radiusList[i], startRadians: startRadians, endRadians: endRadians)
             append(arc)
             var startRadians = endRadians
         }

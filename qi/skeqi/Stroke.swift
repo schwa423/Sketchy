@@ -14,7 +14,7 @@ import Foundation
 //   4 bytes for cumulative length (1 float)
 //   4 bytes for color (4 uint8)
 // total: 32 bytes
-struct StrokeVertex : Printable {
+struct StrokeVertex : CustomStringConvertible {
     var pX, pY, pZ, pW, nX, nY, length : Float
     var cR, cG, cB, cA : UInt8
 //    var color : UInt32
@@ -62,7 +62,7 @@ class Stroke {
             // Create and populate a struct, then copy it into the vertex buffer.  This is less hassle
             // than writing each individual value directly to the buffer.
             var vertex = StrokeVertex()
-            var vertexPtr = withUnsafeMutablePointer(&vertex) {UnsafeMutablePointer<UInt8>($0)}
+            let vertexPtr = withUnsafeMutablePointer(&vertex) {UnsafeMutablePointer<UInt8>($0)}
             vertex.pX = (radius * nX + center.x) + (flipX * width)
             vertex.pY = (radius * nY + center.y) + (flipY * width)
             vertex.pZ = 0.0
@@ -71,7 +71,7 @@ class Stroke {
             vertex.nY = flipY
             vertex.length = cumulativeLength
             target.assignFrom(vertexPtr, count: vertexSize)
-            println("Emitting even vertex: \(vertex)")
+            print("Emitting even vertex: \(vertex)")
             
             // Update the pointer into the vertex buffer, and update the vertex-struct.
             // Then, copy the struct into the vertex buffer like we did before.
@@ -81,7 +81,7 @@ class Stroke {
             vertex.nX = -flipX
             vertex.nY = -flipY
             target.assignFrom(vertexPtr, count: vertexSize)
-            println("Emitting odd vertex: \(vertex)")
+            print("Emitting odd vertex: \(vertex)")
     }
     
     func tesselate_(var target: UnsafeMutablePointer<UInt8>, totalVertexCount: Int, lengthOffset : Float) {
@@ -112,7 +112,7 @@ class Stroke {
             let radius = arc.radius
             let center = arc.center
             for i in 0...intervals {
-                var theRadians : Float = radians + (intervalRadians * Float(i))
+                let theRadians : Float = radians + (intervalRadians * Float(i))
                 emit_(target, radius, center, theRadians, cumulativeLength, normalFlip)
                 target = target.advancedBy(2 * vertexSize)
                 cumulativeLength += spacing
