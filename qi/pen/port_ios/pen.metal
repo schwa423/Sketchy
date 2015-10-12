@@ -65,13 +65,17 @@ kernel void strokeBezierTesselate(constant Bezier2f* bez [[ buffer(0) ]],
   float2 tangent = normalize(p12 - p01);
   float2 normal = float2(-tangent.y, tangent.x);
 
+  float4 color = float4(t * 255, t * 255, t * 255, 255);
+  
   uint index = gid.x * 2;
   vertices[index].pos.xy = p;
   vertices[index].pos.zw = float2(0,1);
   vertices[index].norm = normal;
   vertices[index].length = 0;
+  vertices[index].color = uchar4(color);
   vertices[index + 1].pos.xy = p;
   vertices[index + 1].pos.zw = float2(0,1);
   vertices[index + 1].norm = -normal;
-  vertices[index].length = 0;
+  vertices[index + 1].length = 0;
+  vertices[index + 1].color = uchar4(color);
 }

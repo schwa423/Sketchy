@@ -12,6 +12,7 @@
 // By using "skeqi-Swift-Wrapper.h", we avoid having to always include
 // <UIKit/UIKit.h> before "skeqi-Swift.h"
 #import <UIKit/UIKit.h>
+#import <MetalKit/MetalKit.h>
 #import "skeqi-Swift.h"
 
 #endif

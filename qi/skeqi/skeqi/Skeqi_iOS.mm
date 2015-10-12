@@ -519,12 +519,14 @@ void SkeqiStrokeFitter::FitSampleRange(
 
   if (end_index - start_index == 1) {
     // Only two points... use a heuristic.
-    // TODO: double-check this heuristic.
+    // TODO: Double-check this heuristic (perhaps normalization needed?)
+    // TODO: Perhaps this segment can be omitted entirely (perhaps blending
+    //       endpoints of the adjacent segments.
     CubicBezier2f line;
     line.pts[0] = points_[start_index];
+    line.pts[3] = points_[end_index];
     line.pts[1] = line.pts[0] + (left_tangent * 0.25f);
     line.pts[2] = line.pts[3] + (right_tangent * 0.25f);
-    line.pts[3] = points_[end_index];
     path_.push_back(line);
     return;
   }
@@ -559,7 +561,7 @@ void SkeqiStrokeFitter::FitSampleRange(
   // Error is too large... split into two ranges and fit each.
   ASSERT(split_index > start_index && split_index < end_index);
   Pt2f middle_tangent = points_[split_index + 1] - points_[split_index - 1];
-  FitSampleRange(start_index, split_index, left_tangent, middle_tangent * -1.0f);
+  FitSampleRange(start_index, split_index, left_tangent, middle_tangent * -1.f);
   FitSampleRange(split_index, end_index, middle_tangent, right_tangent);
 }
 
