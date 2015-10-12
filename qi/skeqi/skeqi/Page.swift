@@ -269,6 +269,10 @@ extension float2 {
   }
 }
 
+func ==(left: float2, right: float2) -> Bool {
+  return left.x == right.x && left.y == right.y
+}
+
 extension Array {
   var first: Element { return self[0] }
   var last: Element { return self[endIndex - 1] }
@@ -308,10 +312,11 @@ class StrokeFitter {
 
     // Recursively compute a list of cubic Bezier segments.
     // TODO: don't recompute stable path segments near the beginning of the stroke.
-    let endIndex = points.count - 1;
     let leftTangent = points[1] - points[0];
-    let rightTangent = points[endIndex-1] - points[endIndex];
-    fitSamplesFrom(0, to: endIndex, leftTangent: leftTangent, rightTangent: rightTangent);
+    let rightTangent = points[points.count - 2] - points[points.count - 1];
+
+    path.removeAll(keepCapacity: true)
+    fitSampleRange(0..<points.count, leftTangent: leftTangent, rightTangent: rightTangent);
 
     page.setStrokePath(stroke, path: path)
   }
@@ -323,18 +328,20 @@ class StrokeFitter {
   }
 
   // TODO: investigate reparameterization.
-  func fitSamplesFrom(startIndex: Int, to endIndex: Int,
-                      leftTangent: float2, rightTangent: float2) {
-    assert(endIndex > startIndex)
+  func fitSampleRange(range: Range<Int>, leftTangent: float2, rightTangent: float2) {
+    assert(range.count > 1)
 
-    if endIndex - startIndex == 1 {
-      // Only two pints... use a heuristic.
+    let startIndex = range.startIndex
+    let endIndex = range.endIndex
+
+    if range.count == 2 {
+      // Only two points... use a heuristic.
       // TODO: Double-check this heuristic (perhaps normalization needed?).
       // TODO: Perhaps this segment can be omitted entirely (perhaps blending
       //       endpoints of the adjacent segments.
       var line = Bezier3()
       line.pt0 = points[startIndex]
-      line.pt3 = points[endIndex]
+      line.pt3 = points[endIndex-1]
       line.pt1 = line.pt0 + 0.25 * leftTangent
       line.pt2 = line.pt3 + 0.25 * rightTangent
       path.append(line)
@@ -343,19 +350,19 @@ class StrokeFitter {
 
     // Normalize cumulative length between 0.0 and 1.0.
     let paramShift = -params[startIndex];
-    let paramScale = 1.0 / (params[endIndex] + paramShift);
+    let paramScale = 1.0 / (params[endIndex-1] + paramShift);
 
-    let bez = FitBezier3ToPoints(points[startIndex...endIndex],
-                                 params: params[startIndex...endIndex],
+    let bez = FitBezier3ToPoints(points[startIndex..<endIndex],
+                                 params: params[startIndex..<endIndex],
                                  paramShift: paramShift,
                                  paramScale: paramScale,
                                  startTangent: leftTangent,
                                  endTangent: rightTangent)
 
     // TODO: does Swift rounding/trunctation work like C?
-    var splitIndex = (startIndex + endIndex + 1) / 2
+    var splitIndex = (startIndex + endIndex) / 2
     var maxError = Float(0.0)
-    for i in startIndex...endIndex {
+    for i in startIndex..<endIndex {
       let t = (params[i] + paramShift) * paramScale
       let diff = points[i] - bez.Evaluate(t)
       let error = dot(diff, diff)
@@ -372,9 +379,9 @@ class StrokeFitter {
     }
 
     // Error is too large... split into two ranges and fit each.
-    assert(splitIndex > startIndex && splitIndex < endIndex);
+    assert(splitIndex > startIndex && splitIndex < endIndex-1);
     let middleTangent = points[splitIndex + 1] - points[splitIndex - 1];
-    fitSamplesFrom(startIndex, to: splitIndex, leftTangent: leftTangent, rightTangent: middleTangent * -1.0);
-    fitSamplesFrom(splitIndex, to: endIndex, leftTangent: middleTangent, rightTangent: rightTangent);
+    fitSampleRange(startIndex...splitIndex, leftTangent: leftTangent, rightTangent: middleTangent * -1.0);
+    fitSampleRange(splitIndex..<endIndex, leftTangent: middleTangent, rightTangent: rightTangent);
   }
 }
