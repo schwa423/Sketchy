@@ -10,6 +10,7 @@
 		030D02221B19B0C100116C90 /* skeqi-dbg.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 030D02211B19B0C100116C90 /* skeqi-dbg.bundle */; };
 		031D89A01B4C46D0003DFB0E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 031D899F1B4C46D0003DFB0E /* main.m */; };
 		031D89A21B4C4746003DFB0E /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 031D89A11B4C4746003DFB0E /* AppDelegate.mm */; };
+		031E5FD91BD8D72E006EC625 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 031E5FD81BD8D72E006EC625 /* MetalKit.framework */; };
 		032D32C01AF56E0500F473D4 /* Algorithm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32841AF56E0500F473D4 /* Algorithm.cpp */; };
 		032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32871AF56E0500F473D4 /* Arc.cpp */; };
 		032D32C21AF56E0500F473D4 /* Bezier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32891AF56E0500F473D4 /* Bezier.cpp */; };
@@ -103,6 +104,7 @@
 		031D899F1B4C46D0003DFB0E /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		031D89A11B4C4746003DFB0E /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		031D89A31B4C4767003DFB0E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		031E5FD81BD8D72E006EC625 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		032D32841AF56E0500F473D4 /* Algorithm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Algorithm.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.cpp"; sourceTree = "<group>"; };
 		032D32851AF56E0500F473D4 /* Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Algorithm.h; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.h"; sourceTree = "<group>"; };
 		032D32861AF56E0500F473D4 /* AngleUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AngleUtils.h; path = "../third-party/cornucopia-lib/Cornucopia/AngleUtils.h"; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				031E5FD91BD8D72E006EC625 /* MetalKit.framework in Frameworks */,
 				03C5E2411B47144D00C41423 /* libkj.a in Frameworks */,
 				03C5E23D1B47144D00C41423 /* libcapnp-rpc.a in Frameworks */,
 				03C5E23E1B47144D00C41423 /* libcapnp.a in Frameworks */,
@@ -507,6 +510,7 @@
 		1841EBDF86A12D5652FF24FD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				031E5FD81BD8D72E006EC625 /* MetalKit.framework */,
 				0369971F1B4A26E8008D58D3 /* luajit */,
 				03C5E2421B47145600C41423 /* capnproto */,
 				B0A1D26E5B75F8A3B13AE5EE /* libPods.a */,
