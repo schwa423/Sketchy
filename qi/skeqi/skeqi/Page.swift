@@ -178,7 +178,9 @@ class Page2 {
       withUnsafePointer(&stroke.path[i]) {
         encoder.setBytes($0, length: sizeof(Bezier3), atIndex:0)
       }
-      encoder.setBuffer(stroke.buffer, offset: offset, atIndex: 1)
+      var tDivisor : Float = Float(vertexCounts[i]) / 2.0 - 1.0
+      encoder.setBytes(&tDivisor, length: sizeof(Float), atIndex:1)
+      encoder.setBuffer(stroke.buffer, offset: offset, atIndex:2)
       let threadgroupSize = MTLSizeMake(vertexCounts[i] / 2, 1, 1)
       let threadgroups = MTLSizeMake(1, 1, 1)
       encoder.dispatchThreadgroups(threadgroups, threadsPerThreadgroup: threadgroupSize)
