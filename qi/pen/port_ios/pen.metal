@@ -45,7 +45,8 @@ struct Bezier2f {
 };
 
 kernel void strokeBezierTesselate(constant Bezier2f* bez [[ buffer(0) ]],
-                                  device StrokeVertexIn* vertices [[ buffer(1) ]],
+                                  constant float* t_divisor [[ buffer(1) ]],
+                                  device StrokeVertexIn* vertices [[ buffer(2) ]],
                                   uint2 gid [[ thread_position_in_grid ]]) {
   // The 63.0 is because:
   // - we assume that we tesselate 128 vertices per segment...
@@ -53,7 +54,7 @@ kernel void strokeBezierTesselate(constant Bezier2f* bez [[ buffer(0) ]],
   // - we want t to range from 0 to 1 (that's why 63 instead of 64)
   // - we generate 2 vertices for each value of t, each with opposite normals
   // TODO: make this more flexible
-  float t = float(gid.x) / 63.0f;
+  float t = float(gid.x) / t_divisor[0];
 
   float omt = 1.0f - t;
   float2 p0 = bez->pts[0] * omt + bez->pts[1] * t;
@@ -66,7 +67,7 @@ kernel void strokeBezierTesselate(constant Bezier2f* bez [[ buffer(0) ]],
   float2 normal = float2(-tangent.y, tangent.x);
 
   float4 color = float4(t * 255, t * 255, t * 255, 255);
-  
+
   uint index = gid.x * 2;
   vertices[index].pos.xy = p;
   vertices[index].pos.zw = float2(0,1);

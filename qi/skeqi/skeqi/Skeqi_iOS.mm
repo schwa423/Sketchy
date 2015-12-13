@@ -304,9 +304,13 @@ void Stroke::Tesselate(id<MTLComputeCommandEncoder>encoder) {
     for (int i = 0; i < path_.size(); ++i) {
       auto bez = path_[i];
       [encoder setBytes:&bez length:sizeof(bez) atIndex:0];
+
+      float t_divisor = vertex_counts[i] / 2.0f - 1.0f;
+      [encoder setBytes:&t_divisor length:sizeof(float) atIndex:1];
+
       // TODO: avoid static_cast<>
       auto buf = static_cast<gfx::port::Buffer_iOS*>(buffer_.get());
-      [encoder setBuffer:buf->GetBuffer() offset:offset atIndex:1];
+      [encoder setBuffer:buf->GetBuffer() offset:offset atIndex:2];
 
       MTLSize threadgroup_size = MTLSizeMake(vertex_counts[i] / 2, 1, 1);
       MTLSize threadgroups = MTLSizeMake(1, 1, 1);
@@ -393,7 +397,7 @@ std::vector<size_t> Page::ComputeVertexCounts(Stroke::Path& path) {
   counts.reserve(path.size());
   for (CubicBezier2f bez : path) {
     // TODO: compute a number based on the length of each path segment.
-    static const size_t kVertexCount = 128;
+    static const size_t kVertexCount = 32;
     counts.push_back(kVertexCount);
   }
   return counts;
@@ -432,7 +436,7 @@ class SkeqiStrokeFitter {
  public:
   // TODO: revisit error_threshold_
   SkeqiStrokeFitter(std::shared_ptr<Page> page)
-      : fitter_id(s_next_fitter_id++), page_(page), error_threshold_(0.0002) {}
+      : fitter_id(s_next_fitter_id++), page_(page), error_threshold_(0.0004) {}
 
   void StartStroke(Pt2f pt) {
     stroke_ = page_->NewStroke();
