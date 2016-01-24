@@ -17,7 +17,7 @@ ThreadRunner::~ThreadRunner() {
 bool ThreadRunner::Run(std::function<void()> job) {
   std::unique_lock<Mutex> locker(mutex_);
   if (shutdown_) return false;
-  jobs_.push_back(std::move(job));
+  jobs_.push_back(move(job));
   condition_.notify_one();
   return true;
 }
@@ -45,7 +45,7 @@ void ThreadRunner::Loop(ThreadRunner* runner) {
 
     ASSERT(lock.owns_lock());  // sanity-check.
     while (!runner->jobs_.empty()) {
-      auto job = std::move(runner->jobs_.front());
+      auto job = move(runner->jobs_.front());
       runner->jobs_.pop_front();
       lock.unlock();
       job();

@@ -249,9 +249,10 @@ void Stroke::Finalize() {
   }
 }
 
+// TODO: pass "Path" instead of "Path&&"?
 void Stroke::SetPath(Path&& path) {
   ASSERT(!finalized_);
-  path_ = std::move(path);
+  path_ = move(path);
   page_->dirty_strokes_.insert(this);
 }
 
@@ -491,7 +492,7 @@ class SkeqiStrokeFitter {
       split_path.push_back(split.first);
       split_path.push_back(split.second);
     }
-    path_ = std::move(split_path);
+    path_ = move(split_path);
 
     // For each of the segments computed above, compute the total segment length
     // and a arc-length parameterization.  This parameterization is a 1-D cubic
@@ -500,7 +501,7 @@ class SkeqiStrokeFitter {
     // curve-segment at t' returns the point on the segment where the cumulative
     // arc-length to that point is t * total_segment_length.
     ASSERT(!path_.empty());
-    stroke_->SetPath(std::move(path_));
+    stroke_->SetPath(move(path_));
     stroke2_->SetSamplePoints(points_);
   }
 
@@ -710,7 +711,7 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
   if (self) {
     page_ = std::make_shared<qi::page::Page>(self.device, self.metalLibrary);
     auto touch_handler = std::make_unique<qi::page::SkeqiTouchHandler>(page_);
-    [self setTouchHandler: std::move(touch_handler)];
+    [self setTouchHandler: move(touch_handler)];
 
 /*
     // Configure our logging framework.

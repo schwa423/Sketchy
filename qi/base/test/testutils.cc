@@ -40,7 +40,7 @@ std::promise<void> BlockRunnerThreads(IRunner* runner, size_t count) {
 
   // Wait for all threads to be blocked, the return the unblocker to the caller.
   all_blocked.wait();
-  return std::move(unblocker);
+  return move(unblocker);
 }
 
 }  // namespace test

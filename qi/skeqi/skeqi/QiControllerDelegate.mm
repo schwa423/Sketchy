@@ -46,7 +46,7 @@
 }
 
 - (void)setTouchHandler:(std::unique_ptr<qi::ui::TouchHandler>)touchHandler {
-  touch_handler_ = std::move(touchHandler);
+  touch_handler_ = move(touchHandler);
 }
 
 // Implement UIResponder method.
@@ -110,7 +110,7 @@
 
 // No-op.  Subclasses should override if they have work to do before rendering.
 - (void)update {
-  
+
 }
 
 // No-op.  Subclasses should override if they have something to draw.

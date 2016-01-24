@@ -12,7 +12,7 @@ static unique_ptr<Server>& GetPtr() {
 
 void Server::Set(std::unique_ptr<Server> server) {
   ASSERT(!GetPtr().get());
-  GetPtr() = std::move(server);
+  GetPtr() = move(server);
 }
 
 void Server::Start() { GetPtr()->StartServer(); }

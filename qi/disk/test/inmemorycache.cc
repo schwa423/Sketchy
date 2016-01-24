@@ -19,7 +19,7 @@ void InMemoryCache::RunQueries(std::vector<ReadRequest> reads,
     }
   }
   for (auto& req : writes) {
-    stored_data_[std::move(req.first)] = std::move(req.second);
+    stored_data_[move(req.first)] = move(req.second);
   }
   for (auto& req : erases) {
     stored_data_.erase(req);

@@ -49,7 +49,7 @@ void Qi::Shutdown() {
 }
 
 void Qi::Run(std::function<void()> closure) {
-  GetQiState().runner->Run(std::move(closure));
+  GetQiState().runner->Run(move(closure));
 }
 
 int Qi::RunAllTests() {

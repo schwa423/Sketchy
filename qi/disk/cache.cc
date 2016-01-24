@@ -24,8 +24,8 @@ void Cache::Read(Key key, ReadCallback callback) {
     Data data(write_it->second);
     // Run in background so that the caller is guaranteed that it won't
     // run synchronously within the call to Read().
-    Qi::Run([data = std::move(data), callback = std::move(callback)] () {
-      callback(kSuccess, std::move(data));
+    Qi::Run([data = move(data), callback = move(callback)] () {
+      callback(kSuccess, move(data));
     });
     return;
   }
@@ -34,7 +34,7 @@ void Cache::Read(Key key, ReadCallback callback) {
   if (erase_it != erases_.end()) {
     // Run in background so that the caller is guaranteed that it won't
     // run synchronously within the call to Read().
-    Qi::Run([callback = std::move(callback)] () {
+    Qi::Run([callback = move(callback)] () {
       callback(kNotFound, Data());
     });
     return;
@@ -42,7 +42,7 @@ void Cache::Read(Key key, ReadCallback callback) {
 
   // There was no write or erase corresponding to |key|, so we must query the
   // persistent storage.
-  reads_.push_back({std::move(key), std::move(callback)});
+  reads_.push_back({move(key), move(callback)});
 
   if (!work_scheduled_) {
     work_scheduled_ = true;
@@ -54,7 +54,7 @@ std::future<Data> Cache::Read(Key key) {
   auto p = std::make_shared<std::promise<Data>>();
   // TODO: remove |key| from capture-list.
   Read(key, [p, key] (ReadStatus status, Data data) {
-    p->set_value(std::move(data));
+    p->set_value(move(data));
   });
   return p->get_future();
 }
@@ -62,7 +62,7 @@ std::future<Data> Cache::Read(Key key) {
 void Cache::Write(Key key, Data data) {
   LockGuard lock(mutex_);
   erases_.erase(key);
-  writes_[std::move(key)] = std::move(data);
+  writes_[move(key)] = move(data);
 
   if (!work_scheduled_) {
     work_scheduled_ = true;
@@ -73,7 +73,7 @@ void Cache::Write(Key key, Data data) {
 void Cache::Erase(Key key) {
   LockGuard lock(mutex_);
   writes_.erase(key);
-  erases_.insert(std::move(key));
+  erases_.insert(move(key));
 
   if (!work_scheduled_) {
     work_scheduled_ = true;
@@ -87,9 +87,9 @@ void Cache::DoRunQueries() {
   work_scheduled_ = false;
 
   // Obtain the list of reads/writes/erases to perform this time.
-  std::vector<ReadRequest> reads{std::move(reads_)};
-  std::unordered_map<Key, Data> writes{std::move(writes_)};
-  std::unordered_set<Key> erases{std::move(erases_)};
+  std::vector<ReadRequest> reads{move(reads_)};
+  std::unordered_map<Key, Data> writes{move(writes_)};
+  std::unordered_set<Key> erases{move(erases_)};
   ASSERT(0 == reads_.size());
   ASSERT(0 == writes_.size());
   ASSERT(0 == erases_.size());
@@ -97,7 +97,7 @@ void Cache::DoRunQueries() {
   // Unlock before calling RunQueries() so that Read()/Write()/Erase() can
   // be called without blocking.
   lock.unlock();
-  this->RunQueries(std::move(reads), std::move(writes), std::move(erases));
+  this->RunQueries(move(reads), move(writes), move(erases));
 }
 
 void Cache::Flush() {

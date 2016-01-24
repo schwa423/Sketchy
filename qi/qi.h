@@ -41,7 +41,6 @@ using std::unique_ptr;
 using std::weak_ptr;
 using std::make_shared;
 using std::make_unique;
-// TODO: find/replace "std::move" with "move".
 using std::move;
 
 using Mutex = std::mutex;
