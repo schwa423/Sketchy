@@ -11,6 +11,7 @@
 // Interface extensions that can't be exposed to Swift because they use C++.
 #import "QiControllerDelegateImpl.h"
 
+#import "qi/disk/sqlitecache.h"
 #import "qi/gfx/port_ios/buffer_ios.h"
 #import "qi/gfx/port_ios/device_ios.h"
 #import "qi/pen/cubicbezier.h"
@@ -91,9 +92,9 @@ typedef port::RenderCommandEncoder_iOS RenderCommandEncoder;
 namespace qi {
 namespace page {
 
-class Page;
+class Page2;
 
-class Stroke {
+class Stroke2 {
  public:
   typedef std::vector<CubicBezier2f> Path;
 
@@ -102,7 +103,7 @@ class Stroke {
   void SetSamplePoints(const std::vector<Pt2f>& points);
 
  private:
-  Stroke(Page* page)
+  Stroke2(Page2* page)
       : page_(page), vertex_count_(0), offset_(0), finalized_(false) {}
 
   void EncodeDrawCalls(gfx::RenderCommandEncoder* encoder);
@@ -118,30 +119,30 @@ class Stroke {
   };
 
   Path path_;
-  Page* page_;
+  Page2* page_;
   shared_ptr<gfx::Buffer> buffer_;
   int vertex_count_;
   int offset_;
   std::atomic_bool finalized_;
 
-  friend class Page;
+  friend class Page2;
 };
 
-typedef shared_ptr<Stroke> StrokePtr;
+typedef shared_ptr<Stroke2> Stroke2Ptr;
 
 
-class Page {
+class Page2 {
  public:
-  Page(shared_ptr<gfx::Device> device, id<MTLLibrary> library);
+  Page2(shared_ptr<gfx::Device> device, id<MTLLibrary> library);
 
-  StrokePtr NewStroke() {
+  Stroke2Ptr NewStroke() {
     // TODO: can't use make_shared because constructor is private... what is best idiom?
-    StrokePtr stroke(new Stroke(this));
+    Stroke2Ptr stroke(new Stroke2(this));
     strokes_.push_back(stroke);
     return stroke;
   }
 
-  void DeleteStroke(const StrokePtr& stroke) {
+  void DeleteStroke(const Stroke2Ptr& stroke) {
     auto it = std::find(strokes_.begin(), strokes_.end(), stroke);
     ASSERT(it != strokes_.end());
 
@@ -151,13 +152,13 @@ class Page {
   }
 
   // Compute the number of vertices to use to tesselate each Stoke path segment.
-  std::vector<size_t> ComputeVertexCounts(Stroke::Path& path);
+  std::vector<size_t> ComputeVertexCounts(Stroke2::Path& path);
 
   // TODO: use a qi::gfx::RenderCommandEncoder.
   void EncodeDrawCalls(id<MTLRenderCommandEncoder> encoder);
 
   // TODO: perhaps put all strokes into one shared Buffer.
-  void FinalizeStroke(Stroke* stroke) {}
+  void FinalizeStroke(Stroke2* stroke) {}
 
   shared_ptr<gfx::Buffer> NewBuffer(size_t length) { return device_->NewBuffer(length); }
 
@@ -171,21 +172,21 @@ class Page {
   shared_ptr<gfx::Device> device_;
   id<MTLRenderPipelineState> render_pipeline_;
   id<MTLComputePipelineState> compute_pipeline_;
-  std::vector<StrokePtr> strokes_;
-  std::unordered_set<Stroke*> dirty_strokes_;
+  std::vector<Stroke2Ptr> strokes_;
+  std::unordered_set<Stroke2*> dirty_strokes_;
 
   // Hack to keep deleted Strokes alive until they're finished rendering.
-  std::vector<StrokePtr> deleted_strokes_1_;
-  std::vector<StrokePtr> deleted_strokes_2_;
-  std::vector<StrokePtr> deleted_strokes_3_;
+  std::vector<Stroke2Ptr> deleted_strokes_1_;
+  std::vector<Stroke2Ptr> deleted_strokes_2_;
+  std::vector<Stroke2Ptr> deleted_strokes_3_;
 
-  friend class Stroke;
+  friend class Stroke2;
 };
 
 
 // Stroke method implementations //////////////////////////////////////////////
 
-void Stroke::Finalize() {
+void Stroke2::Finalize() {
   bool was_finalized = finalized_.exchange(true);
   if (!was_finalized) {
     page_->FinalizeStroke(this);
@@ -250,20 +251,20 @@ void Stroke::Finalize() {
 }
 
 // TODO: pass "Path" instead of "Path&&"?
-void Stroke::SetPath(Path&& path) {
+void Stroke2::SetPath(Path&& path) {
   ASSERT(!finalized_);
   path_ = move(path);
   page_->dirty_strokes_.insert(this);
 }
 
-void Stroke::SetSamplePoints(const std::vector<Pt2f>& points) {
+void Stroke2::SetSamplePoints(const std::vector<Pt2f>& points) {
   ASSERT(!finalized_);
   path_.clear();
   size_t buffer_size = points.size() * sizeof(Vertex);
   if (!buffer_ || buffer_->GetLength() < buffer_size) {
     buffer_ = page_->NewBuffer(buffer_size * 1.2 + 200);
   }
-  auto verts = reinterpret_cast<Stroke::Vertex*>(buffer_->GetContents());
+  auto verts = reinterpret_cast<Stroke2::Vertex*>(buffer_->GetContents());
   for (int i = 0; i < points.size(); i++) {
     verts[i].px = points[i].x;
     verts[i].py = points[i].y;
@@ -279,7 +280,7 @@ void Stroke::SetSamplePoints(const std::vector<Pt2f>& points) {
   vertex_count_ = points.size();
 }
 
-void Stroke::EncodeDrawCalls(gfx::RenderCommandEncoder* encoder) {
+void Stroke2::EncodeDrawCalls(gfx::RenderCommandEncoder* encoder) {
   if (vertex_count_ > 0) {
     encoder->SetVertexBuffer(buffer_.get(), offset_, 0);
     if (path_.empty()) {
@@ -290,7 +291,7 @@ void Stroke::EncodeDrawCalls(gfx::RenderCommandEncoder* encoder) {
   }
 }
 
-void Stroke::Tesselate(id<MTLComputeCommandEncoder>encoder) {
+void Stroke2::Tesselate(id<MTLComputeCommandEncoder>encoder) {
   if (path_.empty()) return;
 
   std::vector<size_t> vertex_counts = page_->ComputeVertexCounts(path_);
@@ -328,13 +329,13 @@ void Stroke::Tesselate(id<MTLComputeCommandEncoder>encoder) {
       [encoder dispatchThreadgroups:threadgroups
                threadsPerThreadgroup: threadgroup_size];
 
-      offset += vertex_counts[i] * sizeof(Stroke::Vertex);
+      offset += vertex_counts[i] * sizeof(Stroke2::Vertex);
     }
     return;
   }
 
   // Use CPU to generate vertices for each Path segment.
-  auto verts = reinterpret_cast<Stroke::Vertex*>(buffer_->GetContents());
+  auto verts = reinterpret_cast<Stroke2::Vertex*>(buffer_->GetContents());
   for (int i = 0; i < path_.size(); ++i) {
     CubicBezier2f bez = path_[i];
     unsigned char rgb = (255.0 * i) / path_.size();
@@ -368,7 +369,7 @@ void Stroke::Tesselate(id<MTLComputeCommandEncoder>encoder) {
       verts[i].cr = verts[i+1].cr = rgb;
       verts[i].ca = verts[i+1].ca = 255;
     }
-    // Bump Stroke::Vertex pointer to tesselate the next segment.
+    // Bump Stroke2::Vertex pointer to tesselate the next segment.
     verts += seg_vert_count;
   }
 }
@@ -376,12 +377,12 @@ void Stroke::Tesselate(id<MTLComputeCommandEncoder>encoder) {
 
 // Page method implementations ////////////////////////////////////////////////
 
-Page::Page(shared_ptr<gfx::Device> device, id<MTLLibrary> library) : device_(device) {
+Page2::Page2(shared_ptr<gfx::Device> device, id<MTLLibrary> library) : device_(device) {
   SetupRenderPipeline(library);
   SetupComputePipeline(library);
 }
 
-void Page::SetupRenderPipeline(id<MTLLibrary> library) {
+void Page2::SetupRenderPipeline(id<MTLLibrary> library) {
   auto vert_func = [library newFunctionWithName:@"strokeVertex"];
   auto frag_func = [library newFunctionWithName:@"strokeFragmentPassThrough"];
 
@@ -396,14 +397,14 @@ void Page::SetupRenderPipeline(id<MTLLibrary> library) {
   ASSERT(render_pipeline_ && !errors);
 }
 
-void Page::SetupComputePipeline(id<MTLLibrary> library) {
+void Page2::SetupComputePipeline(id<MTLLibrary> library) {
   auto kernel_func = [library newFunctionWithName:@"strokeBezierTesselate"];
   NSError *errors = nil;
   compute_pipeline_ =[library.device newComputePipelineStateWithFunction:kernel_func error:&errors];
   ASSERT(compute_pipeline_ && !errors);
 }
 
-std::vector<size_t> Page::ComputeVertexCounts(Stroke::Path& path) {
+std::vector<size_t> Page2::ComputeVertexCounts(Stroke2::Path& path) {
   std::vector<size_t> counts;
   counts.reserve(path.size());
   for (CubicBezier2f bez : path) {
@@ -414,7 +415,7 @@ std::vector<size_t> Page::ComputeVertexCounts(Stroke::Path& path) {
   return counts;
 }
 
-void Page::EncodeDrawCalls(id<MTLRenderCommandEncoder> mtl_encoder) {
+void Page2::EncodeDrawCalls(id<MTLRenderCommandEncoder> mtl_encoder) {
   [mtl_encoder pushDebugGroup:@"Render Page Strokes"];
   [mtl_encoder setRenderPipelineState:render_pipeline_];
   gfx::port::RenderCommandEncoder_iOS encoder(mtl_encoder);
@@ -429,7 +430,7 @@ void Page::EncodeDrawCalls(id<MTLRenderCommandEncoder> mtl_encoder) {
   deleted_strokes_1_.clear();
 }
 
-void Page::Update(id<MTLCommandQueue>queue) {
+void Page2::Update(id<MTLCommandQueue>queue) {
   if (dirty_strokes_.empty()) return;
 
   id<MTLCommandBuffer> cmd_buffer = [queue commandBuffer];
@@ -451,7 +452,7 @@ void Page::Update(id<MTLCommandQueue>queue) {
 class SkeqiStrokeFitter {
  public:
   // TODO: revisit error_threshold_
-  SkeqiStrokeFitter(std::shared_ptr<Page> page)
+  SkeqiStrokeFitter(std::shared_ptr<Page2> page)
       : fitter_id(s_next_fitter_id++), page_(page), error_threshold_(0.0004) {}
 
   void StartStroke(Pt2f pt) {
@@ -486,7 +487,7 @@ class SkeqiStrokeFitter {
 
     // TODO: remove... this is just basic sanity-check for Split() given that
     // I don't have unit tests running.
-    Stroke::Path split_path;
+    Stroke2::Path split_path;
     for (auto bez : path_) {
       auto split = bez.Split(0.5);
       split_path.push_back(split.first);
@@ -530,14 +531,14 @@ class SkeqiStrokeFitter {
   void FitSampleRange(
       int start_index, int end_index, Pt2f left_tangent, Pt2f right_tangent);
 
-  shared_ptr<Page> page_;
-  StrokePtr stroke_;
-  StrokePtr stroke2_;
+  shared_ptr<Page2> page_;
+  Stroke2Ptr stroke_;
+  Stroke2Ptr stroke2_;
 
   std::vector<Pt2f> points_;
   std::vector<float> params_;
   float error_threshold_;
-  Stroke::Path path_;
+  Stroke2::Path path_;
 
   static int64 s_next_fitter_id;
 };
@@ -616,7 +617,7 @@ void SkeqiStrokeFitter::FitSampleRange(
 
 class SkeqiTouchHandler : public ui::TouchHandler {
  public:
-  SkeqiTouchHandler(shared_ptr<Page> page) : page_(page) {}
+  SkeqiTouchHandler(shared_ptr<Page2> page) : page_(page) {}
 
   void TouchesBegan(const std::vector<ui::Touch>* touches) override {
     // If there are 5 simultanous touches, run tests.
@@ -678,7 +679,7 @@ class SkeqiTouchHandler : public ui::TouchHandler {
     return Pt2f{static_cast<float>(touch.x),static_cast<float>(touch.y)};
   }
 
-  shared_ptr<Page> page_;
+  shared_ptr<Page2> page_;
   std::map<ui::Touch, unique_ptr<SkeqiStrokeFitter>> fitters_;
 };
 
@@ -702,14 +703,16 @@ static const int httpLogLevel = HTTP_LOG_LEVEL_WARN; // | HTTP_LOG_FLAG_TRACE;
 */
 
 @implementation Skeqi_iOS {
-  std::shared_ptr<qi::page::Page> page_;
+  std::shared_ptr<qi::page::Page2> page_;
+  std::shared_ptr<qi::disk::Cache> cache_;
 // TODO(jjosh):  HTTPServer *httpServer;
 }
 
 - (id)init {
   self = [super init];
   if (self) {
-    page_ = std::make_shared<qi::page::Page>(self.device, self.metalLibrary);
+    page_ = std::make_shared<qi::page::Page2>(self.device, self.metalLibrary);
+    cache_ = std::make_shared<qi::disk::SqliteCache>(":memory:");
     auto touch_handler = std::make_unique<qi::page::SkeqiTouchHandler>(page_);
     [self setTouchHandler: move(touch_handler)];
 
