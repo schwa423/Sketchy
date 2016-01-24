@@ -11,14 +11,11 @@ namespace qi {
 namespace disk {
 
 SqliteCache::SqliteCache() {
-  /*
   int result = sqlite3_open_v2(
       ":memory:",
       &db_,
-      SQLITE_OPEN_READWRITE & SQLITE_OPEN_CREATE,
-      "");
-  */
-  int result = sqlite3_open(":memory:", &db_);
+      SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE,
+      nullptr);
   ASSERT(result == SQLITE_OK);
 
   const char* create_table =
