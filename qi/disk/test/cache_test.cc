@@ -31,7 +31,7 @@ TEST(SqliteCache, ReadWriteErase) {
   Data data_2{10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
   Data data_3{20, 21, 22, 23, 24, 25, 26, 27, 28, 29};
 
-  auto cache = make_unique<SqliteCache>();
+  auto cache = make_unique<SqliteCache>(":memory:");
   auto unblocker = BlockRunnerThreads(cache->GetRunner(), 1);
 
   // This read cannot occur until the background thread is unblocked.

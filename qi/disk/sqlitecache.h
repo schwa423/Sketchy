@@ -11,7 +11,8 @@ namespace disk {
 
 class SqliteCache : public Cache {
  public:
-  SqliteCache();
+  // TODO: document.
+  SqliteCache(std::string path, size_t flags = 0);
   ~SqliteCache() override;
 
  protected:

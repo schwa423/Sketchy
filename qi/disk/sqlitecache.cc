@@ -2,19 +2,14 @@
 
 #include <sqlite3.h>
 
-// TODO: remove
-#include <iostream>
-
-#include <sstream>
-
 namespace qi {
 namespace disk {
 
-SqliteCache::SqliteCache() {
+SqliteCache::SqliteCache(std::string path, size_t flags) {
   int result = sqlite3_open_v2(
-      ":memory:",
+      path.c_str(),
       &db_,
-      SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE,
+      flags ? flags : SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE,
       nullptr);
   ASSERT(result == SQLITE_OK);
 
