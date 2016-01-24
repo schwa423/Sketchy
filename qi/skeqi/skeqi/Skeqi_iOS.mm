@@ -127,22 +127,27 @@ class Stroke {
   friend class Page;
 };
 
+typedef shared_ptr<Stroke> StrokePtr;
+
 
 class Page {
  public:
   Page(shared_ptr<gfx::Device> device, id<MTLLibrary> library);
 
-  shared_ptr<Stroke> NewStroke() {
-    // TODO: need better way to clear strokes.
-    if (strokes_.size() >= 20) {
-      strokes_.clear();
-      dirty_strokes_.clear();
-    }
-
+  StrokePtr NewStroke() {
     // TODO: can't use make_shared because constructor is private... what is best idiom?
-    shared_ptr<Stroke> stroke(new Stroke(this));
+    StrokePtr stroke(new Stroke(this));
     strokes_.push_back(stroke);
     return stroke;
+  }
+
+  void DeleteStroke(const StrokePtr& stroke) {
+    auto it = std::find(strokes_.begin(), strokes_.end(), stroke);
+    ASSERT(it != strokes_.end());
+
+    deleted_strokes_1_.push_back(stroke);
+    strokes_.erase(it);
+    dirty_strokes_.erase(stroke.get());
   }
 
   // Compute the number of vertices to use to tesselate each Stoke path segment.
@@ -166,8 +171,13 @@ class Page {
   shared_ptr<gfx::Device> device_;
   id<MTLRenderPipelineState> render_pipeline_;
   id<MTLComputePipelineState> compute_pipeline_;
-  std::vector<shared_ptr<Stroke>> strokes_;
+  std::vector<StrokePtr> strokes_;
   std::unordered_set<Stroke*> dirty_strokes_;
+
+  // Hack to keep deleted Strokes alive until they're finished rendering.
+  std::vector<StrokePtr> deleted_strokes_1_;
+  std::vector<StrokePtr> deleted_strokes_2_;
+  std::vector<StrokePtr> deleted_strokes_3_;
 
   friend class Stroke;
 };
@@ -411,6 +421,11 @@ void Page::EncodeDrawCalls(id<MTLRenderCommandEncoder> mtl_encoder) {
     stroke->EncodeDrawCalls(&encoder);
   }
   [mtl_encoder popDebugGroup];
+
+  // Move "2" into "3", then "1" into "2", then clear "1".
+  std::swap(deleted_strokes_2_, deleted_strokes_3_);
+  std::swap(deleted_strokes_1_, deleted_strokes_2_);
+  deleted_strokes_1_.clear();
 }
 
 void Page::Update(id<MTLCommandQueue>queue) {
@@ -444,8 +459,11 @@ class SkeqiStrokeFitter {
     points_.push_back(pt);
     params_.push_back(0.0);
   }
+
   void AddSamplePoint(Pt2f pt) {
     float dist = distance(pt, points_.back());
+    // TODO: epison constant
+    if (dist < 0.000004) return;
     points_.push_back(pt);
     params_.push_back(params_.back() + dist);
 
@@ -485,9 +503,19 @@ class SkeqiStrokeFitter {
     stroke_->SetPath(std::move(path_));
     stroke2_->SetSamplePoints(points_);
   }
+
   void FinishStroke() {
     stroke_->Finalize();
     stroke2_->Finalize();
+    stroke_.reset();
+    stroke2_.reset();
+    points_.clear();
+    params_.clear();
+  }
+
+  void CancelStroke() {
+    page_->DeleteStroke(stroke_);
+    page_->DeleteStroke(stroke2_);
     stroke_.reset();
     stroke2_.reset();
     points_.clear();
@@ -502,8 +530,8 @@ class SkeqiStrokeFitter {
       int start_index, int end_index, Pt2f left_tangent, Pt2f right_tangent);
 
   shared_ptr<Page> page_;
-  shared_ptr<Stroke> stroke_;
-  shared_ptr<Stroke> stroke2_;
+  StrokePtr stroke_;
+  StrokePtr stroke2_;
 
   std::vector<Pt2f> points_;
   std::vector<float> params_;
@@ -520,7 +548,6 @@ int64 SkeqiStrokeFitter::s_next_fitter_id = 1;
 void SkeqiStrokeFitter::FitSampleRange(
     int start_index, int end_index, Pt2f left_tangent, Pt2f right_tangent) {
   ASSERT(end_index > start_index);
-
   if (end_index - start_index == 1) {
     // Only two points... use a heuristic.
     // TODO: Double-check this heuristic (perhaps normalization needed?)
@@ -531,6 +558,14 @@ void SkeqiStrokeFitter::FitSampleRange(
     line.pts[3] = points_[end_index];
     line.pts[1] = line.pts[0] + (left_tangent * 0.25f);
     line.pts[2] = line.pts[3] + (right_tangent * 0.25f);
+    ASSERT(!std::isnan(line.pts[0].x));
+    ASSERT(!std::isnan(line.pts[0].y));
+    ASSERT(!std::isnan(line.pts[1].x));
+    ASSERT(!std::isnan(line.pts[1].y));
+    ASSERT(!std::isnan(line.pts[2].x));
+    ASSERT(!std::isnan(line.pts[2].y));
+    ASSERT(!std::isnan(line.pts[3].x));
+    ASSERT(!std::isnan(line.pts[3].y));
     path_.push_back(line);
     return;
   }
@@ -558,6 +593,14 @@ void SkeqiStrokeFitter::FitSampleRange(
 
   // The current fit is good enough... add it to the path and stop recursion.
   if (max_error < error_threshold_) {
+    ASSERT(!std::isnan(bez.pts[0].x));
+    ASSERT(!std::isnan(bez.pts[0].y));
+    ASSERT(!std::isnan(bez.pts[1].x));
+    ASSERT(!std::isnan(bez.pts[1].y));
+    ASSERT(!std::isnan(bez.pts[2].x));
+    ASSERT(!std::isnan(bez.pts[2].y));
+    ASSERT(!std::isnan(bez.pts[3].x));
+    ASSERT(!std::isnan(bez.pts[3].y));
     path_.push_back(bez);
     return;
   }
@@ -575,7 +618,18 @@ class SkeqiTouchHandler : public ui::TouchHandler {
   SkeqiTouchHandler(shared_ptr<Page> page) : page_(page) {}
 
   void TouchesBegan(const std::vector<ui::Touch>* touches) override {
-    for (auto touch : *touches) {
+    // If there are 5 simultanous touches, run tests.
+    // TODO: some other way to invoke tests.
+    if (fitters_.size() == 4) {
+      for (auto& fitter : fitters_) {
+        fitter.second->CancelStroke();
+      }
+      fitters_.clear();
+      Qi::RunAllTests();
+      return;
+    }
+
+    for (auto& touch : *touches) {
       ASSERT(fitters_.find(touch) == fitters_.end());
       auto& fitter = (fitters_[touch] = make_unique<SkeqiStrokeFitter>(page_));
       fitter->StartStroke(GetTouchPosition(touch));
@@ -583,20 +637,34 @@ class SkeqiTouchHandler : public ui::TouchHandler {
   }
 
   void TouchesCancelled(const std::vector<ui::Touch>* touches) override {
-    ASSERT(false);  // not implemented
+    for (auto& touch : *touches) {
+      auto it = fitters_.find(touch);
+      if (it != fitters_.end()) {
+        it->second->CancelStroke();
+        fitters_.erase(it);
+      }
+    }
   }
 
   void TouchesMoved(const std::vector<ui::Touch>* touches) override {
-    for (auto touch : *touches) {
+    for (auto& touch : *touches) {
       auto it = fitters_.find(touch);
+      if (it == fitters_.end()) {
+        // TODO: Used for running tests; see TouchesBegan().
+        continue;
+      }
       ASSERT(it != fitters_.end());
       it->second->AddSamplePoint(GetTouchPosition(touch));
     }
   }
 
   void TouchesEnded(const std::vector<ui::Touch>* touches) override {
-    for (auto touch : *touches) {
+    for (auto& touch : *touches) {
       auto it = fitters_.find(touch);
+      if (it == fitters_.end()) {
+        // TODO: Used for running tests; see TouchesBegan().
+        continue;
+      }
       ASSERT(it != fitters_.end());
       it->second->AddSamplePoint(GetTouchPosition(touch));
       it->second->FinishStroke();

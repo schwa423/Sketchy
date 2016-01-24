@@ -7,7 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		030269E61C1D170C00474958 /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 030269E51C1D170C00474958 /* gtest-all.cc */; };
 		030D02221B19B0C100116C90 /* skeqi-dbg.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 030D02211B19B0C100116C90 /* skeqi-dbg.bundle */; };
+		0318D8AA1C4C532E00F1202F /* runner_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8A71C4C532E00F1202F /* runner_ios.mm */; };
+		0318D8B11C4C64B000F1202F /* threadrunner.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8AF1C4C64B000F1202F /* threadrunner.cc */; };
+		0318D8B51C4C6B0300F1202F /* runner_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8B21C4C6B0300F1202F /* runner_test.cc */; };
+		0318D8B61C4C6B0300F1202F /* testutils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8B41C4C6B0300F1202F /* testutils.mm */; };
+		0318D8BB1C4EA60D00F1202F /* cache_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8B81C4EA60D00F1202F /* cache_test.cc */; };
+		0318D8BC1C4EA60D00F1202F /* inmemorycache.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8BA1C4EA60D00F1202F /* inmemorycache.cc */; };
+		0318D8C01C4EA7C700F1202F /* cache.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8BF1C4EA7C700F1202F /* cache.cc */; };
+		0318D8C31C4EC0AD00F1202F /* sqlitecache.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8C11C4EC0AD00F1202F /* sqlitecache.cc */; };
+		0318D8C51C4F001500F1202F /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0318D8C41C4F001500F1202F /* libsqlite3.tbd */; };
+		0318D8C71C544E1B00F1202F /* testutils.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8C61C544E1B00F1202F /* testutils.cc */; };
+		0318D8C91C54591D00F1202F /* qi.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8C81C54591D00F1202F /* qi.mm */; };
 		031D89A01B4C46D0003DFB0E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 031D899F1B4C46D0003DFB0E /* main.m */; };
 		031D89A21B4C4746003DFB0E /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 031D89A11B4C4746003DFB0E /* AppDelegate.mm */; };
 		031E5FD91BD8D72E006EC625 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 031E5FD81BD8D72E006EC625 /* MetalKit.framework */; };
@@ -65,7 +77,6 @@
 		03E6D38D1B2387C9007A38B3 /* qi.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D38C1B2387C9007A38B3 /* qi.cc */; };
 		03E6D3961B238C47007A38B3 /* server.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D3941B238C47007A38B3 /* server.cc */; };
 		03E6D39A1B238C51007A38B3 /* server_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 03E6D3991B238C51007A38B3 /* server_ios.mm */; };
-		03F981211C1D0B540096976C /* changelist.cc in Sources */ = {isa = PBXBuildFile; fileRef = 03F9811F1C1D0B540096976C /* changelist.cc */; };
 		03FA760A1AD7EA2500A56C06 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA76091AD7EA2500A56C06 /* GameViewController.swift */; };
 		03FA760C1AD7EA2500A56C06 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 03FA760B1AD7EA2500A56C06 /* Shaders.metal */; };
 		03FA760F1AD7EA2500A56C06 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03FA760D1AD7EA2500A56C06 /* Main.storyboard */; };
@@ -101,7 +112,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		030269E51C1D170C00474958 /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-all.cc"; path = "../third-party/googletest/googletest/src/gtest-all.cc"; sourceTree = "<group>"; };
 		030D02211B19B0C100116C90 /* skeqi-dbg.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "skeqi-dbg.bundle"; sourceTree = "<group>"; };
+		0318D8A61C4C532E00F1202F /* runner_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = runner_ios.h; path = ../base/port_ios/runner_ios.h; sourceTree = "<group>"; };
+		0318D8A71C4C532E00F1202F /* runner_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = runner_ios.mm; path = ../base/port_ios/runner_ios.mm; sourceTree = "<group>"; };
+		0318D8A91C4C532E00F1202F /* runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = runner.h; path = ../base/runner.h; sourceTree = "<group>"; };
+		0318D8AF1C4C64B000F1202F /* threadrunner.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = threadrunner.cc; path = ../base/threadrunner.cc; sourceTree = "<group>"; };
+		0318D8B01C4C64B000F1202F /* threadrunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = threadrunner.h; path = ../base/threadrunner.h; sourceTree = "<group>"; };
+		0318D8B21C4C6B0300F1202F /* runner_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = runner_test.cc; path = ../base/test/runner_test.cc; sourceTree = "<group>"; };
+		0318D8B31C4C6B0300F1202F /* testutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = testutils.h; path = ../base/test/testutils.h; sourceTree = "<group>"; };
+		0318D8B41C4C6B0300F1202F /* testutils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = testutils.mm; path = ../base/test/testutils.mm; sourceTree = "<group>"; };
+		0318D8B81C4EA60D00F1202F /* cache_test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cache_test.cc; path = test/cache_test.cc; sourceTree = "<group>"; };
+		0318D8B91C4EA60D00F1202F /* inmemorycache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = inmemorycache.h; path = test/inmemorycache.h; sourceTree = "<group>"; };
+		0318D8BA1C4EA60D00F1202F /* inmemorycache.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = inmemorycache.cc; path = test/inmemorycache.cc; sourceTree = "<group>"; };
+		0318D8BE1C4EA7BE00F1202F /* cachetypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cachetypes.h; sourceTree = "<group>"; };
+		0318D8BF1C4EA7C700F1202F /* cache.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cache.cc; sourceTree = "<group>"; };
+		0318D8C11C4EC0AD00F1202F /* sqlitecache.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sqlitecache.cc; sourceTree = "<group>"; };
+		0318D8C21C4EC0AD00F1202F /* sqlitecache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlitecache.h; sourceTree = "<group>"; };
+		0318D8C41C4F001500F1202F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		0318D8C61C544E1B00F1202F /* testutils.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testutils.cc; path = ../base/test/testutils.cc; sourceTree = "<group>"; };
+		0318D8C81C54591D00F1202F /* qi.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = qi.mm; path = ../base/port_ios/qi.mm; sourceTree = "<group>"; };
 		031D899F1B4C46D0003DFB0E /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		031D89A11B4C4746003DFB0E /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		031D89A31B4C4767003DFB0E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -204,8 +234,6 @@
 		03E6D3981B238C51007A38B3 /* server_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = server_ios.h; path = port_ios/server_ios.h; sourceTree = "<group>"; };
 		03E6D3991B238C51007A38B3 /* server_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = server_ios.mm; path = port_ios/server_ios.mm; sourceTree = "<group>"; };
 		03F9811D1C1CFA140096976C /* cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cache.h; sourceTree = "<group>"; };
-		03F9811F1C1D0B540096976C /* changelist.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = changelist.cc; path = impl/changelist.cc; sourceTree = "<group>"; };
-		03F981201C1D0B540096976C /* changelist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = changelist.h; path = impl/changelist.h; sourceTree = "<group>"; };
 		03FA76021AD7EA2500A56C06 /* skeqi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = skeqi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03FA76061AD7EA2500A56C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03FA76091AD7EA2500A56C06 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -226,6 +254,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0318D8C51C4F001500F1202F /* libsqlite3.tbd in Frameworks */,
 				031E5FD91BD8D72E006EC625 /* MetalKit.framework in Frameworks */,
 				03C5E2411B47144D00C41423 /* libkj.a in Frameworks */,
 				03C5E23D1B47144D00C41423 /* libcapnp-rpc.a in Frameworks */,
@@ -247,9 +276,60 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		030269D31C1D129600474958 /* gtest */ = {
+			isa = PBXGroup;
+			children = (
+				030269E51C1D170C00474958 /* gtest-all.cc */,
+			);
+			name = gtest;
+			sourceTree = "<group>";
+		};
+		0318D8AC1C4C533700F1202F /* base */ = {
+			isa = PBXGroup;
+			children = (
+				0318D8B71C4C6B0900F1202F /* test */,
+				0318D8AF1C4C64B000F1202F /* threadrunner.cc */,
+				0318D8B01C4C64B000F1202F /* threadrunner.h */,
+				0318D8A91C4C532E00F1202F /* runner.h */,
+				0318D8AD1C4C534000F1202F /* port_ios */,
+			);
+			name = base;
+			sourceTree = "<group>";
+		};
+		0318D8AD1C4C534000F1202F /* port_ios */ = {
+			isa = PBXGroup;
+			children = (
+				0318D8A61C4C532E00F1202F /* runner_ios.h */,
+				0318D8A71C4C532E00F1202F /* runner_ios.mm */,
+			);
+			name = port_ios;
+			sourceTree = "<group>";
+		};
+		0318D8B71C4C6B0900F1202F /* test */ = {
+			isa = PBXGroup;
+			children = (
+				0318D8C61C544E1B00F1202F /* testutils.cc */,
+				0318D8B21C4C6B0300F1202F /* runner_test.cc */,
+				0318D8B31C4C6B0300F1202F /* testutils.h */,
+				0318D8B41C4C6B0300F1202F /* testutils.mm */,
+			);
+			name = test;
+			sourceTree = "<group>";
+		};
+		0318D8BD1C4EA61100F1202F /* test */ = {
+			isa = PBXGroup;
+			children = (
+				0318D8B81C4EA60D00F1202F /* cache_test.cc */,
+				0318D8B91C4EA60D00F1202F /* inmemorycache.h */,
+				0318D8BA1C4EA60D00F1202F /* inmemorycache.cc */,
+			);
+			name = test;
+			sourceTree = "<group>";
+		};
 		032D32821AF56D9500F473D4 /* third-party */ = {
 			isa = PBXGroup;
 			children = (
+				030269D31C1D129600474958 /* gtest */,
 				032D32831AF56D9F00F473D4 /* cornucopia-lib */,
 			);
 			name = "third-party";
@@ -360,6 +440,8 @@
 		0367BDF21B05EED90080DAC5 /* qi */ = {
 			isa = PBXGroup;
 			children = (
+				0318D8C81C54591D00F1202F /* qi.mm */,
+				0318D8AC1C4C533700F1202F /* base */,
 				03F9811C1C1CF9C40096976C /* disk */,
 				03E6D38C1B2387C9007A38B3 /* qi.cc */,
 				0367BDF41B05EF070080DAC5 /* qi.h */,
@@ -440,20 +522,15 @@
 		03F9811C1C1CF9C40096976C /* disk */ = {
 			isa = PBXGroup;
 			children = (
-				03F9811E1C1CFA370096976C /* impl */,
+				0318D8C11C4EC0AD00F1202F /* sqlitecache.cc */,
+				0318D8C21C4EC0AD00F1202F /* sqlitecache.h */,
+				0318D8BF1C4EA7C700F1202F /* cache.cc */,
+				0318D8BE1C4EA7BE00F1202F /* cachetypes.h */,
+				0318D8BD1C4EA61100F1202F /* test */,
 				03F9811D1C1CFA140096976C /* cache.h */,
 			);
 			name = disk;
 			path = ../disk;
-			sourceTree = "<group>";
-		};
-		03F9811E1C1CFA370096976C /* impl */ = {
-			isa = PBXGroup;
-			children = (
-				03F9811F1C1D0B540096976C /* changelist.cc */,
-				03F981201C1D0B540096976C /* changelist.h */,
-			);
-			name = impl;
 			sourceTree = "<group>";
 		};
 		03FA75F91AD7EA2500A56C06 = {
@@ -534,6 +611,7 @@
 		1841EBDF86A12D5652FF24FD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0318D8C41C4F001500F1202F /* libsqlite3.tbd */,
 				031E5FD81BD8D72E006EC625 /* MetalKit.framework */,
 				0369971F1B4A26E8008D58D3 /* luajit */,
 				03C5E2421B47145600C41423 /* capnproto */,
@@ -707,21 +785,28 @@
 				032D32D01AF56E0500F473D4 /* Parameters.cpp in Sources */,
 				0367BDFB1B05EF330080DAC5 /* buffer_ios.mm in Sources */,
 				032D32D31AF56E0500F473D4 /* Polyline.cpp in Sources */,
+				0318D8B51C4C6B0300F1202F /* runner_test.cc in Sources */,
 				032D32CC1AF56E0500F473D4 /* Fresnel.cpp in Sources */,
+				030269E61C1D170C00474958 /* gtest-all.cc in Sources */,
 				032D32C91AF56E0500F473D4 /* Debugging.cpp in Sources */,
 				032D32C01AF56E0500F473D4 /* Algorithm.cpp in Sources */,
+				0318D8C01C4EA7C700F1202F /* cache.cc in Sources */,
+				0318D8BB1C4EA60D00F1202F /* cache_test.cc in Sources */,
 				0367BDFD1B05EF330080DAC5 /* device_ios.mm in Sources */,
 				0367BE061B0927000080DAC5 /* QiControllerDelegate.mm in Sources */,
 				034F06A41ADA6951005A439A /* Stroke.swift in Sources */,
 				03E6D3961B238C47007A38B3 /* server.cc in Sources */,
 				03474FE31AD7F66B001240DD /* QiController.swift in Sources */,
-				03F981211C1D0B540096976C /* changelist.cc in Sources */,
+				0318D8AA1C4C532E00F1202F /* runner_ios.mm in Sources */,
 				032D32D61AF56E0500F473D4 /* PrimitiveFitUtils.cpp in Sources */,
+				0318D8C31C4EC0AD00F1202F /* sqlitecache.cc in Sources */,
 				032D32C41AF56E0500F473D4 /* ClothoidProjector.cpp in Sources */,
 				032D32D81AF56E0500F473D4 /* Resampler.cpp in Sources */,
 				032D32D71AF56E0500F473D4 /* PrimitiveSequence.cpp in Sources */,
 				032D32D91AF56E0500F473D4 /* SimpleAPI.cpp in Sources */,
 				032D32CE1AF56E0500F473D4 /* Line.cpp in Sources */,
+				0318D8BC1C4EA60D00F1202F /* inmemorycache.cc in Sources */,
+				0318D8C71C544E1B00F1202F /* testutils.cc in Sources */,
 				032D32DB1AF56E0500F473D4 /* TwoCurveCombine.cpp in Sources */,
 				032D32C31AF56E0500F473D4 /* Clothoid.cpp in Sources */,
 				032D32CB1AF56E0500F473D4 /* Fitter.cpp in Sources */,
@@ -733,12 +818,15 @@
 				0367BE011B0661AD0080DAC5 /* Skeqi_iOS.mm in Sources */,
 				032D32CD1AF56E0500F473D4 /* GraphConstructor.cpp in Sources */,
 				032D32DA1AF56E0500F473D4 /* Solver.cpp in Sources */,
+				0318D8B11C4C64B000F1202F /* threadrunner.cc in Sources */,
 				032D32D11AF56E0500F473D4 /* PathFinder.cpp in Sources */,
 				032D32C71AF56E0500F473D4 /* CornerDetector.cpp in Sources */,
 				032D32CA1AF56E0500F473D4 /* ErrorComputer.cpp in Sources */,
 				032D32CF1AF56E0500F473D4 /* Oversketcher.cpp in Sources */,
 				03FA760A1AD7EA2500A56C06 /* GameViewController.swift in Sources */,
+				0318D8C91C54591D00F1202F /* qi.mm in Sources */,
 				032D32C81AF56E0500F473D4 /* CurvePrimitive.cpp in Sources */,
+				0318D8B61C4C6B0300F1202F /* testutils.mm in Sources */,
 				035F54C61BB9103C00BE6FD4 /* Page.swift in Sources */,
 				032D32D51AF56E0500F473D4 /* PrimitiveFitter.cpp in Sources */,
 				032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */,
@@ -831,13 +919,15 @@
 					$PROJECT_DIR/Pods/Headers/Public/GoogleProtobufV3,
 					"$(A_THIRD_PARTY_DIR)/capnproto/include",
 					"$(A_THIRD_PARTY_DIR)/luajit/include",
+					"$PROJECT_DIR/../third-party/googletest/googletest/include",
+					"$PROJECT_DIR/../third-party/googletest/googletest/",
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(EIGEN_DIR)",
 					"$(GLM_DIR)",
+					$PROJECT_DIR/Pods/Headers/Public,
 					$PROJECT_DIR/../..,
 					$PROJECT_DIR/Pods/Headers/Public/CocoaLumberjack,
-					$PROJECT_DIR/Pods/Headers/Public,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (
@@ -898,13 +988,15 @@
 					$PROJECT_DIR/Pods/Headers/Public/GoogleProtobufV3,
 					"$(A_THIRD_PARTY_DIR)/capnproto/include",
 					"$(A_THIRD_PARTY_DIR)/luajit/include",
+					"$PROJECT_DIR/../third-party/googletest/googletest/include",
+					"$PROJECT_DIR/../third-party/googletest/googletest/",
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(EIGEN_DIR)",
 					"$(GLM_DIR)",
+					$PROJECT_DIR/Pods/Headers/Public,
 					$PROJECT_DIR/../..,
 					$PROJECT_DIR/Pods/Headers/Public/CocoaLumberjack,
-					$PROJECT_DIR/Pods/Headers/Public,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LIBRARY_SEARCH_PATHS = (

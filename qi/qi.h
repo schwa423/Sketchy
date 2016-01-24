@@ -1,8 +1,11 @@
 #ifndef _QI_Qi_h_
 #define _QI_Qi_h_
 
+#include "qi/base/types.h"
+
 #include <memory>
 #include <mutex>
+#include <string>
 
 #define QI_DEBUG 1
 
@@ -15,12 +18,22 @@
 
 namespace qi {
 
-typedef int64_t int64;
-typedef uint64_t uint64;
-
 class Qi {
  public:
   static void Init();
+  static void Shutdown();
+
+  static int RunAllTests();
+
+  // Run |closure| asynchronously on a background thread.  The work done by
+  // |closure| should be CPU-intensive; it shouldn't block waiting for timers,
+  // synchronous I/O, etc.
+  static void Run(std::function<void()> closure);
+
+  // Valid values for |desc|:
+  // - "docs"
+  // TODO: better documentation.
+  static std::string GetDirectoryPath(std::string desc);
 };
 
 using std::shared_ptr;
@@ -28,6 +41,8 @@ using std::unique_ptr;
 using std::weak_ptr;
 using std::make_shared;
 using std::make_unique;
+// TODO: find/replace "std::move" with "move".
+using std::move;
 
 using Mutex = std::mutex;
 using LockGuard = std::lock_guard<std::mutex>;

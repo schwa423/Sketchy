@@ -10,8 +10,10 @@
 
 #import "AppDelegate.h"
 
+#include "qi/qi.h"
+#include "qi/dbg/server.h"
+
 #include <iostream>
-#include "qi/dbg/port_ios/server_ios.h"
 
 @interface AppDelegate ()
 
@@ -22,7 +24,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    qi::dbg::Server::Init<qi::dbg::port::Server_iOS>(12345);
+    qi::Qi::Init();
     return YES;
 }
 
@@ -48,7 +50,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    qi::Qi::Shutdown();
 }
 
 @end
-
