@@ -1,6 +1,18 @@
 import Metal
 import MetalKit
 
+class PageObserver : Equatable {
+  typealias ObserverFunc = (Stroke2!)->Void
+  let onFinalize: ObserverFunc
+  required init(onFinalize _onFinalize: ObserverFunc!) {
+    onFinalize = _onFinalize
+  }
+}
+
+func ==(lhs: PageObserver, rhs: PageObserver) -> Bool {
+  return lhs === rhs
+}
+
 class Page2 {
   let device: MTLDevice
   let library: MTLLibrary
@@ -10,6 +22,8 @@ class Page2 {
   var strokes = [Stroke2]()
   var dirtyStrokes = [Stroke2]()
   var nextStrokeIndex = 0
+
+  private var observers = [PageObserver]()
 
   init?(device: MTLDevice, library: MTLLibrary) {
     self.device = device
@@ -27,6 +41,14 @@ class Page2 {
     // Set up compute pipeline.
     let kernelFunction = library.newFunctionWithName("strokeBezierTesselate")!
     try! computePipeline = device.newComputePipelineStateWithFunction(kernelFunction)
+  }
+
+  // Add an observer that is called whenever a Stroke is finalized.
+  func addObserver(observer: PageObserver!) { observers.append(observer) }
+  func removeObserver(observer: PageObserver!) {
+    if let index = observers.indexOf(observer) {
+      observers.removeAtIndex(index)
+    }
   }
 
   func update(commandQueue: MTLCommandQueue) {
@@ -69,6 +91,10 @@ class Page2 {
 
   func finalizeStroke(stroke: Stroke2) {
     // TODO: perhaps put all strokes into one shared buffer.
+
+    for observer in observers {
+      observer.onFinalize(stroke)
+    }
   }
 
   private func tesselateStroke(stroke: Stroke2, encoder: MTLComputeCommandEncoder) {
@@ -135,6 +161,8 @@ class Stroke2 : CustomStringConvertible {
   var vertexCount: Int = 0
   var offset: Int = 0
   var buffer: MTLBuffer?
+
+  var fromFirebase: Bool = false
 
   init(index: Int) {
     self.index = index
@@ -206,7 +234,6 @@ class StrokeFitter {
   var params = [Float]()
   var path = [Bezier3]()
   let errorThreshold = Float(0.0002)
-
 
   init(page: Page2) {
     self.page = page

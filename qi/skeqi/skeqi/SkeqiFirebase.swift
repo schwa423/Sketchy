@@ -127,7 +127,7 @@ class SkeqiFirebase {
 
   private let googleSignIn = GoogleSignIn()
 
-  private let firebase : Firebase
+  let firebase : Firebase
 
   private var firebaseAuthData : FAuthData?
   private let handles = []
