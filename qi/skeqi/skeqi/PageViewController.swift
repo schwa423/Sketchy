@@ -23,7 +23,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
 
     super.init(coder: aDecoder)
 
-    firebase.signIn(delegate: self).onSuccess { data in
+    firebase.signIn(delegate: self).then { data in
       print("ABOUT TO REQUEST DATA FOR PAGE!!!!!")
     }
   }

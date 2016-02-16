@@ -1,29 +1,26 @@
 import Firebase
 
-//import GoogleSignIn
-
-import BrightFutures
-import Result
+import PromiseKit
 
 extension Firebase {
-  func observeSingleEventOfType(eventType: FEventType) -> Future<FDataSnapshot, BrightFutures.NoError> {
-    let promise = Promise<FDataSnapshot, BrightFutures.NoError>()
-    observeSingleEventOfType(eventType, withBlock: { snapshot in
-      promise.success(snapshot)
-    })
-    return promise.future
+  func observeSingleEventOfType(eventType: FEventType) -> Promise<FDataSnapshot> {
+    return Promise<FDataSnapshot>() { fulfill, reject in
+      observeSingleEventOfType(eventType, withBlock: { snapshot in
+        fulfill(snapshot)
+      })
+    }
   }
 
-  func authWithOAuthProvider(provider: String, token: String) -> Future<FAuthData, NSError> {
-    let promise = Promise<FAuthData, NSError>()
-    authWithOAuthProvider(provider, token: token, withCompletionBlock: { (error, authData) in
-      if let error = error {
-        promise.failure(error)
-      } else {
-        promise.success(authData)
-      }
-    })
-    return promise.future
+  func authWithOAuthProvider(provider: String, token: String) -> Promise<FAuthData> {
+    return Promise<FAuthData> { fulfill, reject in
+      authWithOAuthProvider(provider, token: token, withCompletionBlock: { (error, authData) in
+        if let err = error {
+          reject(err)
+        } else {
+          fulfill(authData)
+        }
+      })
+    }
   }
 }
 
@@ -35,7 +32,7 @@ class GoogleSignIn : GIDSignInDelegate {
   }
 
   var signInStatus : SignInStatus = .Maybe
-  var signInPromise : Promise<GIDGoogleUser, NSError>?
+  var signInPromise : (promise: Promise<GIDGoogleUser>, fulfill: (GIDGoogleUser)->Void, reject: (ErrorType)->Void)?
   var signedInUser : GIDGoogleUser?
 
   required init() {
@@ -45,40 +42,38 @@ class GoogleSignIn : GIDSignInDelegate {
     GIDSignIn.sharedInstance().delegate = self
   }
 
-  func signIn(delegate: GIDSignInUIDelegate!) -> Future<GIDGoogleUser, NSError> {
-    if let signInPromise = signInPromise {
+  func signIn(delegate: GIDSignInUIDelegate!) -> Promise<GIDGoogleUser> {
+    if let triple = signInPromise {
       assert(signInStatus != .Yes)
-      return signInPromise.future
-    } else if let signedInUser = signedInUser {
+      return triple.promise
+    } else if let user = signedInUser {
       assert(signInStatus == .Yes)
-      let promise = Promise<GIDGoogleUser, NSError>()
-      promise.success(signedInUser)
-      return promise.future
+      return Promise<GIDGoogleUser> { fulfill, reject in fulfill(user) }
     } else {
       assert(signInStatus != .Yes)
       assert(GIDSignIn.sharedInstance().uiDelegate == nil)
       GIDSignIn.sharedInstance().uiDelegate = delegate
 
-      let promise = Promise<GIDGoogleUser, NSError>()
-      signInPromise = promise
+      let triple = Promise<GIDGoogleUser>.pendingPromise()
+      signInPromise = triple
       if signInStatus == .No {
         GIDSignIn.sharedInstance().signIn()
       } else {
         GIDSignIn.sharedInstance().signInSilently()
       }
-      return promise.future
+      return triple.promise
     }
   }
 
   func signOut() {
-    if let promise = signInPromise {
+    if let triple = signInPromise {
       assert(signInStatus != .Yes, "Promise should have been cleared")
       signInPromise = nil
       signInStatus = .No
       GIDSignIn.sharedInstance().signOut()
 
       // TODO: sensible cancellation code
-      promise.failure(NSError(domain: "Qi", code: 123, userInfo: nil))
+      triple.reject(NSError(domain: "Qi", code: 123, userInfo: nil))
 
       // TODO: provide way for auth-users to be notified of un-auth.
       //firebase.unauth()
@@ -102,9 +97,9 @@ class GoogleSignIn : GIDSignInDelegate {
         signInStatus = .Yes
         signedInUser = user
         GIDSignIn.sharedInstance().uiDelegate = nil
-        let promise = signInPromise!
+        let triple = signInPromise!
         signInPromise = nil
-        promise.success(user)
+        triple.fulfill(user)
       } else {
         if (signInStatus == .No) {
           // Non-silent sign-in failed.  Give up.
@@ -179,34 +174,28 @@ class SkeqiFirebase {
     })
   }
 
-  func signIn(delegate delegate: GIDSignInUIDelegate!) -> Future<FAuthData, NSError> {
-    let promise = Promise<FAuthData, NSError>()
-
-    googleSignIn.signIn(delegate)
-      .onSuccess { user in
-        let token = user.authentication.accessToken
-        self.firebase.authWithOAuthProvider("google", token: token, withCompletionBlock: { (error, authData) in
-          if let error = error {
-            print("OAuth failed")
-            promise.failure(error)
-          } else {
-            // TODO: also return "auth lost" future that clients can wait on
-            let providerData = authData.providerData as! Dictionary<String, AnyObject>
-            let name: String = providerData["displayName"] as! String;
-            let email: String = providerData["email"] as! String;
-            print("=-=-=-=-=-= Firebase sign-in successful for \(name) (\(email)).")
-            promise.success(authData)
-          }
-        })
-      }
-      .onFailure { error in
-        print("Failed to obtain Google login token: \(error)")
-        promise.failure(error)
-      }
-
-    return promise.future
+  func signIn(delegate delegate: GIDSignInUIDelegate!) -> Promise<FAuthData> {
+    return googleSignIn.signIn(delegate).then { user in
+      let triple = Promise<FAuthData>.pendingPromise()
+      let token = user.authentication.accessToken
+      self.firebase.authWithOAuthProvider("google", token: token, withCompletionBlock: { (error, authData) in
+        if let err = error {
+          print("OAuth failed")
+          triple.reject(err)
+        } else {
+          // TODO: also return "auth lost" future that clients can wait on
+          let providerData = authData.providerData as! Dictionary<String, AnyObject>
+          let name: String = providerData["displayName"] as! String;
+          let email: String = providerData["email"] as! String;
+          print("=-=-=-=-=-= Firebase sign-in successful for \(name) (\(email)).")
+          triple.fulfill(authData)
+        }
+      })
+      return triple.promise
+    }
   }
 }
+
 
 class SkeqiFirebasePage {
 

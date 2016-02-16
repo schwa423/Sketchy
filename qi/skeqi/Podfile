@@ -6,7 +6,7 @@ platform :ios, '9.0'
 #pod 'gRPC'
 pod 'Google/SignIn'
 
-pod 'BrightFutures'
+pod "PromiseKit", "~> 3.0"
 
 use_frameworks!
 pod 'Firebase', '>= 2.5.0'
