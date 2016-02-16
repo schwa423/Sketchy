@@ -3,3 +3,5 @@
 //
 
 #import "Skeqi_iOS.h"
+#import <Google/SignIn.h>
+#import <Firebase/Firebase.h>

@@ -39,14 +39,18 @@ class RenderableStroke: Stroke {
     }
 }
 
-class QiController: GameViewController {
+class QiController: GameViewController, GIDSignInUIDelegate {
   var delegate : QiControllerDelegate
   var stroke : RenderableStroke?
 
-  required init?(coder aDecoder: NSCoder) {
-    delegate = Skeqi_iOS()
+  // TODO: this should be a global Firebase obtained from the AppDelegate.
+  let firebase: SkeqiFirebase
 
-    super.init(coder: aDecoder)
+  required init?(coder: NSCoder) {
+    delegate = Skeqi_iOS()
+    firebase = SkeqiFirebase(url: "https://blistering-inferno-9169.firebaseio.com/")
+
+    super.init(coder: coder)
 
     let π = Float(M_PI)
     //        let startRadians : Float = π*7/6
@@ -63,7 +67,6 @@ class QiController: GameViewController {
     //        let radiansChangeList : [Float] = [π/2]
 
     stroke = RenderableStroke(ArcList(startPoint: startPoint, startRadians: startRadians, radiusList: radiusList, radiansChangeList: radiansChangeList))
-
   }
 
   override func viewDidLoad() {
@@ -71,6 +74,8 @@ class QiController: GameViewController {
 
     // TODO: clear queue when viewDidUnload().
     delegate.metalQueue = commandQueue;
+
+    firebase.signIn(delegate: self)
   }
 
   override func update() {

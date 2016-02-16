@@ -59,6 +59,7 @@
 		03474FE51AD8036C001240DD /* Arc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE41AD8036C001240DD /* Arc.swift */; };
 		034F06A01ADA0148005A439A /* Arc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03474FE41AD8036C001240DD /* Arc.swift */; };
 		034F06A41ADA6951005A439A /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 034F06A31ADA6951005A439A /* Stroke.swift */; };
+		0354FAF11C6FFE7B00B34DC9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0354FAF01C6FFE7B00B34DC9 /* GoogleService-Info.plist */; };
 		035F54C41BB766E500BE6FD4 /* CubicBezier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035F54C31BB766E500BE6FD4 /* CubicBezier.swift */; };
 		035F54C61BB9103C00BE6FD4 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035F54C51BB9103C00BE6FD4 /* Page.swift */; };
 		0367BDFB1B05EF330080DAC5 /* buffer_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0367BDF81B05EF330080DAC5 /* buffer_ios.mm */; };
@@ -68,6 +69,8 @@
 		0367BE111B0B2ABD0080DAC5 /* cubicbezier.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE0F1B0B2ABD0080DAC5 /* cubicbezier.cc */; };
 		0367BE141B110E870080DAC5 /* pen.metal in Sources */ = {isa = PBXBuildFile; fileRef = 0367BE131B110E870080DAC5 /* pen.metal */; };
 		036997211B4A270E008D58D3 /* libluajit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 036997201B4A270E008D58D3 /* libluajit.a */; };
+		03A07E631C72896800E0DC7C /* SkeqiFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */; };
+		03A07E651C729AC900E0DC7C /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A07E641C729AC900E0DC7C /* PageViewController.swift */; };
 		03C5E23D1B47144D00C41423 /* libcapnp-rpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E2381B47144D00C41423 /* libcapnp-rpc.a */; };
 		03C5E23E1B47144D00C41423 /* libcapnp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E2391B47144D00C41423 /* libcapnp.a */; };
 		03C5E23F1B47144D00C41423 /* libcapnpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E23A1B47144D00C41423 /* libcapnpc.a */; };
@@ -83,7 +86,7 @@
 		03FA76111AD7EA2500A56C06 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03FA76101AD7EA2500A56C06 /* Images.xcassets */; };
 		03FA76141AD7EA2500A56C06 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FA76121AD7EA2500A56C06 /* LaunchScreen.xib */; };
 		03FA76201AD7EA2500A56C06 /* skeqiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA761F1AD7EA2500A56C06 /* skeqiTests.swift */; };
-		83AEDF7B7E11DBF38137B1D6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0A1D26E5B75F8A3B13AE5EE /* libPods.a */; };
+		07C8AC28F92CC7A42ADEC0EB /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7200935AC6A0C0911BF412A /* Pods.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -203,6 +206,7 @@
 		03474FE41AD8036C001240DD /* Arc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Arc.swift; path = skeqi/Arc.swift; sourceTree = "<group>"; };
 		034F06A21ADA2103005A439A /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = playgrounds/MyPlayground.playground; sourceTree = "<group>"; };
 		034F06A31ADA6951005A439A /* Stroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
+		0354FAF01C6FFE7B00B34DC9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		035F54C31BB766E500BE6FD4 /* CubicBezier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CubicBezier.swift; path = ../../page/CubicBezier.swift; sourceTree = "<group>"; };
 		035F54C51BB9103C00BE6FD4 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		0367BDF41B05EF070080DAC5 /* qi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = qi.h; path = ../qi.h; sourceTree = "<group>"; };
@@ -223,6 +227,9 @@
 		0367BE101B0B2ABD0080DAC5 /* cubicbezier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cubicbezier.h; path = ../pen/cubicbezier.h; sourceTree = "<group>"; };
 		0367BE131B110E870080DAC5 /* pen.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = pen.metal; path = ../pen/port_ios/pen.metal; sourceTree = "<group>"; };
 		036997201B4A270E008D58D3 /* libluajit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libluajit.a; path = "../third-party-build/luajit/lib/libluajit.a"; sourceTree = "<group>"; };
+		037C8C121C7007BE00AD9E09 /* libFirebase.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFirebase.a; path = "Pods/../build/Debug-iphoneos/libFirebase.a"; sourceTree = "<group>"; };
+		03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeqiFirebase.swift; sourceTree = "<group>"; };
+		03A07E641C729AC900E0DC7C /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		03C5E2381B47144D00C41423 /* libcapnp-rpc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcapnp-rpc.a"; path = "../third-party-build/capnproto/lib/libcapnp-rpc.a"; sourceTree = "<group>"; };
 		03C5E2391B47144D00C41423 /* libcapnp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcapnp.a; path = "../third-party-build/capnproto/lib/libcapnp.a"; sourceTree = "<group>"; };
 		03C5E23A1B47144D00C41423 /* libcapnpc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcapnpc.a; path = "../third-party-build/capnproto/lib/libcapnpc.a"; sourceTree = "<group>"; };
@@ -245,7 +252,7 @@
 		03FA761E1AD7EA2500A56C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03FA761F1AD7EA2500A56C06 /* skeqiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = skeqiTests.swift; sourceTree = "<group>"; };
 		3F2A24E6DD4F5D1E07DB369E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		B0A1D26E5B75F8A3B13AE5EE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7200935AC6A0C0911BF412A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD8B2D02168A4CA2409FD535 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -260,9 +267,9 @@
 				03C5E23D1B47144D00C41423 /* libcapnp-rpc.a in Frameworks */,
 				03C5E23E1B47144D00C41423 /* libcapnp.a in Frameworks */,
 				03C5E23F1B47144D00C41423 /* libcapnpc.a in Frameworks */,
-				83AEDF7B7E11DBF38137B1D6 /* libPods.a in Frameworks */,
 				036997211B4A270E008D58D3 /* libluajit.a in Frameworks */,
 				03C5E2401B47144D00C41423 /* libkj-async.a in Frameworks */,
+				07C8AC28F92CC7A42ADEC0EB /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +438,7 @@
 		035F54C21BB7669C00BE6FD4 /* page */ = {
 			isa = PBXGroup;
 			children = (
+				03A07E641C729AC900E0DC7C /* PageViewController.swift */,
 				035F54C31BB766E500BE6FD4 /* CubicBezier.swift */,
 				035F54C51BB9103C00BE6FD4 /* Page.swift */,
 			);
@@ -575,6 +583,7 @@
 				03FA76051AD7EA2500A56C06 /* Supporting Files */,
 				0367BDFF1B065FF60080DAC5 /* Skeqi_iOS.h */,
 				0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */,
+				03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */,
 				0367BE031B0671900080DAC5 /* skeqi-Swift-Wrapper.h */,
 				031D899F1B4C46D0003DFB0E /* main.m */,
 				031D89A11B4C4746003DFB0E /* AppDelegate.mm */,
@@ -586,6 +595,7 @@
 		03FA76051AD7EA2500A56C06 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0354FAF01C6FFE7B00B34DC9 /* GoogleService-Info.plist */,
 				03FA76061AD7EA2500A56C06 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -611,11 +621,12 @@
 		1841EBDF86A12D5652FF24FD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				037C8C121C7007BE00AD9E09 /* libFirebase.a */,
 				0318D8C41C4F001500F1202F /* libsqlite3.tbd */,
 				031E5FD81BD8D72E006EC625 /* MetalKit.framework */,
 				0369971F1B4A26E8008D58D3 /* luajit */,
 				03C5E2421B47145600C41423 /* capnproto */,
-				B0A1D26E5B75F8A3B13AE5EE /* libPods.a */,
+				B7200935AC6A0C0911BF412A /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -641,6 +652,7 @@
 				03FA75FF1AD7EA2500A56C06 /* Frameworks */,
 				03FA76001AD7EA2500A56C06 /* Resources */,
 				50AC7077D17854300573DAA3 /* Copy Pods Resources */,
+				8DBE0D8CF26C1CF1277C5814 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 				0346C9E31B46FADC00FD978D /* PBXBuildRule */,
@@ -716,6 +728,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				032D32C51AF56E0500F473D4 /* CMakeLists.txt in Resources */,
+				0354FAF11C6FFE7B00B34DC9 /* GoogleService-Info.plist in Resources */,
 				030D02221B19B0C100116C90 /* skeqi-dbg.bundle in Resources */,
 				03FA760F1AD7EA2500A56C06 /* Main.storyboard in Resources */,
 				0346C9DF1B46F9CB00FD978D /* page.capnp in Resources */,
@@ -767,6 +780,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		8DBE0D8CF26C1CF1277C5814 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -774,6 +802,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03A07E631C72896800E0DC7C /* SkeqiFirebase.swift in Sources */,
 				035F54C41BB766E500BE6FD4 /* CubicBezier.swift in Sources */,
 				03C5E2441B47402000C41423 /* page.capnp in Sources */,
 				03E6D39A1B238C51007A38B3 /* server_ios.mm in Sources */,
@@ -812,6 +841,7 @@
 				032D32CB1AF56E0500F473D4 /* Fitter.cpp in Sources */,
 				03474FE51AD8036C001240DD /* Arc.swift in Sources */,
 				032D32D41AF56E0500F473D4 /* Preprocessing.cpp in Sources */,
+				03A07E651C729AC900E0DC7C /* PageViewController.swift in Sources */,
 				031D89A21B4C4746003DFB0E /* AppDelegate.mm in Sources */,
 				0367BE141B110E870080DAC5 /* pen.metal in Sources */,
 				03E6D38D1B2387C9007A38B3 /* qi.cc in Sources */,
@@ -1047,6 +1077,7 @@
 					"$(inherited)",
 					"/Users/josh/hacking/mine/ios/Sketchy/qi/third-party-build/capnproto/lib",
 					"/Users/josh/hacking/mine/ios/Sketchy/qi/third-party-build/luajit/lib",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1086,6 +1117,7 @@
 					"$(inherited)",
 					"/Users/josh/hacking/mine/ios/Sketchy/qi/third-party-build/capnproto/lib",
 					"/Users/josh/hacking/mine/ios/Sketchy/qi/third-party-build/luajit/lib",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",

@@ -1,8 +1,14 @@
 source 'https://github.com/CocoaPods/Specs.git'
 source 'https://github.com/schwa423/Specs.git'
-platform :ios, '8.3'
+platform :ios, '9.0'
 #pod 'CocoaHTTPServer'
 #pod 'GoogleProtobufV3', '3.0.0-alpha-3'
-pod 'gRPC'
+#pod 'gRPC'
+pod 'Google/SignIn'
+
+pod 'BrightFutures'
+
+use_frameworks!
+pod 'Firebase', '>= 2.5.0'
 
 link_with 'skeqi'
