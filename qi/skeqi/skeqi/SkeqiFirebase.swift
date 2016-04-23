@@ -24,7 +24,7 @@ extension Firebase {
   }
 }
 
-class GoogleSignIn : GIDSignInDelegate {
+class GoogleSignIn : NSObject, GIDSignInDelegate {
   enum SignInStatus {
     case Yes
     case No
@@ -35,7 +35,8 @@ class GoogleSignIn : GIDSignInDelegate {
   var signInPromise : (promise: Promise<GIDGoogleUser>, fulfill: (GIDGoogleUser)->Void, reject: (ErrorType)->Void)?
   var signedInUser : GIDGoogleUser?
 
-  required init() {
+  override required init() {
+    super.init()
     var configureError:NSError?
     GGLContext.sharedInstance().configureWithError(&configureError)
     assert(configureError == nil, "Error configuring Google services: \(configureError)")
