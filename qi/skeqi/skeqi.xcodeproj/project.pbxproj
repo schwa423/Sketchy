@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		030269E61C1D170C00474958 /* gtest-all.cc in Sources */ = {isa = PBXBuildFile; fileRef = 030269E51C1D170C00474958 /* gtest-all.cc */; };
 		030D02221B19B0C100116C90 /* skeqi-dbg.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 030D02211B19B0C100116C90 /* skeqi-dbg.bundle */; };
+		030E68A31CCC568300980255 /* PageChooser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E68A21CCC568300980255 /* PageChooser.swift */; };
+		030E68A61CCD48A300980255 /* QiPlusPlus.mm in Sources */ = {isa = PBXBuildFile; fileRef = 030E68A51CCD48A300980255 /* QiPlusPlus.mm */; };
+		030E68A81CCD4AB500980255 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030E68A71CCD4AB500980255 /* AppDelegate.swift */; };
 		0318D8AA1C4C532E00F1202F /* runner_ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8A71C4C532E00F1202F /* runner_ios.mm */; };
 		0318D8B11C4C64B000F1202F /* threadrunner.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8AF1C4C64B000F1202F /* threadrunner.cc */; };
 		0318D8B51C4C6B0300F1202F /* runner_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8B21C4C6B0300F1202F /* runner_test.cc */; };
@@ -20,8 +23,6 @@
 		0318D8C51C4F001500F1202F /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0318D8C41C4F001500F1202F /* libsqlite3.tbd */; };
 		0318D8C71C544E1B00F1202F /* testutils.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8C61C544E1B00F1202F /* testutils.cc */; };
 		0318D8C91C54591D00F1202F /* qi.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0318D8C81C54591D00F1202F /* qi.mm */; };
-		031D89A01B4C46D0003DFB0E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 031D899F1B4C46D0003DFB0E /* main.m */; };
-		031D89A21B4C4746003DFB0E /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 031D89A11B4C4746003DFB0E /* AppDelegate.mm */; };
 		031E5FD91BD8D72E006EC625 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 031E5FD81BD8D72E006EC625 /* MetalKit.framework */; };
 		032D32C01AF56E0500F473D4 /* Algorithm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32841AF56E0500F473D4 /* Algorithm.cpp */; };
 		032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 032D32871AF56E0500F473D4 /* Arc.cpp */; };
@@ -117,6 +118,10 @@
 /* Begin PBXFileReference section */
 		030269E51C1D170C00474958 /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-all.cc"; path = "../third-party/googletest/googletest/src/gtest-all.cc"; sourceTree = "<group>"; };
 		030D02211B19B0C100116C90 /* skeqi-dbg.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "skeqi-dbg.bundle"; sourceTree = "<group>"; };
+		030E68A21CCC568300980255 /* PageChooser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageChooser.swift; sourceTree = "<group>"; };
+		030E68A41CCD476A00980255 /* QiPlusPlus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QiPlusPlus.h; sourceTree = "<group>"; };
+		030E68A51CCD48A300980255 /* QiPlusPlus.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = QiPlusPlus.mm; sourceTree = "<group>"; };
+		030E68A71CCD4AB500980255 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0318D8A61C4C532E00F1202F /* runner_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = runner_ios.h; path = ../base/port_ios/runner_ios.h; sourceTree = "<group>"; };
 		0318D8A71C4C532E00F1202F /* runner_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = runner_ios.mm; path = ../base/port_ios/runner_ios.mm; sourceTree = "<group>"; };
 		0318D8A91C4C532E00F1202F /* runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = runner.h; path = ../base/runner.h; sourceTree = "<group>"; };
@@ -135,9 +140,6 @@
 		0318D8C41C4F001500F1202F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		0318D8C61C544E1B00F1202F /* testutils.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testutils.cc; path = ../base/test/testutils.cc; sourceTree = "<group>"; };
 		0318D8C81C54591D00F1202F /* qi.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = qi.mm; path = ../base/port_ios/qi.mm; sourceTree = "<group>"; };
-		031D899F1B4C46D0003DFB0E /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		031D89A11B4C4746003DFB0E /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
-		031D89A31B4C4767003DFB0E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		031E5FD81BD8D72E006EC625 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		032D32841AF56E0500F473D4 /* Algorithm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Algorithm.cpp; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.cpp"; sourceTree = "<group>"; };
 		032D32851AF56E0500F473D4 /* Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Algorithm.h; path = "../third-party/cornucopia-lib/Cornucopia/Algorithm.h"; sourceTree = "<group>"; };
@@ -441,6 +443,7 @@
 				03A07E641C729AC900E0DC7C /* PageViewController.swift */,
 				035F54C31BB766E500BE6FD4 /* CubicBezier.swift */,
 				035F54C51BB9103C00BE6FD4 /* Page.swift */,
+				030E68A21CCC568300980255 /* PageChooser.swift */,
 			);
 			name = page;
 			sourceTree = "<group>";
@@ -585,9 +588,9 @@
 				0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */,
 				03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */,
 				0367BE031B0671900080DAC5 /* skeqi-Swift-Wrapper.h */,
-				031D899F1B4C46D0003DFB0E /* main.m */,
-				031D89A11B4C4746003DFB0E /* AppDelegate.mm */,
-				031D89A31B4C4767003DFB0E /* AppDelegate.h */,
+				030E68A41CCD476A00980255 /* QiPlusPlus.h */,
+				030E68A51CCD48A300980255 /* QiPlusPlus.mm */,
+				030E68A71CCD4AB500980255 /* AppDelegate.swift */,
 			);
 			path = skeqi;
 			sourceTree = "<group>";
@@ -824,8 +827,10 @@
 				0367BDFD1B05EF330080DAC5 /* device_ios.mm in Sources */,
 				0367BE061B0927000080DAC5 /* QiControllerDelegate.mm in Sources */,
 				034F06A41ADA6951005A439A /* Stroke.swift in Sources */,
+				030E68A81CCD4AB500980255 /* AppDelegate.swift in Sources */,
 				03E6D3961B238C47007A38B3 /* server.cc in Sources */,
 				03474FE31AD7F66B001240DD /* QiController.swift in Sources */,
+				030E68A61CCD48A300980255 /* QiPlusPlus.mm in Sources */,
 				0318D8AA1C4C532E00F1202F /* runner_ios.mm in Sources */,
 				032D32D61AF56E0500F473D4 /* PrimitiveFitUtils.cpp in Sources */,
 				0318D8C31C4EC0AD00F1202F /* sqlitecache.cc in Sources */,
@@ -842,7 +847,6 @@
 				03474FE51AD8036C001240DD /* Arc.swift in Sources */,
 				032D32D41AF56E0500F473D4 /* Preprocessing.cpp in Sources */,
 				03A07E651C729AC900E0DC7C /* PageViewController.swift in Sources */,
-				031D89A21B4C4746003DFB0E /* AppDelegate.mm in Sources */,
 				0367BE141B110E870080DAC5 /* pen.metal in Sources */,
 				03E6D38D1B2387C9007A38B3 /* qi.cc in Sources */,
 				0367BE011B0661AD0080DAC5 /* Skeqi_iOS.mm in Sources */,
@@ -854,13 +858,13 @@
 				032D32CA1AF56E0500F473D4 /* ErrorComputer.cpp in Sources */,
 				032D32CF1AF56E0500F473D4 /* Oversketcher.cpp in Sources */,
 				03FA760A1AD7EA2500A56C06 /* GameViewController.swift in Sources */,
+				030E68A31CCC568300980255 /* PageChooser.swift in Sources */,
 				0318D8C91C54591D00F1202F /* qi.mm in Sources */,
 				032D32C81AF56E0500F473D4 /* CurvePrimitive.cpp in Sources */,
 				0318D8B61C4C6B0300F1202F /* testutils.mm in Sources */,
 				035F54C61BB9103C00BE6FD4 /* Page.swift in Sources */,
 				032D32D51AF56E0500F473D4 /* PrimitiveFitter.cpp in Sources */,
 				032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */,
-				031D89A01B4C46D0003DFB0E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

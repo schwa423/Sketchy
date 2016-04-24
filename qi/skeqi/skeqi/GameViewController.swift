@@ -81,7 +81,7 @@ class GameViewController: UIViewController {
         
         setUpPipeline(device.newDefaultLibrary())
         
-        timer = CADisplayLink(target: self, selector: Selector("renderLoop"))
+        timer = CADisplayLink(target: self, selector: #selector(renderLoop))
         timer.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
     }
     
