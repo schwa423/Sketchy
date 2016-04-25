@@ -1,5 +1,5 @@
 //
-//  Stroke.swift
+//  ArcStroke.swift
 //  skeqi
 //
 //  Created by Josh Gargus on 4/12/15.
@@ -14,7 +14,7 @@ import Foundation
 //   4 bytes for cumulative length (1 float)
 //   4 bytes for color (4 uint8)
 // total: 32 bytes
-struct StrokeVertex : CustomStringConvertible {
+struct ArcStrokeVertex : CustomStringConvertible {
   var pX, pY, pZ, pW, nX, nY, length : Float
   var cR, cG, cB, cA : UInt8
 //    var color : UInt32
@@ -41,7 +41,7 @@ struct StrokeVertex : CustomStringConvertible {
   }
 }
 
-class Stroke {
+class ArcStroke {
   let arcList : ArcList
   let vertexSize : Int = 32
   
@@ -60,7 +60,7 @@ class Stroke {
     
     // Create and populate a struct, then copy it into the vertex buffer.  This is less hassle
     // than writing each individual value directly to the buffer.
-    var vertex = StrokeVertex()
+    var vertex = ArcStrokeVertex()
     let vertexPtr = withUnsafeMutablePointer(&vertex) {UnsafeMutablePointer<UInt8>($0)}
     vertex.pX = (radius * nX + center.x) + (flipX * width)
     vertex.pY = (radius * nY + center.y) + (flipY * width)
