@@ -72,6 +72,7 @@
 		036997211B4A270E008D58D3 /* libluajit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 036997201B4A270E008D58D3 /* libluajit.a */; };
 		036CE4661CCD90C5002C1AC2 /* StrokeFitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CE4651CCD90C5002C1AC2 /* StrokeFitter.swift */; };
 		036CE4681CCD980B002C1AC2 /* RenderableArcStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CE4671CCD980B002C1AC2 /* RenderableArcStroke.swift */; };
+		036CE46A1CCDAC9B002C1AC2 /* RenderablePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CE4691CCDAC9B002C1AC2 /* RenderablePage.swift */; };
 		03A07E631C72896800E0DC7C /* SkeqiFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */; };
 		03A07E651C729AC900E0DC7C /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A07E641C729AC900E0DC7C /* PageViewController.swift */; };
 		03C5E23D1B47144D00C41423 /* libcapnp-rpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E2381B47144D00C41423 /* libcapnp-rpc.a */; };
@@ -233,6 +234,7 @@
 		036997201B4A270E008D58D3 /* libluajit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libluajit.a; path = "../third-party-build/luajit/lib/libluajit.a"; sourceTree = "<group>"; };
 		036CE4651CCD90C5002C1AC2 /* StrokeFitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StrokeFitter.swift; sourceTree = "<group>"; };
 		036CE4671CCD980B002C1AC2 /* RenderableArcStroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderableArcStroke.swift; sourceTree = "<group>"; };
+		036CE4691CCDAC9B002C1AC2 /* RenderablePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderablePage.swift; sourceTree = "<group>"; };
 		037C8C121C7007BE00AD9E09 /* libFirebase.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFirebase.a; path = "Pods/../build/Debug-iphoneos/libFirebase.a"; sourceTree = "<group>"; };
 		03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeqiFirebase.swift; sourceTree = "<group>"; };
 		03A07E641C729AC900E0DC7C /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
@@ -450,6 +452,7 @@
 				035F54C51BB9103C00BE6FD4 /* Page.swift */,
 				030E68A21CCC568300980255 /* PageChooser.swift */,
 				036CE4651CCD90C5002C1AC2 /* StrokeFitter.swift */,
+				036CE4691CCDAC9B002C1AC2 /* RenderablePage.swift */,
 			);
 			name = page;
 			sourceTree = "<group>";
@@ -841,6 +844,7 @@
 				0318D8AA1C4C532E00F1202F /* runner_ios.mm in Sources */,
 				036CE4681CCD980B002C1AC2 /* RenderableArcStroke.swift in Sources */,
 				032D32D61AF56E0500F473D4 /* PrimitiveFitUtils.cpp in Sources */,
+				036CE46A1CCDAC9B002C1AC2 /* RenderablePage.swift in Sources */,
 				0318D8C31C4EC0AD00F1202F /* sqlitecache.cc in Sources */,
 				032D32C41AF56E0500F473D4 /* ClothoidProjector.cpp in Sources */,
 				032D32D81AF56E0500F473D4 /* Resampler.cpp in Sources */,
