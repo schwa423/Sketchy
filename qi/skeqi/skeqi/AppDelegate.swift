@@ -7,11 +7,25 @@
 //
 
 import UIKit
+import Firebase
+
+protocol FirebaseRefProvider {
+  func getFirebaseRef() -> Firebase
+  func setFirebaseRef(firebase: Firebase?)
+}
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, FirebaseRefProvider {
   var window: UIWindow?
   let qi = QiPlusPlus();
+  
+  var firebase : Firebase?
+  func getFirebaseRef() -> Firebase { return firebase! }
+  func setFirebaseRef(firebase: Firebase?) { self.firebase = firebase }
+  
+  override init() {
+    super.init()
+  }
   
   func application(app: UIApplication, willFinishLaunchingWithOptions options: [NSObject : AnyObject]?) -> Bool {
     qi.start()

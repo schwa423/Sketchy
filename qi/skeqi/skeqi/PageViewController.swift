@@ -32,12 +32,11 @@ class FirebasePageObserver : PageObserver {
 
 class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate {
 
-  let device: MTLDevice
+  let device: MTLDevice = MTLCreateSystemDefaultDevice()!
   let library: MTLLibrary
   let commandQueue: MTLCommandQueue
+  let firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
 
-  // TODO: this should be a global Firebase obtained from the AppDelegate.
-  let firebase: SkeqiFirebase
   var page: RenderablePage
   var strokeFitters = [UITouch: StrokeFitter]()
   var mtkView: MTKView { get { return super.view as! MTKView } }
@@ -45,39 +44,35 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   var incomingStrokes = [[Bezier3]]()
 
   required init?(coder aDecoder: NSCoder) {
-    device = MTLCreateSystemDefaultDevice()!
     library = device.newDefaultLibrary()!
     commandQueue = device.newCommandQueue()
-    firebase = SkeqiFirebase(url: "https://blistering-inferno-9169.firebaseio.com/")
     page = RenderablePage(device: device, library: library)!
 
     super.init(coder: aDecoder)
 
-    firebase.signIn(delegate: self).then { (authData: FAuthData) -> Void in
-      let ref = self.firebase.firebase.childByAppendingPath("users/\(authData.uid)/pages/0/strokes")
-      self.page.addObserver(FirebasePageObserver(ref))
+    let ref = firebaseProvider.getFirebaseRef().childByAppendingPath("/pages/0/strokes")
+    page.addObserver(FirebasePageObserver(ref))
     
-      // TODO: this is a really lame place for this... shouldn't reuse 'ref' here.
-      ref.observeEventType(.ChildAdded, withBlock: { (snapshot: FDataSnapshot!) -> Void in
-        let array = snapshot.value as! NSArray
-        assert(array.count % 8 == 0, "Array must be multiple of size of Bezier3")
-        var path = [Bezier3]()
-        path.reserveCapacity(array.count % 8)
-        for (var i = 0; i < array.count; i += 8) {
-          var bez = Bezier3()
-          bez.pt0[0] = array.objectAtIndex(i) as! Float
-          bez.pt0[1] = array.objectAtIndex(i+1) as! Float
-          bez.pt1[0] = array.objectAtIndex(i+2) as! Float
-          bez.pt1[1] = array.objectAtIndex(i+3) as! Float
-          bez.pt2[0] = array.objectAtIndex(i+4) as! Float
-          bez.pt2[1] = array.objectAtIndex(i+5) as! Float
-          bez.pt3[0] = array.objectAtIndex(i+6) as! Float
-          bez.pt3[1] = array.objectAtIndex(i+7) as! Float
-          path.append(bez)
-        }
-        self.incomingStrokes.append(path)
-      });
-    }
+    // TODO: this is a really lame place for this... shouldn't reuse 'ref' here.
+    ref.observeEventType(.ChildAdded, withBlock: { (snapshot: FDataSnapshot!) -> Void in
+      let array = snapshot.value as! NSArray
+      assert(array.count % 8 == 0, "Array must be multiple of size of Bezier3")
+      var path = [Bezier3]()
+      path.reserveCapacity(array.count % 8)
+      for (var i = 0; i < array.count; i += 8) {
+        var bez = Bezier3()
+        bez.pt0[0] = array.objectAtIndex(i) as! Float
+        bez.pt0[1] = array.objectAtIndex(i+1) as! Float
+        bez.pt1[0] = array.objectAtIndex(i+2) as! Float
+        bez.pt1[1] = array.objectAtIndex(i+3) as! Float
+        bez.pt2[0] = array.objectAtIndex(i+4) as! Float
+        bez.pt2[1] = array.objectAtIndex(i+5) as! Float
+        bez.pt3[0] = array.objectAtIndex(i+6) as! Float
+        bez.pt3[1] = array.objectAtIndex(i+7) as! Float
+        path.append(bez)
+      }
+      self.incomingStrokes.append(path)
+    });
   }
 
   func mtkView(view: MTKView, drawableSizeWillChange size: CGSize) {

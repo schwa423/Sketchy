@@ -196,8 +196,3 @@ class SkeqiFirebase {
     }
   }
 }
-
-
-class SkeqiFirebasePage {
-
-}

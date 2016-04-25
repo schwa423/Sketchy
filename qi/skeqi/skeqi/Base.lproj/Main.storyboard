@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="27w-zj-Lez">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GXh-oS-wbL">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
+        <!--Login View Controller-->
+        <scene sceneID="5XS-wW-h0k">
+            <objects>
+                <viewController id="GXh-oS-wbL" customClass="LoginViewController" customModule="skeqi" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="zfp-TR-Ht8"/>
+                        <viewControllerLayoutGuide type="bottom" id="zO9-sW-ha1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="IGX-6n-Dn6">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="27w-zj-Lez" kind="presentation" identifier="Login" id="djP-kJ-FPx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d6H-c2-tDy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1795" y="426"/>
+        </scene>
         <!--Qi Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
@@ -20,7 +41,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-400" y="1133"/>
+            <point key="canvasLocation" x="-891" y="1131"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="8DG-Qn-bTh">
@@ -38,7 +59,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T8D-oD-4OW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-400" y="421"/>
+            <point key="canvasLocation" x="-1075" y="426"/>
         </scene>
         <!--Blank Slate-->
         <scene sceneID="UXM-Zu-aX7">
@@ -57,7 +78,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Isc-c9-t7r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="286" y="793"/>
+            <point key="canvasLocation" x="-321" y="793"/>
         </scene>
         <!--Page-->
         <scene sceneID="0cH-EN-nW2">
@@ -76,7 +97,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1vj-uh-tMV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="286" y="69"/>
+            <point key="canvasLocation" x="-321" y="74"/>
         </scene>
     </scenes>
 </document>
