@@ -37,7 +37,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   let commandQueue: MTLCommandQueue
   let firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
 
-  var page: RenderablePage
+  let page: RenderablePage
   var strokeFitters = [UITouch: StrokeFitter]()
   var mtkView: MTKView { get { return super.view as! MTKView } }
   
@@ -110,8 +110,6 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    page = RenderablePage(device: device, library: library)!
-
     mtkView.device = device
     mtkView.delegate = self
     mtkView.clearColor = MTLClearColor(red: 0.2, green: 0.6, blue: 0.6, alpha: 1.0)
@@ -146,5 +144,12 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
       fitter.finishStroke(touch)
       strokeFitters.removeValueForKey(touch)
     }
+  }
+  
+  // MARK: Actions
+  
+  @IBAction func googleSignOut(sender: AnyObject) {
+    firebaseProvider.googleSignIn.signOut()
+    firebaseProvider.getFirebaseRef().unauth()
   }
 }

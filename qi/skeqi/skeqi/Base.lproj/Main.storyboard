@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GXh-oS-wbL">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
@@ -41,7 +42,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-891" y="1131"/>
+            <point key="canvasLocation" x="-1075" y="1109"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="8DG-Qn-bTh">
@@ -91,7 +92,21 @@
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="OqX-gU-Tnk" customClass="MTKView">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TJ2-Bg-99p">
+                                <rect key="frame" x="0.0" y="512" width="75" height="39"/>
+                                <color key="backgroundColor" red="1" green="0.94496296568848115" blue="0.13716596262847403" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Sign Out"/>
+                                <connections>
+                                    <action selector="googleSignOut:" destination="7KF-eN-vxo" eventType="touchUpInside" id="WAO-Nu-Ps2"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="TJ2-Bg-99p" firstAttribute="leading" secondItem="OqX-gU-Tnk" secondAttribute="leadingMargin" constant="-20" id="IKw-e4-1zq"/>
+                            <constraint firstItem="qlK-4u-CMl" firstAttribute="top" secondItem="TJ2-Bg-99p" secondAttribute="bottom" id="ry1-ax-6A4"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Page" id="5Pp-j8-PMm" userLabel="Page"/>
                 </viewController>

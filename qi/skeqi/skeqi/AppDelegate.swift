@@ -12,6 +12,8 @@ import Firebase
 protocol FirebaseRefProvider {
   func getFirebaseRef() -> Firebase
   func setFirebaseRef(firebase: Firebase?)
+  
+  var googleSignIn: GoogleSignIn { get }
 }
 
 @UIApplicationMain
@@ -22,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, FirebaseRefProvider {
   var firebase : Firebase?
   func getFirebaseRef() -> Firebase { return firebase! }
   func setFirebaseRef(firebase: Firebase?) { self.firebase = firebase }
+  let googleSignIn = GoogleSignIn()
   
   override init() {
     super.init()

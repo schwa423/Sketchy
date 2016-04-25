@@ -12,16 +12,13 @@ import PromiseKit
 
 class LoginViewController : UIViewController, GIDSignInUIDelegate {
   let loginSegue = "Login"
-  
-  let googleSignIn = GoogleSignIn()
-  let ref = Firebase(url: "https://blistering-inferno-9169.firebaseio.com");
-  
   let firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
+  let ref = Firebase(url: "https://blistering-inferno-9169.firebaseio.com");
   
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
     
-    googleSignIn.signIn(self).then { (user) -> Void in
+    firebaseProvider.googleSignIn.signIn(self).then { (user) -> Void in
       let triple = Promise<FAuthData>.pendingPromise()
       let token = user.authentication.accessToken
       self.ref.authWithOAuthProvider("google", token: token, withCompletionBlock: { (error, authData) in
