@@ -51,14 +51,14 @@ extension ArraySlice {
 }
 
 class StrokeFitter {
-  let page: Page2
-  let stroke: Stroke2
+  let page: Page
+  let stroke: Stroke
   var points = [float2]()
   var params = [Float]()
   var path = [Bezier3]()
   let errorThreshold = Float(0.0002)
   
-  init(page: Page2) {
+  init(page: Page) {
     self.page = page
     self.stroke = page.newStroke()
   }

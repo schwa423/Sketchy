@@ -1,30 +1,86 @@
 import Metal
 import MetalKit
 
+// TODO: document
 class PageObserver : Equatable {
-  typealias ObserverFunc = (Stroke2!)->Void
-  let onFinalize: ObserverFunc
-  required init(onFinalize _onFinalize: ObserverFunc!) {
-    onFinalize = _onFinalize
-  }
+  func onFinalizeStroke(stroke: Stroke!) -> Void {}
 }
 
+// PageObservers are equal only if they are identical.
 func ==(lhs: PageObserver, rhs: PageObserver) -> Bool {
   return lhs === rhs
 }
 
-class Page2 {
+// TODO: document
+class Page {
+  var strokes = [Stroke]()
+  var dirtyStrokes = [Stroke]()
+  var nextStrokeIndex = 0
+  
+  private var observers = [PageObserver]()
+  
+  // Add an observer that is called whenever a Stroke is finalized.
+  func addObserver(observer: PageObserver!) { observers.append(observer) }
+  func removeObserver(observer: PageObserver!) {
+    if let index = observers.indexOf(observer) {
+      observers.removeAtIndex(index)
+    }
+  }
+  
+  func newStroke() -> Stroke {
+    let stroke = instantiateStroke()
+    strokes.append(stroke)
+    return stroke
+  }
+  
+  func instantiateStroke() -> Stroke {
+    return Stroke(index: nextStrokeIndex++)
+  }
+  
+  func setStrokePath(stroke: Stroke, path: [Bezier3]) {
+    assert(strokes[stroke.index] === stroke);
+    stroke.path = path
+    dirtyStrokes.append(stroke)
+  }
+  
+  func finalizeStroke(stroke: Stroke) {
+    // TODO: perhaps put all strokes into one shared buffer.
+    
+    for observer in observers {
+      observer.onFinalizeStroke(stroke)
+    }
+  }
+}
+
+// TODO: document
+class Stroke : CustomStringConvertible {
+  let index: Int
+  var path = [Bezier3]()
+
+  // TODO: remove
+  var fromFirebase: Bool = false
+  
+  init(index: Int) {
+    self.index = index
+  }
+  
+  var description: String {
+    var string = String("Stroke{\n  path: {")
+    for bez in path {
+      string += "\n    \(bez.description)"
+    }
+    string += path.isEmpty ? "}\n}" : "\n  }\n}"
+    return string
+  }
+}
+
+// TODO: document
+class RenderablePage : Page {
   let device: MTLDevice
   let library: MTLLibrary
   let renderPipeline: MTLRenderPipelineState
   let computePipeline: MTLComputePipelineState
-
-  var strokes = [Stroke2]()
-  var dirtyStrokes = [Stroke2]()
-  var nextStrokeIndex = 0
-
-  private var observers = [PageObserver]()
-
+  
   init?(device: MTLDevice, library: MTLLibrary) {
     self.device = device
     self.library = library
@@ -43,14 +99,15 @@ class Page2 {
     try! computePipeline = device.newComputePipelineStateWithFunction(kernelFunction)
   }
 
-  // Add an observer that is called whenever a Stroke is finalized.
-  func addObserver(observer: PageObserver!) { observers.append(observer) }
-  func removeObserver(observer: PageObserver!) {
-    if let index = observers.indexOf(observer) {
-      observers.removeAtIndex(index)
-    }
+  override func instantiateStroke() -> Stroke {
+    return RenderableStroke(index: nextStrokeIndex++)
   }
-
+  
+  override func finalizeStroke(stroke: Stroke) {
+    // TODO: perhaps put all strokes into one shared buffer.
+    super.finalizeStroke(stroke)
+  }
+  
   func update(commandQueue: MTLCommandQueue) {
     if dirtyStrokes.isEmpty { return }
 
@@ -60,7 +117,7 @@ class Page2 {
     commandEncoder.setComputePipelineState(computePipeline)
 
     for stroke in dirtyStrokes {
-      tesselateStroke(stroke, encoder: commandEncoder)
+      tesselateStroke(stroke as! RenderableStroke, encoder: commandEncoder)
     }
     dirtyStrokes.removeAll(keepCapacity: true)
 
@@ -73,31 +130,12 @@ class Page2 {
     renderEncoder.pushDebugGroup("Render Page Strokes")
     renderEncoder.setRenderPipelineState(renderPipeline)
     for stroke in strokes {
-      stroke.draw(renderEncoder)
+      (stroke as! RenderableStroke).draw(renderEncoder)
     }
     renderEncoder.popDebugGroup()
   }
-
-  func newStroke() -> Stroke2 {
-    strokes.append(Stroke2(index: nextStrokeIndex++))
-    return strokes.last!
-  }
-
-  func setStrokePath(stroke: Stroke2, path: [Bezier3]) {
-    assert(strokes[stroke.index] === stroke)
-    stroke.path = path
-    dirtyStrokes.append(stroke)
-  }
-
-  func finalizeStroke(stroke: Stroke2) {
-    // TODO: perhaps put all strokes into one shared buffer.
-
-    for observer in observers {
-      observer.onFinalize(stroke)
-    }
-  }
-
-  private func tesselateStroke(stroke: Stroke2, encoder: MTLComputeCommandEncoder) {
+  
+  private func tesselateStroke(stroke: RenderableStroke, encoder: MTLComputeCommandEncoder) {
     if stroke.path.isEmpty { return }
 
     let vertexCounts = computeStrokeVertexCounts(stroke)
@@ -107,8 +145,9 @@ class Page2 {
       totalVertexCount += count
     }
 
-    assert(32 == sizeof(Vertex))
-    stroke.buffer = getBufferOfLength(totalVertexCount * sizeof(Vertex), existing: stroke.buffer)
+    assert(32 == sizeof(StrokeVertex))
+    stroke.buffer = getBufferOfLength(totalVertexCount * sizeof(StrokeVertex),
+                                      existing: stroke.buffer)
     stroke.vertexCount = totalVertexCount
 
     // Tesselate stroke on GPU using compute shader.
@@ -125,11 +164,11 @@ class Page2 {
       let threadgroups = MTLSizeMake(1, 1, 1)
       encoder.dispatchThreadgroups(threadgroups, threadsPerThreadgroup: threadgroupSize)
 
-      offset += vertexCounts[i] * sizeof(Vertex)
+      offset += vertexCounts[i] * sizeof(StrokeVertex)
     }
   }
 
-  private func computeStrokeVertexCounts(stroke: Stroke2) -> [Int] {
+  private func computeStrokeVertexCounts(stroke: RenderableStroke) -> [Int] {
     return stroke.path.map {
       (bezier: Bezier3) -> Int in
       // TODO: Compute a number based on the length of each path segment.
@@ -150,22 +189,19 @@ class Page2 {
 }
 
 
-struct Vertex {
+
+struct StrokeVertex {
   var px, py, pz, pw, nx, ny, length : Float
   var cr, cg, cb, ca : UInt8
 }
 
-class Stroke2 : CustomStringConvertible {
-  let index: Int
-  var path = [Bezier3]()
+class RenderableStroke : Stroke {
   var vertexCount: Int = 0
   var offset: Int = 0
   var buffer: MTLBuffer?
 
-  var fromFirebase: Bool = false
-
-  init(index: Int) {
-    self.index = index
+  override init(index: Int) {
+    super.init(index: index)
   }
 
   func draw(encoder: MTLRenderCommandEncoder) {
@@ -175,8 +211,8 @@ class Stroke2 : CustomStringConvertible {
     }
   }
 
-  var description: String {
-    var string = String("Stroke{\n  vertexCount: \(vertexCount)\n  path: {")
+  override var description: String {
+    var string = String("RenderableStroke{\n  vertexCount: \(vertexCount)\n  path: {")
     for bez in path {
       string += "\n    \(bez.description)"
     }

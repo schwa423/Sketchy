@@ -5,6 +5,31 @@ import MetalKit
 import Firebase
 import PromiseKit
 
+class FirebasePageObserver : PageObserver {
+  let ref: Firebase
+
+  init(_ firebase: Firebase) {
+    self.ref = firebase
+  }
+  
+  override func onFinalizeStroke(stroke: Stroke!) -> Void {
+    if !stroke.fromFirebase {
+      var path = [Float]()
+      for bez in stroke.path {
+        path.append(bez.pt0[0])
+        path.append(bez.pt0[1])
+        path.append(bez.pt1[0])
+        path.append(bez.pt1[1])
+        path.append(bez.pt2[0])
+        path.append(bez.pt2[1])
+        path.append(bez.pt3[0])
+        path.append(bez.pt3[1])
+      }
+      ref.childByAutoId().setValue(path)
+    }
+  }
+}
+
 class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate {
 
   let device: MTLDevice
@@ -13,7 +38,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
 
   // TODO: this should be a global Firebase obtained from the AppDelegate.
   let firebase: SkeqiFirebase
-  var page: Page2
+  var page: RenderablePage
   var strokeFitters = [UITouch: StrokeFitter]()
   var mtkView: MTKView { get { return super.view as! MTKView } }
   
@@ -24,30 +49,14 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
     library = device.newDefaultLibrary()!
     commandQueue = device.newCommandQueue()
     firebase = SkeqiFirebase(url: "https://blistering-inferno-9169.firebaseio.com/")
-    page = Page2(device: device, library: library)!
+    page = RenderablePage(device: device, library: library)!
 
     super.init(coder: aDecoder)
 
     firebase.signIn(delegate: self).then { (authData: FAuthData) -> Void in
       let ref = self.firebase.firebase.childByAppendingPath("users/\(authData.uid)/pages/0/strokes")
-      let closure: (Stroke2!) -> Void = { stroke in
-        if !stroke.fromFirebase {
-          var path = [Float]()
-          for bez in stroke.path {
-            path.append(bez.pt0[0])
-            path.append(bez.pt0[1])
-            path.append(bez.pt1[0])
-            path.append(bez.pt1[1])
-            path.append(bez.pt2[0])
-            path.append(bez.pt2[1])
-            path.append(bez.pt3[0])
-            path.append(bez.pt3[1])
-          }
-          ref.childByAutoId().setValue(path)
-        }
-      }
-      self.page.addObserver(PageObserver(onFinalize: closure))
-      
+      self.page.addObserver(FirebasePageObserver(ref))
+    
       // TODO: this is a really lame place for this... shouldn't reuse 'ref' here.
       ref.observeEventType(.ChildAdded, withBlock: { (snapshot: FDataSnapshot!) -> Void in
         let array = snapshot.value as! NSArray
@@ -106,7 +115,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    page = Page2(device: device, library: library)!
+    page = RenderablePage(device: device, library: library)!
 
     mtkView.device = device
     mtkView.delegate = self
