@@ -6,58 +6,70 @@
 //  Copyright © 2016 Schwaftwarez. All rights reserved.
 //
 
-/*
-
 import UIKit
+import Firebase
 
+class PageCell: UICollectionViewCell {
+  var key: String = ""
+  
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+  }
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+  }
+}
 
+class PageChooser : UICollectionViewController {
+  let firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
+  let ref : Firebase
+  var query : UInt = 0
+  var pages = [String]()
 
-class PageChooser: CollectionViewController {
-  let ref = Firebase(url: "https://blistering-inferno-9169.firebaseio.com");
+  required init?(coder aDecoder: NSCoder) {
+    self.ref = firebaseProvider.getFirebaseRef().childByAppendingPath("/pageList")    
+    super.init(coder: aDecoder)
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    
-    // Set up swipe to delete
-    tableView.allowsMultipleSelectionDuringEditing = false
-    
-    // User Count
-    userCountBarButtonItem = UIBarButtonItem(title: "1", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(userCountButtonDidTouch))
-    userCountBarButtonItem.tintColor = UIColor.whiteColor()
-    navigationItem.leftBarButtonItem = userCountBarButtonItem
-    
-    user = User(uid: "FakeId", email: "hungry@person.food")
+    self.collectionView!.registerClass(PageCell.self, forCellWithReuseIdentifier: "CELL")
+    let layout = self.collectionViewLayout as! UICollectionViewFlowLayout
+    layout.itemSize = CGSize(width: 240, height: 180)
+    layout.sectionInset = UIEdgeInsetsMake(0, 10, 0, 10)
   }
   
-  override func viewDidAppear(animated: Bool) {
-    super.viewDidAppear(animated)
-    ref.observeAuthEventWithBlock { authData in
-      if authData != nil {
-        self.user = User(authData: authData)
-        
-        
-        
-        let groceryListRef =
-          self.ref.childByAppendingPath("users/\(self.user.uid)/groceryList")
-        groceryListRef.observeEventType(.Value, withBlock: { snapshot in
-          print("OBSERVED VALUE \(snapshot.value)")
-          
-          var newItems = [GroceryItem]()
-          for item in snapshot.children {
-            let groceryItem = GroceryItem(firebaseSnapshot: item as! FDataSnapshot)
-            newItems.append(groceryItem)
-          }
-          self.items = newItems
-          self.tableView.reloadData()
-          
-          }, withCancelBlock: { error in
-            print("OBSERVATION ERROR: \(error.description)")
-            self.ref.unauth()
-        })
-      }
-    }
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    query = ref.observeEventType(.ChildAdded, withBlock: { (snapshot: FDataSnapshot!) -> Void in
+      print("received snapshow with value: \(snapshot.value) \(snapshot.key)")
+      self.pages.append(snapshot.key)
+      self.collectionView!.reloadData()
+    });
   }
   
+  override func viewWillDisappear(animated: Bool) {
+    super.viewWillDisappear(animated)
+    ref.removeObserverWithHandle(query)
+    query = 0
+    self.pages.removeAll()
+  }
+  
+  override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    return 1
+  }
+  
+  override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return pages.count
+  }
+  
+  override func collectionView(collectionView: UICollectionView,
+                               cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CELL", forIndexPath: indexPath) as! PageCell
+    cell.key = pages[indexPath.item]
+    cell.backgroundColor = UIColor.blueColor()
+    return cell
+  }
 }
-*/
