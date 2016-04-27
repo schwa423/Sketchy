@@ -12,6 +12,7 @@ import Firebase
 protocol FirebaseRefProvider {
   func getFirebaseRef() -> Firebase
   func setFirebaseRef(firebase: Firebase?)
+  var pageId: String { get set }
   
   var googleSignIn: GoogleSignIn { get }
 }
@@ -24,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, FirebaseRefProvider {
   var firebase : Firebase?
   func getFirebaseRef() -> Firebase { return firebase! }
   func setFirebaseRef(firebase: Firebase?) { self.firebase = firebase }
+  var pageId: String = "0"
   let googleSignIn = GoogleSignIn()
   
   override init() {

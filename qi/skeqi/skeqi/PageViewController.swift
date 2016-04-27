@@ -35,44 +35,20 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   let device: MTLDevice = MTLCreateSystemDefaultDevice()!
   let library: MTLLibrary
   let commandQueue: MTLCommandQueue
-  let firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
-
-  let page: RenderablePage
-  var strokeFitters = [UITouch: StrokeFitter]()
   var mtkView: MTKView { get { return super.view as! MTKView } }
   
+  var page: RenderablePage? = nil
+  var strokeFitters = [UITouch: StrokeFitter]()
   var incomingStrokes = [[Bezier3]]()
 
+  let firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
+  var query : UInt = 0
+  var ref : Firebase? = nil
+  
   required init?(coder aDecoder: NSCoder) {
     library = device.newDefaultLibrary()!
     commandQueue = device.newCommandQueue()
-    page = RenderablePage(device: device, library: library)!
-
     super.init(coder: aDecoder)
-
-    let ref = firebaseProvider.getFirebaseRef().childByAppendingPath("/pages/0/strokes")
-    page.addObserver(FirebasePageObserver(ref))
-    
-    // TODO: this is a really lame place for this... shouldn't reuse 'ref' here.
-    ref.observeEventType(.ChildAdded, withBlock: { (snapshot: FDataSnapshot!) -> Void in
-      let array = snapshot.value as! NSArray
-      assert(array.count % 8 == 0, "Array must be multiple of size of Bezier3")
-      var path = [Bezier3]()
-      path.reserveCapacity(array.count % 8)
-      for (var i = 0; i < array.count; i += 8) {
-        var bez = Bezier3()
-        bez.pt0[0] = array.objectAtIndex(i) as! Float
-        bez.pt0[1] = array.objectAtIndex(i+1) as! Float
-        bez.pt1[0] = array.objectAtIndex(i+2) as! Float
-        bez.pt1[1] = array.objectAtIndex(i+3) as! Float
-        bez.pt2[0] = array.objectAtIndex(i+4) as! Float
-        bez.pt2[1] = array.objectAtIndex(i+5) as! Float
-        bez.pt3[0] = array.objectAtIndex(i+6) as! Float
-        bez.pt3[1] = array.objectAtIndex(i+7) as! Float
-        path.append(bez)
-      }
-      self.incomingStrokes.append(path)
-    });
   }
 
   func mtkView(view: MTKView, drawableSizeWillChange size: CGSize) {
@@ -81,8 +57,9 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
 
   func drawInMTKView(view: MTKView) {
     guard let drawable = view.currentDrawable,
-          let descriptor = view.currentRenderPassDescriptor
-    else { return; }
+          let descriptor = view.currentRenderPassDescriptor,
+          let page = self.page
+    else { return }
 
     for incoming in incomingStrokes {
       let stroke = page.newStroke()
@@ -114,11 +91,49 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
     mtkView.delegate = self
     mtkView.clearColor = MTLClearColor(red: 0.2, green: 0.6, blue: 0.6, alpha: 1.0)
   }
+  
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    ref = firebaseProvider.getFirebaseRef().childByAppendingPath("/pages/\(firebaseProvider.pageId)/strokes")
+    
+    page = RenderablePage(device: device, library: library)
+    page!.addObserver(FirebasePageObserver(ref!))
+    
+    query = ref!.observeEventType(.ChildAdded, withBlock: { (snapshot: FDataSnapshot!) -> Void in
+      let array = snapshot.value as! NSArray
+      assert(array.count % 8 == 0, "Array must be multiple of size of Bezier3")
+      var path = [Bezier3]()
+      path.reserveCapacity(array.count % 8)
+      for (var i = 0; i < array.count; i += 8) {
+        var bez = Bezier3()
+        bez.pt0[0] = array.objectAtIndex(i) as! Float
+        bez.pt0[1] = array.objectAtIndex(i+1) as! Float
+        bez.pt1[0] = array.objectAtIndex(i+2) as! Float
+        bez.pt1[1] = array.objectAtIndex(i+3) as! Float
+        bez.pt2[0] = array.objectAtIndex(i+4) as! Float
+        bez.pt2[1] = array.objectAtIndex(i+5) as! Float
+        bez.pt3[0] = array.objectAtIndex(i+6) as! Float
+        bez.pt3[1] = array.objectAtIndex(i+7) as! Float
+        path.append(bez)
+      }
+      self.incomingStrokes.append(path)
+    });
+  }
+  
+  override func viewDidDisappear(animated: Bool) {
+    super.viewDidDisappear(animated)
+    ref!.removeObserverWithHandle(query)
+    ref = nil
+    query = 0
+    page = nil
+    incomingStrokes.removeAll()
+  }
 
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     for touch in touches {
       assert(strokeFitters[touch] === nil)
-      let fitter = StrokeFitter(page: page)
+      let fitter = StrokeFitter(page: page!)
       strokeFitters[touch] = fitter
       fitter.startStroke(touch)
     }

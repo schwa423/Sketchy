@@ -22,7 +22,7 @@ class PageCell: UICollectionViewCell {
 }
 
 class PageChooser : UICollectionViewController {
-  let firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
+  var firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
   let ref : Firebase
   var query : UInt = 0
   var pages = [String]()
@@ -71,5 +71,10 @@ class PageChooser : UICollectionViewController {
     cell.key = pages[indexPath.item]
     cell.backgroundColor = UIColor.blueColor()
     return cell
+  }
+  
+  override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    firebaseProvider.pageId = pages[indexPath.item]
+    self.tabBarController!.selectedIndex = 0
   }
 }
