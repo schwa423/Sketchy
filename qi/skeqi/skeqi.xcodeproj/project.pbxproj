@@ -209,11 +209,11 @@
 		0346C9DD1B46F9CB00FD978D /* page.capnp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = page.capnp; sourceTree = "<group>"; };
 		0346C9DE1B46F9CB00FD978D /* page.proto */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = page.proto; sourceTree = "<group>"; };
 		03474FE21AD7F66B001240DD /* QiController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiController.swift; sourceTree = "<group>"; };
-		03474FE41AD8036C001240DD /* Arc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Arc.swift; path = skeqi/Arc.swift; sourceTree = "<group>"; };
+		03474FE41AD8036C001240DD /* Arc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Arc.swift; sourceTree = "<group>"; };
 		034F06A21ADA2103005A439A /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = playgrounds/MyPlayground.playground; sourceTree = "<group>"; };
-		034F06A31ADA6951005A439A /* ArcStroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ArcStroke.swift; path = skeqi/ArcStroke.swift; sourceTree = "<group>"; };
+		034F06A31ADA6951005A439A /* ArcStroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArcStroke.swift; sourceTree = "<group>"; };
 		0354FAF01C6FFE7B00B34DC9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		035F54C31BB766E500BE6FD4 /* CubicBezier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CubicBezier.swift; path = ../../page/CubicBezier.swift; sourceTree = "<group>"; };
+		035F54C31BB766E500BE6FD4 /* CubicBezier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubicBezier.swift; sourceTree = "<group>"; };
 		035F54C51BB9103C00BE6FD4 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		0367BDF41B05EF070080DAC5 /* qi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = qi.h; path = ../qi.h; sourceTree = "<group>"; };
 		0367BDF51B05EF250080DAC5 /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = buffer.h; path = ../gfx/buffer.h; sourceTree = "<group>"; };
@@ -222,8 +222,8 @@
 		0367BDF81B05EF330080DAC5 /* buffer_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = buffer_ios.mm; path = ../gfx/port_ios/buffer_ios.mm; sourceTree = "<group>"; };
 		0367BDF91B05EF330080DAC5 /* device_ios.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = device_ios.h; path = ../gfx/port_ios/device_ios.h; sourceTree = "<group>"; };
 		0367BDFA1B05EF330080DAC5 /* device_ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = device_ios.mm; path = ../gfx/port_ios/device_ios.mm; sourceTree = "<group>"; };
-		0367BDFF1B065FF60080DAC5 /* Skeqi_iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Skeqi_iOS.h; sourceTree = "<group>"; };
-		0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Skeqi_iOS.mm; sourceTree = "<group>"; };
+		0367BDFF1B065FF60080DAC5 /* Skeqi_iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Skeqi_iOS.h; path = ../../Skeqi_iOS.h; sourceTree = "<group>"; };
+		0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Skeqi_iOS.mm; path = ../../Skeqi_iOS.mm; sourceTree = "<group>"; };
 		0367BE031B0671900080DAC5 /* skeqi-Swift-Wrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "skeqi-Swift-Wrapper.h"; sourceTree = "<group>"; };
 		0367BE041B09266B0080DAC5 /* QiControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QiControllerDelegate.h; sourceTree = "<group>"; };
 		0367BE051B0927000080DAC5 /* QiControllerDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = QiControllerDelegate.mm; sourceTree = "<group>"; };
@@ -422,8 +422,6 @@
 		032D36E51AFF4DC200F473D4 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				034F06A31ADA6951005A439A /* ArcStroke.swift */,
-				03474FE41AD8036C001240DD /* Arc.swift */,
 				036CE4671CCD980B002C1AC2 /* RenderableArcStroke.swift */,
 			);
 			name = src;
@@ -449,15 +447,15 @@
 		035F54C21BB7669C00BE6FD4 /* page */ = {
 			isa = PBXGroup;
 			children = (
-				03A07E641C729AC900E0DC7C /* PageViewController.swift */,
+				034F06A31ADA6951005A439A /* ArcStroke.swift */,
+				03474FE41AD8036C001240DD /* Arc.swift */,
 				035F54C31BB766E500BE6FD4 /* CubicBezier.swift */,
 				035F54C51BB9103C00BE6FD4 /* Page.swift */,
-				030E68A21CCC568300980255 /* PageChooser.swift */,
 				036CE4651CCD90C5002C1AC2 /* StrokeFitter.swift */,
 				036CE4691CCDAC9B002C1AC2 /* RenderablePage.swift */,
-				036CE46B1CCE7AAD002C1AC2 /* LoginViewController.swift */,
 			);
 			name = page;
+			path = ../../page;
 			sourceTree = "<group>";
 		};
 		0367BDF21B05EED90080DAC5 /* qi */ = {
@@ -516,6 +514,23 @@
 				036997201B4A270E008D58D3 /* libluajit.a */,
 			);
 			name = luajit;
+			sourceTree = "<group>";
+		};
+		036CE46D1CD3F0C8002C1AC2 /* cplusplus */ = {
+			isa = PBXGroup;
+			children = (
+				030E68A41CCD476A00980255 /* QiPlusPlus.h */,
+				030E68A51CCD48A300980255 /* QiPlusPlus.mm */,
+				03474FE21AD7F66B001240DD /* QiController.swift */,
+				0367BE041B09266B0080DAC5 /* QiControllerDelegate.h */,
+				0367BE051B0927000080DAC5 /* QiControllerDelegate.mm */,
+				0367BE0D1B098A520080DAC5 /* QiControllerDelegateImpl.h */,
+				03FA76091AD7EA2500A56C06 /* GameViewController.swift */,
+				0367BDFF1B065FF60080DAC5 /* Skeqi_iOS.h */,
+				0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */,
+			);
+			name = cplusplus;
+			path = src/cplusplus;
 			sourceTree = "<group>";
 		};
 		03C5E2421B47145600C41423 /* capnproto */ = {
@@ -583,26 +598,21 @@
 		03FA76041AD7EA2500A56C06 /* skeqi */ = {
 			isa = PBXGroup;
 			children = (
+				036CE46B1CCE7AAD002C1AC2 /* LoginViewController.swift */,
+				03A07E641C729AC900E0DC7C /* PageViewController.swift */,
+				030E68A21CCC568300980255 /* PageChooser.swift */,
+				03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */,
+				030E68A71CCD4AB500980255 /* AppDelegate.swift */,
+				036CE46D1CD3F0C8002C1AC2 /* cplusplus */,
 				035F54C21BB7669C00BE6FD4 /* page */,
 				030D02211B19B0C100116C90 /* skeqi-dbg.bundle */,
 				034F06A11ADA20AE005A439A /* playgrounds */,
-				03FA76091AD7EA2500A56C06 /* GameViewController.swift */,
-				03474FE21AD7F66B001240DD /* QiController.swift */,
-				0367BE041B09266B0080DAC5 /* QiControllerDelegate.h */,
-				0367BE0D1B098A520080DAC5 /* QiControllerDelegateImpl.h */,
-				0367BE051B0927000080DAC5 /* QiControllerDelegate.mm */,
 				03FA760B1AD7EA2500A56C06 /* Shaders.metal */,
 				03FA760D1AD7EA2500A56C06 /* Main.storyboard */,
 				03FA76101AD7EA2500A56C06 /* Images.xcassets */,
 				03FA76121AD7EA2500A56C06 /* LaunchScreen.xib */,
 				03FA76051AD7EA2500A56C06 /* Supporting Files */,
-				0367BDFF1B065FF60080DAC5 /* Skeqi_iOS.h */,
-				0367BE001B0661AD0080DAC5 /* Skeqi_iOS.mm */,
-				03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */,
 				0367BE031B0671900080DAC5 /* skeqi-Swift-Wrapper.h */,
-				030E68A41CCD476A00980255 /* QiPlusPlus.h */,
-				030E68A51CCD48A300980255 /* QiPlusPlus.mm */,
-				030E68A71CCD4AB500980255 /* AppDelegate.swift */,
 			);
 			path = skeqi;
 			sourceTree = "<group>";
