@@ -118,7 +118,7 @@ class StrokeFitter {
     let paramShift = -params[startIndex];
     let paramScale = 1.0 / (params[endIndex-1] + paramShift);
     
-    let bez = FitBezier3ToPoints(points[startIndex..<endIndex],
+    let bez = fitBezier3ToPoints(points[startIndex..<endIndex],
                                  params: params[startIndex..<endIndex],
                                  paramShift: paramShift,
                                  paramScale: paramScale,
@@ -130,7 +130,7 @@ class StrokeFitter {
     var maxError = Float(0.0)
     for i in startIndex..<endIndex {
       let t = (params[i] + paramShift) * paramScale
-      let diff = points[i] - bez.Evaluate(t)
+      let diff = points[i] - bez.evaluate(t)
       let error = dot(diff, diff)
       if (error > maxError) {
         maxError = error;

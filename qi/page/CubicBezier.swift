@@ -1,25 +1,23 @@
 import simd
 
-// TODO: lowercase method names.
 struct LineSegment {
   var pt0 = float2()
   var pt1 = float2()
 
   @warn_unused_result
-  func Evaluate(t: Float) -> float2 {
+  func evaluate(t: Float) -> float2 {
     return pt0 * (1.0 as Float - t) + pt1 * t;
   }
 }
 
 // Quadratic Bezier curve.
-// TODO: lowercase method names.
 struct Bezier2 {
   var pt0 = float2()
   var pt1 = float2()
   var pt2 = float2()
 
   @warn_unused_result
-  func Evaluate(t: Float) -> float2 {
+  func evaluate(t: Float) -> float2 {
     let omt = Float(1.0) - t
     let tmp01 = pt0 * omt + pt1 * t
     let tmp12 = pt1 * omt + pt2 * t
@@ -28,7 +26,6 @@ struct Bezier2 {
 }
 
 // Cubic Bezier curve.
-// TODO: lowercase method names.
 struct Bezier3 : CustomStringConvertible {
   var pt0 = float2()
   var pt1 = float2()
@@ -36,14 +33,14 @@ struct Bezier3 : CustomStringConvertible {
   var pt3 = float2()
 
   @warn_unused_result
-  func Evaluate(t: Float) -> float2 {
+  func evaluate(t: Float) -> float2 {
     var bez2 = Bezier2()
     var line = LineSegment()
-    return Evaluate(t, line: &line, bez2: &bez2)
+    return evaluate(t, line: &line, bez2: &bez2)
   }
 
   @warn_unused_result
-  func Evaluate(t: Float, inout line: LineSegment, inout bez2: Bezier2) -> float2 {
+  func evaluate(t: Float, inout line: LineSegment, inout bez2: Bezier2) -> float2 {
     let omt = Float(1.0) - t
     bez2.pt0 = pt0 * omt + pt1 * t
     bez2.pt1 = pt1 * omt + pt2 * t
@@ -54,10 +51,10 @@ struct Bezier3 : CustomStringConvertible {
   }
 
   @warn_unused_result
-  func Split(t: Float) -> (first: Bezier3, second: Bezier3) {
+  func split(t: Float) -> (first: Bezier3, second: Bezier3) {
     var bez2 = Bezier2()
     var line = LineSegment()
-    let splitPoint = Evaluate(t, line: &line, bez2: &bez2)
+    let splitPoint = evaluate(t, line: &line, bez2: &bez2)
 
     return (Bezier3(pt0: pt0,
                     pt1: bez2.pt0,
@@ -75,7 +72,7 @@ struct Bezier3 : CustomStringConvertible {
 }
 
 @warn_unused_result
-func FitBezier3ToPoints(pts: ArraySlice<float2>,
+func fitBezier3ToPoints(pts: ArraySlice<float2>,
                         params: ArraySlice<Float>,
                         paramShift: Float,
                         paramScale: Float,
