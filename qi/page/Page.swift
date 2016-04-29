@@ -22,7 +22,12 @@ func ==(lhs: PageObserver, rhs: PageObserver) -> Bool {
 class Page {
   var strokes = [Stroke]()
   var dirtyStrokes = [Stroke]()
-  var nextStrokeIndex = 0
+  
+  func nextStrokeIndex() -> Int {
+    _nextStrokeIndex += 1
+    return _nextStrokeIndex - 1
+  }
+  private var _nextStrokeIndex : Int = 0
   
   private var observers = [PageObserver]()
   
@@ -41,7 +46,7 @@ class Page {
   }
   
   func instantiateStroke() -> Stroke {
-    return Stroke(index: nextStrokeIndex++)
+    return Stroke(index: nextStrokeIndex())
   }
   
   func setStrokePath(stroke: Stroke, path: [Bezier3]) {

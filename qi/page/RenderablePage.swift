@@ -34,7 +34,7 @@ class RenderablePage : Page {
   }
   
   override func instantiateStroke() -> Stroke {
-    return RenderableStroke(index: nextStrokeIndex++)
+    return RenderableStroke(index: nextStrokeIndex())
   }
   
   override func finalizeStroke(stroke: Stroke) {

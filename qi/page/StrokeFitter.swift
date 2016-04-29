@@ -36,20 +36,6 @@ extension float2 {
   }
 }
 
-func ==(left: float2, right: float2) -> Bool {
-  return left.x == right.x && left.y == right.y
-}
-
-extension Array {
-  var first: Element { return self[0] }
-  var last: Element { return self[endIndex - 1] }
-}
-
-extension ArraySlice {
-  var first: Element { return self[startIndex] }
-  var last: Element { return self[endIndex - 1] }
-}
-
 class StrokeFitter {
   let page: Page
   let stroke: Stroke
@@ -71,9 +57,9 @@ class StrokeFitter {
   func continueStroke(touches: [UITouch], predicted: [UITouch] = []) {
     for touch in touches {
       let pt = float2(touch.normalizedLocation)
-      let dist = distance(pt, points.last)
+      let dist = distance(pt, points.last!)
       points.append(pt)
-      params.append(params.last + dist)
+      params.append(params.last! + dist)
     }
     
     // Recursively compute a list of cubic Bezier segments.

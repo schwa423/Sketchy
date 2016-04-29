@@ -84,8 +84,8 @@ func fitBezier3ToPoints(pts: ArraySlice<float2>,
   assert(pts.startIndex == params.startIndex)
   assert(pts.endIndex == params.endIndex)
   
-  let firstPt = pts.first!
-  let lastPt = pts.last!
+  let firstPt = pts[pts.startIndex]
+  let lastPt = pts[pts.endIndex - 1]
   for i in pts.startIndex..<pts.endIndex {
     let t = (params[i] + paramShift) * paramScale
     let omt = Float(1.0) - t
