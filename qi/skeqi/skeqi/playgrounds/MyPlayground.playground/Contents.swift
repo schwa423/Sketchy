@@ -2,7 +2,10 @@
 
 import UIKit
 import Darwin
+import simd
 
+
+/*
 let π = Float(M_PI)
 let twopi = 2 * π
 
@@ -30,12 +33,28 @@ arclist.arcs[0].length
 arclist.arcs[1].length
 arclist.length
 
+var arcLengthTimes3 = arc.length * 3 + 100
+var foobar = arcLengthTimes3 + 100
+*/
 
+var a = 1.4
+var b = 0.125 / 2
 
-//arc.length
+/*
+var c : LineSegment;
 
-//println(arc.length)
+c = Bezier2()
+c.pt0 = float2(10, 20)
+c.pt1 = float2(11, 50)
+c.pt2 = float2(19, 80)
 
+for ii in 0.stride(through: 1.0, by: 0.0625) {
+  var d = c.evaluate(Float(ii))
+  d.x
+  d.y
+}
+*/
 
-
-
+for index in (0..<5) {
+  print("The index is currently \(index)")
+}
