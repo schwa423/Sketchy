@@ -75,7 +75,7 @@ class StrokeFitter {
   
   func finishStroke(touch: UITouch) {
     page.finalizeStroke(stroke)
-    print("Finished stroke with \(path.count) cubic beziers")
+    print("Finished stroke with \(path.count) cubic beziers and length \(stroke.length)")
   }
   
   // TODO: investigate reparameterization.

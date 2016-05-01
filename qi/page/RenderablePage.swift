@@ -15,6 +15,9 @@ class RenderablePage : Page {
   let renderPipeline: MTLRenderPipelineState
   let computePipeline: MTLComputePipelineState
   
+  // TODO: fix this hack
+  var time: Float = 0.0
+  
   init?(device: MTLDevice, library: MTLLibrary) {
     self.device = device
     self.library = library
@@ -43,26 +46,34 @@ class RenderablePage : Page {
   }
   
   func update(commandQueue: MTLCommandQueue) {
-    if dirtyStrokes.isEmpty { return }
+    // TODO: fix this hack... this provides a pleasing animation rate
+    time += 0.002
+    // time += 0.016 // 16 milliseconds
     
-    let commandBuffer = commandQueue.commandBuffer()
-    let commandEncoder = commandBuffer.computeCommandEncoder()
-    commandEncoder.pushDebugGroup("Tesselate Bezier Strokes")
-    commandEncoder.setComputePipelineState(computePipeline)
-    
-    for stroke in dirtyStrokes {
-      tesselateStroke(stroke as! RenderableStroke, encoder: commandEncoder)
+    if !dirtyStrokes.isEmpty {
+      let commandBuffer = commandQueue.commandBuffer()
+      let commandEncoder = commandBuffer.computeCommandEncoder()
+      commandEncoder.pushDebugGroup("Tesselate Bezier Strokes")
+      commandEncoder.setComputePipelineState(computePipeline)
+      
+      for stroke in dirtyStrokes {
+        tesselateStroke(stroke as! RenderableStroke, encoder: commandEncoder)
+      }
+      dirtyStrokes.removeAll(keepCapacity: true)
+      
+      commandEncoder.popDebugGroup()
+      commandEncoder.endEncoding()
+      commandBuffer.commit()
     }
-    dirtyStrokes.removeAll(keepCapacity: true)
-    
-    commandEncoder.popDebugGroup()
-    commandEncoder.endEncoding()
-    commandBuffer.commit()
   }
   
   func draw(renderEncoder: MTLRenderCommandEncoder) {
     renderEncoder.pushDebugGroup("Render Page Strokes")
     renderEncoder.setRenderPipelineState(renderPipeline)
+
+    // Time is the same for all strokes, so set it once here.
+    renderEncoder.setVertexBytes(&time, length: sizeof(Float), atIndex: 2)
+    
     for stroke in strokes {
       (stroke as! RenderableStroke).draw(renderEncoder)
     }
@@ -151,6 +162,8 @@ private class RenderableStroke : Stroke {
       
       var lengthNormalizer : Float = 1.0 / length
       encoder.setVertexBytes(&lengthNormalizer, length: sizeof(Float), atIndex: 1)
+      
+      // Time not set here, it is the same for all strokes so it is set in RenderablePage.draw().
       
       encoder.drawPrimitives(.TriangleStrip, vertexStart: 0, vertexCount: vertexCount)
     }

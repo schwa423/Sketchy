@@ -12,24 +12,26 @@ struct StrokeVertexIn {
     float4 pos;
     float2 norm;
     float length;
+    // TODO: this is no longer used
     packed_uchar4 color;
 };
 
 vertex StrokeVertexOut strokeVertex(uint vid [[ vertex_id ]],
                                     constant StrokeVertexIn* vertices [[ buffer(0) ]],
-                                    constant float* lengthNormalizer [[buffer(1)]])
+                                    constant float* lengthNormalizer [[buffer(1)]],
+                                    constant float* time [[buffer(2)]])
 {
   StrokeVertexIn in = vertices[vid];
   StrokeVertexOut out;
 
-  constexpr float normalizeColor = 1.0 / 255.0;
   constexpr float width = 0.02;
 
   out.position = in.pos;
-  out.position.xy += in.norm * width;
+  out.position.xy += in.norm * width * (1.5 + sin((in.length + time[0]) * 50));
   out.color.rgb = float3(in.length * lengthNormalizer[0]);
   out.color.a = 0.5;
   
+  // TODO: I think this is no longer used
   out.sz = 4.0f;
 
   return out;
