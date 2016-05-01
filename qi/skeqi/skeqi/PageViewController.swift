@@ -15,15 +15,17 @@ class FirebasePageObserver : PageObserver {
   override func onFinalizeStroke(stroke: Stroke!) -> Void {
     if !stroke.fromFirebase {
       var path = [Float]()
-      for bez in stroke.path {
-        path.append(bez.pt0[0])
-        path.append(bez.pt0[1])
-        path.append(bez.pt1[0])
-        path.append(bez.pt1[1])
-        path.append(bez.pt2[0])
-        path.append(bez.pt2[1])
-        path.append(bez.pt3[0])
-        path.append(bez.pt3[1])
+      for seg in stroke.path {
+        path.append(seg.curve.pt0[0])
+        path.append(seg.curve.pt0[1])
+        path.append(seg.curve.pt1[0])
+        path.append(seg.curve.pt1[1])
+        path.append(seg.curve.pt2[0])
+        path.append(seg.curve.pt2[1])
+        path.append(seg.curve.pt3[0])
+        path.append(seg.curve.pt3[1])
+        // TODO: worthwhile to also append the length and arc-length reparameterization?
+        // Or is it better to simply recompute them, as now?
       }
       ref.childByAutoId().setValue(path)
     }
@@ -39,7 +41,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   
   var page: RenderablePage? = nil
   var strokeFitters = [UITouch: StrokeFitter]()
-  var incomingStrokes = [[Bezier3]]()
+  var incomingStrokes = [[StrokeSegment]]()
 
   let firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
   var query : UInt = 0
@@ -103,7 +105,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
     query = ref!.observeEventType(.ChildAdded, withBlock: { (snapshot: FDataSnapshot!) -> Void in
       let array = snapshot.value as! NSArray
       assert(array.count % 8 == 0, "Array must be multiple of size of Bezier3")
-      var path = [Bezier3]()
+      var path = [StrokeSegment]()
       path.reserveCapacity(array.count % 8)
       for (var i = 0; i < array.count; i += 8) {
         var bez = Bezier3()
@@ -115,7 +117,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
         bez.pt2[1] = array.objectAtIndex(i+5) as! Float
         bez.pt3[0] = array.objectAtIndex(i+6) as! Float
         bez.pt3[1] = array.objectAtIndex(i+7) as! Float
-        path.append(bez)
+        path.append(StrokeSegment(bez))
       }
       self.incomingStrokes.append(path)
     });

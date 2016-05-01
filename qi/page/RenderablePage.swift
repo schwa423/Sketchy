@@ -85,15 +85,23 @@ class RenderablePage : Page {
     stroke.vertexCount = totalVertexCount
     
     // Tesselate stroke on GPU using compute shader.
-    assert(32 == sizeof(Bezier3))
+    assert(52 == sizeof(StrokeSegment))
     var offset = 0
+    var startLength = Float(0)
     for i in 0..<stroke.path.count {
       withUnsafePointer(&stroke.path[i]) {
-        encoder.setBytes($0, length: sizeof(Bezier3), atIndex:0)
+        // TODO: not sure why + 4 is necessary.  Does this need to be a multiple of 8 bytes?
+        encoder.setBytes($0, length: sizeof(StrokeSegment) + 4, atIndex:0)
       }
+      
+      encoder.setBytes(&startLength, length: sizeof(Float), atIndex:1)
+      startLength += stroke.path[i].length
+      
       var tDivisor : Float = Float(vertexCounts[i]) / 2.0 - 1.0
-      encoder.setBytes(&tDivisor, length: sizeof(Float), atIndex:1)
-      encoder.setBuffer(stroke.buffer, offset: offset, atIndex:2)
+      encoder.setBytes(&tDivisor, length: sizeof(Float), atIndex:2)
+      
+      encoder.setBuffer(stroke.buffer, offset: offset, atIndex:3)
+      
       let threadgroupSize = MTLSizeMake(vertexCounts[i] / 2, 1, 1)
       let threadgroups = MTLSizeMake(1, 1, 1)
       encoder.dispatchThreadgroups(threadgroups, threadsPerThreadgroup: threadgroupSize)
@@ -104,7 +112,7 @@ class RenderablePage : Page {
   
   private func computeStrokeVertexCounts(stroke: RenderableStroke) -> [Int] {
     return stroke.path.map {
-      (bezier: Bezier3) -> Int in
+      (seg: StrokeSegment) -> Int in
       // TODO: Compute a number based on the length of each path segment.
       128
     }
@@ -140,6 +148,10 @@ private class RenderableStroke : Stroke {
   func draw(encoder: MTLRenderCommandEncoder) {
     if (vertexCount > 0) {
       encoder.setVertexBuffer(buffer, offset: offset, atIndex: 0)
+      
+      var lengthNormalizer : Float = 1.0 / length
+      encoder.setVertexBytes(&lengthNormalizer, length: sizeof(Float), atIndex: 1)
+      
       encoder.drawPrimitives(.TriangleStrip, vertexStart: 0, vertexCount: vertexCount)
     }
   }

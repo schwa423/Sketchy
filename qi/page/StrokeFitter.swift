@@ -41,7 +41,7 @@ class StrokeFitter {
   let stroke: Stroke
   var points = [float2]()
   var params = [Float]()
-  var path = [Bezier3]()
+  var path = [StrokeSegment]()
   let errorThreshold = Float(0.0002)
   
   init(page: Page) {
@@ -76,7 +76,6 @@ class StrokeFitter {
   func finishStroke(touch: UITouch) {
     page.finalizeStroke(stroke)
     print("Finished stroke with \(path.count) cubic beziers")
-    print(stroke.description)
   }
   
   // TODO: investigate reparameterization.
@@ -93,10 +92,11 @@ class StrokeFitter {
       //       endpoints of the adjacent segments.
       var line = Bezier3()
       line.pt0 = points[startIndex]
-      line.pt3 = points[endIndex-1]
-      line.pt1 = line.pt0 + 0.25 * leftTangent
-      line.pt2 = line.pt3 + 0.25 * rightTangent
-      path.append(line)
+      line.pt3 = points[startIndex + 1]
+      let oneThird = Float(1.0 / 3.0)
+      line.pt1 = line.pt0 + (line.pt3 - line.pt0) * oneThird
+      line.pt2 = line.pt3 + (line.pt0 - line.pt3) * oneThird
+      path.append(StrokeSegment(line))
       return
     }
     
@@ -126,7 +126,7 @@ class StrokeFitter {
     
     // The current fit is good enough... add it to the path and stop recursion.
     if (maxError < errorThreshold) {
-      path.append(bez);
+      path.append(StrokeSegment(bez))
       return;
     }
     
