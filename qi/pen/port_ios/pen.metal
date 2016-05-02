@@ -27,7 +27,7 @@ vertex StrokeVertexOut strokeVertex(uint vid [[ vertex_id ]],
   constexpr float width = 0.02;
 
   out.position = in.pos;
-  out.position.xy += in.norm * width * (1.5 + sin((in.length + time[0]) * 50));
+  out.position.xy += in.norm * width * (1.5 + sin((in.length - time[0]) * 50));
   out.color.rgb = float3(in.length * lengthNormalizer[0]);
   out.color.a = 0.5;
   
