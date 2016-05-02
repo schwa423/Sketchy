@@ -124,8 +124,7 @@ class RenderablePage : Page {
   private func computeStrokeVertexCounts(stroke: RenderableStroke) -> [Int] {
     return stroke.path.map {
       (seg: StrokeSegment) -> Int in
-      // TODO: Compute a number based on the length of each path segment.
-      128
+        return max(2, 2 * Int(seg.length * 160))
     }
   }
   

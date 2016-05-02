@@ -44,6 +44,8 @@ class StrokeFitter {
   var path = [StrokeSegment]()
   let errorThreshold = Float(0.0002)
   
+  var predictedCount = Int(0)
+  
   init(page: Page) {
     self.page = page
     self.stroke = page.newStroke()
@@ -55,12 +57,39 @@ class StrokeFitter {
   }
   
   func continueStroke(touches: [UITouch], predicted: [UITouch] = []) {
+    // Remove any points that were not actually sampled, only predicted.
+    if predictedCount > 0 {
+      points.removeLast(predictedCount)
+      params.removeLast(predictedCount)
+      predictedCount = 0
+    }
+    
+    // Add new sampled points (only if they differ from the previous one).
     for touch in touches {
       let pt = float2(touch.normalizedLocation)
       let dist = distance(pt, points.last!)
-      points.append(pt)
-      params.append(params.last! + dist)
+      if dist > 0 {
+        points.append(pt)
+        params.append(params.last! + dist)
+      }
     }
+    
+    // Add new predicted points (only if they differ from the previous one).
+    if predicted.count > 0 {
+      for touch in predicted {
+        let pt = float2(touch.normalizedLocation)
+        let dist = distance(pt, points.last!)
+        if dist > 0 {
+          predictedCount += 1
+          points.append(pt)
+          params.append(params.last! + dist)
+        }
+      }
+    }
+    
+    // Sometimes the first several points are equal.  Don't call fitSampleRange() until there are
+    // at least 2 distince points (it will crash otherwise).
+    if points.count < 2 { return }
     
     // Recursively compute a list of cubic Bezier segments.
     // TODO: don't recompute stable path segments near the beginning of the stroke.
@@ -74,6 +103,7 @@ class StrokeFitter {
   }
   
   func finishStroke(touch: UITouch) {
+    assert(predictedCount == 0)
     page.finalizeStroke(stroke)
     print("Finished stroke with \(path.count) cubic beziers and length \(stroke.length)")
   }
