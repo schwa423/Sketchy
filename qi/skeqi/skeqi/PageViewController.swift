@@ -13,6 +13,9 @@ class FirebasePageObserver : PageObserver {
   }
   
   override func onFinalizeStroke(stroke: Stroke!) -> Void {
+    // TODO: this prevents resending strokes that were already received from Firebase, but it 
+    // doesn't prevent duplication of strokes that are created locally, then sent and received
+    // from Firebase.
     if !stroke.fromFirebase {
       var path = [Float]()
       for seg in stroke.path {
@@ -91,7 +94,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
 
     mtkView.device = device
     mtkView.delegate = self
-    mtkView.clearColor = MTLClearColor(red: 0.2, green: 0.6, blue: 0.6, alpha: 1.0)
+    mtkView.clearColor = MTLClearColor(red: 0.2, green: 0.0, blue: 0.2, alpha: 1.0)
   }
   
   override func viewWillAppear(animated: Bool) {
