@@ -69,7 +69,7 @@ class PageChooser : UICollectionViewController {
                                cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CELL", forIndexPath: indexPath) as! PageCell
     cell.key = pages[indexPath.item]
-    cell.backgroundColor = UIColor.blueColor()
+    cell.backgroundColor = UIColor(red: 0.2, green: 0.0, blue: 0.2, alpha: 1.0)
     return cell
   }
   
