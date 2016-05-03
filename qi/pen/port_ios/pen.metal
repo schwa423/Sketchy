@@ -24,10 +24,12 @@ vertex StrokeVertexOut strokeVertex(uint vid [[ vertex_id ]],
   StrokeVertexIn in = vertices[vid];
   StrokeVertexOut out;
 
-  constexpr float width = 0.02;
+  constexpr float width = 0.05;
+  // Domain of amplitude is [0, 0.5] because range of sin+1 is [0,2].
+  constexpr float amplitude = 0.4;
 
   out.position = in.pos;
-  out.position.xy += in.norm * width * (1.5 + sin((in.length - time[0]) * 50));
+  out.position.xy += in.norm * width * (1.0 - amplitude * (1.0 + sin(50 * (in.length - time[0]))));
   out.color.rgb = float3(in.length * lengthNormalizer[0]);
   out.color.a = 0.5;
   
@@ -80,6 +82,10 @@ kernel void strokeBezierTesselate(constant StrokeSegment* seg [[ buffer(0) ]],
   float2 tangent = normalize(p12 - p01);
   float2 normal = float2(-tangent.y, tangent.x);
   float length = startLength[0] + t * seg->length;
+  
+  float cap = max(0.0f, 1.0f - length * 5.0f);
+  float cap_scale = 1.0f - cap * cap;
+  normal *= cap_scale;
   
   float4 color = float4(t * 255, t * 255, t * 255, 255);
 
