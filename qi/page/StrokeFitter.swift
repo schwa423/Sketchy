@@ -42,7 +42,9 @@ class StrokeFitter {
   var points = [float2]()
   var params = [Float]()
   var path = [StrokeSegment]()
-  let errorThreshold = Float(0.0002)
+  
+  // Squared error in normalized screen coordinates.
+  let errorThreshold = Float(0.00004)
   
   var predictedCount = Int(0)
   
