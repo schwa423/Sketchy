@@ -7,6 +7,7 @@
 //
 
 import Metal
+import simd
 
 // TODO: document
 class RenderablePage : Page {
@@ -98,15 +99,15 @@ class RenderablePage : Page {
     // Tesselate stroke on GPU using compute shader.
     assert(52 == sizeof(StrokeSegment))
     var offset = 0
-    var startLength = Float(0)
+    var startAndTotalLength = float2(0.0, stroke.length)
     for i in 0..<stroke.path.count {
       withUnsafePointer(&stroke.path[i]) {
         // TODO: not sure why + 4 is necessary.  Does this need to be a multiple of 8 bytes?
         encoder.setBytes($0, length: sizeof(StrokeSegment) + 4, atIndex:0)
       }
       
-      encoder.setBytes(&startLength, length: sizeof(Float), atIndex:1)
-      startLength += stroke.path[i].length
+      encoder.setBytes(&startAndTotalLength, length: sizeof(float2), atIndex:1)
+      startAndTotalLength.x += stroke.path[i].length
       
       var tDivisor : Float = Float(vertexCounts[i]) / 2.0 - 1.0
       encoder.setBytes(&tDivisor, length: sizeof(Float), atIndex:2)
@@ -158,9 +159,7 @@ private class RenderableStroke : Stroke {
   func draw(encoder: MTLRenderCommandEncoder) {
     if (vertexCount > 0) {
       encoder.setVertexBuffer(buffer, offset: offset, atIndex: 0)
-      
-      var lengthNormalizer : Float = 1.0 / length
-      encoder.setVertexBytes(&lengthNormalizer, length: sizeof(Float), atIndex: 1)
+      encoder.setVertexBytes(&lengthAndReciprocal, length: sizeof(float2), atIndex: 1)
       
       // Time not set here, it is the same for all strokes so it is set in RenderablePage.draw().
       

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import simd
 
 // TODO: document
 class PageObserver : Equatable {
@@ -66,16 +67,20 @@ class Page {
 
 // TODO: document
 class Stroke : CustomStringConvertible {
-  let index: Int
-  var length = Float(0)
+  let index : Int
+  var lengthAndReciprocal : float2
+  var length : Float { get { return lengthAndReciprocal.x } }
   
   var path : [StrokeSegment] {
     get { return _path }
     set(newPath) {
       _path = newPath
-      length = 0
+      lengthAndReciprocal = float2(0.0, 0.0)
       for seg in _path {
-        length += seg.length
+        lengthAndReciprocal.x += seg.length
+      }
+      if (length > 0.0) {
+        lengthAndReciprocal.y = 1.0 / length
       }
     }
   }
@@ -86,6 +91,7 @@ class Stroke : CustomStringConvertible {
   
   init(index: Int) {
     self.index = index
+    lengthAndReciprocal = float2(0.0)
   }
   
   var description: String {
