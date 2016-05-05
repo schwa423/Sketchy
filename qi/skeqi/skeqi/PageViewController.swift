@@ -172,4 +172,11 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
     firebaseProvider.googleSignIn.signOut()
     firebaseProvider.getFirebaseRef().unauth()
   }
+  
+  @IBAction func clearPage(sender: AnyObject) {
+    // TODO: if others are collaboratively editing this same page, it won't be cleared for them.
+    ref!.removeValue()
+    incomingStrokes.removeAll()
+    page!.clear()
+  }
 }

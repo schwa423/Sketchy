@@ -63,6 +63,11 @@ class Page {
       observer.onFinalizeStroke(stroke)
     }
   }
+  
+  func clear() {
+    strokes.removeAll()
+    dirtyStrokes.removeAll()
+  }
 }
 
 // TODO: document

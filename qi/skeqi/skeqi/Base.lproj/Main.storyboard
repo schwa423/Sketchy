@@ -109,19 +109,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TJ2-Bg-99p">
-                                <rect key="frame" x="0.0" y="512" width="75" height="39"/>
-                                <color key="backgroundColor" red="1" green="0.94496296568848115" blue="0.13716596262847403" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TJ2-Bg-99p">
+                                <rect key="frame" x="0.0" y="512" width="88" height="39"/>
+                                <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                 <state key="normal" title="Sign Out"/>
                                 <connections>
                                     <action selector="googleSignOut:" destination="7KF-eN-vxo" eventType="touchUpInside" id="WAO-Nu-Ps2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" alpha="0.80000000000000004" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oBe-vl-Qgv">
+                                <rect key="frame" x="512" y="512" width="88" height="39"/>
+                                <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                <state key="normal" title="Clear"/>
+                                <connections>
+                                    <action selector="clearPage:" destination="7KF-eN-vxo" eventType="touchUpInside" id="fB4-9J-FvE"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="TJ2-Bg-99p" firstAttribute="leading" secondItem="OqX-gU-Tnk" secondAttribute="leadingMargin" constant="-20" id="IKw-e4-1zq"/>
-                            <constraint firstItem="qlK-4u-CMl" firstAttribute="top" secondItem="TJ2-Bg-99p" secondAttribute="bottom" id="ry1-ax-6A4"/>
+                            <constraint firstItem="oBe-vl-Qgv" firstAttribute="bottom" secondItem="qlK-4u-CMl" secondAttribute="top" id="JqB-Fg-vhQ"/>
+                            <constraint firstItem="oBe-vl-Qgv" firstAttribute="trailing" secondItem="OqX-gU-Tnk" secondAttribute="trailingMargin" constant="20" id="KBR-sI-aEd"/>
+                            <constraint firstItem="TJ2-Bg-99p" firstAttribute="bottom" secondItem="qlK-4u-CMl" secondAttribute="top" id="ry1-ax-6A4"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Page" id="5Pp-j8-PMm" userLabel="Page"/>
