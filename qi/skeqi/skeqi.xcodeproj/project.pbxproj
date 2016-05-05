@@ -91,6 +91,7 @@
 		03FA76111AD7EA2500A56C06 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03FA76101AD7EA2500A56C06 /* Images.xcassets */; };
 		03FA76141AD7EA2500A56C06 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FA76121AD7EA2500A56C06 /* LaunchScreen.xib */; };
 		03FA76201AD7EA2500A56C06 /* skeqiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA761F1AD7EA2500A56C06 /* skeqiTests.swift */; };
+		03FA7C541CDB9ABD00FDB00C /* MetalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA7C531CDB9ABD00FDB00C /* MetalExtensions.swift */; };
 		07C8AC28F92CC7A42ADEC0EB /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7200935AC6A0C0911BF412A /* Pods.framework */; };
 /* End PBXBuildFile section */
 
@@ -261,6 +262,7 @@
 		03FA76191AD7EA2500A56C06 /* skeqiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = skeqiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03FA761E1AD7EA2500A56C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03FA761F1AD7EA2500A56C06 /* skeqiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = skeqiTests.swift; sourceTree = "<group>"; };
+		03FA7C531CDB9ABD00FDB00C /* MetalExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalExtensions.swift; sourceTree = "<group>"; };
 		3F2A24E6DD4F5D1E07DB369E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B7200935AC6A0C0911BF412A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD8B2D02168A4CA2409FD535 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -605,6 +607,7 @@
 				030E68A71CCD4AB500980255 /* AppDelegate.swift */,
 				036CE46D1CD3F0C8002C1AC2 /* cplusplus */,
 				035F54C21BB7669C00BE6FD4 /* page */,
+				03FA7C521CDB9A7C00FDB00C /* util */,
 				030D02211B19B0C100116C90 /* skeqi-dbg.bundle */,
 				034F06A11ADA20AE005A439A /* playgrounds */,
 				03FA760B1AD7EA2500A56C06 /* Shaders.metal */,
@@ -641,6 +644,15 @@
 				03FA761E1AD7EA2500A56C06 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		03FA7C521CDB9A7C00FDB00C /* util */ = {
+			isa = PBXGroup;
+			children = (
+				03FA7C531CDB9ABD00FDB00C /* MetalExtensions.swift */,
+			);
+			name = util;
+			path = src/util;
 			sourceTree = "<group>";
 		};
 		1841EBDF86A12D5652FF24FD /* Frameworks */ = {
@@ -839,6 +851,7 @@
 				032D32D01AF56E0500F473D4 /* Parameters.cpp in Sources */,
 				0367BDFB1B05EF330080DAC5 /* buffer_ios.mm in Sources */,
 				032D32D31AF56E0500F473D4 /* Polyline.cpp in Sources */,
+				03FA7C541CDB9ABD00FDB00C /* MetalExtensions.swift in Sources */,
 				0318D8B51C4C6B0300F1202F /* runner_test.cc in Sources */,
 				032D32CC1AF56E0500F473D4 /* Fresnel.cpp in Sources */,
 				030269E61C1D170C00474958 /* gtest-all.cc in Sources */,

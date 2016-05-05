@@ -15,6 +15,7 @@ class RenderablePage : Page {
   let library: MTLLibrary
   let renderPipeline: MTLRenderPipelineState
   let computePipeline: MTLComputePipelineState
+  let enableAlphaBlending = false
   
   // TODO: fix this hack
   var time: Float = 0.0
@@ -29,7 +30,18 @@ class RenderablePage : Page {
     let pipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.vertexFunction = vertexFunction
     pipelineDescriptor.fragmentFunction = fragmentFunction
-    pipelineDescriptor.colorAttachments[0].pixelFormat = .BGRA8Unorm;
+    let renderbufferAttachment = pipelineDescriptor.colorAttachments[0]
+    renderbufferAttachment.pixelFormat = .BGRA8Unorm
+    if enableAlphaBlending {
+      renderbufferAttachment.blendingEnabled = true
+      renderbufferAttachment.rgbBlendOperation = .Add
+      renderbufferAttachment.alphaBlendOperation = .Add
+      renderbufferAttachment.sourceRGBBlendFactor = .SourceAlpha
+      renderbufferAttachment.sourceAlphaBlendFactor = .SourceAlpha
+      renderbufferAttachment.destinationRGBBlendFactor = .OneMinusSourceAlpha;
+      renderbufferAttachment.destinationAlphaBlendFactor = .OneMinusSourceAlpha;
+    }
+    
     try! renderPipeline = device.newRenderPipelineStateWithDescriptor(pipelineDescriptor)
     
     // Set up compute pipeline.
