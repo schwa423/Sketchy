@@ -94,7 +94,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
 
     mtkView.device = device
     mtkView.delegate = self
-    mtkView.clearColor = MTLClearColor(red: 0.2, green: 0.0, blue: 0.2, alpha: 1.0)
+    mtkView.clearColor = MTLClearColor(red: 0.1, green: 0.0, blue: 0.1, alpha: 1.0)
   }
   
   override func viewWillAppear(animated: Bool) {

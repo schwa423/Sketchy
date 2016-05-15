@@ -16,6 +16,7 @@ class RenderablePage : Page {
   let renderPipeline: MTLRenderPipelineState
   let computePipeline: MTLComputePipelineState
   let enableAlphaBlending = false
+  private let sineParams : SineParams
   
   // TODO: fix this hack
   var time: Float = 0.0
@@ -25,8 +26,12 @@ class RenderablePage : Page {
     self.library = library
     
     // Set up render pipeline.
-    let vertexFunction = library.newFunctionWithName("strokeVertex")!
-    let fragmentFunction = library.newFunctionWithName("strokeFragmentPassThrough")!
+//    let vertexFunction = library.newFunctionWithName("blackWhite_vert")!
+//    let fragmentFunction = library.newFunctionWithName("blackWhite_frag")!
+//    self.sineParams = SineParams(amplitude: 0.4, period: 50.0, speed: 1.0)
+    let vertexFunction = library.newFunctionWithName("fractalTiling_vert")!
+    let fragmentFunction = library.newFunctionWithName("fractalTiling_frag")!
+    self.sineParams = SineParams(amplitude: 0.2, period: 50.0, speed: 0.5)
     let pipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.vertexFunction = vertexFunction
     pipelineDescriptor.fragmentFunction = fragmentFunction
@@ -86,6 +91,10 @@ class RenderablePage : Page {
 
     // Time is the same for all strokes, so set it once here.
     renderEncoder.setVertexBytes(&time, length: sizeof(Float), atIndex: 2)
+    
+    // SineParams are the same for all strokes, so set it once here.
+    var p = sineParams;
+    renderEncoder.setVertexBytes(&p, length: sizeof(SineParams), atIndex: 3);
     
     for stroke in strokes {
       (stroke as! RenderableStroke).draw(renderEncoder)
@@ -155,8 +164,18 @@ class RenderablePage : Page {
 
 // Not used directly.  Matches the vertices that are created by RenderablePage.tesselateStroke().
 private struct StrokeVertex {
-  var px, py, pz, pw, nx, ny, length : Float
-  var cr, cg, cb, ca : UInt8
+  var px, py, pz, pw, nx, ny, dir, length : Float
+}
+
+// Corresponds to the SineParams struct consumed by the vertex shaders.
+private struct SineParams {
+  // Domain of amplitude is [0, 0.5] because range of sin+1 is [0,2].
+  let amplitude, period, speed : Float
+  init(amplitude : Float, period : Float, speed : Float) {
+    self.amplitude = amplitude
+    self.period = period
+    self.speed = speed
+  }
 }
 
 private class RenderableStroke : Stroke {

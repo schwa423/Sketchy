@@ -4,45 +4,109 @@ using namespace metal;
 
 // Format of vertices produced by the tesellator, and consumed by the vertex shader.
 struct StrokeVertexIn {
-    float4 pos;
-    float2 norm;
-    float length;
+  float4 pos;
+  float2 norm;
+  float dir;  // direction of normal, also used for parameterization
+  float length;
 };
 
 // Format of vertices output by the vertex shader.
 struct StrokeVertexOut {
-  float4  position [[position]];
-  float4  color;
-  float sz [[point_size]];
+  float4 pos [[position]];
+  float2 uv;
+  float time;
 };
 
+// TODO: comment
+struct SineParams {
+  float amplitude;
+  float period;
+  float speed;
+};
+
+// Return a number between 0 and 1.
+float sineFactor(SineParams params, float arcLength, float time) {
+  return 1.0 - params.amplitude * (1.0 + sin(params.period * (arcLength - params.speed * time)));
+}
+
 // Vertex shader.
-vertex StrokeVertexOut strokeVertex(uint vid [[ vertex_id ]],
-                                    constant StrokeVertexIn* vertices [[ buffer(0) ]],
-                                    constant float* lengthAndReciprocal [[buffer(1)]],
-                                    constant float* time [[buffer(2)]])
+vertex StrokeVertexOut fractalTiling_vert(uint vid [[ vertex_id ]],
+                                          constant StrokeVertexIn* vertices [[ buffer(0) ]],
+                                          constant float* lengthAndReciprocal [[buffer(1)]],
+                                          constant float* time [[buffer(2)]],
+                                          constant SineParams* sineParams [[buffer(3)]])
 {
   StrokeVertexIn in = vertices[vid];
   StrokeVertexOut out;
-
+  
   constexpr float width = 0.05;
-  // Domain of amplitude is [0, 0.5] because range of sin+1 is [0,2].
-  constexpr float amplitude = 0.4;
-
-  out.position = in.pos;
-  out.position.xy += in.norm * width * (1.0 - amplitude * (1.0 + sin(50 * (in.length - time[0]))));
-  // Use reciprocal-length so that the tip of the stroke is white, and the tail is black.
-  out.color.rgb = float3(in.length * lengthAndReciprocal[1]);
-  out.color.a = 0.5;
-
+  
+  out.pos = in.pos;
+  out.pos.xy += in.norm * in.dir * width * sineFactor(sineParams[0], in.length, time[0]);
+  
+  out.uv.x = (in.length / width) + time[0] * 8.0;
+  out.uv.y = in.dir + time[0] * 8.0;
+  out.time = time[0] * 8;
+  
   return out;
-};
+}
 
 // Fragment shader.
-fragment half4 strokeFragmentPassThrough(StrokeVertexOut inFrag [[stage_in]])
+// Credit: "Fractal Tiling" by Inigo Quilez, https://www.shadertoy.com/view/Ml2GWy
+fragment half4 fractalTiling_frag(StrokeVertexOut inFrag [[stage_in]])
 {
-    return half4(inFrag.color);
-};
+  float time = inFrag.time;
+  float2 pos = 32.0 * inFrag.uv + time;
+  float3 col = float3(0.0);
+  
+  for (int i = 0; i < 6; ++i) {
+    float2 a = floor(pos);
+    float2 b = fract(pos);
+    
+    float4 w = fract((sin(a.x*7.0+31.0*a.y + 0.01*time)+float4(0.035,0.01,0.0,0.7))*13.545317); // randoms
+    
+    col +=
+        w.xyz *                                   // color
+        smoothstep(0.45,0.55,w.w) *               // intensity
+        sqrt( 16.0*b.x*b.y*(1.0-b.x)*(1.0-b.y) ); // pattern
+    
+    pos /= 2.0; // lacunarity
+    col /= 2.0; // attenuate high frequencies
+  }
+  
+  col = pow( 2.5*col, float3(1.0,1.0,0.7) );    // contrast and color shape
+  return half4(col.x, col.y, col.z, 1.0);
+}
+
+// Vertex shader.
+vertex StrokeVertexOut blackWhite_vert(uint vid [[ vertex_id ]],
+                                       constant StrokeVertexIn* vertices [[ buffer(0) ]],
+                                       constant float* lengthAndReciprocal [[buffer(1)]],
+                                       constant float* time [[buffer(2)]],
+                                       constant SineParams* sineParams [[buffer(3)]])
+{
+  StrokeVertexIn in = vertices[vid];
+  StrokeVertexOut out;
+  
+  constexpr float width = 0.05;
+  
+  out.pos = in.pos;
+  out.pos.xy += in.norm * in.dir * width * sineFactor(sineParams[0], in.length, time[0]);
+  // Use reciprocal-length so that the tip of the stroke is white, and the tail is black.
+  float param = in.length * lengthAndReciprocal[1];
+  out.uv.x = param * param;
+  
+  return out;
+}
+
+// Fragment shader.
+fragment half4 blackWhite_frag(StrokeVertexOut inFrag [[stage_in]])
+{
+  half4 out;
+  out.rgb = half3(inFrag.uv.x);
+  out.a = 1.0;
+  return out;
+}
 
 // Format of stroke segments that are used by the tesselator.
 struct StrokeSegment {
@@ -92,9 +156,11 @@ kernel void strokeBezierTesselate(constant StrokeSegment* seg [[ buffer(0) ]],
   vertices[index].pos.xy = p;
   vertices[index].pos.zw = float2(0,1);
   vertices[index].norm = normal;
+  vertices[index].dir = 1.0;
   vertices[index].length = length;
   vertices[index + 1].pos.xy = p;
   vertices[index + 1].pos.zw = float2(0,1);
-  vertices[index + 1].norm = -normal;
+  vertices[index + 1].norm = normal;
+  vertices[index + 1].dir = -1.0;
   vertices[index + 1].length = length;
 }
