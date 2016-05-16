@@ -13,10 +13,12 @@ import simd
 class RenderablePage : Page {
   let device: MTLDevice
   let library: MTLLibrary
-  let renderPipeline: MTLRenderPipelineState
   let computePipeline: MTLComputePipelineState
-  let enableAlphaBlending = false
-  private let sineParams : SineParams
+  let randomTexture: MTLTexture
+  
+  let style1: StrokeStyle
+  let style2: StrokeStyle
+  let style3: StrokeStyle
   
   // TODO: fix this hack
   var time: Float = 0.0
@@ -26,32 +28,18 @@ class RenderablePage : Page {
     self.library = library
     
     // Set up render pipeline.
-//    let vertexFunction = library.newFunctionWithName("blackWhite_vert")!
-//    let fragmentFunction = library.newFunctionWithName("blackWhite_frag")!
-//    self.sineParams = SineParams(amplitude: 0.4, period: 50.0, speed: 0.125)
-    let vertexFunction = library.newFunctionWithName("fractalTiling_vert")!
-    let fragmentFunction = library.newFunctionWithName("fractalTiling_frag")!
-    self.sineParams = SineParams(amplitude: 0.2, period: 50.0, speed: 0.0625)
-    let pipelineDescriptor = MTLRenderPipelineDescriptor()
-    pipelineDescriptor.vertexFunction = vertexFunction
-    pipelineDescriptor.fragmentFunction = fragmentFunction
-    let renderbufferAttachment = pipelineDescriptor.colorAttachments[0]
-    renderbufferAttachment.pixelFormat = .BGRA8Unorm
-    if enableAlphaBlending {
-      renderbufferAttachment.blendingEnabled = true
-      renderbufferAttachment.rgbBlendOperation = .Add
-      renderbufferAttachment.alphaBlendOperation = .Add
-      renderbufferAttachment.sourceRGBBlendFactor = .SourceAlpha
-      renderbufferAttachment.sourceAlphaBlendFactor = .SourceAlpha
-      renderbufferAttachment.destinationRGBBlendFactor = .OneMinusSourceAlpha;
-      renderbufferAttachment.destinationAlphaBlendFactor = .OneMinusSourceAlpha;
-    }
-    
-    try! renderPipeline = device.newRenderPipelineStateWithDescriptor(pipelineDescriptor)
+    self.style1 = StrokeStyle(device: device, library: library, name: "blackWhite",
+                              sineParams: SineParams(amplitude: 0.4, period: 50.0, speed: 0.125))
+    self.style2 = StrokeStyle(device: device, library: library, name: "fractalTiling",
+                              sineParams: SineParams(amplitude: 0.2, period: 50.0, speed: 0.0625))
+    self.style3 = StrokeStyle(device: device, library: library, name: "sparkle",
+                              sineParams: SineParams(amplitude: 0.2, period: 50.0, speed: 0.0625))
     
     // Set up compute pipeline.
     let kernelFunction = library.newFunctionWithName("strokeBezierTesselate")!
     try! computePipeline = device.newComputePipelineStateWithFunction(kernelFunction)
+    
+    self.randomTexture = generateRandomTexture(device, width: 256, height: 256)
   }
   
   override func instantiateStroke() -> Stroke {
@@ -85,13 +73,20 @@ class RenderablePage : Page {
   
   func draw(renderEncoder: MTLRenderCommandEncoder) {
     renderEncoder.pushDebugGroup("Render Page Strokes")
-    renderEncoder.setRenderPipelineState(renderPipeline)
     
-    // SineParams are the same for all strokes, so set them once here.
-    var sineParams = self.sineParams;
-    renderEncoder.setVertexBytes(&sineParams, length: sizeof(SineParams), atIndex: 2);
+    // All strokes use the same random texture used to generate noise.
+    renderEncoder.setFragmentTexture(randomTexture, atIndex: 0)
     
+    let styles = [style1, style2, style3]
+    var current = 0
     for stroke in strokes {
+      // TODO: probably inefficient to switch pipelines this often
+      current = (current + 1) % 3
+      let style = styles[current]
+      renderEncoder.setRenderPipelineState(style.pipeline)
+      var sineParams = style.sineParams
+      renderEncoder.setVertexBytes(&sineParams, length: sizeof(SineParams), atIndex: 2)
+      
       (stroke as! RenderableStroke).draw(renderEncoder, time: time)
     }
     renderEncoder.popDebugGroup()
@@ -186,6 +181,7 @@ private struct SineParams {
   }
 }
 
+// TODO: document
 private class RenderableStroke : Stroke {
   var vertexCount: Int = 0
   var offset: Int = 0
@@ -215,5 +211,37 @@ private class RenderableStroke : Stroke {
     }
     string += path.isEmpty ? "}\n}" : "\n  }\n}"
     return string
+  }
+}
+
+// TODO: document
+class StrokeStyle {
+  private let sineParams: SineParams
+  let pipeline: MTLRenderPipelineState
+  let enableAlphaBlending = false  // TODO
+  
+  private init(device: MTLDevice, library: MTLLibrary, name: String, sineParams: SineParams) {
+    self.sineParams = sineParams
+    
+    let vertexFunction = library.newFunctionWithName("\(name)_vert");
+    let fragmentFunction = library.newFunctionWithName("\(name)_frag");
+    
+    let pipelineDescriptor = MTLRenderPipelineDescriptor()
+    pipelineDescriptor.vertexFunction = vertexFunction
+    pipelineDescriptor.fragmentFunction = fragmentFunction
+    let renderbufferAttachment = pipelineDescriptor.colorAttachments[0]
+    renderbufferAttachment.pixelFormat = .BGRA8Unorm
+    
+    if enableAlphaBlending {
+      renderbufferAttachment.blendingEnabled = true
+      renderbufferAttachment.rgbBlendOperation = .Add
+      renderbufferAttachment.alphaBlendOperation = .Add
+      renderbufferAttachment.sourceRGBBlendFactor = .SourceAlpha
+      renderbufferAttachment.sourceAlphaBlendFactor = .SourceAlpha
+      renderbufferAttachment.destinationRGBBlendFactor = .OneMinusSourceAlpha;
+      renderbufferAttachment.destinationAlphaBlendFactor = .OneMinusSourceAlpha;
+    }
+    
+    try! pipeline = device.newRenderPipelineStateWithDescriptor(pipelineDescriptor)
   }
 }

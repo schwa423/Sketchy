@@ -94,6 +94,34 @@ fragment half4 fractalTiling_frag(StrokeVertexOut inFrag [[stage_in]])
 }
 
 // Vertex shader.
+vertex StrokeVertexOut sparkle_vert(uint vid [[ vertex_id ]],
+                                    constant StrokeVertexIn* vertices [[ buffer(0) ]],
+                                    constant StrokeParams* strokeParams [[ buffer(1) ]],
+                                    constant SineParams* sineParams [[buffer(2)]])
+{
+  StrokeVertexIn in = vertices[vid];
+  StrokeParams stroke = strokeParams[0];
+  StrokeVertexOut out;
+  
+  out.pos = in.pos;
+  out.pos.xy += in.norm * in.dir * stroke.width;
+  
+  out.uv.x = in.length * stroke.reciprocalWidth;
+  out.uv.y = in.dir;
+
+  return out;
+}
+
+// Fragment shader.
+fragment half4 sparkle_frag(StrokeVertexOut inFrag [[stage_in]],
+                            texture2d<uint> random [[texture(0)]])
+{
+  constexpr sampler s(coord::normalized, address::mirrored_repeat, filter::linear);
+  float3 col = float3(random.sample(s, inFrag.uv).xyz) / 255.0;
+  return half4(col.x, col.y, col.z, 1.0);
+}
+
+// Vertex shader.
 vertex StrokeVertexOut blackWhite_vert(uint vid [[ vertex_id ]],
                                        constant StrokeVertexIn* vertices [[ buffer(0) ]],
                                        constant StrokeParams* strokeParams [[ buffer(1) ]],
