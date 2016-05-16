@@ -51,9 +51,9 @@ vertex StrokeVertexOut fractalTiling_vert(uint vid [[ vertex_id ]],
   out.pos = in.pos;
   out.pos.xy += in.norm * in.dir * stroke.width * sineFactor(sineParams[0], in.length, stroke.time);
   
-  out.uv.x = (in.length * stroke.reciprocalWidth) + stroke.time * 8.0;
-  out.uv.y = in.dir + stroke.time * 8.0;
-  out.time = stroke.time * 8;
+  out.uv.x = (in.length * stroke.reciprocalWidth) + stroke.time;
+  out.uv.y = in.dir + stroke.time;
+  out.time = stroke.time;
   
   return out;
 }

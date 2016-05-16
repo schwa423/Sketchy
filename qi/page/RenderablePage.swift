@@ -28,10 +28,10 @@ class RenderablePage : Page {
     // Set up render pipeline.
 //    let vertexFunction = library.newFunctionWithName("blackWhite_vert")!
 //    let fragmentFunction = library.newFunctionWithName("blackWhite_frag")!
-//    self.sineParams = SineParams(amplitude: 0.4, period: 50.0, speed: 1.0)
+//    self.sineParams = SineParams(amplitude: 0.4, period: 50.0, speed: 0.125)
     let vertexFunction = library.newFunctionWithName("fractalTiling_vert")!
     let fragmentFunction = library.newFunctionWithName("fractalTiling_frag")!
-    self.sineParams = SineParams(amplitude: 0.2, period: 50.0, speed: 0.5)
+    self.sineParams = SineParams(amplitude: 0.2, period: 50.0, speed: 0.0625)
     let pipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.vertexFunction = vertexFunction
     pipelineDescriptor.fragmentFunction = fragmentFunction
@@ -64,9 +64,7 @@ class RenderablePage : Page {
   }
   
   func update(commandQueue: MTLCommandQueue) {
-    // TODO: fix this hack... this provides a pleasing animation rate
-    time += 0.002
-    // time += 0.016 // 16 milliseconds
+    time += 0.016 // 16 milliseconds
     
     if !dirtyStrokes.isEmpty {
       let commandBuffer = commandQueue.commandBuffer()
@@ -183,7 +181,7 @@ private struct SineParams {
   let amplitude, period, speed : Float
   init(amplitude : Float, period : Float, speed : Float) {
     self.amplitude = amplitude
-    self.period = period
+    self.period = period  // TODO: this is really "frequency", not "period"
     self.speed = speed
   }
 }
