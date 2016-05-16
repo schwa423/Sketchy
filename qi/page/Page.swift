@@ -67,6 +67,7 @@ class Page {
   func clear() {
     strokes.removeAll()
     dirtyStrokes.removeAll()
+    _nextStrokeIndex = 0
   }
 }
 
