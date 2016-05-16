@@ -88,16 +88,13 @@ class RenderablePage : Page {
   func draw(renderEncoder: MTLRenderCommandEncoder) {
     renderEncoder.pushDebugGroup("Render Page Strokes")
     renderEncoder.setRenderPipelineState(renderPipeline)
-
-    // Time is the same for all strokes, so set it once here.
-    renderEncoder.setVertexBytes(&time, length: sizeof(Float), atIndex: 2)
     
-    // SineParams are the same for all strokes, so set it once here.
-    var p = sineParams;
-    renderEncoder.setVertexBytes(&p, length: sizeof(SineParams), atIndex: 3);
+    // SineParams are the same for all strokes, so set them once here.
+    var sineParams = self.sineParams;
+    renderEncoder.setVertexBytes(&sineParams, length: sizeof(SineParams), atIndex: 2);
     
     for stroke in strokes {
-      (stroke as! RenderableStroke).draw(renderEncoder)
+      (stroke as! RenderableStroke).draw(renderEncoder, time: time)
     }
     renderEncoder.popDebugGroup()
   }
@@ -167,6 +164,19 @@ private struct StrokeVertex {
   var px, py, pz, pw, nx, ny, dir, length : Float
 }
 
+// Corresponds to the StrokeParams struct consumed by the vertex shaders.
+private struct StrokeParams {
+  // Domain of amplitude is [0, 0.5] because range of sin+1 is [0,2].
+  let length, reciprocalLength, width, reciprocalWidth, time : Float
+  init(length : Float, width : Float, time : Float) {
+    self.length = length
+    self.reciprocalLength = 1.0 / length
+    self.width = width
+    self.reciprocalWidth = 1.0 / width
+    self.time = time
+  }
+}
+
 // Corresponds to the SineParams struct consumed by the vertex shaders.
 private struct SineParams {
   // Domain of amplitude is [0, 0.5] because range of sin+1 is [0,2].
@@ -187,10 +197,12 @@ private class RenderableStroke : Stroke {
     super.init(index: index)
   }
   
-  func draw(encoder: MTLRenderCommandEncoder) {
+  func draw(encoder: MTLRenderCommandEncoder, time: Float) {
     if (vertexCount > 0) {
       encoder.setVertexBuffer(buffer, offset: offset, atIndex: 0)
-      encoder.setVertexBytes(&lengthAndReciprocal, length: sizeof(float2), atIndex: 1)
+      
+      var strokeParams = StrokeParams(length: length, width: 0.05, time: time)
+      encoder.setVertexBytes(&strokeParams, length: sizeof(StrokeParams), atIndex: 1);
       
       // Time not set here, it is the same for all strokes so it is set in RenderablePage.draw().
       

@@ -18,6 +18,15 @@ struct StrokeVertexOut {
 };
 
 // TODO: comment
+struct StrokeParams {
+  float length;
+  float reciprocalLength;
+  float width;
+  float reciprocalWidth;
+  float time;
+};
+
+// TODO: comment
 struct SineParams {
   float amplitude;
   float period;
@@ -32,21 +41,19 @@ float sineFactor(SineParams params, float arcLength, float time) {
 // Vertex shader.
 vertex StrokeVertexOut fractalTiling_vert(uint vid [[ vertex_id ]],
                                           constant StrokeVertexIn* vertices [[ buffer(0) ]],
-                                          constant float* lengthAndReciprocal [[buffer(1)]],
-                                          constant float* time [[buffer(2)]],
-                                          constant SineParams* sineParams [[buffer(3)]])
+                                          constant StrokeParams* strokeParams [[ buffer(1) ]],
+                                          constant SineParams* sineParams [[buffer(2)]])
 {
   StrokeVertexIn in = vertices[vid];
+  StrokeParams stroke = strokeParams[0];
   StrokeVertexOut out;
   
-  constexpr float width = 0.05;
-  
   out.pos = in.pos;
-  out.pos.xy += in.norm * in.dir * width * sineFactor(sineParams[0], in.length, time[0]);
+  out.pos.xy += in.norm * in.dir * stroke.width * sineFactor(sineParams[0], in.length, stroke.time);
   
-  out.uv.x = (in.length / width) + time[0] * 8.0;
-  out.uv.y = in.dir + time[0] * 8.0;
-  out.time = time[0] * 8;
+  out.uv.x = (in.length * stroke.reciprocalWidth) + stroke.time * 8.0;
+  out.uv.y = in.dir + stroke.time * 8.0;
+  out.time = stroke.time * 8;
   
   return out;
 }
@@ -81,20 +88,19 @@ fragment half4 fractalTiling_frag(StrokeVertexOut inFrag [[stage_in]])
 // Vertex shader.
 vertex StrokeVertexOut blackWhite_vert(uint vid [[ vertex_id ]],
                                        constant StrokeVertexIn* vertices [[ buffer(0) ]],
-                                       constant float* lengthAndReciprocal [[buffer(1)]],
-                                       constant float* time [[buffer(2)]],
-                                       constant SineParams* sineParams [[buffer(3)]])
+                                       constant StrokeParams* strokeParams [[ buffer(1) ]],
+                                       constant SineParams* sineParams [[buffer(2)]])
 {
   StrokeVertexIn in = vertices[vid];
+  StrokeParams stroke = strokeParams[0];
   StrokeVertexOut out;
   
-  constexpr float width = 0.05;
-  
   out.pos = in.pos;
-  out.pos.xy += in.norm * in.dir * width * sineFactor(sineParams[0], in.length, time[0]);
+  out.pos.xy += in.norm * in.dir * stroke.width * sineFactor(sineParams[0], in.length, stroke.time);
   // Use reciprocal-length so that the tip of the stroke is white, and the tail is black.
-  float param = in.length * lengthAndReciprocal[1];
-  out.uv.x = param * param;
+  float brightness = in.length * stroke.reciprocalLength;
+  // Square the brightness so that it is approximately linear, perceptually.
+  out.uv.x = brightness * brightness;
   
   return out;
 }
