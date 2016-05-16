@@ -51,8 +51,11 @@ vertex StrokeVertexOut fractalTiling_vert(uint vid [[ vertex_id ]],
   out.pos = in.pos;
   out.pos.xy += in.norm * in.dir * stroke.width * sineFactor(sineParams[0], in.length, stroke.time);
   
-  out.uv.x = (in.length * stroke.reciprocalWidth) + stroke.time;
-  out.uv.y = in.dir + stroke.time;
+  // TODO: bias by some per-stroke value (perhaps stroke start-time?) so that the beginning of each
+  // stroke doesn't look the same.  I tried to use the a multiple of the total stroke length... this
+  // looked OK for finalized strokes, but caused strokes to flash wildly while being drawn.
+  out.uv.x = in.length * stroke.reciprocalWidth;
+  out.uv.y = in.dir;
   out.time = stroke.time;
   
   return out;
@@ -63,7 +66,12 @@ vertex StrokeVertexOut fractalTiling_vert(uint vid [[ vertex_id ]],
 fragment half4 fractalTiling_frag(StrokeVertexOut inFrag [[stage_in]])
 {
   float time = inFrag.time;
-  float2 pos = 32.0 * inFrag.uv + time;
+  
+  // Bias tex-coords to make stroke look cylindrical.
+  float2 pos = float2(inFrag.uv.x, asin(inFrag.uv.y));
+  // TODO: make this match sine speed in vertex shader.
+  pos -= float2(time);
+  pos *= 32.0;
   float3 col = float3(0.0);
   
   for (int i = 0; i < 6; ++i) {
