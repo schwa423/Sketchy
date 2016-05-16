@@ -26,7 +26,7 @@ struct Bezier2 {
 }
 
 // 1D Cubic Bezier curve.
-struct Bezier3_1 {
+struct Bezier3_1 : Equatable {
   var pt0 = Float(0)
   var pt1 = Float(0)
   var pt2 = Float(0)
@@ -44,7 +44,7 @@ struct Bezier3_1 {
 }
 
 // 2D Cubic Bezier curve.
-struct Bezier3 : CustomStringConvertible {
+struct Bezier3 : CustomStringConvertible, Equatable {
   var pt0 = float2()
   var pt1 = float2()
   var pt2 = float2()
@@ -204,4 +204,17 @@ func fitBezier3ToPoints(pts: ArraySlice<float2>,
                  pt1: firstPt + startTangent * alpha_l,
                  pt2: lastPt + endTangent * alpha_r,
                  pt3: lastPt)
+}
+
+// TODO: put this somewhere suitable
+func ==(lhs: float2, rhs: float2) -> Bool {
+  return lhs.x == rhs.x && lhs.y == rhs.y
+}
+
+func ==(lhs: Bezier3, rhs: Bezier3) -> Bool {
+  return lhs.pt0 == rhs.pt0 && lhs.pt1 == rhs.pt1 && lhs.pt2 == rhs.pt2 && lhs.pt3 == rhs.pt3
+}
+
+func ==(lhs: Bezier3_1, rhs: Bezier3_1) -> Bool {
+  return lhs.pt0 == rhs.pt0 && lhs.pt1 == rhs.pt1 && lhs.pt2 == rhs.pt2 && lhs.pt3 == rhs.pt3
 }

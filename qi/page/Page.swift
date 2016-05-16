@@ -115,7 +115,7 @@ func validateFloat(f : Float) {
 }
 
 // TODO: document
-struct StrokeSegment : CustomStringConvertible {
+struct StrokeSegment : CustomStringConvertible, Equatable {
   let curve : Bezier3
   let reparam : Bezier3_1
   let length : Float
@@ -143,4 +143,11 @@ struct StrokeSegment : CustomStringConvertible {
   var description: String {
     return "length: \(length)  \(curve)"
   }
+}
+
+func ==(lhs: StrokeSegment, rhs: StrokeSegment) ->Bool {
+  if lhs.curve != rhs.curve { return false }
+  if lhs.reparam != rhs.reparam { return false }
+  if lhs.length != rhs.length { return false }
+  return true
 }
