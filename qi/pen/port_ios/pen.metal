@@ -18,12 +18,17 @@ struct StrokeVertexOut {
 };
 
 // TODO: comment
+struct GlobalParams {
+  float time;
+  float2 pageScale;
+};
+
+// TODO: comment
 struct StrokeParams {
   float length;
   float reciprocalLength;
   float width;
   float reciprocalWidth;
-  float time;
 };
 
 // TODO: comment
@@ -41,22 +46,28 @@ float sineFactor(SineParams params, float arcLength, float time) {
 // Vertex shader.
 vertex StrokeVertexOut fractalTiling_vert(uint vid [[ vertex_id ]],
                                           constant StrokeVertexIn* vertices [[ buffer(0) ]],
-                                          constant StrokeParams* strokeParams [[ buffer(1) ]],
-                                          constant SineParams* sineParams [[buffer(2)]])
+                                          constant GlobalParams* globalParams [[ buffer(1) ]],
+                                          constant StrokeParams* strokeParams [[ buffer(2) ]],
+                                          constant SineParams* sineParams [[buffer(3)]])
 {
-  StrokeVertexIn in = vertices[vid];
-  StrokeParams stroke = strokeParams[0];
   StrokeVertexOut out;
   
+  StrokeVertexIn in = vertices[vid];
+  StrokeParams stroke = strokeParams[0];
+  float2 pageScale = globalParams[0].pageScale;
+  float time = globalParams[0].time;
+
   out.pos = in.pos;
-  out.pos.xy += in.norm * in.dir * stroke.width * sineFactor(sineParams[0], in.length, stroke.time);
+  out.pos.xy += in.norm * in.dir * stroke.width * sineFactor(sineParams[0], in.length, time);
+  out.pos.xy *= pageScale;
   
   // TODO: bias by some per-stroke value (perhaps stroke start-time?) so that the beginning of each
   // stroke doesn't look the same.  I tried to use the a multiple of the total stroke length... this
   // looked OK for finalized strokes, but caused strokes to flash wildly while being drawn.
   out.uv.x = in.length * stroke.reciprocalWidth;
   out.uv.y = in.dir;
-  out.time = stroke.time;
+  
+  out.time = time;
   
   return out;
 }
@@ -96,18 +107,25 @@ fragment half4 fractalTiling_frag(StrokeVertexOut inFrag [[stage_in]])
 // Vertex shader.
 vertex StrokeVertexOut sparkle_vert(uint vid [[ vertex_id ]],
                                     constant StrokeVertexIn* vertices [[ buffer(0) ]],
-                                    constant StrokeParams* strokeParams [[ buffer(1) ]],
-                                    constant SineParams* sineParams [[buffer(2)]])
+                                    constant GlobalParams* globalParams [[ buffer(1) ]],
+                                    constant StrokeParams* strokeParams [[ buffer(2) ]],
+                                    constant SineParams* sineParams [[buffer(3)]])
 {
+  StrokeVertexOut out;
+
   StrokeVertexIn in = vertices[vid];
   StrokeParams stroke = strokeParams[0];
-  StrokeVertexOut out;
+  float2 pageScale = globalParams[0].pageScale;
+  float time = globalParams[0].time;
   
   out.pos = in.pos;
   out.pos.xy += in.norm * in.dir * stroke.width;
+  out.pos.xy *= pageScale;
   
   out.uv.x = in.length * stroke.reciprocalWidth;
   out.uv.y = in.dir;
+  
+  out.time = time;
 
   return out;
 }
@@ -124,19 +142,27 @@ fragment half4 sparkle_frag(StrokeVertexOut inFrag [[stage_in]],
 // Vertex shader.
 vertex StrokeVertexOut blackWhite_vert(uint vid [[ vertex_id ]],
                                        constant StrokeVertexIn* vertices [[ buffer(0) ]],
-                                       constant StrokeParams* strokeParams [[ buffer(1) ]],
-                                       constant SineParams* sineParams [[buffer(2)]])
+                                       constant GlobalParams* globalParams [[ buffer(1) ]],
+                                       constant StrokeParams* strokeParams [[ buffer(2) ]],
+                                       constant SineParams* sineParams [[buffer(3)]])
 {
-  StrokeVertexIn in = vertices[vid];
-  StrokeParams stroke = strokeParams[0];
   StrokeVertexOut out;
   
+  StrokeVertexIn in = vertices[vid];
+  StrokeParams stroke = strokeParams[0];
+  float2 pageScale = globalParams[0].pageScale;
+  float time = globalParams[0].time;
+  
   out.pos = in.pos;
-  out.pos.xy += in.norm * in.dir * stroke.width * sineFactor(sineParams[0], in.length, stroke.time);
+  out.pos.xy += in.norm * in.dir * stroke.width * sineFactor(sineParams[0], in.length, time);
+  out.pos.xy *= pageScale;
+  
   // Use reciprocal-length so that the tip of the stroke is white, and the tail is black.
   float brightness = in.length * stroke.reciprocalLength;
   // Square the brightness so that it is approximately linear, perceptually.
   out.uv.x = brightness * brightness;
+  
+  out.time = time;  
   
   return out;
 }

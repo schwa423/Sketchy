@@ -12,9 +12,21 @@ import simd
 extension UITouch {
   func normalizedLocationInView(view: UIView?) -> CGPoint {
     if let bounds = view?.bounds ?? window?.bounds {
+      let width = CGRectGetWidth(bounds)
+      let height = CGRectGetHeight(bounds)
       var pt = locationInView(view)
-      pt.x = pt.x / CGRectGetWidth(bounds) * 2.0 - 1.0
-      pt.y = pt.y / CGRectGetHeight(bounds) * -2.0 + 1.0
+      
+      // Scale so that the point is normalized to between [-1,1] in the smaller dimension, and
+      // somewhat larger in the other dimension.
+      // TODO: account for DPI, so that distance(pt1, pt2) == 1.0 means that the points are 1cm apart.
+      if (width > height) {
+        pt.x = (pt.x / width * 2.0 - 1.0) * width / height
+        pt.y = (pt.y / height * -2.0 + 1.0)
+      } else {
+        pt.x = pt.x / width * 2.0 - 1.0
+        pt.y = (pt.y / height * -2.0 + 1.0) * height / width
+      }
+      
       return pt
     }
     assert(false)

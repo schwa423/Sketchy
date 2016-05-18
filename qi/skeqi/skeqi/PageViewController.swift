@@ -17,7 +17,20 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   var incomingStrokes = [[StrokeSegment]]()
 
   let firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
-  var observer : FirebasePageObserver? = nil
+  var observer: FirebasePageObserver? = nil
+  
+  var pageScale : float2 {
+    get {
+      if let bounds = view?.bounds {
+        let width = Float(CGRectGetWidth(bounds))
+        let height = Float(CGRectGetHeight(bounds))
+        // Scale so that rendering isn't stretched to match the screen aspect-ratio.
+        return width > height ? float2(height / width, 1.0) : float2(1.0, width / height)
+      }
+      assert(false)
+      return float2(1.0, 1.0)
+    }
+  }
 
   // TODO: move ref into FirebasePageObserver?
   var ref : Firebase? = nil
@@ -55,7 +68,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
     let encoder = commandBuffer.renderCommandEncoderWithDescriptor(descriptor)
     encoder.label = "Page render encoder"
 
-    page.draw(encoder)
+    page.draw(encoder, pageScale: pageScale)
 
     encoder.endEncoding()
     commandBuffer.presentDrawable(drawable)
@@ -78,8 +91,6 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
     page = RenderablePage(device: device, library: library)
     observer = FirebasePageObserver(ref!)
     page!.addObserver(observer)
-    
-
   }
   
   override func viewDidDisappear(animated: Bool) {

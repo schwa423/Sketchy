@@ -71,8 +71,12 @@ class RenderablePage : Page {
     }
   }
   
-  func draw(renderEncoder: MTLRenderCommandEncoder) {
+  func draw(renderEncoder: MTLRenderCommandEncoder, pageScale: float2) {
     renderEncoder.pushDebugGroup("Render Page Strokes")
+    
+    // Set global parameters.
+    var globalParams = GlobalParams(time: time, pageScale: pageScale)
+    renderEncoder.setVertexBytes(&globalParams, length: sizeof(GlobalParams), atIndex: 1);
     
     // All strokes use the same random texture used to generate noise.
     renderEncoder.setFragmentTexture(randomTexture, atIndex: 0)
@@ -85,7 +89,7 @@ class RenderablePage : Page {
       let style = styles[current]
       renderEncoder.setRenderPipelineState(style.pipeline)
       var sineParams = style.sineParams
-      renderEncoder.setVertexBytes(&sineParams, length: sizeof(SineParams), atIndex: 2)
+      renderEncoder.setVertexBytes(&sineParams, length: sizeof(SineParams), atIndex: 3)
       
       (stroke as! RenderableStroke).draw(renderEncoder, time: time)
     }
@@ -157,11 +161,23 @@ private struct StrokeVertex {
   var px, py, pz, pw, nx, ny, dir, length : Float
 }
 
+// Corresponds to the GlobalParams struct consumed by the vertex shaders.
+struct GlobalParams {
+  let time: Float
+  let pageScale : float2
+  
+  init(time: Float, pageScale: float2) {
+    self.time = time
+    self.pageScale = pageScale
+  }
+};
+
 // Corresponds to the StrokeParams struct consumed by the vertex shaders.
 private struct StrokeParams {
   // Domain of amplitude is [0, 0.5] because range of sin+1 is [0,2].
   let length, reciprocalLength, width, reciprocalWidth, time : Float
-  init(length : Float, width : Float, time : Float) {
+  
+  init(length: Float, width: Float, time: Float) {
     self.length = length
     self.reciprocalLength = 1.0 / length
     self.width = width
@@ -196,7 +212,7 @@ private class RenderableStroke : Stroke {
       encoder.setVertexBuffer(buffer, offset: offset, atIndex: 0)
       
       var strokeParams = StrokeParams(length: length, width: 0.05, time: time)
-      encoder.setVertexBytes(&strokeParams, length: sizeof(StrokeParams), atIndex: 1);
+      encoder.setVertexBytes(&strokeParams, length: sizeof(StrokeParams), atIndex: 2);
       
       // Time not set here, it is the same for all strokes so it is set in RenderablePage.draw().
       
