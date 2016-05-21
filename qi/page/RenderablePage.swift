@@ -15,25 +15,37 @@ class RenderablePage : Page {
   let library: MTLLibrary
   let computePipeline: MTLComputePipelineState
   let randomTexture: MTLTexture
-  
-  let style1: StrokeStyle
-  let style2: StrokeStyle
-  let style3: StrokeStyle
+
+  let styles: [StrokeStyle]
+  let backgroundColors: [MTLClearColor]
+  private var currentStyle = 0
   
   // TODO: fix this hack
   var time: Float = 0.0
+  
+  var clearColor: MTLClearColor {
+    get { return backgroundColors[currentStyle] }
+  }
   
   init?(device: MTLDevice, library: MTLLibrary) {
     self.device = device
     self.library = library
     
     // Set up render pipeline.
-    self.style1 = StrokeStyle(device: device, library: library, name: "blackWhite",
+    let style0 = StrokeStyle(device: device, library: library, name: "blackWhite",
                               sineParams: SineParams(amplitude: 0.4, period: 50.0, speed: 0.125))
-    self.style2 = StrokeStyle(device: device, library: library, name: "fractalTiling",
+    let style1 = StrokeStyle(device: device, library: library, name: "fractalTiling",
                               sineParams: SineParams(amplitude: 0.2, period: 50.0, speed: 0.0625))
-    self.style3 = StrokeStyle(device: device, library: library, name: "sparkle",
+    let style2 = StrokeStyle(device: device, library: library, name: "sparkle",
                               sineParams: SineParams(amplitude: 0.2, period: 50.0, speed: 0.0625))
+    self.styles = [style0, style1, style2]
+    
+    // Set up background colors (should match # of styles).
+    self.backgroundColors = [
+      MTLClearColor(red: 0.2, green: 0.0, blue: 0.2, alpha: 1.0),
+      MTLClearColor(red: 0.9, green: 0.7, blue: 0.6, alpha: 1.0),
+      MTLClearColor(red: 0.0, green: 0.1, blue: 0.3, alpha: 1.0)
+    ]
     
     // Set up compute pipeline.
     let kernelFunction = library.newFunctionWithName("strokeBezierTesselate")!
@@ -49,6 +61,10 @@ class RenderablePage : Page {
   override func finalizeStroke(stroke: Stroke) {
     // TODO: perhaps put all strokes into one shared buffer.
     super.finalizeStroke(stroke)
+  }
+  
+  func changeStyle() {
+    currentStyle = (currentStyle + 1) % styles.count
   }
   
   func update(commandQueue: MTLCommandQueue) {
@@ -81,16 +97,12 @@ class RenderablePage : Page {
     // All strokes use the same random texture used to generate noise.
     renderEncoder.setFragmentTexture(randomTexture, atIndex: 0)
     
-    let styles = [style1, style2, style3]
-    var current = 0
+    let style = styles[currentStyle]
+    renderEncoder.setRenderPipelineState(style.pipeline)
+    var sineParams = style.sineParams
+    renderEncoder.setVertexBytes(&sineParams, length: sizeof(SineParams), atIndex: 3)
+    
     for stroke in strokes {
-      // TODO: probably inefficient to switch pipelines this often
-      current = (current + 1) % 3
-      let style = styles[current]
-      renderEncoder.setRenderPipelineState(style.pipeline)
-      var sineParams = style.sineParams
-      renderEncoder.setVertexBytes(&sineParams, length: sizeof(SineParams), atIndex: 3)
-      
       (stroke as! RenderableStroke).draw(renderEncoder, time: time)
     }
     renderEncoder.popDebugGroup()

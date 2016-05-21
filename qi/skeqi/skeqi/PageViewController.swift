@@ -60,6 +60,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
     }
     observer.incomingStrokes.removeAll()
     
+    mtkView.clearColor = page.clearColor
     page.update(commandQueue)
 
     let commandBuffer = commandQueue.commandBuffer()
@@ -80,7 +81,6 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
 
     mtkView.device = device
     mtkView.delegate = self
-    mtkView.clearColor = MTLClearColor(red: 0.2, green: 0.0, blue: 0.2, alpha: 1.0)
   }
   
   override func viewWillAppear(animated: Bool) {
@@ -144,6 +144,10 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
     ref!.removeValue()
     incomingStrokes.removeAll()
     page!.clear()
+  }
+  
+  @IBAction func changeStyle(sender: AnyObject) {
+    page!.changeStyle()
   }
 }
 

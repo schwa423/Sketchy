@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GXh-oS-wbL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="GXh-oS-wbL">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -127,12 +127,23 @@
                                     <action selector="clearPage:" destination="7KF-eN-vxo" eventType="touchUpInside" id="fB4-9J-FvE"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" alpha="0.80000001192092896" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8ns-cH-Ucm">
+                                <rect key="frame" x="416" y="512" width="88" height="39"/>
+                                <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                <state key="normal" title="Style"/>
+                                <connections>
+                                    <action selector="changeStyle:" destination="7KF-eN-vxo" eventType="touchUpInside" id="4d4-WC-cNj"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="TJ2-Bg-99p" firstAttribute="leading" secondItem="OqX-gU-Tnk" secondAttribute="leadingMargin" constant="-20" id="IKw-e4-1zq"/>
                             <constraint firstItem="oBe-vl-Qgv" firstAttribute="bottom" secondItem="qlK-4u-CMl" secondAttribute="top" id="JqB-Fg-vhQ"/>
                             <constraint firstItem="oBe-vl-Qgv" firstAttribute="trailing" secondItem="OqX-gU-Tnk" secondAttribute="trailingMargin" constant="20" id="KBR-sI-aEd"/>
+                            <constraint firstItem="8ns-cH-Ucm" firstAttribute="bottom" secondItem="qlK-4u-CMl" secondAttribute="top" id="OYb-GG-7LO"/>
+                            <constraint firstItem="oBe-vl-Qgv" firstAttribute="leading" secondItem="8ns-cH-Ucm" secondAttribute="trailing" constant="8" id="Rzl-uK-x8Z"/>
                             <constraint firstItem="TJ2-Bg-99p" firstAttribute="bottom" secondItem="qlK-4u-CMl" secondAttribute="top" id="ry1-ax-6A4"/>
                         </constraints>
                     </view>
