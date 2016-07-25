@@ -4,11 +4,16 @@ platform :ios, '9.0'
 #pod 'CocoaHTTPServer'
 #pod 'GoogleProtobufV3', '3.0.0-alpha-3'
 #pod 'gRPC'
-pod 'Google/SignIn'
 
-pod "PromiseKit", "~> 3.0"
+def skeqiPods
+  pod 'Google/SignIn'
+  pod "PromiseKit", "~> 3.3.0"
+  use_frameworks!
+  pod 'Firebase', '>= 3.3.0'
+  pod 'Firebase/Auth', '>= 3.3.0'
+  pod 'Firebase/Database', '>= 3.3.0'
+end
 
-use_frameworks!
-pod 'Firebase', '>= 2.5.0'
-
-link_with 'skeqi'
+target 'skeqi' do
+  skeqiPods
+end

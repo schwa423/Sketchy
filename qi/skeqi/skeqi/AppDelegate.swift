@@ -7,11 +7,11 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseDatabase
 
 protocol FirebaseRefProvider {
-  func getFirebaseRef() -> Firebase
-  func setFirebaseRef(firebase: Firebase?)
+  func getFirebaseRef() -> FIRDatabaseReference
+  func setFirebaseRef(firebase: FIRDatabaseReference?)
   var pageId: String { get set }
   
   var googleSignIn: GoogleSignIn { get }
@@ -22,9 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, FirebaseRefProvider {
   var window: UIWindow?
   let qi = QiPlusPlus();
   
-  var firebase : Firebase?
-  func getFirebaseRef() -> Firebase { return firebase! }
-  func setFirebaseRef(firebase: Firebase?) { self.firebase = firebase }
+  var firebase : FIRDatabaseReference?
+  func getFirebaseRef() -> FIRDatabaseReference { return firebase! }
+  func setFirebaseRef(firebase: FIRDatabaseReference?) { self.firebase = firebase }
   var pageId: String = "0"
   let googleSignIn = GoogleSignIn()
   
@@ -34,6 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, FirebaseRefProvider {
   
   func application(app: UIApplication, willFinishLaunchingWithOptions options: [NSObject : AnyObject]?) -> Bool {
     qi.start()
+    return true
+  }
+  
+  func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+    FIRApp.configure()
     return true
   }
   
@@ -49,6 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, FirebaseRefProvider {
     qi.stopDebugServer()
   }
 
+  // TODO: this method is deprecated.  The new hotness is application(openURL:options:).
   func application(app: UIApplication, openURL url: NSURL, sourceApplication sourceApp: String?, annotation: AnyObject) -> Bool {
     return GIDSignIn.sharedInstance().handleURL(url, sourceApplication: sourceApp, annotation: annotation);
   }

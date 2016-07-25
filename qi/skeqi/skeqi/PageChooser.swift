@@ -23,12 +23,12 @@ class PageCell: UICollectionViewCell {
 
 class PageChooser : UICollectionViewController {
   var firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
-  let ref : Firebase
+  let ref : FIRDatabaseReference
   var query : UInt = 0
   var pages = [String]()
 
   required init?(coder aDecoder: NSCoder) {
-    self.ref = firebaseProvider.getFirebaseRef().childByAppendingPath("/pageList")    
+    self.ref = firebaseProvider.getFirebaseRef().child("/pageList")
     super.init(coder: aDecoder)
   }
   
@@ -43,7 +43,7 @@ class PageChooser : UICollectionViewController {
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     
-    query = ref.observeEventType(.ChildAdded, withBlock: { (snapshot: FDataSnapshot!) -> Void in
+    query = ref.observeEventType(.ChildAdded, withBlock: { (snapshot: FIRDataSnapshot!) -> Void in
       print("received snapshow with value: \(snapshot.value) \(snapshot.key)")
       self.pages.append(snapshot.key)
       self.collectionView!.reloadData()

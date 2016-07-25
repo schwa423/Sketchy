@@ -2,7 +2,7 @@ import UIKit
 import Metal
 import MetalKit
 
-import Firebase
+import FirebaseDatabase
 import PromiseKit
 
 class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate {
@@ -33,7 +33,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   }
 
   // TODO: move ref into FirebasePageObserver?
-  var ref : Firebase? = nil
+  var ref : FIRDatabaseReference? = nil
   
   required init?(coder aDecoder: NSCoder) {
     library = device.newDefaultLibrary()!
@@ -86,7 +86,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     
-    ref = firebaseProvider.getFirebaseRef().childByAppendingPath("/pages/\(firebaseProvider.pageId)/strokes")
+    ref = firebaseProvider.getFirebaseRef().child("/pages/\(firebaseProvider.pageId)/strokes")
     
     page = RenderablePage(device: device, library: library)
     observer = FirebasePageObserver(ref!)
@@ -136,7 +136,11 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   
   @IBAction func googleSignOut(sender: AnyObject) {
     firebaseProvider.googleSignIn.signOut()
-    firebaseProvider.getFirebaseRef().unauth()
+    do {
+      try FIRAuth.auth()!.signOut()
+    } catch {
+      // TODO: handle errors
+    }
   }
   
   @IBAction func clearPage(sender: AnyObject) {
@@ -152,17 +156,17 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
 }
 
 class FirebasePageObserver : PageObserver {
-  let ref: Firebase
+  let ref: FIRDatabaseReference
   var incomingStrokes = [[StrokeSegment]]()
   var outgoingStrokes = [String: [StrokeSegment]]()
   
   var query: UInt = 0
   
-  init(_ firebase: Firebase) {
+  init(_ firebase: FIRDatabaseReference) {
     self.ref = firebase
     super.init()
     
-    self.query = firebase.observeEventType(.ChildAdded, withBlock: { (snapshot: FDataSnapshot!) -> Void in
+    self.query = firebase.observeEventType(.ChildAdded, withBlock: { (snapshot: FIRDataSnapshot!) -> Void in
       let array = snapshot.value as! NSArray
       assert(array.count % 8 == 0, "Array must be multiple of size of Bezier3")
       var path = [StrokeSegment]()

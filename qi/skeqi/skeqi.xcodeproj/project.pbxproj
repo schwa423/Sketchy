@@ -74,6 +74,7 @@
 		036CE4681CCD980B002C1AC2 /* RenderableArcStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CE4671CCD980B002C1AC2 /* RenderableArcStroke.swift */; };
 		036CE46A1CCDAC9B002C1AC2 /* RenderablePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CE4691CCDAC9B002C1AC2 /* RenderablePage.swift */; };
 		036CE46C1CCE7AAD002C1AC2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CE46B1CCE7AAD002C1AC2 /* LoginViewController.swift */; };
+		039CDF7B1D4608E400C055C3 /* FirebaseDatabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039CDF7A1D4608E400C055C3 /* FirebaseDatabase.framework */; };
 		03A07E631C72896800E0DC7C /* SkeqiFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */; };
 		03A07E651C729AC900E0DC7C /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A07E641C729AC900E0DC7C /* PageViewController.swift */; };
 		03C5E23D1B47144D00C41423 /* libcapnp-rpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E2381B47144D00C41423 /* libcapnp-rpc.a */; };
@@ -92,7 +93,7 @@
 		03FA76141AD7EA2500A56C06 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 03FA76121AD7EA2500A56C06 /* LaunchScreen.xib */; };
 		03FA76201AD7EA2500A56C06 /* skeqiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA761F1AD7EA2500A56C06 /* skeqiTests.swift */; };
 		03FA7C541CDB9ABD00FDB00C /* MetalExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FA7C531CDB9ABD00FDB00C /* MetalExtensions.swift */; };
-		07C8AC28F92CC7A42ADEC0EB /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7200935AC6A0C0911BF412A /* Pods.framework */; };
+		4153DF430CEB62819CB8D6EA /* Pods_skeqi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA508A8A499808F3F77FCA7 /* Pods_skeqi.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -238,7 +239,7 @@
 		036CE4671CCD980B002C1AC2 /* RenderableArcStroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderableArcStroke.swift; sourceTree = "<group>"; };
 		036CE4691CCDAC9B002C1AC2 /* RenderablePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderablePage.swift; sourceTree = "<group>"; };
 		036CE46B1CCE7AAD002C1AC2 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		037C8C121C7007BE00AD9E09 /* libFirebase.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFirebase.a; path = "Pods/../build/Debug-iphoneos/libFirebase.a"; sourceTree = "<group>"; };
+		039CDF7A1D4608E400C055C3 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseDatabase.framework; path = Pods/FirebaseDatabase/Frameworks/FirebaseDatabase.framework; sourceTree = "<group>"; };
 		03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeqiFirebase.swift; sourceTree = "<group>"; };
 		03A07E641C729AC900E0DC7C /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		03C5E2381B47144D00C41423 /* libcapnp-rpc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcapnp-rpc.a"; path = "../third-party-build/capnproto/lib/libcapnp-rpc.a"; sourceTree = "<group>"; };
@@ -263,9 +264,10 @@
 		03FA761E1AD7EA2500A56C06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03FA761F1AD7EA2500A56C06 /* skeqiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = skeqiTests.swift; sourceTree = "<group>"; };
 		03FA7C531CDB9ABD00FDB00C /* MetalExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalExtensions.swift; sourceTree = "<group>"; };
-		3F2A24E6DD4F5D1E07DB369E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		1DA508A8A499808F3F77FCA7 /* Pods_skeqi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_skeqi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49B6DD950CF07225577412BE /* Pods-skeqi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-skeqi.release.xcconfig"; path = "Pods/Target Support Files/Pods-skeqi/Pods-skeqi.release.xcconfig"; sourceTree = "<group>"; };
 		B7200935AC6A0C0911BF412A /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CD8B2D02168A4CA2409FD535 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		B9879AC316F2DA5638CA642B /* Pods-skeqi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-skeqi.debug.xcconfig"; path = "Pods/Target Support Files/Pods-skeqi/Pods-skeqi.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,7 +283,8 @@
 				03C5E23F1B47144D00C41423 /* libcapnpc.a in Frameworks */,
 				036997211B4A270E008D58D3 /* libluajit.a in Frameworks */,
 				03C5E2401B47144D00C41423 /* libkj-async.a in Frameworks */,
-				07C8AC28F92CC7A42ADEC0EB /* Pods.framework in Frameworks */,
+				4153DF430CEB62819CB8D6EA /* Pods_skeqi.framework in Frameworks */,
+				039CDF7B1D4608E400C055C3 /* FirebaseDatabase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -583,8 +586,8 @@
 				03FA761C1AD7EA2500A56C06 /* skeqiTests */,
 				03FA76031AD7EA2500A56C06 /* Products */,
 				032D36E01AFF4D9C00F473D4 /* skeqi-Bridging-Header.h */,
-				68209B19EF7D4083D3AEE41B /* Pods */,
 				1841EBDF86A12D5652FF24FD /* Frameworks */,
+				7334B607EBC8998BF9590B7C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -658,21 +661,22 @@
 		1841EBDF86A12D5652FF24FD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				037C8C121C7007BE00AD9E09 /* libFirebase.a */,
+				039CDF7A1D4608E400C055C3 /* FirebaseDatabase.framework */,
 				0318D8C41C4F001500F1202F /* libsqlite3.tbd */,
 				031E5FD81BD8D72E006EC625 /* MetalKit.framework */,
 				0369971F1B4A26E8008D58D3 /* luajit */,
 				03C5E2421B47145600C41423 /* capnproto */,
 				B7200935AC6A0C0911BF412A /* Pods.framework */,
+				1DA508A8A499808F3F77FCA7 /* Pods_skeqi.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		68209B19EF7D4083D3AEE41B /* Pods */ = {
+		7334B607EBC8998BF9590B7C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3F2A24E6DD4F5D1E07DB369E /* Pods.debug.xcconfig */,
-				CD8B2D02168A4CA2409FD535 /* Pods.release.xcconfig */,
+				B9879AC316F2DA5638CA642B /* Pods-skeqi.debug.xcconfig */,
+				49B6DD950CF07225577412BE /* Pods-skeqi.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -684,12 +688,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 03FA76231AD7EA2500A56C06 /* Build configuration list for PBXNativeTarget "skeqi" */;
 			buildPhases = (
-				544757B9B6F55ACCF9169A7F /* Check Pods Manifest.lock */,
+				EA6AFDA5615679CEDC2CD742 /* [CP] Check Pods Manifest.lock */,
 				03FA75FE1AD7EA2500A56C06 /* Sources */,
 				03FA75FF1AD7EA2500A56C06 /* Frameworks */,
 				03FA76001AD7EA2500A56C06 /* Resources */,
-				50AC7077D17854300573DAA3 /* Copy Pods Resources */,
-				8DBE0D8CF26C1CF1277C5814 /* Embed Pods Frameworks */,
+				FE30076CDCCC38A610D0C43E /* [CP] Embed Pods Frameworks */,
+				17FF080D5BC02C9F3C0AB3A4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 				0346C9E31B46FADC00FD978D /* PBXBuildRule */,
@@ -787,29 +791,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		50AC7077D17854300573DAA3 /* Copy Pods Resources */ = {
+		17FF080D5BC02C9F3C0AB3A4 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-skeqi/Pods-skeqi-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		544757B9B6F55ACCF9169A7F /* Check Pods Manifest.lock */ = {
+		EA6AFDA5615679CEDC2CD742 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -817,19 +821,19 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		8DBE0D8CF26C1CF1277C5814 /* Embed Pods Frameworks */ = {
+		FE30076CDCCC38A610D0C43E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-skeqi/Pods-skeqi-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1090,7 +1094,7 @@
 		};
 		03FA76241AD7EA2500A56C06 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3F2A24E6DD4F5D1E07DB369E /* Pods.debug.xcconfig */;
+			baseConfigurationReference = B9879AC316F2DA5638CA642B /* Pods-skeqi.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1098,6 +1102,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/Pods",
+					"$(PROJECT_DIR)/Pods/FirebaseDatabase/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = (
 					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3\"",
@@ -1130,7 +1135,7 @@
 		};
 		03FA76251AD7EA2500A56C06 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CD8B2D02168A4CA2409FD535 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 49B6DD950CF07225577412BE /* Pods-skeqi.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1138,6 +1143,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/Pods",
+					"$(PROJECT_DIR)/Pods/FirebaseDatabase/Frameworks",
 				);
 				HEADER_SEARCH_PATHS = (
 					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3\"",

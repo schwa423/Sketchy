@@ -7,42 +7,47 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseAuth
+import FirebaseDatabase
 import PromiseKit
 
 class LoginViewController : UIViewController, GIDSignInUIDelegate {
   let loginSegue = "Login"
   let firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
-  let ref = Firebase(url: "https://blistering-inferno-9169.firebaseio.com");
+  let ref = FIRDatabase.database().reference()
+  let auth = FIRAuth.auth()!
   
   override func viewDidAppear(animated: Bool) {
     super.viewDidAppear(animated)
     
     firebaseProvider.googleSignIn.signIn(self).then { (user) -> Void in
-      let triple = Promise<FAuthData>.pendingPromise()
-      let token = user.authentication.accessToken
-      self.ref.authWithOAuthProvider("google", token: token, withCompletionBlock: { (error, authData) in
+      let triple = Promise<FIRUser>.pendingPromise()
+      let authentication = user.authentication
+      let credential = FIRGoogleAuthProvider.credentialWithIDToken(authentication.idToken,
+        accessToken: authentication.accessToken)
+      
+      FIRAuth.auth()!.signInWithCredential(credential) { (user, error) in
         if let err = error {
           print("OAuth failed")
           triple.reject(err)
         } else {
           // TODO: also return "auth lost" future that clients can wait on
-          let providerData = authData.providerData as! Dictionary<String, AnyObject>
-          let name: String = providerData["displayName"] as! String;
-          let email: String = providerData["email"] as! String;
+          // TODO: what to do about multiple provider data?
+          let providerData = user!.providerData[0]
+          let name: String = providerData.displayName!
+          let email: String = providerData.email!
           print("=-=-=-=-=-= Firebase sign-in successful for \(name) (\(email)).")
-          triple.fulfill(authData)
+          triple.fulfill(user!)
         }
-      })
+      }
     }
     
     // TODO: handle failures better
-    var handle : UInt = 0;
-    handle = ref.observeAuthEventWithBlock { (authData) -> Void in
-      if authData != nil {
-        self.ref.removeAuthEventObserverWithHandle(handle)
-
-        let userRef = self.ref.childByAppendingPath("users/\(authData.uid)")
+    var handle : FIRAuthStateDidChangeListenerHandle?
+    handle = auth.addAuthStateDidChangeListener { authData in
+      if let user = authData.1 {
+        self.auth.removeAuthStateDidChangeListener(handle!)
+        let userRef = self.ref.child("users/\(user.uid)")
         self.firebaseProvider.setFirebaseRef(userRef)
         self.performSegueWithIdentifier(self.loginSegue, sender: nil)
       }

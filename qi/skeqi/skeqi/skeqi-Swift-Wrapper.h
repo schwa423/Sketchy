@@ -13,6 +13,8 @@
 // <UIKit/UIKit.h> before "skeqi-Swift.h"
 #import <UIKit/UIKit.h>
 #import <MetalKit/MetalKit.h>
+#import <FirebaseDatabase/FirebaseDatabase.h>
+#import <GoogleSignIn/GoogleSignIn.h>
 #import "skeqi-Swift.h"
 
 #endif

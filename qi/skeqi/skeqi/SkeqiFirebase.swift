@@ -1,24 +1,13 @@
-import Firebase
+import FirebaseAuth
+import FirebaseDatabase
 
 import PromiseKit
 
-extension Firebase {
-  func observeSingleEventOfType(eventType: FEventType) -> Promise<FDataSnapshot> {
-    return Promise<FDataSnapshot>() { fulfill, reject in
-      observeSingleEventOfType(eventType, withBlock: { snapshot in
+extension FIRDatabaseReference {
+  func observeSingleEventOfType(eventType: FIRDataEventType) -> Promise<FIRDataSnapshot> {
+    return Promise<FIRDataSnapshot>() { fulfill, reject in
+      self.observeSingleEventOfType(eventType, withBlock: { snapshot in
         fulfill(snapshot)
-      })
-    }
-  }
-
-  func authWithOAuthProvider(provider: String, token: String) -> Promise<FAuthData> {
-    return Promise<FAuthData> { fulfill, reject in
-      authWithOAuthProvider(provider, token: token, withCompletionBlock: { (error, authData) in
-        if let err = error {
-          reject(err)
-        } else {
-          fulfill(authData)
-        }
       })
     }
   }
@@ -40,6 +29,7 @@ class GoogleSignIn : NSObject, GIDSignInDelegate {
     var configureError:NSError?
     GGLContext.sharedInstance().configureWithError(&configureError)
     assert(configureError == nil, "Error configuring Google services: \(configureError)")
+    GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()?.options.clientID
     GIDSignIn.sharedInstance().delegate = self
   }
 
@@ -125,73 +115,41 @@ class GoogleSignIn : NSObject, GIDSignInDelegate {
 }
 
 class SkeqiFirebase {
-
   private let googleSignIn = GoogleSignIn()
 
-  let firebase : Firebase
-
-  private var firebaseAuthData : FAuthData?
-  private let handles = []
-
-  var userName : String = ""
-  var email : String = ""
-  var uid : String = ""
+  let firebase : FIRDatabaseReference
 
   required init(url: String!) {
-    firebase = Firebase(url: url)
-
-    firebase.observeAuthEventWithBlock({ authData in
+    firebase = FIRDatabase.database().reference()
+    
+    FIRAuth.auth()!.addAuthStateDidChangeListener({ authData in
+      // TODO: handle auth changes
       print("AUTH DATA CHANGED: \(authData)")
-/*
-      if authData == nil {
-        assert(self.firebaseAuthData == nil, "TODO: handle deauth")
-        // No user is signed in
-        self.firebaseAuthData = nil
-      } else {
-        if let firebaseAuthData = self.firebaseAuthData {
-          assert(firebaseAuthData.uid == authData.uid, "TODO: handle account changes");
-        }
-
-        self.firebaseAuthData = authData
-
-        let future = self.firebase.observeSingleEventOfType(.Value)
-        future.onSuccess
-
-
-        self.firebase.observeSingleEventOfType(
-          .Value,
-          withBlock: { snapshot in
-            if snapshot.exists() {
-
-            } else {
-              self.firebase.childByAppendingPath("users/\(authData.uid)").setValue([
-                "name": name,
-                "email": email,
-                "pages": [],
-                "currentPage": "0"])
-            }
-          })
-      }*/
     })
   }
 
-  func signIn(delegate delegate: GIDSignInUIDelegate!) -> Promise<FAuthData> {
+  func signIn(delegate delegate: GIDSignInUIDelegate!) -> Promise<FIRUser> {
     return googleSignIn.signIn(delegate).then { user in
-      let triple = Promise<FAuthData>.pendingPromise()
-      let token = user.authentication.accessToken
-      self.firebase.authWithOAuthProvider("google", token: token, withCompletionBlock: { (error, authData) in
+      let triple = Promise<FIRUser>.pendingPromise()
+      let authentication = user.authentication
+      let credential = FIRGoogleAuthProvider.credentialWithIDToken(authentication.idToken,
+        accessToken: authentication.accessToken)
+
+      FIRAuth.auth()!.signInWithCredential(credential) { (user, error) in
         if let err = error {
           print("OAuth failed")
           triple.reject(err)
         } else {
           // TODO: also return "auth lost" future that clients can wait on
-          let providerData = authData.providerData as! Dictionary<String, AnyObject>
-          let name: String = providerData["displayName"] as! String;
-          let email: String = providerData["email"] as! String;
+          // TODO: what to do about multiple provider data?
+          let providerData = user!.providerData[0]
+          let name: String = providerData.displayName!
+          let email: String = providerData.email!
           print("=-=-=-=-=-= Firebase sign-in successful for \(name) (\(email)).")
-          triple.fulfill(authData)
+          triple.fulfill(user!)
         }
-      })
+      }
+    
       return triple.promise
     }
   }
