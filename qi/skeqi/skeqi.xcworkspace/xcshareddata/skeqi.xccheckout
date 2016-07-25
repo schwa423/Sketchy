@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>34214206-4EBC-410B-9F4B-9BE64D270F35</string>
+	<key>IDESourceControlProjectName</key>
+	<string>skeqi</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>0DCAA0F4893BB9403173E93E61CAAACE2F3AE1C7</key>
+		<string>https://github.com/schwa423/cornucopia-lib.git</string>
+		<key>9235216500F69A8C6483070E17B4DD71B35314D2</key>
+		<string>github.com:schwa423/Sketchy.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>qi/skeqi/skeqi.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>0DCAA0F4893BB9403173E93E61CAAACE2F3AE1C7</key>
+		<string>../../..qi/third-party/cornucopia-lib</string>
+		<key>9235216500F69A8C6483070E17B4DD71B35314D2</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:schwa423/Sketchy.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>9235216500F69A8C6483070E17B4DD71B35314D2</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>0DCAA0F4893BB9403173E93E61CAAACE2F3AE1C7</string>
+			<key>IDESourceControlWCCName</key>
+			<string>cornucopia-lib</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9235216500F69A8C6483070E17B4DD71B35314D2</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Sketchy</string>
+		</dict>
+	</array>
+</dict>
+</plist>

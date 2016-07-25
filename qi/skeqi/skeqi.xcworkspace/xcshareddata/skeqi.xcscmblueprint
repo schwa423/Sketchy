@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "9235216500F69A8C6483070E17B4DD71B35314D2",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "0DCAA0F4893BB9403173E93E61CAAACE2F3AE1C7" : 0,
+    "76A15575C5B740800EF8E92EA66B97A276AEF659" : 0,
+    "9235216500F69A8C6483070E17B4DD71B35314D2" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "34214206-4EBC-410B-9F4B-9BE64D270F35",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "0DCAA0F4893BB9403173E93E61CAAACE2F3AE1C7" : "Sketchyqi\/third-party\/cornucopia-lib",
+    "76A15575C5B740800EF8E92EA66B97A276AEF659" : "Sketchy\/qi\/third-party\/googletest\/",
+    "9235216500F69A8C6483070E17B4DD71B35314D2" : "Sketchy"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "skeqi",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "qi\/skeqi\/skeqi.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/schwa423\/cornucopia-lib.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "0DCAA0F4893BB9403173E93E61CAAACE2F3AE1C7"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/google\/googletest.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "76A15575C5B740800EF8E92EA66B97A276AEF659"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:schwa423\/Sketchy.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9235216500F69A8C6483070E17B4DD71B35314D2"
+    }
+  ]
+}
