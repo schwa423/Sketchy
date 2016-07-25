@@ -75,6 +75,7 @@
 		036CE46A1CCDAC9B002C1AC2 /* RenderablePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CE4691CCDAC9B002C1AC2 /* RenderablePage.swift */; };
 		036CE46C1CCE7AAD002C1AC2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036CE46B1CCE7AAD002C1AC2 /* LoginViewController.swift */; };
 		039CDF7B1D4608E400C055C3 /* FirebaseDatabase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039CDF7A1D4608E400C055C3 /* FirebaseDatabase.framework */; };
+		039CDF7D1D46858700C055C3 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039CDF7C1D46858700C055C3 /* PromiseKit.framework */; };
 		03A07E631C72896800E0DC7C /* SkeqiFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */; };
 		03A07E651C729AC900E0DC7C /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A07E641C729AC900E0DC7C /* PageViewController.swift */; };
 		03C5E23D1B47144D00C41423 /* libcapnp-rpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E2381B47144D00C41423 /* libcapnp-rpc.a */; };
@@ -240,6 +241,7 @@
 		036CE4691CCDAC9B002C1AC2 /* RenderablePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderablePage.swift; sourceTree = "<group>"; };
 		036CE46B1CCE7AAD002C1AC2 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		039CDF7A1D4608E400C055C3 /* FirebaseDatabase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FirebaseDatabase.framework; path = Pods/FirebaseDatabase/Frameworks/FirebaseDatabase.framework; sourceTree = "<group>"; };
+		039CDF7C1D46858700C055C3 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = "build/Debug-iphoneos/PromiseKit/PromiseKit.framework"; sourceTree = "<group>"; };
 		03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeqiFirebase.swift; sourceTree = "<group>"; };
 		03A07E641C729AC900E0DC7C /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		03C5E2381B47144D00C41423 /* libcapnp-rpc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcapnp-rpc.a"; path = "../third-party-build/capnproto/lib/libcapnp-rpc.a"; sourceTree = "<group>"; };
@@ -275,6 +277,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				039CDF7D1D46858700C055C3 /* PromiseKit.framework in Frameworks */,
 				0318D8C51C4F001500F1202F /* libsqlite3.tbd in Frameworks */,
 				031E5FD91BD8D72E006EC625 /* MetalKit.framework in Frameworks */,
 				03C5E2411B47144D00C41423 /* libkj.a in Frameworks */,
@@ -661,6 +664,7 @@
 		1841EBDF86A12D5652FF24FD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				039CDF7C1D46858700C055C3 /* PromiseKit.framework */,
 				039CDF7A1D4608E400C055C3 /* FirebaseDatabase.framework */,
 				0318D8C41C4F001500F1202F /* libsqlite3.tbd */,
 				031E5FD81BD8D72E006EC625 /* MetalKit.framework */,
@@ -1103,6 +1107,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/Pods",
 					"$(PROJECT_DIR)/Pods/FirebaseDatabase/Frameworks",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/PromiseKit",
 				);
 				HEADER_SEARCH_PATHS = (
 					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3\"",
@@ -1144,6 +1149,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/Pods",
 					"$(PROJECT_DIR)/Pods/FirebaseDatabase/Frameworks",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/PromiseKit",
 				);
 				HEADER_SEARCH_PATHS = (
 					"\"${PODS_ROOT}/Headers/Public/GoogleProtobufV3\"",
