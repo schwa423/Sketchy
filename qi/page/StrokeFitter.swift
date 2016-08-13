@@ -176,8 +176,18 @@ class StrokeFitter {
     
     // Error is too large... split into two ranges and fit each.
     assert(splitIndex > startIndex && splitIndex < endIndex-1);
-    let middleTangent = points[splitIndex + 1] - points[splitIndex - 1];
-    fitSampleRange(startIndex...splitIndex, leftTangent: leftTangent, rightTangent: middleTangent * -1.0);
-    fitSampleRange(splitIndex..<endIndex, leftTangent: middleTangent, rightTangent: rightTangent);
+    var middleTangent1 = points[splitIndex] - points[splitIndex - 1]
+    var middleTangent2 = points[splitIndex] - points[splitIndex + 1]
+    if (dot(normalize(middleTangent1), normalize(middleTangent2)) < 0.5) {
+      // The difference in directions is below threshold, so cause the two curve segments
+      // to meet with the same slope.
+      middleTangent1 = points[splitIndex - 1] - points[splitIndex + 1]
+      middleTangent2 = middleTangent1 * -1.0
+    } else {
+      // TODO: do something to correct this potentially unsightly direction change.
+    }
+    
+    fitSampleRange(startIndex...splitIndex, leftTangent: leftTangent, rightTangent: middleTangent1)
+    fitSampleRange(splitIndex..<endIndex, leftTangent: middleTangent2, rightTangent: rightTangent)
   }
 }

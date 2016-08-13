@@ -155,9 +155,13 @@ func fitBezier3ToPoints(pts: ArraySlice<float2>,
 
   assert(pts.startIndex == params.startIndex)
   assert(pts.endIndex == params.endIndex)
-
+  assert(!startTangent.x.isNaN && !startTangent.y.isNaN)
+  assert(!endTangent.x.isNaN && !endTangent.y.isNaN)
   let firstPt = pts[pts.startIndex]
   let lastPt = pts[pts.endIndex - 1]
+  assert(!firstPt.x.isNaN && !firstPt.y.isNaN)
+  assert(!lastPt.x.isNaN && !lastPt.y.isNaN)
+  
   for i in pts.startIndex..<pts.endIndex {
     let t = (params[i] + paramShift) * paramScale
     let omt = Float(1.0) - t
@@ -192,13 +196,14 @@ func fitBezier3ToPoints(pts: ArraySlice<float2>,
   // recompute it using Wu/Barsky heuristic.
   var alpha_l = det_x_c1 / det_c0_c1
   var alpha_r = det_c0_x / det_c0_c1
+  assert(!alpha_l.isNaN && !alpha_r.isNaN)
   if (alpha_l < 0.0 || alpha_r < 0.0) {
     // Alpha was negative, so use Wu/Barsky heuristic to place points.
     // TODO: if only one alpha value is negative, should only that one be adjusted?
     alpha_l = distance(firstPt, lastPt)
     alpha_r = alpha_l
   }
-
+  
   // Set all 4 control points and return the curve.
   return Bezier3(pt0: firstPt,
                  pt1: firstPt + startTangent * alpha_l,
