@@ -111,7 +111,9 @@ class RenderablePage : Page {
   private func tesselateStroke(stroke: RenderableStroke, encoder: MTLComputeCommandEncoder) {
     if stroke.path.isEmpty { return }
     
-    let vertexCounts = computeStrokeVertexCounts(stroke)
+    var path = preprocessStrokePath(stroke.path)
+    
+    let vertexCounts = computeStrokeVertexCounts(path)
     var totalVertexCount = 0
     for count in vertexCounts {
       assert(count == (count / 2) * 2)
@@ -127,14 +129,14 @@ class RenderablePage : Page {
     assert(52 == sizeof(StrokeSegment))
     var offset = 0
     var startAndTotalLength = float2(0.0, stroke.length)
-    for i in 0..<stroke.path.count {
-      withUnsafePointer(&stroke.path[i]) {
+    for i in 0..<path.count {
+      withUnsafePointer(&path[i]) {
         // TODO: not sure why + 4 is necessary.  Does this need to be a multiple of 8 bytes?
         encoder.setBytes($0, length: sizeof(StrokeSegment) + 4, atIndex:0)
       }
       
       encoder.setBytes(&startAndTotalLength, length: sizeof(float2), atIndex:1)
-      startAndTotalLength.x += stroke.path[i].length
+      startAndTotalLength.x += path[i].length
       
       var tDivisor : Float = Float(vertexCounts[i]) / 2.0 - 1.0
       encoder.setBytes(&tDivisor, length: sizeof(Float), atIndex:2)
@@ -149,11 +151,35 @@ class RenderablePage : Page {
     }
   }
   
-  private func computeStrokeVertexCounts(stroke: RenderableStroke) -> [Int] {
-    return stroke.path.map {
-      (seg: StrokeSegment) -> Int in
-        return max(2, 2 * Int(seg.length * 160))
+  private func preprocessStrokePath(path:[StrokeSegment]) -> [StrokeSegment] {
+    var output = [StrokeSegment]()
+    output.reserveCapacity(path.count)
+    
+    // Pick a length that limits the thread-group size to <= 512.
+    // See tesselateStroke() and computeStrokeVertexCounts():
+    // - thread-group size == vertex-count / 2 == segment-length * 160
+    // - 160 * 3.2 == 512
+    // TODO: 512 is the limit for iPad Pro; should use value for current device.
+    let maxLength = Float(3.2)
+    
+    for segment in path {
+      var seg = segment
+      while seg.length > maxLength {
+        let splitPoint = seg.reparam.evaluate(maxLength / seg.length)
+        let split = seg.curve.split(splitPoint)
+        output.append(StrokeSegment(split.first))
+        seg = StrokeSegment(split.second)
+      }
+      output.append(seg)
     }
+    return output
+  }
+  
+  private func computeStrokeVertexCounts(path:[StrokeSegment]) -> [Int] {
+    // 160 is chosen to provide sufficiently fine tesselation that sine-wave
+    // stroke contours look nice and smooth.
+    // TODO: Use a named constant.
+    return path.map { max(2, 2 * Int($0.length * 160)) }
   }
   
   private func getBufferOfLength(length: Int,
