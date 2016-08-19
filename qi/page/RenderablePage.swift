@@ -16,8 +16,9 @@ class RenderablePage : Page {
   let computePipeline: MTLComputePipelineState
   let randomTexture: MTLTexture
 
-  let styles: [StrokeStyle]
   let backgroundColors: [MTLClearColor]
+
+  private let styles: [StrokeStyle]
   private var currentStyle = 0
   
   // TODO: fix this hack
@@ -208,20 +209,6 @@ struct GlobalParams {
     self.time = time
     self.pageScale = pageScale
   }
-};
-
-// Corresponds to the StrokeParams struct consumed by the vertex shaders.
-private struct StrokeParams {
-  // Domain of amplitude is [0, 0.5] because range of sin+1 is [0,2].
-  let length, reciprocalLength, width, reciprocalWidth, time : Float
-  
-  init(length: Float, width: Float, time: Float) {
-    self.length = length
-    self.reciprocalLength = 1.0 / length
-    self.width = width
-    self.reciprocalWidth = 1.0 / width
-    self.time = time
-  }
 }
 
 // Corresponds to the SineParams struct consumed by the vertex shaders.
@@ -236,40 +223,7 @@ private struct SineParams {
 }
 
 // TODO: document
-private class RenderableStroke : Stroke {
-  var vertexCount: Int = 0
-  var offset: Int = 0
-  var buffer: MTLBuffer?
-  
-  override init(index: Int) {
-    super.init(index: index)
-  }
-  
-  func draw(encoder: MTLRenderCommandEncoder, time: Float) {
-    if (vertexCount > 0) {
-      encoder.setVertexBuffer(buffer, offset: offset, atIndex: 0)
-      
-      var strokeParams = StrokeParams(length: length, width: 0.05, time: time)
-      encoder.setVertexBytes(&strokeParams, length: sizeof(StrokeParams), atIndex: 2);
-      
-      // Time not set here, it is the same for all strokes so it is set in RenderablePage.draw().
-      
-      encoder.drawPrimitives(.TriangleStrip, vertexStart: 0, vertexCount: vertexCount)
-    }
-  }
-  
-  override var description: String {
-    var string = String("RenderableStroke{\n  vertexCount: \(vertexCount)\n  path: {")
-    for bez in path {
-      string += "\n    \(bez.description)"
-    }
-    string += path.isEmpty ? "}\n}" : "\n  }\n}"
-    return string
-  }
-}
-
-// TODO: document
-class StrokeStyle {
+private class StrokeStyle {
   private let sineParams: SineParams
   let pipeline: MTLRenderPipelineState
   let enableAlphaBlending = false  // TODO

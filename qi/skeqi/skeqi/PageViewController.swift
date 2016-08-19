@@ -17,7 +17,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   var incomingStrokes = [[StrokeSegment]]()
 
   let firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
-  var observer: FirebasePageObserver? = nil
+  var pageSyncer: FirebasePageSyncer? = nil
   
   var pageScale : float2 {
     get {
@@ -32,7 +32,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
     }
   }
 
-  // TODO: move ref into FirebasePageObserver?
+  // TODO: move ref into FirebasePageSyncer?
   var ref : FIRDatabaseReference? = nil
   
   required init?(coder aDecoder: NSCoder) {
@@ -50,15 +50,6 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
           let descriptor = view.currentRenderPassDescriptor,
           let page = self.page
     else { return }
-
-    let observer = self.observer!
-    for incoming in observer.incomingStrokes {
-      let stroke = page.newStroke()
-      stroke.fromFirebase = true
-      page.setStrokePath(stroke, path: incoming)
-      page.finalizeStroke(stroke)
-    }
-    observer.incomingStrokes.removeAll()
     
     mtkView.clearColor = page.clearColor
     page.update(commandQueue)
@@ -89,14 +80,14 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
     ref = firebaseProvider.getFirebaseRef().child("/pages/\(firebaseProvider.pageId)/strokes")
     
     page = RenderablePage(device: device, library: library)
-    observer = FirebasePageObserver(ref!)
-    page!.addObserver(observer)
+    pageSyncer = FirebasePageSyncer(ref!, page:page!)
+    page!.addObserver(pageSyncer)
   }
   
   override func viewDidDisappear(animated: Bool) {
     super.viewDidDisappear(animated)
-    observer!.destroy()
-    observer = nil
+    pageSyncer!.destroy()
+    pageSyncer = nil
     ref = nil
     page = nil
   }
@@ -147,73 +138,5 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   
   @IBAction func changeStyle(sender: AnyObject) {
     page!.changeStyle()
-  }
-}
-
-class FirebasePageObserver : PageObserver {
-  let ref: FIRDatabaseReference
-  var incomingStrokes = [[StrokeSegment]]()
-  var outgoingStrokes = [String: [StrokeSegment]]()
-  
-  var query: UInt = 0
-  
-  init(_ firebase: FIRDatabaseReference) {
-    self.ref = firebase
-    super.init()
-    
-    self.query = firebase.observeEventType(.ChildAdded, withBlock: { (snapshot: FIRDataSnapshot!) -> Void in
-      let array = snapshot.value as! NSArray
-      assert(array.count % 8 == 0, "Array must be multiple of size of Bezier3")
-      var path = [StrokeSegment]()
-      path.reserveCapacity(array.count % 8)
-      for (var i = 0; i < array.count; i += 8) {
-        var bez = Bezier3()
-        bez.pt0[0] = array.objectAtIndex(i) as! Float
-        bez.pt0[1] = array.objectAtIndex(i+1) as! Float
-        bez.pt1[0] = array.objectAtIndex(i+2) as! Float
-        bez.pt1[1] = array.objectAtIndex(i+3) as! Float
-        bez.pt2[0] = array.objectAtIndex(i+4) as! Float
-        bez.pt2[1] = array.objectAtIndex(i+5) as! Float
-        bez.pt3[0] = array.objectAtIndex(i+6) as! Float
-        bez.pt3[1] = array.objectAtIndex(i+7) as! Float
-        path.append(StrokeSegment(bez))
-      }
-
-      // Detect if the stroke was drawn on this device.  If so, don't add a duplicate copy.
-      if let outPath = self.outgoingStrokes[snapshot.key] {
-        if outPath == path {
-          self.outgoingStrokes.removeValueForKey(snapshot.key)
-          return
-        }
-      }
-      self.incomingStrokes.append(path)
-    });
-  }
-  
-  // TODO: what would be the idiomatic name for this?
-  func destroy() {
-    ref.removeObserverWithHandle(query)
-    incomingStrokes.removeAll()
-  }
-  
-  override func onFinalizeStroke(stroke: Stroke!) -> Void {
-    if !stroke.fromFirebase {
-      var path = [Float]()
-      for seg in stroke.path {
-        path.append(seg.curve.pt0[0])
-        path.append(seg.curve.pt0[1])
-        path.append(seg.curve.pt1[0])
-        path.append(seg.curve.pt1[1])
-        path.append(seg.curve.pt2[0])
-        path.append(seg.curve.pt2[1])
-        path.append(seg.curve.pt3[0])
-        path.append(seg.curve.pt3[1])
-        // TODO: worthwhile to also append the length and arc-length reparameterization?
-        // Or is it better to simply recompute them, as now?
-      }
-      let childRef = ref.childByAutoId()
-      outgoingStrokes[childRef.key] = stroke.path
-      childRef.setValue(path)
-    }
   }
 }

@@ -79,6 +79,11 @@
 		03A07E631C72896800E0DC7C /* SkeqiFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */; };
 		03A07E651C729AC900E0DC7C /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A07E641C729AC900E0DC7C /* PageViewController.swift */; };
 		03BAE3541D67933F0010F235 /* UITouchStrokeFitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAE3531D67933F0010F235 /* UITouchStrokeFitter.swift */; };
+		03BAE3561D67A1A10010F235 /* PageObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAE3551D67A1A10010F235 /* PageObserver.swift */; };
+		03BAE3581D67A1F20010F235 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAE3571D67A1F20010F235 /* Stroke.swift */; };
+		03BAE35A1D67A2DB0010F235 /* StrokeSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAE3591D67A2DB0010F235 /* StrokeSegment.swift */; };
+		03BAE35C1D67A33D0010F235 /* RenderableStroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAE35B1D67A33D0010F235 /* RenderableStroke.swift */; };
+		03BAE35E1D67A5CF0010F235 /* FirebasePageSyncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAE35D1D67A5CF0010F235 /* FirebasePageSyncer.swift */; };
 		03C5E23D1B47144D00C41423 /* libcapnp-rpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E2381B47144D00C41423 /* libcapnp-rpc.a */; };
 		03C5E23E1B47144D00C41423 /* libcapnp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E2391B47144D00C41423 /* libcapnp.a */; };
 		03C5E23F1B47144D00C41423 /* libcapnpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E23A1B47144D00C41423 /* libcapnpc.a */; };
@@ -246,6 +251,11 @@
 		03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeqiFirebase.swift; sourceTree = "<group>"; };
 		03A07E641C729AC900E0DC7C /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		03BAE3531D67933F0010F235 /* UITouchStrokeFitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITouchStrokeFitter.swift; sourceTree = "<group>"; };
+		03BAE3551D67A1A10010F235 /* PageObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageObserver.swift; sourceTree = "<group>"; };
+		03BAE3571D67A1F20010F235 /* Stroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
+		03BAE3591D67A2DB0010F235 /* StrokeSegment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StrokeSegment.swift; sourceTree = "<group>"; };
+		03BAE35B1D67A33D0010F235 /* RenderableStroke.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenderableStroke.swift; sourceTree = "<group>"; };
+		03BAE35D1D67A5CF0010F235 /* FirebasePageSyncer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebasePageSyncer.swift; sourceTree = "<group>"; };
 		03C5E2381B47144D00C41423 /* libcapnp-rpc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcapnp-rpc.a"; path = "../third-party-build/capnproto/lib/libcapnp-rpc.a"; sourceTree = "<group>"; };
 		03C5E2391B47144D00C41423 /* libcapnp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcapnp.a; path = "../third-party-build/capnproto/lib/libcapnp.a"; sourceTree = "<group>"; };
 		03C5E23A1B47144D00C41423 /* libcapnpc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcapnpc.a; path = "../third-party-build/capnproto/lib/libcapnpc.a"; sourceTree = "<group>"; };
@@ -461,9 +471,14 @@
 				03474FE41AD8036C001240DD /* Arc.swift */,
 				035F54C31BB766E500BE6FD4 /* CubicBezier.swift */,
 				035F54C51BB9103C00BE6FD4 /* Page.swift */,
+				03BAE3551D67A1A10010F235 /* PageObserver.swift */,
 				036CE4691CCDAC9B002C1AC2 /* RenderablePage.swift */,
+				03BAE35B1D67A33D0010F235 /* RenderableStroke.swift */,
 				036CE4651CCD90C5002C1AC2 /* StrokeFitter.swift */,
+				03BAE3571D67A1F20010F235 /* Stroke.swift */,
+				03BAE3591D67A2DB0010F235 /* StrokeSegment.swift */,
 				03BAE3531D67933F0010F235 /* UITouchStrokeFitter.swift */,
+				03BAE35D1D67A5CF0010F235 /* FirebasePageSyncer.swift */,
 			);
 			name = page;
 			path = ../../page;
@@ -873,7 +888,9 @@
 				036CE4661CCD90C5002C1AC2 /* StrokeFitter.swift in Sources */,
 				0367BDFD1B05EF330080DAC5 /* device_ios.mm in Sources */,
 				0367BE061B0927000080DAC5 /* QiControllerDelegate.mm in Sources */,
+				03BAE35C1D67A33D0010F235 /* RenderableStroke.swift in Sources */,
 				034F06A41ADA6951005A439A /* ArcStroke.swift in Sources */,
+				03BAE3561D67A1A10010F235 /* PageObserver.swift in Sources */,
 				030E68A81CCD4AB500980255 /* AppDelegate.swift in Sources */,
 				03E6D3961B238C47007A38B3 /* server.cc in Sources */,
 				03474FE31AD7F66B001240DD /* QiController.swift in Sources */,
@@ -882,6 +899,7 @@
 				036CE4681CCD980B002C1AC2 /* RenderableArcStroke.swift in Sources */,
 				032D32D61AF56E0500F473D4 /* PrimitiveFitUtils.cpp in Sources */,
 				036CE46A1CCDAC9B002C1AC2 /* RenderablePage.swift in Sources */,
+				03BAE35E1D67A5CF0010F235 /* FirebasePageSyncer.swift in Sources */,
 				0318D8C31C4EC0AD00F1202F /* sqlitecache.cc in Sources */,
 				032D32C41AF56E0500F473D4 /* ClothoidProjector.cpp in Sources */,
 				032D32D81AF56E0500F473D4 /* Resampler.cpp in Sources */,
@@ -892,6 +910,7 @@
 				0318D8BC1C4EA60D00F1202F /* inmemorycache.cc in Sources */,
 				0318D8C71C544E1B00F1202F /* testutils.cc in Sources */,
 				032D32DB1AF56E0500F473D4 /* TwoCurveCombine.cpp in Sources */,
+				03BAE3581D67A1F20010F235 /* Stroke.swift in Sources */,
 				032D32C31AF56E0500F473D4 /* Clothoid.cpp in Sources */,
 				032D32CB1AF56E0500F473D4 /* Fitter.cpp in Sources */,
 				03474FE51AD8036C001240DD /* Arc.swift in Sources */,
@@ -916,6 +935,7 @@
 				035F54C61BB9103C00BE6FD4 /* Page.swift in Sources */,
 				032D32D51AF56E0500F473D4 /* PrimitiveFitter.cpp in Sources */,
 				032D32C11AF56E0500F473D4 /* Arc.cpp in Sources */,
+				03BAE35A1D67A2DB0010F235 /* StrokeSegment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
