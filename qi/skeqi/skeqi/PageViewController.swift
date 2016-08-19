@@ -13,7 +13,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   var mtkView: MTKView { get { return super.view as! MTKView } }
   
   var page: RenderablePage? = nil
-  var strokeFitters = [UITouch: StrokeFitter]()
+  var strokeFitters = [UITouch: UITouchStrokeFitter]()
   var incomingStrokes = [[StrokeSegment]]()
 
   let firebaseProvider = UIApplication.sharedApplication().delegate as! FirebaseRefProvider
@@ -104,7 +104,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     for touch in touches {
       assert(strokeFitters[touch] === nil)
-      let fitter = StrokeFitter(page: page!)
+      let fitter = UITouchStrokeFitter(page: page!, view:view!)
       strokeFitters[touch] = fitter
       fitter.startStroke(touch)
     }
@@ -116,18 +116,13 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
 
   override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
     for touch in touches {
-      let fitter = strokeFitters[touch]!
-      let actual = event?.coalescedTouchesForTouch(touch) ?? [touch]
-      let predicted = event?.predictedTouchesForTouch(touch) ?? []
-      fitter.continueStroke(actual, predicted: predicted)
+      strokeFitters[touch]!.continueStroke(touch, withEvent:event!)
     }
   }
 
   override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
     for touch in touches {
-      let fitter = strokeFitters[touch]!
-      fitter.continueStroke([touch])
-      fitter.finishStroke(touch)
+      strokeFitters[touch]!.finishStroke(touch, withEvent: event!)
       strokeFitters.removeValueForKey(touch)
     }
   }
@@ -193,7 +188,6 @@ class FirebasePageObserver : PageObserver {
       }
       self.incomingStrokes.append(path)
     });
-    
   }
   
   // TODO: what would be the idiomatic name for this?

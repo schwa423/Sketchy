@@ -78,6 +78,7 @@
 		039CDF7D1D46858700C055C3 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 039CDF7C1D46858700C055C3 /* PromiseKit.framework */; };
 		03A07E631C72896800E0DC7C /* SkeqiFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */; };
 		03A07E651C729AC900E0DC7C /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A07E641C729AC900E0DC7C /* PageViewController.swift */; };
+		03BAE3541D67933F0010F235 /* UITouchStrokeFitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BAE3531D67933F0010F235 /* UITouchStrokeFitter.swift */; };
 		03C5E23D1B47144D00C41423 /* libcapnp-rpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E2381B47144D00C41423 /* libcapnp-rpc.a */; };
 		03C5E23E1B47144D00C41423 /* libcapnp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E2391B47144D00C41423 /* libcapnp.a */; };
 		03C5E23F1B47144D00C41423 /* libcapnpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03C5E23A1B47144D00C41423 /* libcapnpc.a */; };
@@ -244,6 +245,7 @@
 		039CDF7C1D46858700C055C3 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = "build/Debug-iphoneos/PromiseKit/PromiseKit.framework"; sourceTree = "<group>"; };
 		03A07E621C7287E900E0DC7C /* SkeqiFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeqiFirebase.swift; sourceTree = "<group>"; };
 		03A07E641C729AC900E0DC7C /* PageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
+		03BAE3531D67933F0010F235 /* UITouchStrokeFitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITouchStrokeFitter.swift; sourceTree = "<group>"; };
 		03C5E2381B47144D00C41423 /* libcapnp-rpc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcapnp-rpc.a"; path = "../third-party-build/capnproto/lib/libcapnp-rpc.a"; sourceTree = "<group>"; };
 		03C5E2391B47144D00C41423 /* libcapnp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcapnp.a; path = "../third-party-build/capnproto/lib/libcapnp.a"; sourceTree = "<group>"; };
 		03C5E23A1B47144D00C41423 /* libcapnpc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcapnpc.a; path = "../third-party-build/capnproto/lib/libcapnpc.a"; sourceTree = "<group>"; };
@@ -459,8 +461,9 @@
 				03474FE41AD8036C001240DD /* Arc.swift */,
 				035F54C31BB766E500BE6FD4 /* CubicBezier.swift */,
 				035F54C51BB9103C00BE6FD4 /* Page.swift */,
-				036CE4651CCD90C5002C1AC2 /* StrokeFitter.swift */,
 				036CE4691CCDAC9B002C1AC2 /* RenderablePage.swift */,
+				036CE4651CCD90C5002C1AC2 /* StrokeFitter.swift */,
+				03BAE3531D67933F0010F235 /* UITouchStrokeFitter.swift */,
 			);
 			name = page;
 			path = ../../page;
@@ -884,6 +887,7 @@
 				032D32D81AF56E0500F473D4 /* Resampler.cpp in Sources */,
 				032D32D71AF56E0500F473D4 /* PrimitiveSequence.cpp in Sources */,
 				032D32D91AF56E0500F473D4 /* SimpleAPI.cpp in Sources */,
+				03BAE3541D67933F0010F235 /* UITouchStrokeFitter.swift in Sources */,
 				032D32CE1AF56E0500F473D4 /* Line.cpp in Sources */,
 				0318D8BC1C4EA60D00F1202F /* inmemorycache.cc in Sources */,
 				0318D8C71C544E1B00F1202F /* testutils.cc in Sources */,
