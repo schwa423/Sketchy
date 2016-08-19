@@ -101,6 +101,11 @@ struct Bezier3 : CustomStringConvertible, Equatable {
     } else if ((upperBound - lowerBound) / upperBound <= maxErrorRate * 2.0) {
       // Returning the mean of the two bounds guarantees the result is within the error tolerance.
       return 0.5 * (upperBound + lowerBound);
+    } else if (upperBound < 0.000005) {
+      // In some cases, floating point precision will result in non-convergence;
+      // when this is detected, we explicitly terminate recursion.
+      // TODO: Is a constant threshold the right approach?  Is this the right threshold?
+      return 0.5 * (upperBound + lowerBound);
     } else {
       // This curve is not flat enough.  Split into two curves, and recursively evaluate the length
       // of each one.
