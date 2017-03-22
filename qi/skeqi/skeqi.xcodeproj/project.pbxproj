@@ -114,7 +114,7 @@
 				"$(DERIVED_FILE_DIR)/${INPUT_FILE_BASE}.capnp.cc",
 				"$(DERIVED_FILE_DIR)/${INPUT_FILE_BASE}.capnp.h",
 			);
-			script = "cd ${INPUT_FILE_DIR}\n\n# Weird: it's necessary to pass the full path to -o.\n# It wasn't at first... '-oc++:${DERIVED_FILE_DIR}' originally worked fine.\n${CAPNP} compile -o${CAPNP_DIR}/bin/capnpc-c++:${DERIVED_FILE_DIR} ${INPUT_FILE_BASE}.capnp\n\n# Weird: if we try to \"mv\" the file it sometimes can't find it.\n# However, it's always there when we try to \"cp\" it.\n# BUT! It's not always there when we try to \"rm\" it, hence \"rm -f\"\n# so that it doesn't fail if the file doesn't exist.  :-/\ncd ${DERIVED_FILE_DIR}\ncp ${INPUT_FILE_BASE}.capnp.c++ ${INPUT_FILE_BASE}.capnp.cc\nrm -f ${INPUT_FILE_BASE}.capnp.c++";
+			script = "cd ${INPUT_FILE_DIR}\n\n# Weird: it's necessary to pass the full path to -o.\n# It wasn't at first... '-oc++:${DERIVED_FILE_DIR}' originally worked fine.\n${CAPNP} compile -o${CAPNP_DIR}/bin/capnpc-c++:${DERIVED_FILE_DIR} -I${CAPNP_DIR}/include ${INPUT_FILE_BASE}.capnp\n\n# Weird: if we try to \"mv\" the file it sometimes can't find it.\n# However, it's always there when we try to \"cp\" it.\n# BUT! It's not always there when we try to \"rm\" it, hence \"rm -f\"\n# so that it doesn't fail if the file doesn't exist.  :-/\ncd ${DERIVED_FILE_DIR}\ncp ${INPUT_FILE_BASE}.capnp.c++ ${INPUT_FILE_BASE}.capnp.cc\nrm -f ${INPUT_FILE_BASE}.capnp.c++";
 		};
 /* End PBXBuildRule section */
 
@@ -759,9 +759,11 @@
 					03FA76011AD7EA2500A56C06 = {
 						CreatedOnToolsVersion = 6.3;
 						DevelopmentTeam = FL3H848AL7;
+						LastSwiftMigration = 0810;
 					};
 					03FA76181AD7EA2500A56C06 = {
 						CreatedOnToolsVersion = 6.3;
+						LastSwiftMigration = 0810;
 						TestTargetID = 03FA76011AD7EA2500A56C06;
 					};
 				};
@@ -840,7 +842,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		FE30076CDCCC38A610D0C43E /* [CP] Embed Pods Frameworks */ = {
@@ -1029,7 +1031,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(EIGEN_DIR)",
-					"$(GLM_DIR)",
+					"$PROJECT_DIR/../third-party/glm",
 					$PROJECT_DIR/Pods/Headers/Public,
 					$PROJECT_DIR/../..,
 					$PROJECT_DIR/Pods/Headers/Public/CocoaLumberjack,
@@ -1098,7 +1100,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(EIGEN_DIR)",
-					"$(GLM_DIR)",
+					"$PROJECT_DIR/../third-party/glm",
 					$PROJECT_DIR/Pods/Headers/Public,
 					$PROJECT_DIR/../..,
 					$PROJECT_DIR/Pods/Headers/Public/CocoaLumberjack,
@@ -1159,6 +1161,7 @@
 				"OTHER_CPLUSPLUSFLAGS[arch=*]" = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -1204,6 +1207,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -1229,6 +1233,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/skeqi.app/skeqi";
 			};
 			name = Debug;
@@ -1250,6 +1255,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/skeqi.app/skeqi";
 			};
 			name = Release;

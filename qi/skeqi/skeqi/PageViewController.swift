@@ -101,7 +101,7 @@ class PageViewController: UIViewController, MTKViewDelegate, GIDSignInUIDelegate
     }
   }
 
-  override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+  override func touchesCancelled(touches: Set<UITouch>, withEvent event: UIEvent?) {
     assert(false)  // not implemented
   }
 

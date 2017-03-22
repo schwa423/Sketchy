@@ -50,7 +50,7 @@ class QiController: GameViewController {
     delegate.touchesBegan(touches, withEvent: event)
   }
 
-  override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+  override func touchesCancelled(touches: Set<UITouch>, withEvent event: UIEvent?) {
     delegate.touchesCancelled(touches, withEvent: event)
   }
 

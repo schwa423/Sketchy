@@ -31,8 +31,9 @@ extension MTLTexture {
     
     let textureSize = self.width * self.height * 4
     let rowBytes = self.width * 4
-    let provider = CGDataProviderCreateWithData(nil, p, textureSize, nil)
-    let cgImageRef = CGImageCreate(self.width, self.height, 8, 32, rowBytes, pColorSpace, bitmapInfo, provider, nil, true, CGColorRenderingIntent.RenderingIntentDefault)!
+    let unusedCallback: CGDataProviderReleaseDataCallback = { optionalPointer, pointer, valueInt in }
+    let provider = CGDataProviderCreateWithData(nil, p, textureSize, unusedCallback)
+    let cgImageRef = CGImageCreate(self.width, self.height, 8, 32, rowBytes, pColorSpace, bitmapInfo, provider!, nil, true, CGColorRenderingIntent.RenderingIntentDefault)!
     
     return cgImageRef
   }
